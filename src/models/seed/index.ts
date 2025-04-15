@@ -17,7 +17,7 @@ async function main() {
 	CustomerSeed();
 	AttributeSeed();
 
-	if (process.env.CONFIG_DB_SERVER !== "localhost") {
+	if (process.env.ENABLE_SUPABASE === "true") {
 		// VERY IMPORTANT
 		// Realtime
 		const getallTable = async () => {
