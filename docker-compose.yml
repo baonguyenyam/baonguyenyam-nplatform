@@ -1,0 +1,8 @@
+services:
+  authjs-docker-test:
+    build: .
+    environment:
+      - AUTH_SECRET=test
+      - AUTH_URL=http://localhost:3000/auth
+    ports:
+      - "3000:3000"

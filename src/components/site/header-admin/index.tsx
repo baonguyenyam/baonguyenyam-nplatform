@@ -1,0 +1,46 @@
+"use client";
+
+import { Fragment } from "react";
+
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { appState } from "@/lib/appConst";
+import { useAppSelector } from "@/store";
+
+import UserButton from "./user-button";
+
+export default function Header() {
+	const breadcrumb = useAppSelector((state) => state?.breadcrumbState?.data);
+	const _state = useAppSelector((state) => state.appState) as { title?: string };
+
+	return (
+		<header className="sticky h-16 py-5 flex justify-center border-b gap-2 dark:border-b-gray-700 bg-white dark:bg-gray-800 z-10">
+			<div className="mx-auto flex w-full items-center justify-between px-4">
+				<SidebarTrigger />
+				<Separator
+					orientation="vertical"
+					className="ml-3 mr-4 h-4"
+				/>
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink href="/admin/">{_state?.title ?? appState?.appName}</BreadcrumbLink>
+						</BreadcrumbItem>
+						{breadcrumb?.map((item: any, index: number) => (
+							<Fragment key={index}>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
+								</BreadcrumbItem>
+							</Fragment>
+						))}
+					</BreadcrumbList>
+				</Breadcrumb>
+				<div className="flex items-center space-x-4 ml-auto">
+					<UserButton />
+				</div>
+			</div>
+		</header>
+	);
+}
