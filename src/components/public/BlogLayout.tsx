@@ -7,11 +7,14 @@ import { SmartImage } from "@/components/public/SmartImage";
 export default function BlogLayout(props: any) {
 	const { count, page, pageSize, url } = props;
 
+	const first = props.data?.slice(0, 1);
+	const data = props.data?.slice(1, Number(pageSize) + 1);
+
 	return (
 		<div className=" dark:bg-gray-900 dark:text-white">
 			<div className="flex flex-col w-full mb-10">
-				{props.first &&
-					props.first.map((item: any) => (
+				{first &&
+					first.map((item: any) => (
 						<Fragment key={item?.id}>
 							<div className="bg-gray-900 text-white">
 								<div className="container mx-auto grid w-full grid-cols-9 px-5 py-9 lg:py-25 xl:max-w-[1020px]">
@@ -39,7 +42,7 @@ export default function BlogLayout(props: any) {
 
 				<div className="container mx-auto w-full px-5 py-9 lg:py-25 xl:max-w-[1020px]">
 					<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-						{props.data.map((item: any) => (
+						{data.map((item: any) => (
 							<div
 								key={item?.id}
 								className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition duration-300 dark:bg-gray-800 dark:text-white">

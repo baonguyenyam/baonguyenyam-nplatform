@@ -14,32 +14,22 @@ export default function Fetch(props: any) {
 	const type = "post";
 	const { title, page, breadcrumb } = props;
 	const [db, setDb] = useState<any>([]);
-	const [first, setFirst] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
 	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const query = useMemo(
 		() => ({
 			type,
-			skip: pageSkip(page, pageSize) + 1,
+			skip: pageSkip(page, Number(pageSize) + 1),
 		}),
 		[pageSize, page],
 	);
 
 	const fetchData = useCallback(async () => {
-		// get the first item
-		const getFirst = cache(async () => {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts?skip=${query.skip - 1}&take=1`).then((res) => res.json())
-			return res;
-		});
 		// get all items and leave the first one
 		const getAll = cache(async () => {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts?skip=${query.skip}&take=${pageSize}`).then((res) => res.json())
+			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts?skip=${query.skip}&take=${Number(pageSize) + 1}`).then((res) => res.json())
 			return res;
 		});
-		const firstResult = await getFirst();
-		if (firstResult?.data) {
-			setFirst(firstResult);
-		}
 		const resResult = await getAll();
 		if (resResult?.data) {
 			setDb(resResult);
@@ -66,7 +56,6 @@ export default function Fetch(props: any) {
 			<div className="px-5">{loading && <AppLoading />}</div>
 			{!loading && (
 				<BlogLayout
-					first={first.data}
 					data={db.data}
 					count={db.count}
 					url={`/blogs`}
