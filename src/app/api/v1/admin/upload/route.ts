@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 				size: fileSize,
 				ext: fileExtension,
 				published: true,
-				url: upload_dir + fileHash + "." + fileExtension,
+				url: '/' + upload_dir + fileHash + "." + fileExtension,
 			};
 
 			const item = await models.File.createFile(fileDataToSave);
