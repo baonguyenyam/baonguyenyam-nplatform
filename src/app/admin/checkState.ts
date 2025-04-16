@@ -32,18 +32,20 @@ export default function CheckState() {
 			const res = await actions.getAllSettings();
 			if (res.success === "success") {
 				console.log("res", res.data);
-				dispatch(SET_APP_STATE({
-					pageSize: res.data.find((item: any) => item.key === "page")?.value ?? 10,
-					title: res.data.find((item: any) => item.key === "title")?.value ?? appState.appName,
-					description: res.data.find((item: any) => item.key === "description")?.value ?? appState.appDescription,
-					image: res.data.find((item: any) => item.key === "image")?.value ?? appState.placeholder,
-					tax: res.data.find((item: any) => item.key === "tax")?.value ?? 0,
-					bill_note: res.data.find((item: any) => item.key === "bill_note")?.value ?? "",
-					bill_company_name: res.data.find((item: any) => item.key === "bill_company_name")?.value ?? "",
-					bill_company_address: res.data.find((item: any) => item.key === "bill_company_address")?.value ?? "",
-					bill_company_info: res.data.find((item: any) => item.key === "bill_company_info")?.value ?? "",
-					bill_company_phone: res.data.find((item: any) => item.key === "bill_company_phone")?.value ?? "",
-				}));
+				dispatch(
+					SET_APP_STATE({
+						pageSize: res.data.find((item: any) => item.key === "page")?.value ?? 10,
+						title: res.data.find((item: any) => item.key === "title")?.value ?? appState.appName,
+						description: res.data.find((item: any) => item.key === "description")?.value ?? appState.appDescription,
+						image: res.data.find((item: any) => item.key === "image")?.value ?? appState.placeholder,
+						tax: res.data.find((item: any) => item.key === "tax")?.value ?? 0,
+						bill_note: res.data.find((item: any) => item.key === "bill_note")?.value ?? "",
+						bill_company_name: res.data.find((item: any) => item.key === "bill_company_name")?.value ?? "",
+						bill_company_address: res.data.find((item: any) => item.key === "bill_company_address")?.value ?? "",
+						bill_company_info: res.data.find((item: any) => item.key === "bill_company_info")?.value ?? "",
+						bill_company_phone: res.data.find((item: any) => item.key === "bill_company_phone")?.value ?? "",
+					}),
+				);
 			}
 		}
 		if (atts?.length == 0) {

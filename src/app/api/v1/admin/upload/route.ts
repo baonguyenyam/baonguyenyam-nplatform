@@ -1,12 +1,12 @@
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createHash } from "crypto";
 import { writeFile } from "fs/promises";
 import path from "path";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Bucket, s3Client } from "@/lib/s3";
 
 import { auth } from "@/auth";
 import { appState } from "@/lib/appConst";
+import { Bucket, s3Client } from "@/lib/s3";
 import models from "@/models";
 
 // Create File
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
 						size: fileSize,
 						ext: fileExtension,
 						published: true,
-						url: '/' + upload_dir + fileHash + "." + fileExtension,
+						url: "/" + upload_dir + fileHash + "." + fileExtension,
 					};
 
 					const item = await models.File.createFile(fileDataToSave);
@@ -112,7 +112,6 @@ export async function POST(req: Request) {
 			} catch (error) {
 				return Response.json({ message: "Error writing file" }, { status: 500 });
 			}
-
 		}
 	}
 

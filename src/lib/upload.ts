@@ -1,13 +1,13 @@
 "use server";
 
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createHash } from "crypto";
 import { writeFile } from "fs/promises";
 import path from "path";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Bucket, s3Client } from "@/lib/s3";
 
 import { auth } from "@/auth";
+import { Bucket, s3Client } from "@/lib/s3";
 import models from "@/models";
 
 // Upload File
@@ -45,7 +45,7 @@ export async function uploadFile(files: any) {
 			const fileExtension = fileName.split(".").pop();
 			const fileType = file.type;
 			const fileMimeType = fileType || "application/octet-stream";
-			const fileURL = ''
+			const fileURL = "";
 			if (fileSizeInMB > Number(process.env.MAX_FILE_SIZE)) {
 				return {
 					success: "error",
@@ -70,7 +70,6 @@ export async function uploadFile(files: any) {
 					message: "Invalid file data",
 				};
 			}
-
 
 			try {
 				if (process.env.ENABLE_R2 === "true") {
@@ -141,7 +140,6 @@ export async function uploadFile(files: any) {
 					message: "Error writing file",
 				};
 			}
-
 		}
 
 		if (files.length === 0) {

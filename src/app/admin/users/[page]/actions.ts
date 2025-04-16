@@ -2,6 +2,9 @@
 
 import { auth } from "@/auth";
 import models from "@/models";
+import WelcomeEmail from "@/email/WelcomeEmail";
+import MailService from "@/lib/email";
+import { render } from "@react-email/render";
 
 export async function getAll(query: any) {
 	const session = await auth();
@@ -140,4 +143,19 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 			message: "Error updating categories",
 		};
 	}
+}
+
+// Send Welcome Email
+export async function sendMail(email: string, name: string) {
+	// sendEmail
+	const Subject = "Welcome to nPlatform's website";
+	const emailTemplate = await render(WelcomeEmail({ url: "https://nguyenpham.pro", host: "nguyenpham.pro", name: name }))
+	const mailService = MailService.getInstance();
+	mailService.sendMail("welcomeEmail", {
+		to: email,
+		subject: Subject,
+		text: emailTemplate || "",
+		html: emailTemplate,
+	});
+
 }

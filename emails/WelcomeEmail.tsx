@@ -9,21 +9,23 @@ import { Text } from "@react-email/text";
 type InviteUserEmailProps = {
 	url: string;
 	host: string;
+	name?: string;
 };
 
 export default function InviteUserEmail({
-	url = "https://neorepo.com",
-	host = "neorepo.com",
+	url = "https://nguyenpham.pro",
+	host = "nguyenpham.pro",
+	name = "Guest",
 }: InviteUserEmailProps) {
-	const escapedHost = host.replace(/\./g, "&#8203;.");
 
 	return (
 		<Html>
 			<Head />
-			<Preview>{`Sign in to ${escapedHost}`}</Preview>
+			<Preview>{`Hello ${name},`}</Preview>
+			<Preview>{`Sign in to ${host}`}</Preview>
 			<Section style={main}>
 				<Container style={container}>
-					<Text style={h1}>Sign in to {escapedHost}</Text>
+					<Text style={h1}>Sign in to {host}</Text>
 					<Section style={{ textAlign: "center" }}>
 						<Button style={{ ...btn, padding: "12px 20px" }} href={url}>
 							Sign in
@@ -46,8 +48,8 @@ const main = {
 const container = {
 	border: "1px solid #eaeaea",
 	borderRadius: "5px",
-	margin: "40px auto",
-	padding: "20px",
+	margin: "10px auto",
+	padding: "20px 40px",
 	width: "465px",
 };
 
@@ -59,7 +61,7 @@ const h1 = {
 	fontWeight: "normal",
 	textAlign: "center" as const,
 	margin: "30px 0",
-	padding: "0",
+	padding: "10px 30px",
 };
 
 const text = {
@@ -78,7 +80,7 @@ const btn = {
 		"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 	fontSize: "12px",
 	fontWeight: 500,
-	lineHeight: "50px",
+	lineHeight: "20px",
 	textDecoration: "none",
 	textAlign: "center" as const,
 };

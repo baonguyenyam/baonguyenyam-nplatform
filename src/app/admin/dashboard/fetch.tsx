@@ -14,7 +14,9 @@ export default function Fetch(props: any) {
 				<AppTitle breadcrumb={breadcrumb} />
 				<h1 className="text-3xl font-bold">{state.title ?? appState.appName}</h1>
 				<p className="mt-1 text-sm">v{appState.appVersion}</p>
-				<p className="mt-4 text-sm opacity-50" dangerouslySetInnerHTML={{ __html: state.description ?? appState.appDescription }}></p>
+				<p
+					className="mt-4 text-sm opacity-50"
+					dangerouslySetInnerHTML={{ __html: state.description ?? appState.appDescription }}></p>
 			</div>
 		</div>
 	);

@@ -1,4 +1,3 @@
-// https://www.neorepo.com/blog/how-to-make-emails-with-nextjs-and-react-email#implement-a-nice-email-design
 import nodemailer from "nodemailer";
 
 import Logging from "@/lib/logging";
@@ -44,7 +43,7 @@ export default class MailService {
 		this.transporter = nodemailer.createTransport({
 			host: process.env.EMAIL_HOST,
 			port: process.env.EMAIL_PORT || "587",
-			secure: process.env.EMAIL_SECURE === "yes" ? true : false,
+			secure: process.env.EMAIL_SECURE === "true" ? true : false,
 			auth: {
 				user: process.env.EMAIL_ADDRESS,
 				pass: process.env.EMAIL_PASSWORD,
@@ -67,11 +66,9 @@ export default class MailService {
 			.then((info: nodemailer.SentMessageInfo) => {
 				Logging.info(`${requestId} - Mail sent successfully!!`);
 				Logging.info(`${requestId} - [MailResponse]=${info.response} [MessageID]=${info.messageId}`);
-				// if (process.env.NODE_ENV === 'local') {
-				// 	Logging.info(`${requestId} - Nodemailer ethereal URL: ${nodemailer.getTestMessageUrl(
-				// 		info
-				// 	)}`);
-				// }
+				if (process.env.NODE_ENV === "development") {
+					Logging.info(`${requestId} - Nodemailer ethereal URL: ${nodemailer.getTestMessageUrl(info)}`);
+				}
 				return info;
 			});
 	}
