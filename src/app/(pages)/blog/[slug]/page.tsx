@@ -1,15 +1,22 @@
+import { cache } from 'react';
 import type { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 
 import DefaultLayout from "@/components/site/default-layout";
 import { meta } from "@/lib/appConst";
 
-import * as actions from "./actions";
 import Fetch from "./fetch";
 
+// Call the API to get the data
+const getItem = cache(async (slug: string) => {
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts/${slug}`)
+	return res.json();
+});
+
+// Generate metadata for the page
 export async function generateMetadata({ params }: any, parent: ResolvingMetadata): Promise<Metadata> {
 	const { slug } = await params;
-	const data = await actions.getRecord(slug);
+	const data = await getItem(slug);
 	const previousImages = (await parent).openGraph?.images || [];
 	const metaData = data?.data;
 
@@ -20,14 +27,14 @@ export async function generateMetadata({ params }: any, parent: ResolvingMetadat
 			openGraph: {
 				images: [metaData?.image || "", ...previousImages],
 			},
-		}),
+		})
 	};
 }
 
+// Generate static params for the page
 export default async function Index({ params }: any) {
 	const { slug } = await params;
-	const data = await actions.getRecord(slug);
-
+	const data = await getItem(slug);
 	const breadcrumb = [
 		{
 			title: "Blogs",

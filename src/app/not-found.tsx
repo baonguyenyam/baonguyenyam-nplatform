@@ -40,7 +40,9 @@ export default async function Index() {
 			</div>
 			<h1 className="text-4xl font-bold">404 - Page Not Found</h1>
 			<p className="mt-4 text-lg">The page you are looking for does not exist.</p>
-			<Link href="/" className="mt-6 text-black underline dark:text-white">
+			<Link
+				href="/"
+				className="mt-6 text-black underline dark:text-white">
 				Go back to Home
 			</Link>
 		</div>

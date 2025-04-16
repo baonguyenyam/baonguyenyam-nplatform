@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { cache } from 'react';
 
 import AppLoading from "@/components/AppLoading";
 import BlogLayout from "@/components/public/BlogLayout";
@@ -8,8 +9,6 @@ import BreadcrumbBar from "@/components/public/BreadcrumbBar";
 import Title from "@/components/public/Title";
 import { pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
-
-import * as actions from "./actions";
 
 export default function Fetch(props: any) {
 	const type = "post";
@@ -28,14 +27,22 @@ export default function Fetch(props: any) {
 
 	const fetchData = useCallback(async () => {
 		// get the first item
-		const getFirst = await actions.getAll({ skip: query.skip - 1, take: 1, type, published: true });
+		const getFirst = cache(async () => {
+			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts?skip=${query.skip - 1}&take=1`).then((res) => res.json())
+			return res;
+		});
 		// get all items and leave the first one
-		const res = await actions.getAll({ skip: query.skip, take: Number(pageSize), type, published: true });
-		if (getFirst?.data) {
-			setFirst(getFirst);
+		const getAll = cache(async () => {
+			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts?skip=${query.skip}&take=${pageSize}`).then((res) => res.json())
+			return res;
+		});
+		const firstResult = await getFirst();
+		if (firstResult?.data) {
+			setFirst(firstResult);
 		}
-		if (res?.data) {
-			setDb(res);
+		const resResult = await getAll();
+		if (resResult?.data) {
+			setDb(resResult);
 			setLoading(false);
 		}
 	}, [pageSize, query.skip]);
