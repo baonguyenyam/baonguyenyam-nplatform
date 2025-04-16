@@ -23,6 +23,7 @@ export default defineConfig([{
         "**/out",
         "**/christmas",
         "**/.next",
+        "**/docs",
     ],
     rules: {
         "simple-import-sort/imports": ["error", {
