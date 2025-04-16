@@ -16,6 +16,7 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
+import initSupabase from "@/lib/supabase";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
@@ -55,6 +56,10 @@ export default function Fetch(props: any) {
 
 	useEffect(() => {
 		fetchData();
+		initSupabase({
+			table: "Order",
+			fetchData,
+		});
 	}, [fetchData]);
 
 	return (

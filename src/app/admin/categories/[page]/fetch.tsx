@@ -10,6 +10,7 @@ import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
 import { enumType } from "@/lib/enum";
+import initSupabase from "@/lib/supabase";
 import { dateFormat, pageSkip } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { deleteCategory, setCategory } from "@/store/categoriesSlice";
@@ -61,6 +62,10 @@ export default function Fetch(props: any) {
 
 	useEffect(() => {
 		fetchData();
+		initSupabase({
+			table: "Category",
+			fetchData,
+		});
 	}, [fetchData]);
 
 	return (

@@ -10,6 +10,7 @@ import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
 import { enumPermission } from "@/lib/enum";
+import initSupabase from "@/lib/supabase";
 import { pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
@@ -54,6 +55,10 @@ export default function Fetch(props: any) {
 
 	useEffect(() => {
 		fetchData();
+		initSupabase({
+			table: "User",
+			fetchData,
+		});
 	}, [fetchData]);
 
 	return (

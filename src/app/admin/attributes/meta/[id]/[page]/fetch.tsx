@@ -16,6 +16,7 @@ import { deleteAttribute, setAttribute } from "@/store/attributeSlice";
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
+import initSupabase from "@/lib/supabase";
 
 export default function Fetch(props: any) {
 	const { page, id, parent, subparent, breadcrumb } = props;
@@ -62,6 +63,10 @@ export default function Fetch(props: any) {
 
 	useEffect(() => {
 		fetchData();
+		initSupabase({
+			table: "AttributeMeta",
+			fetchData,
+		});
 	}, [fetchData]);
 
 	return (
