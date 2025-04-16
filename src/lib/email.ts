@@ -1,3 +1,4 @@
+// https://www.neorepo.com/blog/how-to-make-emails-with-nextjs-and-react-email#implement-a-nice-email-design
 import nodemailer from "nodemailer";
 
 import Logging from "@/lib/logging";
@@ -17,7 +18,7 @@ export default class MailService {
 	private static instance: MailService;
 	private transporter: nodemailer.Transporter | undefined;
 	//PRIVATE CONSTRUCTOR
-	private constructor() {}
+	private constructor() { }
 	//INSTANCE CREATE FOR MAIL
 	static getInstance() {
 		if (!MailService.instance) {

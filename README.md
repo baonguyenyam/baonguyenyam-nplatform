@@ -31,7 +31,7 @@ nPlatform is a platform that provides a set of tools and services to help develo
 
 # Roadmap
 
-- Email Template
+- Email Template (react email)
 - Upload file to R2
 - Supabase
 

@@ -1,7 +1,7 @@
 # Show menu to select the app to run
 
 echo "\033[1;32mSelect the app to run\033[0m"
-select app in "Run DEV" "DB Reset" "DB Migrate" "DB Seed" "Format" "Build" "Update NPM" "Docs" "Beta NPM" "Kill Port 3000" "Exit"
+select app in "Run DEV" "DB Reset" "DB Migrate" "DB Seed" "Format" "Build" "Update NPM" "Docs" "Beta NPM" "Email" "Kill Port 3000" "Exit"
 do
   case $app in
 	"Run DEV")
@@ -28,6 +28,10 @@ do
 	"Beta NPM")
 	echo "\033[1;32mRunning BETA NPM app\033[0m"
 	  sh cmd/beta.sh
+	  ;;
+	"Email")
+	echo "\033[1;32mRunning EMAIL app\033[0m"
+	  yarn email
 	  ;;
 	"Docs")
 	echo "\033[1;32mRunning DOCS app\033[0m"
