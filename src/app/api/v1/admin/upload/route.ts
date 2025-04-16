@@ -1,6 +1,9 @@
 import { createHash } from "crypto";
 import { writeFile } from "fs/promises";
 import path from "path";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Bucket, s3Client } from "@/lib/s3";
 
 import { auth } from "@/auth";
 import { appState } from "@/lib/appConst";
@@ -47,29 +50,69 @@ export async function POST(req: Request) {
 			}
 
 			try {
-				await writeFile(path.join(process.cwd(), upload_path, fileHash + "." + fileExtension), fileBuffer);
+				if (process.env.ENABLE_R2 === "true") {
+					const data = {
+						Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
+						Key: `${upload_dir}/${fileHash}.${fileExtension}`,
+					};
+
+					const signedUrl = await getSignedUrl(s3Client, new PutObjectCommand(data), {
+						expiresIn: 3600,
+					});
+
+					await fetch(signedUrl, {
+						method: "PUT",
+						headers: {
+							"Content-Type": fileMimeType,
+							"Content-Length": fileSize.toString(),
+						},
+						body: fileBuffer,
+					});
+					const response = Bucket.public + "/" + data.Key;
+					const fileDataToSave = {
+						name: fileName,
+						hash: fileHash,
+						userId: id,
+						type: fileMimeType,
+						size: fileSize,
+						ext: fileExtension,
+						published: true,
+						url: response,
+					};
+					const item = await models.File.createFile(fileDataToSave);
+					if (item) {
+						db.push(item);
+					}
+					if (!item) {
+						return {
+							success: "error",
+							message: "Can not upload the file",
+						};
+					}
+				} else {
+					await writeFile(path.join(process.cwd(), upload_path, fileHash + "." + fileExtension), fileBuffer);
+					const fileDataToSave = {
+						name: fileName,
+						hash: fileHash,
+						userId: id,
+						type: fileMimeType,
+						size: fileSize,
+						ext: fileExtension,
+						published: true,
+						url: '/' + upload_dir + fileHash + "." + fileExtension,
+					};
+
+					const item = await models.File.createFile(fileDataToSave);
+					if (item) {
+						db.push(item);
+					} else {
+						return Response.json({ message: "Can not upload the file" }, { status: 401 });
+					}
+				}
 			} catch (error) {
 				return Response.json({ message: "Error writing file" }, { status: 500 });
 			}
 
-			const fileDataToSave = {
-				name: fileName,
-				hash: fileHash,
-				userId: id,
-				type: fileMimeType,
-				size: fileSize,
-				ext: fileExtension,
-				published: true,
-				url: '/' + upload_dir + fileHash + "." + fileExtension,
-			};
-
-			const item = await models.File.createFile(fileDataToSave);
-
-			if (item) {
-				db.push(item);
-			} else {
-				return Response.json({ message: "Can not upload the file" }, { status: 401 });
-			}
 		}
 	}
 
