@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 			}
 
 			try {
-				if (process.env.ENABLE_R2 === "true") {
+				if (process.env.ENABLE_R2 === "true" || process.env.ENABLE_R2 === "1") {
 					const data = {
 						Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
 						Key: `${upload_dir}/${fileHash}.${fileExtension}`,

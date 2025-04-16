@@ -17,7 +17,7 @@ async function main() {
 	CustomerSeed();
 	AttributeSeed();
 
-	if (process.env.ENABLE_SUPABASE === "true") {
+	if (process.env.ENABLE_SUPABASE === "true" || process.env.ENABLE_SUPABASE === "1") {
 		// VERY IMPORTANT
 		// Realtime
 		const getallTable = async () => {

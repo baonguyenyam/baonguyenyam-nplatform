@@ -6,7 +6,7 @@ export default function initSupabase({
 	table = "User",
 	event = "*",
 	onpostgres = "postgres_changes", // postgres_changes, system, broadcast, presence
-	fetchData = () => {},
+	fetchData = () => { },
 }: {
 	channel?: string;
 	schema?: string;
@@ -21,7 +21,7 @@ export default function initSupabase({
 			fetchData();
 		})
 		.subscribe();
-	if (process.env.ENABLE_SUPABASE === "true") {
+	if (process.env.ENABLE_SUPABASE === "true" || process.env.ENABLE_SUPABASE === "1") {
 		return () => {
 			supabaseClient.removeChannel(channelSupabase);
 		};
