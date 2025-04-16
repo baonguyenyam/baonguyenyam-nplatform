@@ -1,11 +1,11 @@
 import { UserRole } from "@prisma/client";
+import { render } from "@react-email/render";
 import NextAuth from "next-auth";
 
-import { db } from "@/lib/db";
-import models from "@/models";
 import WelcomeEmail from "@/email/WelcomeEmail";
+import { db } from "@/lib/db";
 import MailService from "@/lib/email";
-import { render } from "@react-email/render";
+import models from "@/models";
 
 import "next-auth/jwt";
 
@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			try {
 				const existingUser = await models.User.getUserByEmail(user?.email || "");
 				if (!existingUser) {
-					const u = await models.User.createUser({
+					await models.User.createUser({
 						email: user.email!,
 						name: user.name!,
 						emailVerified: new Date(),
@@ -36,11 +36,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					});
 					// sendEmail
 					const Subject = `Welcome to ${process.env.SITE_NAME ?? ""}'s website`;
-					const emailTemplate = await render(WelcomeEmail({
-						url: process.env.SITE_URL ?? "",
-						host: process.env.SITE_NAME ?? "",
-						name: user.name!
-					}));
+					const emailTemplate = await render(
+						WelcomeEmail({
+							url: process.env.SITE_URL ?? "",
+							host: process.env.SITE_NAME ?? "",
+							name: user.name!,
+						}),
+					);
 					const mailService = MailService.getInstance();
 					mailService.sendMail("welcomeEmail", {
 						to: user.email!,

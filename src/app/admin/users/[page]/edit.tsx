@@ -122,10 +122,7 @@ export default function FormEdit(props: any) {
 			const create = await actions.createRecord(_body);
 			if (create?.success !== "success") {
 				toast.error(create.message);
-				await actions.sendMail(
-					values.f_email,
-					values.f_firstname + " " + values.f_lastname
-				);
+				await actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
 				return;
 			}
 			toast.success(create.message);
