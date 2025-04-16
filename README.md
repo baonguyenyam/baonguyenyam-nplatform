@@ -30,11 +30,6 @@ nPlatform is a platform that provides a set of tools and services to help develo
 - **Upload file to R2**: Uploading files to server or Amazon S3 or Cloudflare R2
 - ...
 
-# Roadmap
-
-- Email Template (react email)
-- Supabase
-
 # Setup & Running
 
 ### Create .env.local 
