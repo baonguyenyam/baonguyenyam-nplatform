@@ -17,24 +17,23 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 
-let FormSchema = z.object({
-	f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-	f_email: z.string().email({ message: "Invalid email address." }),
-	f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
-	f_address: z.string().optional(),
-	f_city: z.string().optional(),
-	f_state: z.string().optional(),
-	f_country: z.string().optional(),
-	f_phone: z.string().optional(),
-	f_zip: z.string().optional(),
-	f_company: z.string().optional(),
-	f_firstname: z.string().optional(),
-	f_lastname: z.string().optional(),
-});
 
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
+	let FormSchema = z.object({
+		f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
+		f_email: z.string().email({ message: "Invalid email address." }),
+		f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
+		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+		f_address: z.string().optional(),
+		f_city: z.string().optional(),
+		f_state: z.string().optional(),
+		f_country: z.string().optional(),
+		f_phone: z.string().optional(),
+		f_zip: z.string().optional(),
+		f_firstname: z.string().optional(),
+		f_lastname: z.string().optional(),
+	});
 	const { id, onChange } = props;
 	const role = useCurrentRole();
 	const [data, setData] = useState<any>(null);
@@ -73,7 +72,6 @@ export default function FormEdit(props: any) {
 			f_country: "",
 			f_phone: "",
 			f_zip: "",
-			f_company: "",
 			f_firstname: "",
 			f_lastname: "",
 		},
@@ -117,12 +115,8 @@ export default function FormEdit(props: any) {
 			state: values.f_state,
 			country: values.f_country,
 			zip: values.f_zip,
-			company: values.f_company,
 			data: JSON.stringify(attrs),
 		};
-
-		console.log("Form data", _body);
-
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
 			if (update?.success !== "success") {

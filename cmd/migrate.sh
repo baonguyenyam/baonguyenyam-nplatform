@@ -1,3 +1,1 @@
-yarn migrate
-yarn generate
-yarn seed
+yarn migrate && yarn generate && yarn seed
