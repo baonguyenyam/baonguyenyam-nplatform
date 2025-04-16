@@ -36,8 +36,11 @@ export default function Fetch(props: any) {
 				</div>
 			</div>
 
-			<div className="px-5">{loading && <AppLoading />}</div>
-
+			{loading && (
+				<div className="flex h-screen w-full p-5">
+					<AppLoading />
+				</div>
+			)}
 			{!loading && <Blog data={db} />}
 		</>
 	);

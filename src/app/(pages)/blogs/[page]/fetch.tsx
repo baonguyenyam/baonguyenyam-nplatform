@@ -53,7 +53,11 @@ export default function Fetch(props: any) {
 					<BreadcrumbBar />
 				</div>
 			</div>
-			<div className="px-5">{loading && <AppLoading />}</div>
+			{loading && (
+				<div className="flex h-screen w-full p-5">
+					<AppLoading />
+				</div>
+			)}
 			{!loading && (
 				<BlogLayout
 					data={db.data}
