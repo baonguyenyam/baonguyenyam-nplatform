@@ -148,8 +148,12 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 // Send Welcome Email
 export async function sendMail(email: string, name: string) {
 	// sendEmail
-	const Subject = "Welcome to nPlatform's website";
-	const emailTemplate = await render(WelcomeEmail({ url: "https://nguyenpham.pro", host: "nguyenpham.pro", name: name }))
+	const Subject = `Welcome to ${process.env.SITE_NAME ?? ""}'s website`;
+	const emailTemplate = await render(WelcomeEmail({
+		url: process.env.SITE_URL ?? "",
+		host: process.env.SITE_NAME ?? "",
+		name: name
+	}))
 	const mailService = MailService.getInstance();
 	mailService.sendMail("welcomeEmail", {
 		to: email,

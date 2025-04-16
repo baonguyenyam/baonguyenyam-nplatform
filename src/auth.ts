@@ -3,6 +3,9 @@ import NextAuth from "next-auth";
 
 import { db } from "@/lib/db";
 import models from "@/models";
+import WelcomeEmail from "@/email/WelcomeEmail";
+import MailService from "@/lib/email";
+import { render } from "@react-email/render";
 
 import "next-auth/jwt";
 
@@ -24,12 +27,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			try {
 				const existingUser = await models.User.getUserByEmail(user?.email || "");
 				if (!existingUser) {
-					await models.User.createUser({
+					const u = await models.User.createUser({
 						email: user.email!,
 						name: user.name!,
 						emailVerified: new Date(),
 						role: "USER",
 						avatar: user.image ? user.image : null,
+					});
+					// sendEmail
+					const Subject = `Welcome to ${process.env.SITE_NAME ?? ""}'s website`;
+					const emailTemplate = await render(WelcomeEmail({
+						url: process.env.SITE_URL ?? "",
+						host: process.env.SITE_NAME ?? "",
+						name: user.name!
+					}));
+					const mailService = MailService.getInstance();
+					mailService.sendMail("welcomeEmail", {
+						to: user.email!,
+						subject: Subject,
+						text: emailTemplate || "",
+						html: emailTemplate,
 					});
 				}
 				if (existingUser && !existingUser?.emailVerified) return;
