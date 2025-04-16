@@ -7,8 +7,8 @@ import { Section } from "@react-email/section";
 import { Text } from "@react-email/text";
 
 type InviteUserEmailProps = {
-	url: string;
-	host: string;
+	url?: string;
+	host?: string;
 	name?: string;
 };
 

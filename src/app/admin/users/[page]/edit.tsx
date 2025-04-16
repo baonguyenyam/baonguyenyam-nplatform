@@ -17,29 +17,38 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 
+let FormSchema = z.object({
+	f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
+	f_email: z.string().email({ message: "Invalid email address." }),
+	f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_address: z.string().optional(),
+	f_city: z.string().optional(),
+	f_state: z.string().optional(),
+	f_country: z.string().optional(),
+	f_phone: z.string().optional(),
+	f_zip: z.string().optional(),
+	f_company: z.string().optional(),
+	f_firstname: z.string().optional(),
+	f_lastname: z.string().optional(),
+});
+
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
-	let FormSchema = z.object({
-		f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-		f_email: z.string().email({ message: "Invalid email address." }),
-		f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
-		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
-		f_address: z.string().optional(),
-		f_city: z.string().optional(),
-		f_state: z.string().optional(),
-		f_country: z.string().optional(),
-		f_phone: z.string().optional(),
-		f_zip: z.string().optional(),
-		f_company: z.string().optional(),
-		f_firstname: z.string().optional(),
-		f_lastname: z.string().optional(),
-	});
 	const { id, onChange } = props;
 	const role = useCurrentRole();
 	const [data, setData] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
 	// Load the attribute data from the store
-	const atts = useAppSelector((state) => state?.attributeState.data)?.filter((item) => item.mapto === "user");
+	// const atts = useAppSelector((state) => state?.attributeState.data)?.filter((item) => item.mapto === "user");
+	const attributeData = useAppSelector((state) => state?.attributeState.data);
+	const atts = useMemo(() => {
+		if (attributeData) {
+			return attributeData.filter((item) => item.mapto === "user");
+		}
+		return [];
+	}, [attributeData]);
+
 	// Dynamically add fields to the schema based on the attribute data
 	atts?.forEach((item: any) => {
 		item?.children?.forEach((child: any) => {
@@ -111,6 +120,9 @@ export default function FormEdit(props: any) {
 			company: values.f_company,
 			data: JSON.stringify(attrs),
 		};
+
+		console.log("Form data", _body);
+
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
 			if (update?.success !== "success") {
@@ -149,7 +161,6 @@ export default function FormEdit(props: any) {
 				f_firstname: res.data.first_name || "",
 				f_lastname: res.data.last_name || "",
 			});
-
 			// Parse the data attribute
 			const _attribute = res.data.data ? JSON.parse(res.data.data) : null;
 			// Set the attribute data to the form
