@@ -21,7 +21,6 @@ import * as actions from "./actions";
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
-		f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
 		f_email: z.string().email({ message: "Invalid email address." }),
 		f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
 		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
@@ -39,7 +38,6 @@ export default function FormEdit(props: any) {
 	const [data, setData] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
 	// Load the attribute data from the store
-	// const atts = useAppSelector((state) => state?.attributeState.data)?.filter((item) => item.mapto === "user");
 	const attributeData = useAppSelector((state) => state?.attributeState.data);
 	const atts = useMemo(() => {
 		if (attributeData) {
@@ -63,7 +61,6 @@ export default function FormEdit(props: any) {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			f_published: "FALSE",
-			f_name: "",
 			f_email: "",
 			f_role: "USER",
 			f_address: "",
@@ -125,14 +122,21 @@ export default function FormEdit(props: any) {
 			}
 			toast.success(update.message);
 		} else {
-			const create = await actions.createRecord(_body);
-			if (create?.success !== "success") {
-				toast.error(create.message);
-				// Send the email to the user
-				await actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
-				return;
-			}
-			toast.success(create.message);
+			await actions.createRecord(_body).then((res) => {
+				if (res?.success !== "success") {
+					toast.error(res.message);
+					return;
+				} else {
+					// Send the email to the user
+					const _data = res?.data;
+					if (_data) {
+						actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
+					}
+				}
+				toast.success(res.message);
+			}).catch((err) => {
+				toast.error(err.message);
+			})
 		}
 		onChange("submit", values);
 	}
@@ -142,7 +146,6 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_name: res.data.name || "",
 				f_email: res.data.email || "",
 				f_published: res.data.published === true ? "TRUE" : "FALSE",
 				f_role: res.data.role || "USER",
