@@ -12,9 +12,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { enumPublished } from "@/lib/enum";
+import initSupabase from "@/lib/supabase";
 
 import * as actions from "./actions";
-import initSupabase from "@/lib/supabase";
 
 const FormSchema = z.object({
 	f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),

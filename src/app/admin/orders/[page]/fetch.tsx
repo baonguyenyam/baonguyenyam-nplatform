@@ -11,12 +11,12 @@ import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
 import { enumOrderStatus } from "@/lib/enum";
+import initSupabase from "@/lib/supabase";
 import { dateFormat, pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
-import initSupabase from "@/lib/supabase";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;

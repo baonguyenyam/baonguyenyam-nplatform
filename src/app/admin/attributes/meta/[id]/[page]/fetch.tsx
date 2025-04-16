@@ -10,13 +10,13 @@ import AppLoading from "@/components/AppLoading";
 import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
+import initSupabase from "@/lib/supabase";
 import { checkStringIsTextOrColorHexOrURL, pageSkip } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { deleteAttribute, setAttribute } from "@/store/attributeSlice";
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
-import initSupabase from "@/lib/supabase";
 
 export default function Fetch(props: any) {
 	const { page, id, parent, subparent, breadcrumb } = props;
