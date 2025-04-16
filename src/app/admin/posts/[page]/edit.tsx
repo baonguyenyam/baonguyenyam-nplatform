@@ -117,14 +117,14 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_title: res.data.title || "",
-				f_content: res.data.content || "",
-				f_published: res.data.published === true ? "TRUE" : "FALSE",
-				f_categories: res.data.categories?.map((item: any) => item.id) || [],
-				f_seo_keywords: res.data.meta?.find((item: any) => item.key === "seo_keywords")?.value || "",
-				f_slug: res.data.slug || "",
+				f_title: res?.data?.title || "",
+				f_content: res?.data?.content || "",
+				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
+				f_categories: res?.data?.categories?.map((item: any) => item.id) || [],
+				f_seo_keywords: res?.data?.meta?.find((item: any) => item.key === "seo_keywords")?.value || "",
+				f_slug: res?.data?.slug || "",
 			});
-			setThumbnail(res.data.image);
+			setThumbnail(res?.data?.image);
 			setLoading(false);
 		} else {
 			setData(null);

@@ -146,20 +146,20 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_email: res.data.email || "",
-				f_published: res.data.published === true ? "TRUE" : "FALSE",
-				f_role: res.data.role || "USER",
-				f_address: res.data.address || "",
-				f_city: res.data.city || "",
-				f_state: res.data.state || "",
-				f_country: res.data.country || "",
-				f_phone: res.data.phone || "",
-				f_zip: res.data.zip || "",
-				f_firstname: res.data.first_name || "",
-				f_lastname: res.data.last_name || "",
+				f_email: res?.data?.email || "",
+				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
+				f_role: res?.data?.role || "USER",
+				f_address: res?.data?.address || "",
+				f_city: res?.data?.city || "",
+				f_state: res?.data?.state || "",
+				f_country: res?.data?.country || "",
+				f_phone: res?.data?.phone || "",
+				f_zip: res?.data?.zip || "",
+				f_firstname: res?.data?.first_name || "",
+				f_lastname: res?.data?.last_name || "",
 			});
 			// Parse the data attribute
-			const _attribute = res.data.data ? JSON.parse(res.data.data) : null;
+			const _attribute = res?.data?.data ? JSON.parse(res?.data?.data) : null;
 			// Set the attribute data to the form
 			// Loop through the attribute data and set the values to the form
 			atts?.forEach((item: any) => {

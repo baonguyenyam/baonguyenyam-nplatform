@@ -72,10 +72,10 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_title: res.data.title || "",
-				f_content: res.data.content || "",
-				f_published: res.data.published === true ? "TRUE" : "FALSE",
-				f_type: res.data.type || "text",
+				f_title: res?.data?.title || "",
+				f_content: res?.data?.content || "",
+				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
+				f_type: res?.data?.type || "text",
 			});
 			setLoading(false);
 		} else {

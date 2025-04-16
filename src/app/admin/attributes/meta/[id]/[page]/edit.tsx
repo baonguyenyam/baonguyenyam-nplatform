@@ -69,8 +69,8 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_key: res.data.key || "",
-				f_value: res.data.value || "",
+				f_key: res?.data?.key || "",
+				f_value: res?.data?.value || "",
 			});
 			setLoading(false);
 		} else {

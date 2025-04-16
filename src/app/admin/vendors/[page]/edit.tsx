@@ -93,17 +93,17 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_email: res.data.email || "",
-				f_published: res.data.published === true ? "TRUE" : "FALSE",
-				f_address: res.data.address || "",
-				f_city: res.data.city || "",
-				f_state: res.data.state || "",
-				f_country: res.data.country || "",
-				f_phone: res.data.phone || "",
-				f_zip: res.data.zip || "",
-				f_company: res.data.company || "",
-				f_firstname: res.data.first_name || "",
-				f_lastname: res.data.last_name || "",
+				f_email: res?.data?.email || "",
+				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
+				f_address: res?.data?.address || "",
+				f_city: res?.data?.city || "",
+				f_state: res?.data?.state || "",
+				f_country: res?.data?.country || "",
+				f_phone: res?.data?.phone || "",
+				f_zip: res?.data?.zip || "",
+				f_company: res?.data?.company || "",
+				f_firstname: res?.data?.first_name || "",
+				f_lastname: res?.data?.last_name || "",
 			});
 			setLoading(false);
 		} else {

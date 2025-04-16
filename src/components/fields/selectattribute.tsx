@@ -77,9 +77,9 @@ export function FieldSelectAttribute(props: any) {
 						// }
 						if (res.data) {
 							const _item = {
-								id: res.data.id,
-								key: res.data.key,
-								value: res.data.value,
+								id: res?.data?.id,
+								key: res?.data?.key,
+								value: res?.data?.value,
 							};
 							if (res.data) {
 								arr.push(_item);
@@ -115,12 +115,12 @@ export function FieldSelectAttribute(props: any) {
 							<>
 								{select && select.length > 0
 									? select.map((item: any) => (
-											<span
-												key={item}
-												className="mr-2">
-												{data?.find((i: any) => i.value === item)?.key},
-											</span>
-										))
+										<span
+											key={item}
+											className="mr-2">
+											{data?.find((i: any) => i.value === item)?.key},
+										</span>
+									))
 									: "Select one"}
 							</>
 						)}

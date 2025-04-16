@@ -184,30 +184,30 @@ export default function FormEdit(props: any) {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_title: res.data.title || "",
-				f_content: res.data.content || "",
-				f_published: res.data.published === true ? "TRUE" : "FALSE",
-				f_status: res.data.status || "pending",
-				f_categories: res.data.categories?.map((item: any) => item.id) || [],
-				f_price: res.data.meta?.find((item: any) => item.key === "order_price")?.value || "",
-				f_sale_price: res.data.meta?.find((item: any) => item.key === "order_sale_price")?.value || "",
-				f_import_price: res.data.meta?.find((item: any) => item.key === "order_import_price")?.value || "",
+				f_title: res?.data?.title || "",
+				f_content: res?.data?.content || "",
+				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
+				f_status: res?.data?.status || "pending",
+				f_categories: res?.data?.categories?.map((item: any) => item.id) || [],
+				f_price: res?.data?.meta?.find((item: any) => item.key === "order_price")?.value || "",
+				f_sale_price: res?.data?.meta?.find((item: any) => item.key === "order_sale_price")?.value || "",
+				f_import_price: res?.data?.meta?.find((item: any) => item.key === "order_import_price")?.value || "",
 				f_attributes:
-					JSON.parse(res.data.meta?.find((item: any) => item.key === "order_attributes")?.value || "[]").map((item: any) => {
+					JSON.parse(res?.data?.meta?.find((item: any) => item.key === "order_attributes")?.value || "[]").map((item: any) => {
 						return {
 							title: item.key,
 							value: item.value,
 						};
 					}) || [],
-				f_date_created: res.data.date_created ? new Date(res.data.date_created) : undefined,
-				f_date_production: res.data.date_production ? new Date(res.data.date_production) : undefined,
-				f_date_shipped: res.data.date_shipped ? new Date(res.data.date_shipped) : undefined,
-				f_user: Array.isArray(res.data.user) ? res.data.user[0]?.id || "" : "",
-				f_user_product: Array.isArray(res.data.user_product) ? res.data.user_product[0]?.id || "" : "",
-				f_user_manager: Array.isArray(res.data.user_manager) ? res.data.user_manager[0]?.id || "" : "",
-				f_file: res.data.image || "",
+				f_date_created: res?.data?.date_created ? new Date(res?.data?.date_created) : undefined,
+				f_date_production: res?.data?.date_production ? new Date(res?.data?.date_production) : undefined,
+				f_date_shipped: res?.data?.date_shipped ? new Date(res?.data?.date_shipped) : undefined,
+				f_user: Array.isArray(res?.data?.user) ? res?.data?.user[0]?.id || "" : "",
+				f_user_product: Array.isArray(res?.data?.user_product) ? res?.data?.user_product[0]?.id || "" : "",
+				f_user_manager: Array.isArray(res?.data?.user_manager) ? res?.data?.user_manager[0]?.id || "" : "",
+				f_file: res?.data?.image || "",
 			});
-			setThumbnail(res.data.image);
+			setThumbnail(res?.data?.image);
 			setLoading(false);
 		} else {
 			setData(null);
@@ -353,7 +353,7 @@ export default function FormEdit(props: any) {
 														onChange: async (e: any) => {
 															const res = await customer_actions.getAll({ s: e });
 															if (res.success === "success" && res.data) {
-																const customers = res.data.map((item: any) => {
+																const customers = res?.data?.map((item: any) => {
 																	return {
 																		id: item.id,
 																		name: item.name,
@@ -459,7 +459,7 @@ export default function FormEdit(props: any) {
 														onChange: async (e: any) => {
 															const res = await user_actions.getAll({ s: e });
 															if (res.success === "success" && res.data) {
-																const _users = res.data.map((item: any) => {
+																const _users = res?.data?.map((item: any) => {
 																	return {
 																		id: item.id,
 																		name: item.name,
@@ -492,7 +492,7 @@ export default function FormEdit(props: any) {
 														onChange: async (e: any) => {
 															const res = await user_actions.getAll({ s: e });
 															if (res.success === "success" && res.data) {
-																const _users = res.data.map((item: any) => {
+																const _users = res?.data?.map((item: any) => {
 																	return {
 																		id: item.id,
 																		name: item.name,
@@ -525,7 +525,7 @@ export default function FormEdit(props: any) {
 														onChange: async (e: any) => {
 															const res = await user_actions.getAll({ s: e });
 															if (res.success === "success" && res.data) {
-																const _users = res.data.map((item: any) => {
+																const _users = res?.data?.map((item: any) => {
 																	return {
 																		id: item.id,
 																		name: item.name,
