@@ -32,8 +32,9 @@ export async function POST(req: Request) {
 			const fileType = file.type;
 			const fileMimeType = fileType || "application/octet-stream";
 
-			if (fileSizeInMB > appState.MAX_FILE_SIZE) {
-				return Response.json({ message: `File size exceeds ${appState.MAX_FILE_SIZE / (1024 * 1024)}MB` }, { status: 400 });
+			const maxFileSize = Number(process.env.MAX_FILE_SIZE || 0);
+			if (fileSizeInMB > maxFileSize) {
+				return Response.json({ message: `File size exceeds ${maxFileSize / (1024 * 1024)}MB` }, { status: 400 });
 			}
 			if (!file) {
 				return Response.json({ message: "File not found" }, { status: 401 });

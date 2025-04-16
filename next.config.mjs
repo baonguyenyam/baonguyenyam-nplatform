@@ -6,6 +6,12 @@ const nextConfig = {
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],
   },
+  experimental: {
+    serverActions: {
+      // Limit file upload size
+      bodySizeLimit: process.env.MAX_FILE_SIZE
+    },
+  },
   // output: 'standalone',
   images: {
     remotePatterns: [
