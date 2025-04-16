@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import { useRouter } from "next/navigation";
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +10,6 @@ import { appState } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
 
 import UserButton from "./user-button";
-import { useRouter } from "next/navigation";
 
 export default function Header() {
 	const breadcrumb = useAppSelector((state) => state?.breadcrumbState?.data);
@@ -26,13 +26,17 @@ export default function Header() {
 				/>
 				<Breadcrumb>
 					<BreadcrumbList>
-						<BreadcrumbItem className="cursor-pointer hover:text-black dark:hover:text-white" onClick={() => router.push("/admin/")}>
+						<BreadcrumbItem
+							className="cursor-pointer hover:text-black dark:hover:text-white"
+							onClick={() => router.push("/admin/")}>
 							{_state?.title ?? appState?.appName}
 						</BreadcrumbItem>
 						{breadcrumb?.map((item: any, index: number) => (
 							<Fragment key={index}>
 								<BreadcrumbSeparator />
-								<BreadcrumbItem className="cursor-pointer hover:text-black dark:hover:text-white" onClick={() => router.push(item.href)}>
+								<BreadcrumbItem
+									className="cursor-pointer hover:text-black dark:hover:text-white"
+									onClick={() => router.push(item.href)}>
 									{item.title}
 								</BreadcrumbItem>
 							</Fragment>

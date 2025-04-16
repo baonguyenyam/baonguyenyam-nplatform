@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import { appState } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
@@ -14,7 +13,6 @@ import * as actions from "./actions";
 
 export default function CheckState() {
 	const dispatch = useAppDispatch();
-	const router = useRouter();
 	const state = useAppSelector((state) => state.appState) as {
 		pageSize?: number;
 		title?: string;
