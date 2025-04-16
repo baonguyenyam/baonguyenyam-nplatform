@@ -28,6 +28,8 @@ nPlatform is a platform that provides a set of tools and services to help develo
 - **Zod Form**: We employ Zod for robust form validation, defining clear schemas and ensuring type safety for reliable and user-friendly form handling.
 - **Redux, Redux Persist**: For managing complex application state, we use Redux, complemented by Redux Persist to maintain state across user sessions, improving persistence and user experience.
 - **Upload file to R2**: Uploading files to server or Amazon S3 or Cloudflare R2
+- **Supabase**: 
+- **React Email & NodeMailer**: 
 - ...
 
 # Setup & Running
