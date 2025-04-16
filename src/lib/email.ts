@@ -17,7 +17,7 @@ export default class MailService {
 	private static instance: MailService;
 	private transporter: nodemailer.Transporter | undefined;
 	//PRIVATE CONSTRUCTOR
-	private constructor() { }
+	private constructor() {}
 	//INSTANCE CREATE FOR MAIL
 	static getInstance() {
 		if (!MailService.instance) {
@@ -43,7 +43,7 @@ export default class MailService {
 		this.transporter = nodemailer.createTransport({
 			host: process.env.EMAIL_HOST,
 			port: process.env.EMAIL_PORT || "587",
-			secure: (process.env.EMAIL_SECURE === "true" || process.env.EMAIL_SECURE === "1") ? true : false,
+			secure: process.env.EMAIL_SECURE === "true" || process.env.EMAIL_SECURE === "1" ? true : false,
 			auth: {
 				user: process.env.EMAIL_ADDRESS,
 				pass: process.env.EMAIL_PASSWORD,

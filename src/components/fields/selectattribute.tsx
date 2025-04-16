@@ -115,12 +115,12 @@ export function FieldSelectAttribute(props: any) {
 							<>
 								{select && select.length > 0
 									? select.map((item: any) => (
-										<span
-											key={item}
-											className="mr-2">
-											{data?.find((i: any) => i.value === item)?.key},
-										</span>
-									))
+											<span
+												key={item}
+												className="mr-2">
+												{data?.find((i: any) => i.value === item)?.key},
+											</span>
+										))
 									: "Select one"}
 							</>
 						)}

@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Drawer } from "antd";
 import { CircleCheck, Pencil, Plus, Trash, X } from "lucide-react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import AppLoading from "@/components/AppLoading";
 import AppTable from "@/components/AppTable";
@@ -21,6 +20,7 @@ import FormEdit from "./edit";
 
 export default function Fetch(props: any) {
 	const { title, page, id, breadcrumb } = props;
+	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const [open, setOpen] = useState<any>(["", null]);
 	const [db, setDb] = useState<any>([]);
@@ -134,11 +134,11 @@ export default function Fetch(props: any) {
 												{row.type === "text" ? (
 													<span className="text-sm text-gray-600">{row.title}</span>
 												) : (
-													<Link
-														href={`/admin/attributes/meta/${row.id}`}
-														className="text-sm underline">
+													<span
+														className="text-sm cursor-pointer underline"
+														onClick={() => router.push(`/admin/attributes/meta/${row.id}`)}>
 														{row.title}
-													</Link>
+													</span>
 												)}
 											</span>
 										</div>

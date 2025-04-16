@@ -1,9 +1,11 @@
 "use client";
 
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -19,6 +21,7 @@ const FormSchema = z.object({
 });
 
 export function AppSidebar() {
+	const router = useRouter();
 	const role = useCurrentRole();
 	const _state = useAppSelector((state) => state.appState) as { title?: string };
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -83,18 +86,20 @@ export function AppSidebar() {
 					<SidebarGroupContent>
 						<SidebarMenu>
 							{MenuItems.map((item) => (
-								<div key={item.title}>
+								<Fragment key={item.title}>
 									{role && (item?.role ?? []).includes(role) && (
 										<SidebarMenuItem>
 											<SidebarMenuButton asChild>
-												<a href={item.url}>
+												<div
+													className="cursor-pointer"
+													onClick={() => router.push(item.url)}>
 													<item.icon />
 													<span>{item.title}</span>
-												</a>
+												</div>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 									)}
-								</div>
+								</Fragment>
 							))}
 						</SidebarMenu>
 					</SidebarGroupContent>
@@ -105,18 +110,20 @@ export function AppSidebar() {
 					<SidebarGroupLabel>Settings</SidebarGroupLabel>
 					<SidebarMenu>
 						{FooterItems.map((item) => (
-							<div key={item.title}>
+							<Fragment key={item.title}>
 								{role && (item?.role ?? []).includes(role) && (
 									<SidebarMenuItem>
 										<SidebarMenuButton asChild>
-											<a href={item.url}>
+											<div
+												className="cursor-pointer"
+												onClick={() => router.push(item.url)}>
 												<item.icon />
 												<span>{item.title}</span>
-											</a>
+											</div>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 								)}
-							</div>
+							</Fragment>
 						))}
 					</SidebarMenu>
 				</SidebarGroupContent>

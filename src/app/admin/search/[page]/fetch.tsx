@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import AppLoading from "@/components/AppLoading";
 import AppPagination from "@/components/AppPagination";
@@ -16,6 +16,7 @@ import * as actions from "./actions";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
+	const router = useRouter();
 	const [data, setData] = useState<any>([]);
 	const [count, setCount] = useState(0);
 	const [loading, setLoading] = useState(true);
@@ -49,9 +50,11 @@ export default function Fetch(props: any) {
 		}
 
 		return (
-			<Link
-				href={`/admin/${type}s?s=${item.search_name}`}
-				className="p-4 hover:bg-accent cursor-pointer block w-full dark:hover:bg-gray-900">
+			<div
+				className="p-4 hover:bg-accent cursor-pointer block w-full dark:hover:bg-gray-900 cursor-pointer"
+				onClick={() => {
+					router.push(`/admin/${type}s?s=${item.search_name}`);
+				}}>
 				<div className="text-sm font-semibold">
 					{item.search_name}{" "}
 					<Badge
@@ -61,7 +64,7 @@ export default function Fetch(props: any) {
 					</Badge>
 				</div>
 				<p className="text-sm text-muted-foreground">{item.search_content}</p>
-			</Link>
+			</div>
 		);
 	};
 

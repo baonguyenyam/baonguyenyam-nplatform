@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { AuthError } from "next-auth";
 
 import { signOut } from "@/auth";
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { DEFAULT_LOGOUT_REDIRECT, SIGNIN_ERROR_URL } from "@/routes";
 
 export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+	const router = useRouter();
+
 	async function signOutFrm(formData: FormData) {
 		"use server";
 		try {
@@ -44,11 +46,11 @@ export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"di
 							</div>
 							<div className="text-center text-sm">
 								Already have an account?{" "}
-								<Link
-									href="/authentication/login"
-									className="underline underline-offset-4">
+								<span
+									className="underline underline-offset-4 cursor-pointer"
+									onClick={() => router.push("/authentication/login")}>
 									Sign in
-								</Link>
+								</span>
 							</div>
 						</div>
 					</form>

@@ -1,25 +1,35 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
 export function SignIn({ provider, ...props }: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
+	const router = useRouter();
 	return (
 		<Button
 			variant="outline"
 			asChild
 			{...props}>
-			<Link href={`/authentication/login?callbackUrl=${provider ?? "/"}`}>Sign In</Link>
+			<span
+				className="cursor-pointer"
+				onClick={() => router.push(`/authentication/login?callbackUrl=${provider ?? "/"}`)}>
+				Sign In
+			</span>
 		</Button>
 	);
 }
 
 export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
+	const router = useRouter();
 	return (
 		<Button
 			variant="outline"
 			asChild
 			{...props}>
-			<Link href="/authentication/logout">Sign Out</Link>
+			<span
+				className="cursor-pointer"
+				onClick={() => router.push("/authentication/logout")}>
+				Sign Out
+			</span>
 		</Button>
 	);
 }

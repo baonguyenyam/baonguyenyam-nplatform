@@ -9,10 +9,12 @@ import { appState } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
 
 import UserButton from "./user-button";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
 	const breadcrumb = useAppSelector((state) => state?.breadcrumbState?.data);
 	const _state = useAppSelector((state) => state.appState) as { title?: string };
+	const router = useRouter();
 
 	return (
 		<header className="sticky h-16 py-5 flex justify-center border-b gap-2 dark:border-b-gray-700 bg-white dark:bg-gray-800 z-10">
@@ -24,14 +26,14 @@ export default function Header() {
 				/>
 				<Breadcrumb>
 					<BreadcrumbList>
-						<BreadcrumbItem>
-							<BreadcrumbLink href="/admin/">{_state?.title ?? appState?.appName}</BreadcrumbLink>
+						<BreadcrumbItem className="cursor-pointer hover:text-black dark:hover:text-white" onClick={() => router.push("/admin/")}>
+							{_state?.title ?? appState?.appName}
 						</BreadcrumbItem>
 						{breadcrumb?.map((item: any, index: number) => (
 							<Fragment key={index}>
 								<BreadcrumbSeparator />
-								<BreadcrumbItem>
-									<BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
+								<BreadcrumbItem className="cursor-pointer hover:text-black dark:hover:text-white" onClick={() => router.push(item.href)}>
+									{item.title}
 								</BreadcrumbItem>
 							</Fragment>
 						))}

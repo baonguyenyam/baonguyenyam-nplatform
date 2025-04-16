@@ -17,7 +17,6 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 
-
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
@@ -122,21 +121,24 @@ export default function FormEdit(props: any) {
 			}
 			toast.success(update.message);
 		} else {
-			await actions.createRecord(_body).then((res) => {
-				if (res?.success !== "success") {
-					toast.error(res.message);
-					return;
-				} else {
-					// Send the email to the user
-					const _data = res?.data;
-					if (_data) {
-						actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
+			await actions
+				.createRecord(_body)
+				.then((res) => {
+					if (res?.success !== "success") {
+						toast.error(res.message);
+						return;
+					} else {
+						// Send the email to the user
+						const _data = res?.data;
+						if (_data) {
+							actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
+						}
 					}
-				}
-				toast.success(res.message);
-			}).catch((err) => {
-				toast.error(err.message);
-			})
+					toast.success(res.message);
+				})
+				.catch((err) => {
+					toast.error(err.message);
+				});
 		}
 		onChange("submit", values);
 	}
@@ -331,7 +333,7 @@ export default function FormEdit(props: any) {
 						{/* Loop through the attribute data and create the fields dynamically */}
 						{atts?.map((item: any) => {
 							return (
-								<div key={item.id}>
+								<Fragment key={item.id}>
 									<h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-5">{item.title}</h3>
 									<div className="grid grid-cols-3 gap-5">
 										{item?.children?.map((child: any) => {
@@ -369,7 +371,7 @@ export default function FormEdit(props: any) {
 											);
 										})}
 									</div>
-								</div>
+								</Fragment>
 							);
 						})}
 

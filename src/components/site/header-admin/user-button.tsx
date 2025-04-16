@@ -1,6 +1,6 @@
 "use client";
 import { Moon, Sun } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 
@@ -14,6 +14,7 @@ export default function UserButton() {
 	const { data: session } = useSession();
 	const data = session?.user;
 	const { setTheme } = useTheme();
+	const router = useRouter();
 
 	if (!session?.user) return <SignIn />;
 	return (
@@ -48,11 +49,11 @@ export default function UserButton() {
 							<Button
 								variant="outline"
 								asChild>
-								<Link
-									href="/admin/account"
-									className="flex w-full">
+								<span
+									onClick={() => router.push("/admin/account")}
+									className="flex w-full cursor-pointer">
 									My Account
-								</Link>
+								</span>
 							</Button>
 						</DropdownMenuLabel>
 						<DropdownMenuLabel>
