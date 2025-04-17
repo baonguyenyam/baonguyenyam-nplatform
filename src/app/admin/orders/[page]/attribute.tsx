@@ -48,6 +48,51 @@ export default function OrderAttribute(props: any) {
 		});
 	};
 
+	const handleAddAttributeMeta = async (item: any) => {
+		const children = atts?.find((att: any) => att?.id === item?.id)?.children;
+		if (children.length > 0) {
+			const _data: any = [];
+			children?.forEach((child: any) => {
+				const _item = {
+					title: child?.title,
+					id: child?.id,
+					value: ''
+				}
+				_data.push(_item);
+			})
+			const existingItem = selected.find((i: any) => i.id === item?.id);
+			if (existingItem) {
+				// Add children to existing item
+				if (existingItem.children) {
+					const newChildren = [...existingItem.children, ...[_data]];
+					// Update the selected state
+					setSelected((prev: any) => {
+						const newSelected = [...prev];
+						const index = newSelected.findIndex((i: any) => i.id === item?.id);
+						if (index !== -1) {
+							newSelected[index].children = newChildren;
+						}
+						return newSelected;
+					});
+				} else {
+					existingItem.children = [_data];
+					// Update the selected state
+					setSelected((prev: any) => {
+						const newSelected = [...prev];
+						const index = newSelected.findIndex((i: any) => i.id === item?.id);
+						if (index !== -1) {
+							newSelected[index] = existingItem;
+						}
+						return newSelected;
+					});
+				}
+			}
+
+		} else {
+			toast.error("No children found");
+		}
+	}
+
 	useEffect(() => {
 		if (data?.data) {
 			const dataParsed = JSON.parse(data?.data);
@@ -74,13 +119,12 @@ export default function OrderAttribute(props: any) {
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col space-y-4">
 				{selected?.map((item: any, index: number) => (
 					<Fragment key={index}>
 						<div
-							key={index}
-							className="flex flex-col mb-5">
-							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg mb-3 dark:bg-gray-900">
+							className="flex flex-col">
+							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg dark:bg-gray-900">
 								<div className="text-lg font-bold pl-1">{item?.title}</div>
 								<div className="ml-auto">
 									<div className="flex items-center space-x-2">
@@ -92,10 +136,11 @@ export default function OrderAttribute(props: any) {
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
-														setOpen(["child", item]);
+														handleAddAttributeMeta(item)
+														console.log("selected", selected);
 													}}>
 													<Plus className="w-4 h-4" />
-													<span>Add New Child</span>
+													<span>Add New {item?.title}</span>
 												</DropdownMenuItem>
 												<DropdownMenuSeparator />
 												<DropdownMenuItem
@@ -103,7 +148,6 @@ export default function OrderAttribute(props: any) {
 													onClick={() => {
 														if (confirm("Are you sure you want to remove this item?")) {
 															setSelected((prev: any) => prev.filter((i: any) => i !== item));
-															// onChange(selected.filter((i: any) => i !== item));
 														}
 													}}>
 													<X className="w-4 h-4" />
@@ -114,128 +158,25 @@ export default function OrderAttribute(props: any) {
 									</div>
 								</div>
 							</div>
-							{item?.children?.length > 0 && (
+						</div>
+						<div id={`father_${item?.id}`} className="flex flex-col space-y-1">
+							{item?.children?.map((child: any, i: number) => (
 								<div
-									id={`chilrend ${index}`}
-									className="flex flex-col space-y-3">
-									{item?.children?.map((child: any, index: number) => (
-										<div
-											key={index}
-											className="flex flex-col">
-											<div className="item flex items-center justify-between group leading-relaxed">
-												<div className="flex items-center justify-between space-x-2 font-semibold text-md uppercase">{child.title}</div>
-												<div className="group">
-													<DropdownMenu>
-														<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-7 h-7 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
-															<Plus className="w-4 h-4" />
-														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
-															<DropdownMenuItem
-																className="cursor-pointer flex items-center space-x-2"
-																onClick={() => {
-																	setSearch([]);
-																	setOpen(["search", child]);
-																}}>
-																<Search className="w-4 h-4" />
-																<span>Search</span>
-															</DropdownMenuItem>
-															<DropdownMenuSeparator />
-															<DropdownMenuItem
-																className="cursor-pointer flex items-center space-x-2 text-red-600"
-																onClick={() => {
-																	if (confirm("Are you sure you want to remove this item?")) {
-																		setSelected((prev: any) =>
-																			prev.map((i: any) => {
-																				if (i.id === item?.id) {
-																					return {
-																						...i,
-																						children: i.children.filter((j: any) => j !== child),
-																					};
-																				}
-																				return i;
-																			}),
-																		);
-																	}
-																}}>
-																<X className="w-4 h-4" />
-																<span>Remove</span>
-															</DropdownMenuItem>
-														</DropdownMenuContent>
-													</DropdownMenu>
-												</div>
+									key={i}
+									className={`grid grid-cols-${child?.length} gap-5`}>
+									{child?.map((frm: any, j: number) => (
+										<Fragment key={j}>
+											<div className="item">
+												<label htmlFor={frm?.id}>{frm?.title}</label>
+												<Input
+													id={frm?.id}
+													className="w-full"
+												/>
 											</div>
-											{child?.meta && child?.meta?.length > 0 && (
-												<div className="flex flex-col pt-3 pb-5 space-y-2">
-													{child?.meta?.map((meta: any, index: number) => (
-														<div
-															key={index}
-															className="flex flex-col border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600">
-															<div className="item flex items-center justify-between group space-x-2">
-																<div className="flex items-center justify-between space-x-2 font-light">
-																	<span>{meta.key}</span>
-																	<span> - </span>
-																	<div className="flex items-center space-x-1 font-light">
-																		{checkStringIsTextOrColorHexOrURL(meta.value) === "color" && (
-																			<>
-																				<div
-																					className="w-6 h-6 rounded-full border border-gray-300"
-																					style={{ backgroundColor: meta.value }}></div>
-																				<p className="text-sm text-gray-500 dark:text-white">{meta.value}</p>
-																			</>
-																		)}
-																		{checkStringIsTextOrColorHexOrURL(meta.value) !== "color" && (
-																			<>
-																				<p className="text-sm text-gray-500 dark:text-white">{meta.value}</p>
-																			</>
-																		)}
-																	</div>
-																</div>
-																<div className="group ml-auto">
-																	<Button
-																		type="button"
-																		size="icon"
-																		variant="outline"
-																		className="text-sm flex flex-row items-center justify-center w-4 h-4 bg-transparent font-medium text-red-500 border-0 shadow-none dark:text-white"
-																		onClick={() => {
-																			if (confirm("Are you sure you want to remove this item?")) {
-																				setSelected((prev: any) =>
-																					prev.map((i: any) => {
-																						if (i.id === item?.id) {
-																							return {
-																								...i,
-																								children: i.children.map((j: any) => {
-																									if (j.id === child.id) {
-																										return {
-																											...j,
-																											meta: j.meta.filter((k: any) => k !== meta),
-																										};
-																									}
-																									return j;
-																								}),
-																							};
-																						}
-																						return i;
-																					}),
-																				);
-																			}
-																		}}>
-																		<X className="w-4 h-4" />
-																	</Button>
-																</div>
-															</div>
-														</div>
-													))}
-													{child?.meta?.length === 0 && (
-														<div className="flex items-center justify-between py-2 text-gray-500">
-															<p>No attributes found</p>
-														</div>
-													)}
-												</div>
-											)}
-										</div>
+										</Fragment>
 									))}
 								</div>
-							)}
+							))}
 						</div>
 					</Fragment>
 				))}
@@ -282,7 +223,7 @@ export default function OrderAttribute(props: any) {
 											}
 										});
 									}}
-									disabled={selected?.find((i: any) => i.id === item?.id)?.id === item?.id}>
+									disabled={selected?.find((i: any) => i.id === item?.id)}>
 									Select
 								</Button>
 							</div>
@@ -296,69 +237,6 @@ export default function OrderAttribute(props: any) {
 				</DialogContent>
 			</Dialog>
 
-			<Dialog
-				open={open[0] === "child"}
-				defaultOpen={false}
-				onOpenChange={(open) => setOpen([open ? "child" : "", null])}>
-				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-					<DialogHeader>
-						<DialogTitle>List of {open[1]?.title}</DialogTitle>
-					</DialogHeader>
-					<div className="flex flex-col">
-						{atts
-							?.find((item: any) => item?.id === open[1]?.id)
-							?.children?.map((item: any, index: number) => (
-								<div
-									key={index}
-									className="flex items-center justify-between py-2 hover:text-black text-gray-500 dark:hover:text-white">
-									<p>{item?.title}</p>
-									<Button
-										type="button"
-										className="text-sm bg-black text-white hover:bg-gray-900 hover:text-white dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-										onClick={() => {
-											setSelected((prev: any) => {
-												const newSelected = [...prev];
-												const parent = newSelected.find((i: any) => i.id === open[1]?.id);
-												if (parent?.children?.includes(item)) {
-													return newSelected.map((i: any) => {
-														if (i.id === open[1]?.id) {
-															return {
-																...i,
-																children: i.children.filter((j: any) => j !== item),
-															};
-														}
-														return i;
-													});
-												} else {
-													const _item = {
-														title: item?.title,
-														id: item?.id,
-													};
-													return newSelected.map((i: any) => {
-														if (i.id === open[1]?.id) {
-															return {
-																...i,
-																children: [...(i.children || []), _item],
-															};
-														}
-														return i;
-													});
-												}
-											});
-										}}
-										disabled={selected?.find((i: any) => i.id === open[1]?.id)?.children?.find((j: any) => j.id === item?.id)}>
-										Select
-									</Button>
-								</div>
-							))}
-						{atts?.find((item: any) => item?.id === open[1]?.id)?.children?.length === 0 && (
-							<div className="flex items-center justify-between py-2 text-gray-500">
-								<p>No attributes found</p>
-							</div>
-						)}
-					</div>
-				</DialogContent>
-			</Dialog>
 
 			<Dialog
 				open={open[0] === "search"}
@@ -366,7 +244,7 @@ export default function OrderAttribute(props: any) {
 				onOpenChange={(open) => setOpen([open ? "search" : "", null])}>
 				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
 					<DialogHeader>
-						<DialogTitle>Search in {open[1]?.title}</DialogTitle>
+						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ''}</DialogTitle>
 					</DialogHeader>
 					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
 						<Input
@@ -374,12 +252,14 @@ export default function OrderAttribute(props: any) {
 							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
 							onBlur={(e) => {
 								const search = (e.target as HTMLInputElement)?.value;
-								searchAttributeMeta(search, open[1]?.id);
+								const parentId = open[1] ? open[1][1]?.id : '';
+								searchAttributeMeta(search, parentId);
 							}}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
 									const search = (e.target as HTMLInputElement)?.value;
-									searchAttributeMeta(search, open[1]?.id);
+									const parentId = open[1] ? open[1][1]?.id : '';
+									searchAttributeMeta(search, parentId);
 								}
 							}}
 						/>
@@ -393,93 +273,7 @@ export default function OrderAttribute(props: any) {
 											value={item?.key}
 											className="cursor-pointer"
 											onSelect={() => {
-												setSelected((prev: any) => {
-													// [
-													// 	{
-													// 		"title": String,
-													// 		"id": Number,
-													// 		"children": [
-													// 			{
-													// 				"title": String,
-													// 				"id": Number,
-													// 				"meta": [{
-													// 					"key": String,
-													// 					"value": String
-													// 				}]
-													// 			}
-													// 		]
-													// 	}
-													// ]
-													// Now add the selected item to the meta of the children of the parent
-													const parent = prev.find((i: any) => i.children?.find((j: any) => j.id === open[1]?.id));
-													if (parent?.children?.find((j: any) => j.id === open[1]?.id)) {
-														// UPdate parent
-														return prev.map((i: any) => {
-															// if (i.id === parent.id) {
-															// 	return {
-															// 		...i,
-															// 		children: i.children.map((j: any) => {
-															// 			if (j.id === open[1]?.id) {
-															// 				return {
-															// 					...j,
-															// 					meta: [
-															// 						...(j.meta || []),
-															// 						{
-															// 							key: item?.key,
-															// 							value: item?.value,
-															// 						},
-															// 					],
-															// 				};
-															// 			}
-															// 			return j;
-															// 		}),
-															// 	};
-															// }
-															// return i;
-															// IF meta already exists, don't add it again
-															const child = i.children?.find((j: any) => j.id === open[1]?.id);
-															if (child) {
-																const metaExists = child.meta?.find((k: any) => k.key === item?.key);
-																if (metaExists) {
-																	return i;
-																}
-																return {
-																	...i,
-																	children: i.children.map((j: any) => {
-																		if (j.id === open[1]?.id) {
-																			return {
-																				...j,
-																				meta: [
-																					...(j.meta || []),
-																					{
-																						key: item?.key,
-																						value: item?.value,
-																					},
-																				],
-																			};
-																		}
-																		return j;
-																	}),
-																};
-															}
-															// return i;
-														});
-													} else {
-														const _item = {
-															title: open[1]?.title,
-															id: open[1]?.id,
-															meta: [
-																{
-																	key: item?.key,
-																	value: item?.value,
-																},
-															],
-														};
-														return [...prev, _item];
-													}
-												});
-												// Close the dialog
-												// setOpen(["", null]);
+
 											}}>
 											{item?.key}
 										</CommandItem>
@@ -490,6 +284,7 @@ export default function OrderAttribute(props: any) {
 					</Command>
 				</DialogContent>
 			</Dialog>
+
 		</div>
 	);
 }
