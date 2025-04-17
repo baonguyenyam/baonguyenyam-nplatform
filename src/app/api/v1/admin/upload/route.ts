@@ -1,13 +1,12 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createHash } from "crypto";
 import { writeFile } from "fs/promises";
 import path from "path";
 
 import { auth } from "@/auth";
 import { appState } from "@/lib/appConst";
-import { Bucket, s3Client } from "@/lib/s3";
 import models from "@/models";
+
+import * as actions from "./actions";
 
 // Create File
 export async function POST(req: Request) {
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
 			const fileBuffer = Buffer.from(await file.arrayBuffer());
 			const fileSize = file.size;
 			const fileSizeInMB = fileSize / (1024 * 1024);
-			const fileExtension = fileName.split(".").pop();
+			const fileExtension = fileName.split(".").pop() || "";
 			const fileType = file.type;
 			const fileMimeType = fileType || "application/octet-stream";
 
@@ -52,25 +51,9 @@ export async function POST(req: Request) {
 
 			try {
 				if (r2 === "true" || r2 === "1") {
-					const data = {
-						Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
-						Key: `${upload_dir}/${fileHash}.${fileExtension}`,
-					};
 
-					const signedUrl = await getSignedUrl(s3Client, new PutObjectCommand(data), {
-						expiresIn: 3600,
-					});
+					const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType)
 
-					await fetch(signedUrl, {
-						method: "PUT",
-						headers: {
-							"Content-Type": fileMimeType,
-							"Content-Length": fileSize.toString(),
-						},
-						body: fileBuffer,
-					});
-
-					const response = Bucket.public + "/" + data.Key;
 					const fileDataToSave = {
 						name: fileName,
 						hash: fileHash,
