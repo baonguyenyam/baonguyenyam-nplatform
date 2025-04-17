@@ -8,7 +8,7 @@ export default function Blog(props: any) {
 	const { data } = props;
 	const pathname = usePathname();
 
-	const getCurrentURL = process.env.SITE_URL + pathname;
+	const getCurrentURL = process.env.PUBLIC_SITE_URL + pathname;
 
 	return (
 		<>

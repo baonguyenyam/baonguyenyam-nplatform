@@ -9,7 +9,7 @@ import Fetch from "./fetch";
 
 // Call the API to get the data
 const getItem = cache(async (slug: string) => {
-	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/posts/${slug}`)
+	const res = await fetch(`${process.env.PUBLIC_API_URL}/public/posts/${slug}`)
 	return res.json();
 });
 

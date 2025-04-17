@@ -35,11 +35,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 						avatar: user.image ? user.image : null,
 					});
 					// sendEmail
-					const Subject = `Welcome to ${process.env.SITE_NAME ?? ""}'s website`;
+					const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
 					const emailTemplate = await render(
 						WelcomeEmail({
-							url: process.env.SITE_URL ?? "",
-							host: process.env.SITE_NAME ?? "",
+							url: process.env.PUBLIC_SITE_URL ?? "",
+							host: process.env.PUBLIC_SITE_NAME ?? "",
 							name: user.name!,
 						}),
 					);
