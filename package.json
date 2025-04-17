@@ -117,9 +117,6 @@
   "name": "nplatform",
   "description": "nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently.",
   "repository": "https://github.com/baonguyenyam/nplatform.git",
-  "engines": {
-    "node": ">=22.0.0"
-  },
   "browser": {
     "child_process": false
   },
