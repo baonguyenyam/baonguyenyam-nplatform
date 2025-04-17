@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { appState } from "@/lib/appConst";
 import models from "@/models";
 
-import * as actions from "./actions";
+// import * as actions from "./actions";
 
 // Create File
 export async function POST(req: Request) {
@@ -52,24 +52,24 @@ export async function POST(req: Request) {
 			try {
 				if (r2 === "true" || r2 === "1") {
 
-					const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType)
+					// const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType)
 
-					const fileDataToSave = {
-						name: fileName,
-						hash: fileHash,
-						userId: id,
-						type: fileMimeType,
-						size: fileSize,
-						ext: fileExtension,
-						published: true,
-						url: response,
-					};
-					const item = await models.File.createFile(fileDataToSave);
-					if (item) {
-						db.push(item);
-					} else {
-						return Response.json({ message: "Can not upload the file" }, { status: 401 });
-					}
+					// const fileDataToSave = {
+					// 	name: fileName,
+					// 	hash: fileHash,
+					// 	userId: id,
+					// 	type: fileMimeType,
+					// 	size: fileSize,
+					// 	ext: fileExtension,
+					// 	published: true,
+					// 	url: response,
+					// };
+					// const item = await models.File.createFile(fileDataToSave);
+					// if (item) {
+					// 	db.push(item);
+					// } else {
+					// 	return Response.json({ message: "Can not upload the file" }, { status: 401 });
+					// }
 				} else {
 					await writeFile(path.join(process.cwd(), upload_path, fileHash + "." + fileExtension), fileBuffer);
 					const fileDataToSave = {
