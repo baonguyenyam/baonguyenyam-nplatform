@@ -169,7 +169,7 @@ export default function OrderAttribute(props: any) {
 													className="w-full"
 													type="button"
 													onClick={() => {
-														setOpen(["search", [j, frm, item, child]]);
+														setOpen(["search", [i, frm, item, child, j]]);
 													}}
 												>Select</Button>
 											</div>
@@ -273,52 +273,34 @@ export default function OrderAttribute(props: any) {
 											value={item?.key}
 											className="cursor-pointer"
 											onSelect={() => {
-												// selectd = [
-												//  {
-												// 		id: Number,
-												// 		title: String,
-												// 		children: [
-												// 			[
-												// 				{
-												// 					id: Number,
-												// 					title: String,
-												// 					value: Object,
-												// 				}
-												// 			]
-												// 		]
-												// ]
-
-												const frm = open[1][3][open[1][0]]; // {title: 'Color', id: 21, value: ''}
+												const childIndex = open[1][0];
+												const frmIndex = open[1][4];
+												const getFrmbyIndex = open[1][3][frmIndex];
+												console.log("getFrmbyIndex", frmIndex, getFrmbyIndex);
 												const _item = {
 													id: item?.id,
 													title: item?.key,
 													value: item?.value,
 												};
-												frm.value = _item;
-												// Find the selected item in the selected array
-												const selectedItem = selected.find((i: any) => i.id === open[1][2]?.id);
-												if (selectedItem) {
-													// Update the selected item with the new value and keep other children intact
-													const updatedChildren = selectedItem.children.map((child: any) => {
-														if (child[open[1][0]]) {
-															return child.map((i: any) => {
-																if (i.id === open[1][1]?.id) {
-																	return { ...i, value: _item };
-																}
-																return i;
-															});
-														}
-														return child;
-													});
-													setSelected((prev: any) => {
-														const newSelected = [...prev];
-														const index = newSelected.findIndex((i: any) => i.id === selectedItem.id);
-														if (index !== -1) {
-															newSelected[index].children = updatedChildren;
-														}
-														return newSelected;
-													})
-												}
+												const updatedChildren = open[1][3].map((child: any, i: number) => {
+													if (i === frmIndex) {
+														return {
+															...child,
+															value: _item,
+														};
+													}
+													return child;
+												});
+												setSelected((prev: any) => {
+													const newSelected = [...prev];
+													const index = newSelected.findIndex((i: any) => i.id === open[1][2]?.id);
+													if (index !== -1) {
+														newSelected[index].children[childIndex] = updatedChildren;
+													}
+													return newSelected;
+												});
+												setOpen(["", null]);
+												setSearch([]);
 												console.log("selected", selected);
 											}}>
 											{item?.key}
