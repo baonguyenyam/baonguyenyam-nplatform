@@ -32,11 +32,6 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com',
       },
     ],
-  },
-  functions: {
-    "api/**": {
-      excludeFiles: "{.next,*.cache,node_modules,public,app}/**"
-    }
   }
 };
 
