@@ -5,10 +5,12 @@ const prisma = new PrismaClient();
 
 export const AttributeSeed = async () => {
 	// Create 10 more attribute
-	const Arr = ["Screen", "DTG Print", "Embroidery", "Direct to Film"];
+	const Arr = ["Screen", "Tshirt"];
 	const SubCategories = ["Screen Size", "Screen Color", "Screen Type"];
-	const type = ["text", "select", "checkbox", "radio"];
+	const type = ["select", "select", "checkbox", "select"];
 	const Sizes = ["S", "M", "L", "XL", "XXL"];
+	const tshirt = ["Color", "Size", "Company", "Number"];
+	const company = ["Bella + Canvas", "Gildan", "Hanes", "Next Level", "American Apparel"];
 	const Colors = [
 		{
 			name: "Black",
@@ -110,6 +112,56 @@ export const AttributeSeed = async () => {
 					}
 				}
 			}
+
+			if (item === "Tshirt") {
+				// Create Sub Categories
+				for (let i = 0; i < tshirt.length; i++) {
+					const SubID = await prisma.attribute.create({
+						data: {
+							title: tshirt[i],
+							content: faker.lorem.paragraph(),
+							createdAt: new Date(),
+							childrenId: getID.id,
+							type: type[i],
+							published: true,
+						},
+					});
+					if (tshirt[i] === "Color") {
+						for (let i = 0; i < Colors.length; i++) {
+							await prisma.attributeMeta.create({
+								data: {
+									attributeId: SubID.id,
+									value: Colors[i].value,
+									key: Colors[i].name,
+								},
+							});
+						}
+					}
+					if (tshirt[i] === "Size") {
+						for (let i = 0; i < Sizes.length; i++) {
+							await prisma.attributeMeta.create({
+								data: {
+									attributeId: SubID.id,
+									value: Sizes[i],
+									key: `` + i,
+								},
+							});
+						}
+					}
+					if (tshirt[i] === "Company") {
+						for (let i = 0; i < company.length; i++) {
+							await prisma.attributeMeta.create({
+								data: {
+									attributeId: SubID.id,
+									value: company[i],
+									key: `` + i,
+								},
+							});
+						}
+					}
+				}
+			}
+
 		}
 	});
 

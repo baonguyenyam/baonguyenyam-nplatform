@@ -21,20 +21,18 @@ export default function OrderAttribute(props: any) {
 	const [search, setSearch] = useState<any>([]);
 
 	const searchAttributeMeta = async (e: any, attributeId: string) => {
-		if (e.length > 1) {
-			await actions.searchAttributeMeta(e, attributeId).then((res: any) => {
-				if (res.success === "success") {
-					// data: [
-					// 	{
-					// 		"id": Number,
-					// 		"key": String,
-					// 		"value": String,
-					// 	}
-					// ]
-					setSearch(res.data);
-				}
-			});
-		}
+		await actions.searchAttributeMeta(e, attributeId).then((res: any) => {
+			if (res.success === "success") {
+				// data: [
+				// 	{
+				// 		"id": Number,
+				// 		"key": String,
+				// 		"value": String,
+				// 	}
+				// ]
+				setSearch(res.data);
+			}
+		});
 	};
 
 	const saveAttributeMeta = async () => {
@@ -47,6 +45,31 @@ export default function OrderAttribute(props: any) {
 			}
 		});
 	};
+
+	const handleUpdateInput = async (frm: any, item: any, value: any, i: number, j: number, child: any) => {
+		const _item = {
+			id: frm?.id,
+			title: frm?.title,
+			value: value,
+		};
+		const updatedChildren = child.map((child: any, i: number) => {
+			if (i === j) {
+				return {
+					...child,
+					value: _item,
+				};
+			}
+			return child;
+		});
+		setSelected((prev: any) => {
+			const newSelected = [...prev];
+			const index = newSelected.findIndex((i: any) => i.id === item?.id);
+			if (index !== -1) {
+				newSelected[index].children[i] = updatedChildren;
+			}
+			return newSelected;
+		});
+	}
 
 	const handleAddAttributeMeta = async (item: any) => {
 		const children = atts?.find((att: any) => att?.id === item?.id)?.children;
@@ -155,56 +178,95 @@ export default function OrderAttribute(props: any) {
 								</div>
 							</div>
 						</div>
-						<div id={`father_${item?.id}`} className="flex flex-col space-y-1">
+						<div id={`father_${item?.id}`} className="flex flex-col space-y-1 whitespace-nowrap">
 							{item?.children?.map((child: any, i: number) => (
 								<div
 									key={i}
-									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative`}>
+									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative pr-10`}
+									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}
+								>
 									{child?.map((frm: any, j: number) => (
 										<Fragment key={j}>
-											<div className="item">
-												<div className="flex items-center group space-x-2 mb-2">
-													<div className="font-semibold">{frm?.title}</div>
-
-												</div>
+											<div className="item flex items-center">
 												{frm?.value && (
 													<div className="item flex items-center justify-between group space-x-2">
-														<div className="cursor-pointer flex items-center justify-between space-x-2 font-light"
-															onClick={() => {
-																setOpen(["search", [i, frm, item, child, j]]);
-															}}
-														>
-															<span>{frm?.value?.title}</span>
-															<span> - </span>
-															<div className="flex items-center space-x-1 font-light">
-																{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
-																	<>
-																		<div
-																			className="w-4 h-4 rounded-full border border-gray-300"
-																			style={{ backgroundColor: frm?.value?.value }}></div>
-																		<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																	</>
-																)}
-																{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
-																	<>
-																		<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																	</>
-																)}
+														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
+															<div className="flex items-center space-x-2">
+																<span>{frm?.title}</span>
+																<Input
+																	className="w-full px-2 py-0! h-7"
+																	onBlur={(e) => {
+																		const value = (e.target as HTMLInputElement)?.value;
+																		handleUpdateInput(frm, item, value, i, j, child);
+																	}}
+																	onKeyDown={(e) => {
+																		if (e.key === "Enter") {
+																			const value = (e.target as HTMLInputElement)?.value;
+																			handleUpdateInput(frm, item, value, i, j, child);
+																		}
+																	}}
+																	defaultValue={frm?.value?.value}
+																/>
 															</div>
-														</div>
+														)}
+														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text") && (
+															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light"
+																onClick={() => {
+																	setOpen(["search", [i, frm, item, child, j]]);
+																}}
+															>
+																{/* <span>{frm?.value?.title}</span>
+																<span> - </span> */}
+																<div className="flex items-center space-x-1 font-light">
+																	{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
+																		<>
+																			<div
+																				className="w-4 h-4 rounded-full border border-gray-300"
+																				style={{ backgroundColor: frm?.value?.value }}></div>
+																			<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																		</>
+																	)}
+																	{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
+																		<>
+																			<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																		</>
+																	)}
+																</div>
+															</div>
+														)}
 													</div>
 												)}
 												{!frm?.value && (
 													<div className="flex items-center justify-between group space-x-2">
-														<span
-															className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
-															onClick={() => {
-																setOpen(["search", [i, frm, item, child, j]]);
-															}}
-														>
-															<Search className="w-4 h-4" />
-															<span>Search</span>
-														</span>
+														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
+															<div className="flex items-center space-x-2">
+																<span>{frm?.title}</span>
+																<Input
+																	className="w-full px-2 py-0! h-7"
+																	onBlur={(e) => {
+																		const value = (e.target as HTMLInputElement)?.value;
+																		handleUpdateInput(frm, item, value, i, j, child);
+																	}}
+																	onKeyDown={(e) => {
+																		if (e.key === "Enter") {
+																			const value = (e.target as HTMLInputElement)?.value;
+																			handleUpdateInput(frm, item, value, i, j, child);
+																		}
+																	}}
+																/>
+															</div>
+														)}
+														{(atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
+															<span
+																className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
+																onClick={() => {
+																	setOpen(["search", [i, frm, item, child, j]]);
+																}}
+															>
+																<Search className="w-4 h-4" />
+																<span>{frm?.title}</span>
+															</span>
+														)}
 													</div>
 												)}
 											</div>
@@ -320,11 +382,16 @@ export default function OrderAttribute(props: any) {
 									searchAttributeMeta(search, parentId);
 								}
 							}}
+							onClick={(e) => {
+								const search = (e.target as HTMLInputElement)?.value;
+								const parentId = open[1] ? open[1][1]?.id : '';
+								searchAttributeMeta(search, parentId);
+							}}
 						/>
 						<CommandList>
 							<CommandEmpty>No data found.</CommandEmpty>
 							{search?.length > 0 && (
-								<CommandGroup>
+								<CommandGroup heading="Search Results" className="max-h-[300px] overflow-y-auto">
 									{search?.map((item: any, index: number) => (
 										<CommandItem
 											key={index}
@@ -356,8 +423,9 @@ export default function OrderAttribute(props: any) {
 													}
 													return newSelected;
 												});
-												setOpen(["", null]);
+
 												setSearch([]);
+												setOpen(["", null]);
 											}}>
 											{item?.key}
 										</CommandItem>

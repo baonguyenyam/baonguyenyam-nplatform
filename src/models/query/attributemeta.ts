@@ -104,6 +104,8 @@ export const getAttributeMetaByKey = async (key: string) => {
 export const getAllAttributeMetaByKeyOrValue = async (s: string, attributeId: number) => {
 	try {
 		const attributeMeta = await db.attributeMeta.findMany({
+			take: 50,
+			skip: 0,
 			where: {
 				attributeId,
 				OR: [{ key: { contains: s, mode: "insensitive" } }, { value: { contains: s, mode: "insensitive" } }],
