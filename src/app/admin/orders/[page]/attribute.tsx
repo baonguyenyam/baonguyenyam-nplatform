@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { EllipsisVertical, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
+import { Copy, EllipsisVertical, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -113,6 +113,16 @@ export default function OrderAttribute(props: any) {
 		}
 	}
 
+	const handleDuplicateAttributeMeta = async (item: any, index: number, i: number) => {
+		const children = selected[index]?.children;
+		setSelected((prev: any) => {
+			const newSelected = [...prev];
+			const newChildren = [...children, item];
+			newSelected[index].children = newChildren;
+			return newSelected;
+		});
+	}
+
 	useEffect(() => {
 		if (data?.data) {
 			const dataParsed = JSON.parse(data?.data);
@@ -182,9 +192,19 @@ export default function OrderAttribute(props: any) {
 							{item?.children?.map((child: any, i: number) => (
 								<div
 									key={i}
-									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative pr-10`}
+									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-10`}
 									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}
 								>
+									<div className="group absolute left-2 top-1/2 transform -translate-y-1/2 pl-1">
+										<div className="flex items-center space-x-2 cursor-pointer"
+											onClick={() => {
+												handleDuplicateAttributeMeta(selected[index]?.children[i], index, i)
+											}}
+										>
+											<Copy className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+										</div>
+									</div>
+
 									{child?.map((frm: any, j: number) => (
 										<Fragment key={j}>
 											<div className="item flex items-center">
