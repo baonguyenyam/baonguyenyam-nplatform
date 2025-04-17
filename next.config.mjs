@@ -11,7 +11,8 @@ const nextConfig = {
       // Limit file upload size
       bodySizeLimit: process.env.MAX_FILE_SIZE
     },
-  },
+      webpackMemoryOptimizations: true,
+   },
   // output: 'standalone',
   images: {
     remotePatterns: [
