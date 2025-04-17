@@ -5,8 +5,9 @@ import { writeFile } from "fs/promises";
 import path from "path";
 
 import { Bucket, s3Client } from "@/lib/s3";
+import models from "@/models";
 
-export async function upload(upload_dir: string, fileHash: string, fileExtension: string, fileBuffer: Buffer, fileSize: number, fileMimeType: string) {
+export async function upload(upload_dir: string, fileHash: string, fileExtension: string, fileBuffer: Buffer, fileSize: number, fileMimeType: string, fileName: string, id: string) {
 	try {
 		const data = {
 			Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
@@ -26,15 +27,42 @@ export async function upload(upload_dir: string, fileHash: string, fileExtension
 			body: fileBuffer,
 		});
 		const response = Bucket.public + "/" + data.Key;
-		return response;
+
+		const fileDataToSave = {
+			name: fileName,
+			hash: fileHash,
+			userId: id,
+			type: fileMimeType,
+			size: fileSize,
+			ext: fileExtension,
+			published: true,
+			url: response,
+		};
+		const item = await models.File.createFile(fileDataToSave);
+
+		return item ? item : null;
 	} catch (error) {
 		console.error("Error uploading file:", error);
 		return null;
 	}
 }
 
-export async function uploadSave(upload_path: string, fileHash: string, fileExtension: string, fileBuffer: Buffer) {
+export async function uploadSave(upload_path: string, fileHash: string, fileExtension: string, fileBuffer: Buffer | string, fileName: string, id: string, fileMimeType: string, fileSize: number, upload_dir: string) {
 	await writeFile(path.join(process.cwd(), upload_path, fileHash + "." + fileExtension), fileBuffer);
+
+	const fileDataToSave = {
+		name: fileName,
+		hash: fileHash,
+		userId: id,
+		type: fileMimeType,
+		size: fileSize,
+		ext: fileExtension,
+		published: true,
+		url: "/" + upload_dir + fileHash + "." + fileExtension,
+	};
+
+	const item = await models.File.createFile(fileDataToSave);
+	return item ? item : null;
 }
 
 export function generateHash(fileBuffer: any) {

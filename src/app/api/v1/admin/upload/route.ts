@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { appState } from "@/lib/appConst";
-import models from "@/models";
 
 import * as actions from "./actions";
 
@@ -45,39 +44,22 @@ export async function POST(req: Request) {
 
 			try {
 				if (r2 === "true" || r2 === "1") {
-					const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType);
+					if (!id) {
+						return Response.json({ message: "User ID is required" }, { status: 400 });
+					}
+					const item = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType, fileName, id);
 
-					const fileDataToSave = {
-						name: fileName,
-						hash: fileHash,
-						userId: id,
-						type: fileMimeType,
-						size: fileSize,
-						ext: fileExtension,
-						published: true,
-						url: response,
-					};
-					const item = await models.File.createFile(fileDataToSave);
 					if (item) {
 						db.push(item);
 					} else {
 						return Response.json({ message: "Can not upload the file" }, { status: 401 });
 					}
 				} else {
-					await actions.uploadSave(upload_path, fileHash, fileExtension, fileBuffer);
+					if (!id) {
+						return Response.json({ message: "User ID is required" }, { status: 400 });
+					}
+					const item = await actions.uploadSave(upload_path, fileHash, fileExtension, fileBuffer, fileName, id, fileMimeType, fileSize, upload_dir);
 
-					const fileDataToSave = {
-						name: fileName,
-						hash: fileHash,
-						userId: id,
-						type: fileMimeType,
-						size: fileSize,
-						ext: fileExtension,
-						published: true,
-						url: "/" + upload_dir + fileHash + "." + fileExtension,
-					};
-
-					const item = await models.File.createFile(fileDataToSave);
 					if (item) {
 						db.push(item);
 					} else {
