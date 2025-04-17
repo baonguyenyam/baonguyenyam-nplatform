@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { EllipsisVertical, Info, Plus, Search, Settings, X } from "lucide-react";
+import { EllipsisVertical, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import * as actions from "./actions";
 
 export default function OrderAttribute(props: any) {
 	const { data } = props;
-	const atts = useAppSelector((state) => state.attributeState.data).filter((item) => item.mapto === "order");
+	const atts = useAppSelector((state) => state.attributeState.data).filter((item) => item?.mapto === "order");
 	const [open, setOpen] = useState<any>(["", null]);
 	const [selected, setSelected] = useState<any>([]);
 	const [current, setCurrent] = useState<any>(null);
@@ -80,15 +80,15 @@ export default function OrderAttribute(props: any) {
 						<div
 							key={index}
 							className="flex flex-col mb-5">
-							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg mb-3">
-								<div className="text-lg font-bold pl-1">{item.title}</div>
+							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg mb-3 dark:bg-gray-900">
+								<div className="text-lg font-bold pl-1">{item?.title}</div>
 								<div className="ml-auto">
-									<div className="father">
+									<div className="flex items-center space-x-2">
 										<DropdownMenu>
-											<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-full">
-												<EllipsisVertical className="w-4 h-4" />
+											<DropdownMenuTrigger className="cursor-pointer px-1 text-gray-500 dark:text-gray-400">
+												<PlusCircle className="w-6 h-6" />
 											</DropdownMenuTrigger>
-											<DropdownMenuContent align="end">
+											<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
@@ -122,14 +122,14 @@ export default function OrderAttribute(props: any) {
 										<div
 											key={index}
 											className="flex flex-col">
-											<div className="item flex items-center justify-between group">
-												<div className="flex items-center justify-between space-x-2 font-semibold uppercase">{child.title}</div>
+											<div className="item flex items-center justify-between group leading-relaxed">
+												<div className="flex items-center justify-between space-x-2 font-semibold text-md uppercase">{child.title}</div>
 												<div className="group">
 													<DropdownMenu>
-														<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-full">
-															<Settings className="w-4 h-4" />
+														<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-7 h-7 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
+															<Plus className="w-4 h-4" />
 														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end">
+														<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
 															<DropdownMenuItem
 																className="cursor-pointer flex items-center space-x-2"
 																onClick={() => {
@@ -146,7 +146,7 @@ export default function OrderAttribute(props: any) {
 																	if (confirm("Are you sure you want to remove this item?")) {
 																		setSelected((prev: any) =>
 																			prev.map((i: any) => {
-																				if (i.id === item.id) {
+																				if (i.id === item?.id) {
 																					return {
 																						...i,
 																						children: i.children.filter((j: any) => j !== child),
@@ -165,11 +165,11 @@ export default function OrderAttribute(props: any) {
 												</div>
 											</div>
 											{child?.meta && child?.meta?.length > 0 && (
-												<div className="flex flex-col pb-5 space-y-2">
+												<div className="flex flex-col pt-3 pb-5 space-y-2">
 													{child?.meta?.map((meta: any, index: number) => (
 														<div
 															key={index}
-															className="flex flex-col border p-2 rounded-lg border-gray-200 dark:border-gray-600 mr-10">
+															className="flex flex-col border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600">
 															<div className="item flex items-center justify-between group space-x-2">
 																<div className="flex items-center justify-between space-x-2 font-light">
 																	<span>{meta.key}</span>
@@ -180,12 +180,12 @@ export default function OrderAttribute(props: any) {
 																				<div
 																					className="w-6 h-6 rounded-full border border-gray-300"
 																					style={{ backgroundColor: meta.value }}></div>
-																				<p className="text-sm text-gray-500">{meta.value}</p>
+																				<p className="text-sm text-gray-500 dark:text-white">{meta.value}</p>
 																			</>
 																		)}
 																		{checkStringIsTextOrColorHexOrURL(meta.value) !== "color" && (
 																			<>
-																				<p className="text-sm text-gray-500">{meta.value}</p>
+																				<p className="text-sm text-gray-500 dark:text-white">{meta.value}</p>
 																			</>
 																		)}
 																	</div>
@@ -200,7 +200,7 @@ export default function OrderAttribute(props: any) {
 																			if (confirm("Are you sure you want to remove this item?")) {
 																				setSelected((prev: any) =>
 																					prev.map((i: any) => {
-																						if (i.id === item.id) {
+																						if (i.id === item?.id) {
 																							return {
 																								...i,
 																								children: i.children.map((j: any) => {
@@ -264,7 +264,7 @@ export default function OrderAttribute(props: any) {
 							<div
 								key={index}
 								className={`flex items-center justify-between py-2 hover:text-black text-gray-500 dark:hover:text-white`}>
-								<p>{item.title}</p>
+								<p>{item?.title}</p>
 								<Button
 									type="button"
 									className="text-sm bg-black text-white hover:bg-gray-900 hover:text-white dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
@@ -275,14 +275,14 @@ export default function OrderAttribute(props: any) {
 												return newSelected.filter((i: any) => i !== item);
 											} else {
 												const _item = {
-													title: item.title,
-													id: item.id,
+													title: item?.title,
+													id: item?.id,
 												};
 												return [...newSelected, _item];
 											}
 										});
 									}}
-									disabled={selected?.find((i: any) => i.id === item.id)?.id === item.id}>
+									disabled={selected?.find((i: any) => i.id === item?.id)?.id === item?.id}>
 									Select
 								</Button>
 							</div>
@@ -306,12 +306,12 @@ export default function OrderAttribute(props: any) {
 					</DialogHeader>
 					<div className="flex flex-col">
 						{atts
-							?.find((item: any) => item.id === open[1]?.id)
+							?.find((item: any) => item?.id === open[1]?.id)
 							?.children?.map((item: any, index: number) => (
 								<div
 									key={index}
 									className="flex items-center justify-between py-2 hover:text-black text-gray-500 dark:hover:text-white">
-									<p>{item.title}</p>
+									<p>{item?.title}</p>
 									<Button
 										type="button"
 										className="text-sm bg-black text-white hover:bg-gray-900 hover:text-white dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
@@ -331,8 +331,8 @@ export default function OrderAttribute(props: any) {
 													});
 												} else {
 													const _item = {
-														title: item.title,
-														id: item.id,
+														title: item?.title,
+														id: item?.id,
 													};
 													return newSelected.map((i: any) => {
 														if (i.id === open[1]?.id) {
@@ -346,12 +346,12 @@ export default function OrderAttribute(props: any) {
 												}
 											});
 										}}
-										disabled={selected?.find((i: any) => i.id === open[1]?.id)?.children?.find((j: any) => j.id === item.id)}>
+										disabled={selected?.find((i: any) => i.id === open[1]?.id)?.children?.find((j: any) => j.id === item?.id)}>
 										Select
 									</Button>
 								</div>
 							))}
-						{atts?.find((item: any) => item.id === open[1]?.id)?.children?.length === 0 && (
+						{atts?.find((item: any) => item?.id === open[1]?.id)?.children?.length === 0 && (
 							<div className="flex items-center justify-between py-2 text-gray-500">
 								<p>No attributes found</p>
 							</div>
@@ -390,7 +390,7 @@ export default function OrderAttribute(props: any) {
 									{search?.map((item: any, index: number) => (
 										<CommandItem
 											key={index}
-											value={item.key}
+											value={item?.key}
 											className="cursor-pointer"
 											onSelect={() => {
 												setSelected((prev: any) => {
@@ -425,8 +425,8 @@ export default function OrderAttribute(props: any) {
 															// 					meta: [
 															// 						...(j.meta || []),
 															// 						{
-															// 							key: item.key,
-															// 							value: item.value,
+															// 							key: item?.key,
+															// 							value: item?.value,
 															// 						},
 															// 					],
 															// 				};
@@ -439,7 +439,7 @@ export default function OrderAttribute(props: any) {
 															// IF meta already exists, don't add it again
 															const child = i.children?.find((j: any) => j.id === open[1]?.id);
 															if (child) {
-																const metaExists = child.meta?.find((k: any) => k.key === item.key);
+																const metaExists = child.meta?.find((k: any) => k.key === item?.key);
 																if (metaExists) {
 																	return i;
 																}
@@ -452,8 +452,8 @@ export default function OrderAttribute(props: any) {
 																				meta: [
 																					...(j.meta || []),
 																					{
-																						key: item.key,
-																						value: item.value,
+																						key: item?.key,
+																						value: item?.value,
 																					},
 																				],
 																			};
@@ -470,8 +470,8 @@ export default function OrderAttribute(props: any) {
 															id: open[1]?.id,
 															meta: [
 																{
-																	key: item.key,
-																	value: item.value,
+																	key: item?.key,
+																	value: item?.value,
 																},
 															],
 														};
@@ -481,7 +481,7 @@ export default function OrderAttribute(props: any) {
 												// Close the dialog
 												// setOpen(["", null]);
 											}}>
-											{item.key}
+											{item?.key}
 										</CommandItem>
 									))}
 								</CommandGroup>
