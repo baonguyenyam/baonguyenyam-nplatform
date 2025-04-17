@@ -159,22 +159,80 @@ export default function OrderAttribute(props: any) {
 							{item?.children?.map((child: any, i: number) => (
 								<div
 									key={i}
-									className={`grid grid-cols-${child?.length} gap-5`}>
+									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative`}>
 									{child?.map((frm: any, j: number) => (
 										<Fragment key={j}>
 											<div className="item">
-												<label htmlFor={frm?.id}>{frm?.title}</label>
-												<Button
-													id={frm?.id}
-													className="w-full"
-													type="button"
-													onClick={() => {
-														setOpen(["search", [i, frm, item, child, j]]);
-													}}
-												>Select</Button>
+												<div className="flex items-center group space-x-2 mb-2">
+													<div className="font-semibold">{frm?.title}</div>
+
+												</div>
+												{frm?.value && (
+													<div className="item flex items-center justify-between group space-x-2">
+														<div className="cursor-pointer flex items-center justify-between space-x-2 font-light"
+															onClick={() => {
+																setOpen(["search", [i, frm, item, child, j]]);
+															}}
+														>
+															<span>{frm?.value?.title}</span>
+															<span> - </span>
+															<div className="flex items-center space-x-1 font-light">
+																{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
+																	<>
+																		<div
+																			className="w-4 h-4 rounded-full border border-gray-300"
+																			style={{ backgroundColor: frm?.value?.value }}></div>
+																		<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																	</>
+																)}
+																{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
+																	<>
+																		<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																	</>
+																)}
+															</div>
+														</div>
+													</div>
+												)}
+												{!frm?.value && (
+													<div className="flex items-center justify-between group space-x-2">
+														<span
+															className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
+															onClick={() => {
+																setOpen(["search", [i, frm, item, child, j]]);
+															}}
+														>
+															<Search className="w-4 h-4" />
+															<span>Search</span>
+														</span>
+													</div>
+												)}
 											</div>
 										</Fragment>
 									))}
+
+									<div className="group absolute top-2 right-2">
+										<Button
+											type="button"
+											size="icon"
+											variant="outline"
+											className="text-sm flex flex-row items-center justify-center w-4 h-4 bg-transparent font-medium text-red-500 border-0 shadow-none dark:text-white"
+											onClick={() => {
+												if (confirm("Are you sure you want to remove this item?")) {
+													// Find the parent item
+													const parentIndex = selected.findIndex((i: any) => i.id === item?.id);
+													if (parentIndex !== -1) {
+														const newSelected = [...selected];
+														newSelected[parentIndex].children = newSelected[parentIndex].children.filter((_: any, index: number) => index !== i);
+														setSelected(newSelected);
+													} else {
+														toast.error("Item not found");
+													}
+												}
+											}}>
+											<X className="w-4 h-4" />
+										</Button>
+									</div>
 								</div>
 							))}
 						</div>
@@ -276,7 +334,6 @@ export default function OrderAttribute(props: any) {
 												const childIndex = open[1][0];
 												const frmIndex = open[1][4];
 												const getFrmbyIndex = open[1][3][frmIndex];
-												console.log("getFrmbyIndex", frmIndex, getFrmbyIndex);
 												const _item = {
 													id: item?.id,
 													title: item?.key,
@@ -301,7 +358,6 @@ export default function OrderAttribute(props: any) {
 												});
 												setOpen(["", null]);
 												setSearch([]);
-												console.log("selected", selected);
 											}}>
 											{item?.key}
 										</CommandItem>
