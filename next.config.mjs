@@ -13,7 +13,6 @@ const nextConfig = {
     },
       webpackMemoryOptimizations: true,
    },
-  output: 'standalone',
   images: {
     remotePatterns: [
       {
