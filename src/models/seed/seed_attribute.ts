@@ -8,6 +8,7 @@ export const AttributeSeed = async () => {
 	const Arr = ["Screen", "Tshirt"];
 	const SubCategories = ["Screen Size", "Screen Color", "Screen Type"];
 	const type = ["select", "select", "checkbox", "select"];
+	const SizesScreen = ["1900x1200", "2560x1600", "3840x2160", "5120x2880"];
 	const Sizes = ["S", "M", "L", "XL", "XXL"];
 	const tshirt = ["Color", "Size", "Company", "Number"];
 	const company = ["Bella + Canvas", "Gildan", "Hanes", "Next Level", "American Apparel"];
@@ -73,12 +74,12 @@ export const AttributeSeed = async () => {
 						},
 					});
 					if (SubCategories[i] === "Screen Size") {
-						for (let i = 0; i < Sizes.length; i++) {
+						for (let i = 0; i < SizesScreen.length; i++) {
 							await prisma.attributeMeta.create({
 								data: {
 									attributeId: SubID.id,
-									value: Sizes[i],
-									key: `Size` + i,
+									value: SizesScreen[i],
+									key: SizesScreen[i],
 								},
 							});
 						}
@@ -143,7 +144,7 @@ export const AttributeSeed = async () => {
 								data: {
 									attributeId: SubID.id,
 									value: Sizes[i],
-									key: `` + i,
+									key: Sizes[i],
 								},
 							});
 						}
@@ -154,7 +155,7 @@ export const AttributeSeed = async () => {
 								data: {
 									attributeId: SubID.id,
 									value: company[i],
-									key: `` + i,
+									key: company[i],
 								},
 							});
 						}
