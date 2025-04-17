@@ -33,6 +33,11 @@ const nextConfig = {
       },
     ],
   },
+  functions: {
+    "api/**": {
+      excludeFiles: "{.next,*.cache,node_modules,public,app}/**"
+    }
+  }
 };
 
 export default nextConfig;

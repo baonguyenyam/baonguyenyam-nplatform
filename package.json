@@ -1,8 +1,4 @@
 {
-  "private": true,
-  "name": "nplatform",
-  "description": "nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently.",
-  "repository": "https://github.com/baonguyenyam/nplatform.git",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -20,7 +16,6 @@
   "prisma": {
     "seed": "tsx src/models/seed/index.ts"
   },
-  "author": "Nguyen Pham <baonguyenyam@gmail.com>",
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
     "@aws-sdk/client-s3": "^3.787.0",
@@ -113,6 +108,15 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
+  "author": {
+    "name": "Nguyen Pham",
+    "email": "baonguyenyam@gmail.com",
+    "url": "https://nguyenpham.pro"
+  },
+  "private": true,
+  "name": "nplatform",
+  "description": "nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently.",
+  "repository": "https://github.com/baonguyenyam/nplatform.git",
   "engines": {
     "node": ">=22.0.0"
   },
