@@ -52,8 +52,6 @@
     "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-table": "^8.21.3",
     "antd": "^5.24.7",
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.2",
     "chalk": "^5.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
