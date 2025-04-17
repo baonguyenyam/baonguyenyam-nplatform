@@ -79,9 +79,9 @@ export default function OrderAttribute(props: any) {
 					<Fragment key={index}>
 						<div
 							key={index}
-							className="flex flex-col border p-5 bg-gray-50 rounded-md dark:bg-gray-700 dark:border-gray-600">
-							<div className="flex items-center justify-between group cursor-pointer">
-								<div className="text-lg font-bold">{item.title}</div>
+							className="flex flex-col mb-5">
+							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg mb-3">
+								<div className="text-lg font-bold pl-1">{item.title}</div>
 								<div className="ml-auto">
 									<div className="father">
 										<DropdownMenu>
@@ -117,13 +117,13 @@ export default function OrderAttribute(props: any) {
 							{item?.children?.length > 0 && (
 								<div
 									id={`chilrend ${index}`}
-									className="flex flex-col mt-5 bg-white px-5 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+									className="flex flex-col space-y-3">
 									{item?.children?.map((child: any, index: number) => (
 										<div
 											key={index}
-											className="flex flex-col py-4">
+											className="flex flex-col">
 											<div className="item flex items-center justify-between group">
-												<div className="flex items-center justify-between space-x-2 font-semibold">{child.title}</div>
+												<div className="flex items-center justify-between space-x-2 font-semibold uppercase">{child.title}</div>
 												<div className="group">
 													<DropdownMenu>
 														<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-full">
@@ -165,11 +165,11 @@ export default function OrderAttribute(props: any) {
 												</div>
 											</div>
 											{child?.meta && child?.meta?.length > 0 && (
-												<div className="flex flex-col mt-5 bg-gray-50 px-5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+												<div className="flex flex-col pb-5 space-y-2">
 													{child?.meta?.map((meta: any, index: number) => (
 														<div
 															key={index}
-															className="flex flex-col border-t py-4 first:border-t-0 border-gray-200 dark:border-gray-600">
+															className="flex flex-col border p-2 rounded-lg border-gray-200 dark:border-gray-600 mr-10">
 															<div className="item flex items-center justify-between group space-x-2">
 																<div className="flex items-center justify-between space-x-2 font-light">
 																	<span>{meta.key}</span>
@@ -195,7 +195,7 @@ export default function OrderAttribute(props: any) {
 																		type="button"
 																		size="icon"
 																		variant="outline"
-																		className="text-sm flex flex-row items-center justify-center w-4 h-4 bg-transparent font-medium text-red-500 border-0 shadow-none cursor-pointer dark:text-white"
+																		className="text-sm flex flex-row items-center justify-center w-4 h-4 bg-transparent font-medium text-red-500 border-0 shadow-none dark:text-white"
 																		onClick={() => {
 																			if (confirm("Are you sure you want to remove this item?")) {
 																				setSelected((prev: any) =>
