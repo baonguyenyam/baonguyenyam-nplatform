@@ -62,10 +62,8 @@ export default function OrderAttribute(props: any) {
 			})
 			const existingItem = selected.find((i: any) => i.id === item?.id);
 			if (existingItem) {
-				// Add children to existing item
 				if (existingItem.children) {
 					const newChildren = [...existingItem.children, ...[_data]];
-					// Update the selected state
 					setSelected((prev: any) => {
 						const newSelected = [...prev];
 						const index = newSelected.findIndex((i: any) => i.id === item?.id);
@@ -76,7 +74,6 @@ export default function OrderAttribute(props: any) {
 					});
 				} else {
 					existingItem.children = [_data];
-					// Update the selected state
 					setSelected((prev: any) => {
 						const newSelected = [...prev];
 						const index = newSelected.findIndex((i: any) => i.id === item?.id);
@@ -137,7 +134,6 @@ export default function OrderAttribute(props: any) {
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
 														handleAddAttributeMeta(item)
-														console.log("selected", selected);
 													}}>
 													<Plus className="w-4 h-4" />
 													<span>Add New {item?.title}</span>
@@ -168,10 +164,14 @@ export default function OrderAttribute(props: any) {
 										<Fragment key={j}>
 											<div className="item">
 												<label htmlFor={frm?.id}>{frm?.title}</label>
-												<Input
+												<Button
 													id={frm?.id}
 													className="w-full"
-												/>
+													type="button"
+													onClick={() => {
+														setOpen(["search", [j, frm, item, child]]);
+													}}
+												>Select</Button>
 											</div>
 										</Fragment>
 									))}
@@ -273,7 +273,53 @@ export default function OrderAttribute(props: any) {
 											value={item?.key}
 											className="cursor-pointer"
 											onSelect={() => {
+												// selectd = [
+												//  {
+												// 		id: Number,
+												// 		title: String,
+												// 		children: [
+												// 			[
+												// 				{
+												// 					id: Number,
+												// 					title: String,
+												// 					value: Object,
+												// 				}
+												// 			]
+												// 		]
+												// ]
 
+												const frm = open[1][3][open[1][0]]; // {title: 'Color', id: 21, value: ''}
+												const _item = {
+													id: item?.id,
+													title: item?.key,
+													value: item?.value,
+												};
+												frm.value = _item;
+												// Find the selected item in the selected array
+												const selectedItem = selected.find((i: any) => i.id === open[1][2]?.id);
+												if (selectedItem) {
+													// Update the selected item with the new value and keep other children intact
+													const updatedChildren = selectedItem.children.map((child: any) => {
+														if (child[open[1][0]]) {
+															return child.map((i: any) => {
+																if (i.id === open[1][1]?.id) {
+																	return { ...i, value: _item };
+																}
+																return i;
+															});
+														}
+														return child;
+													});
+													setSelected((prev: any) => {
+														const newSelected = [...prev];
+														const index = newSelected.findIndex((i: any) => i.id === selectedItem.id);
+														if (index !== -1) {
+															newSelected[index].children = updatedChildren;
+														}
+														return newSelected;
+													})
+												}
+												console.log("selected", selected);
 											}}>
 											{item?.key}
 										</CommandItem>
