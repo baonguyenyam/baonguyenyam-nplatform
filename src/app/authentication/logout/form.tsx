@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { DEFAULT_LOGOUT_REDIRECT, SIGNIN_ERROR_URL } from "@/routes";
 
 export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
-
 	async function signOutFrm(formData: FormData) {
 		"use server";
 		try {
@@ -47,8 +46,7 @@ export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"di
 								Already have an account?{" "}
 								<Link
 									className="underline underline-offset-4 cursor-pointer"
-									href="/authentication/login"
-								>
+									href="/authentication/login">
 									Sign in
 								</Link>
 							</div>

@@ -3,14 +3,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { Bucket, s3Client } from "@/lib/s3";
 
-export async function upload(
-	upload_dir: string,
-	fileHash: string,
-	fileExtension: string,
-	fileBuffer: Buffer,
-	fileSize: number,
-	fileMimeType: string
-) {
+export async function upload(upload_dir: string, fileHash: string, fileExtension: string, fileBuffer: Buffer, fileSize: number, fileMimeType: string) {
 	try {
 		const data = {
 			Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,

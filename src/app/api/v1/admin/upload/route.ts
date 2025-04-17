@@ -51,8 +51,7 @@ export async function POST(req: Request) {
 
 			try {
 				if (r2 === "true" || r2 === "1") {
-
-					const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType)
+					const response = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType);
 
 					const fileDataToSave = {
 						name: fileName,
@@ -94,7 +93,6 @@ export async function POST(req: Request) {
 				return Response.json({ message: "Error writing file" }, { status: 500 });
 			}
 		}
-
 	}
 
 	if (db.length === 0) {

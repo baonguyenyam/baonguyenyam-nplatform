@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { cache } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -9,7 +9,7 @@ import Fetch from "./fetch";
 
 // Call the API to get the data
 const getItem = cache(async (slug: string) => {
-	const res = await fetch(`${process.env.PUBLIC_API_URL}/public/posts/${slug}`)
+	const res = await fetch(`${process.env.PUBLIC_API_URL}/public/posts/${slug}`);
 	return res.json();
 });
 
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: any, parent: ResolvingMetadat
 			openGraph: {
 				images: [metaData?.image || "", ...previousImages],
 			},
-		})
+		}),
 	};
 }
 

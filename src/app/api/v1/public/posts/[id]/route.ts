@@ -2,7 +2,6 @@ import models from "@/models";
 
 // Get Post
 export async function GET(req: Request) {
-
 	const params = req.url.split("/").pop();
 
 	if (params) {
