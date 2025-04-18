@@ -157,6 +157,7 @@ export default function OrderAttribute(props: any) {
 			</div>
 
 			<div className="flex flex-col space-y-4">
+				{/* Loop through selected attributes */}
 				{selected?.map((item: any, index: number) => (
 					<Fragment key={index}>
 						<div
@@ -173,6 +174,7 @@ export default function OrderAttribute(props: any) {
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
+														// Add new attribute
 														handleAddAttributeMeta(item)
 													}}>
 													<Plus className="w-4 h-4" />
@@ -182,6 +184,7 @@ export default function OrderAttribute(props: any) {
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2 text-red-600"
 													onClick={() => {
+														// Delete attribute
 														if (confirm("Are you sure you want to remove this item?")) {
 															setSelected((prev: any) => prev.filter((i: any) => i !== item));
 														}
@@ -195,6 +198,7 @@ export default function OrderAttribute(props: any) {
 								</div>
 							</div>
 						</div>
+						{/* Loop through children */}
 						<div id={`father_${item?.id}`} className="flex flex-col space-y-1 whitespace-nowrap">
 							{item?.children?.map((child: any, i: number) => (
 								<div
@@ -217,6 +221,7 @@ export default function OrderAttribute(props: any) {
 											<div className="item flex items-center">
 												{frm?.value && (
 													<div className="item flex items-center justify-between group space-x-2">
+														{/* IF Type is text field then show input */}
 														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
 															<div className="flex items-center space-x-2">
 																<span>{frm?.title}</span>
@@ -236,38 +241,84 @@ export default function OrderAttribute(props: any) {
 																/>
 															</div>
 														)}
+														{/* IF Type is not text field then show select/checkbox */}
 														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text") && (
-															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light"
-																onClick={() => {
-																	setSearch([]);
-																	setLoading(true);
-																	searchAttributeMeta("", frm?.id);
-																	setOpen(["search", [i, frm, item, child, j]]);
-																}}
-															>
-																{/* <span>{frm?.value?.title}</span>
-																<span> - </span> */}
-																<div className="flex items-center space-x-1 font-light">
-																	{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
-																		<>
-																			<div
-																				className="w-4 h-4 rounded-full border border-gray-300"
-																				style={{ backgroundColor: frm?.value?.value }}></div>
-																			<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																		</>
-																	)}
-																	{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
-																		<>
-																			<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																		</>
-																	)}
-																</div>
+															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light">
+																{/* Selectbox */}
+																{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "select") && (
+																	<div className="flex items-center space-x-1 font-light"
+																		onClick={() => {
+																			setSearch([]);
+																			setLoading(true);
+																			searchAttributeMeta("", frm?.id);
+																			setOpen(["search", [i, frm, item, child, j]]);
+																		}}
+																	>
+																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
+																			<>
+																				<div
+																					className="w-4 h-4 rounded-full border border-gray-300"
+																					style={{ backgroundColor: frm?.value?.value }}></div>
+																				<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																			</>
+																		)}
+																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
+																			<>
+																				<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
+																			</>
+																		)}
+																	</div>
+																)}
+																{/* Checkbox */}
+																{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "checkbox") && (
+																	<div className="flex flex-col space-y-1 font-light">
+																		{/* Loop through checkbox values */}
+																		{frm?.value?.map((v: any, k: number) => (
+																			<div key={k} className="relative flex items-center group space-x-1">
+																				<div className="flex items-center space-x-1 font-light"
+																					onClick={() => {
+																						setSearch([]);
+																						setLoading(true);
+																						searchAttributeMeta("", frm?.id);
+																						setOpen(["search", [i, frm, item, child, j]]);
+																					}}
+																				>
+																					{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
+																						<>
+																							<div
+																								className="w-4 h-4 rounded-full border border-gray-300"
+																								style={{ backgroundColor: v?.value }}></div>
+																							<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
+																						</>
+																					)}
+																					{checkStringIsTextOrColorHexOrURL(v?.value) !== "color" && (
+																						<>
+																							<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
+																						</>
+																					)}
+																				</div>
+																				{/* Delete */}
+																				<div className="del text-red-500 cursor-pointer">
+																					<div
+																						onClick={() => {
+																							if (confirm("Are you sure you want to remove this item?")) { }
+																						}}>
+																						<X className="w-4 h-4" />
+																					</div>
+																				</div>
+																			</div>
+																		))}
+																	</div>
+																)}
+
 															</div>
 														)}
 													</div>
 												)}
+												{/* IF Empty */}
 												{!frm?.value && (
 													<div className="flex items-center justify-between group space-x-2">
+														{/* IF Type is text field then show input */}
 														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
 															<div className="flex items-center space-x-2">
 																<span>{frm?.title}</span>
@@ -286,6 +337,7 @@ export default function OrderAttribute(props: any) {
 																/>
 															</div>
 														)}
+														{/* IF Type is not text field then show select/checkbox */}
 														{(atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
 															<span
 																className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
@@ -439,12 +491,28 @@ export default function OrderAttribute(props: any) {
 															title: item?.key,
 															value: item?.value,
 														};
-														const updatedChildren = open[1][3].map((child: any, i: number) => {
+														// Check type
+														const type = atts?.find((att: any) => att?.id === open[1][2]?.id)?.children?.find((c: any) => c?.id === getFrmbyIndex?.id)?.type
+														const updatedChildren = open[1][3]?.map((child: any, i: number) => {
 															if (i === frmIndex) {
-																return {
-																	...child,
-																	value: _item,
-																};
+																// if type != checkbox then set value {} but if type == checkbox then set value [{}]
+																if (type !== "checkbox") {
+																	return {
+																		...child,
+																		value: _item,
+																	};
+																} else {
+																	// If already exist then do not add
+																	const isExist = child?.value?.find((v: any) => v?.id === _item?.id);
+																	if (isExist) {
+																		toast.error("Already exist");
+																		return child;
+																	}
+																	return {
+																		...child,
+																		value: [...child?.value, _item],
+																	};
+																}
 															}
 															return child;
 														});
@@ -456,10 +524,10 @@ export default function OrderAttribute(props: any) {
 															}
 															return newSelected;
 														});
-
 														setSearch([]);
 														setOpen(["", null]);
 													}}>
+													{/* Show Color Picker */}
 													{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
 														<div
 															className="w-4 h-4 rounded-full border border-gray-300"
