@@ -15,6 +15,7 @@ export default function AppStatus(props: any) {
 	const bgClassName = status?.bgClassName ? status.bgClassName : "bg-gray-100";
 	const border = status?.borderClassName ? status.borderClassName : "border-gray-700";
 	const IconComponent = status?.icon ? status.icon : null;
+	const size = props.size ? props.size : "default";
 
 	useEffect(() => {
 	}, []);
@@ -22,14 +23,14 @@ export default function AppStatus(props: any) {
 	return (
 		<>
 			<div className={cn(
-				"inline-flex flex-row items-center px-3 py-1 rounded-full border space-x-1",
+				size === "small" ? "inline-flex flex-row items-center px-2 py-[0.15em] rounded-full border space-x-1" : "inline-flex flex-row items-center px-3 py-1 rounded-full border space-x-1",
 				`${bgClassName} ${border}`,
 				`${className}`,
 			)}>
 				{IconComponent && (
-					<IconComponent className="w-4 h-4 mr-1" />
+					<IconComponent className={size === "small" ? "w-3 h-3 mr-1" : "w-4 h-4 mr-1"} />
 				)}
-				<span className={`text-sm`}>{label}</span>
+				<span className={size === "small" ? "text-xs" : "text-sm"}>{label}</span>
 			</div>
 		</>
 	);

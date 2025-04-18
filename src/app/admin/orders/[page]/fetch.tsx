@@ -139,7 +139,7 @@ export default function Fetch(props: any) {
 							header: "Status",
 							accessor: "status",
 							custom: (row: any) => {
-								return <AppStatus data={row.status} />;
+								return <AppStatus size="small" data={row.status} />;
 							},
 						},
 						{

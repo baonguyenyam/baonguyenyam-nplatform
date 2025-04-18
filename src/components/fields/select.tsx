@@ -1,5 +1,6 @@
 import { FormControl } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { enumOrderStatus } from "@/lib/enum";
 
 export function FieldSelect(props: { field: any; data: any; type?: string; placeholder?: string; align?: any }) {
 	const { field, type, placeholder, data, align } = props;
@@ -16,9 +17,10 @@ export function FieldSelect(props: { field: any; data: any; type?: string; place
 				</FormControl>
 				<SelectContent
 					align={align}
-					className="dark:bg-slate-800 dark:border-slate-700">
+				>
 					{(data ?? []).map((item: any) => (
 						<SelectItem
+							className={enumOrderStatus.find((status) => status.value === item.id)?.className}
 							value={item.id}
 							key={item.id}>
 							{item.name}

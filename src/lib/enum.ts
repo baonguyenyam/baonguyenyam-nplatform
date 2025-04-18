@@ -65,22 +65,6 @@ export const enumOrderStatus = [
 		borderClassName: "border-green-700",
 		icon: MapPinCheck
 	},
-	{
-		label: "Published",
-		value: "published",
-		className: "text-green-700",
-		bgClassName: "bg-green-100",
-		borderClassName: "border-green-700",
-		icon: CheckCheck
-	},
-	{
-		label: "Unpublished",
-		value: "unpublished",
-		className: "text-red-700",
-		bgClassName: "bg-red-100",
-		borderClassName: "border-red-700",
-		icon: Ban
-	}
 ];
 
 export const enumPublished = [
@@ -88,11 +72,17 @@ export const enumPublished = [
 		label: "Published",
 		value: "TRUE",
 		className: "text-green-700",
+		bgClassName: "bg-green-100",
+		borderClassName: "border-green-700",
+		icon: CheckCheck
 	},
 	{
 		label: "Unpublished",
 		value: "FALSE",
 		className: "text-red-700",
+		bgClassName: "bg-red-100",
+		borderClassName: "border-red-700",
+		icon: Ban
 	},
 ];
 
