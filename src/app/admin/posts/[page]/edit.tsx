@@ -234,7 +234,7 @@ export default function FormEdit(props: any) {
 								</FormItem>
 							)}
 						/>
-						<Tabs defaultValue="seo">
+						<Tabs defaultValue="file">
 							<TabsList className="w-full">
 								<TabsTrigger value="file">Files</TabsTrigger>
 								<TabsTrigger value="seo">SEO</TabsTrigger>

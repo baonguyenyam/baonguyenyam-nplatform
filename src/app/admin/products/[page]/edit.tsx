@@ -13,12 +13,10 @@ import { FieldSelect } from "@/components/fields/select";
 import { FieldUpload } from "@/components/fields/upload";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { appState } from "@/lib/appConst";
 import { enumPublished } from "@/lib/enum";
-import { uploadFile } from "@/lib/upload";
 import { genSlug, randomOrderString } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
@@ -212,7 +210,7 @@ export default function FormEdit(props: any) {
 								</FormItem>
 							)}
 						/>
-						<Tabs defaultValue="seo">
+						<Tabs defaultValue="file">
 							<TabsList className="w-full">
 								<TabsTrigger value="file">Files</TabsTrigger>
 								<TabsTrigger value="seo">SEO</TabsTrigger>
