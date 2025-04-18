@@ -7,7 +7,7 @@ import { setBreadcrumb } from "@/store/breadcrumbSlice";
 export default function AppTitle(props: any) {
 	const title = props?.data;
 	const breadcrumb = useMemo(() => props?.breadcrumb || [], [props?.breadcrumb]);
-	const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 
 	useEffect(() => {
 		if (breadcrumb?.length > 0) {

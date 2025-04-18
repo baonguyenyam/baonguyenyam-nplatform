@@ -10,7 +10,7 @@ import { SET_APP_STATE } from "@/store/appSlice";
 import * as actions from "./actions";
 
 export default function CheckState() {
-	const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const state = useAppSelector((state) => state.appState) as {
 		pageSize?: number;
 		title?: string;

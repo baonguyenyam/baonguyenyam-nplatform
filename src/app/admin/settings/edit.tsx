@@ -37,7 +37,7 @@ const FormSchema = z.object({
 });
 
 export default function FormEdit() {
-	const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any>(null);
 	const [thumbnail, setThumbnail] = useState<any>(null);

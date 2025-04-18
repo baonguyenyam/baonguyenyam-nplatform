@@ -10,7 +10,7 @@ import { setCategory } from "@/store/categoriesSlice";
 import * as actions from "./actions";
 
 export default function CheckAdminState() {
-	const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const memoriezAtts = useAppSelector((state) => state.attributeState.data);
 	const memoriezCategories = useAppSelector((state) => state.categoriesState.data);
 
@@ -30,6 +30,7 @@ export default function CheckAdminState() {
 	}, [dispatch, memoriezAtts, memoriezCategories]);
 	useEffect(() => {
 		fetchData();
+		console.log("CheckState Init");
 	}, [fetchData]);
 
 	return null;

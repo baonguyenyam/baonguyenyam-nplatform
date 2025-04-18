@@ -20,7 +20,7 @@ import FormEdit from "./edit";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
-	const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const [open, setOpen] = useState<any>(["", null]);
 	const [db, setDb] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
