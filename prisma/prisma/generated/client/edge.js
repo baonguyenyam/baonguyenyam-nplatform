@@ -483,7 +483,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/nguyenpham/SourceCode/nguyenpham/nplatform/prisma/prisma/generated/client",
+      "value": "/Users/nguyenpham/SourceCode/nplatform/prisma/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -499,7 +499,7 @@ const config = {
     "previewFeatures": [
       "fullTextSearchPostgres"
     ],
-    "sourceFilePath": "/Users/nguyenpham/SourceCode/nguyenpham/nplatform/prisma/schema.prisma",
+    "sourceFilePath": "/Users/nguyenpham/SourceCode/nplatform/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

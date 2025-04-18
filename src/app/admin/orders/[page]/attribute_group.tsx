@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Copy, EllipsisVertical, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
+import AppLoading from "@/components/AppLoading";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -19,6 +20,7 @@ export default function OrderAttribute(props: any) {
 	const [selected, setSelected] = useState<any>([]);
 	const [current, setCurrent] = useState<any>(null);
 	const [search, setSearch] = useState<any>([]);
+	const [loading, setLoading] = useState(true);
 
 	const searchAttributeMeta = async (e: any, attributeId: string) => {
 		await actions.searchAttributeMeta(e, attributeId).then((res: any) => {
@@ -31,6 +33,7 @@ export default function OrderAttribute(props: any) {
 				// 	}
 				// ]
 				setSearch(res.data);
+				setLoading(false);
 			}
 		});
 	};
@@ -232,6 +235,9 @@ export default function OrderAttribute(props: any) {
 														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text") && (
 															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light"
 																onClick={() => {
+																	setSearch([]);
+																	setLoading(true);
+																	searchAttributeMeta("", frm?.id);
 																	setOpen(["search", [i, frm, item, child, j]]);
 																}}
 															>
@@ -280,6 +286,9 @@ export default function OrderAttribute(props: any) {
 															<span
 																className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
 																onClick={() => {
+																	setSearch([]);
+																	setLoading(true);
+																	searchAttributeMeta("", frm?.id);
 																	setOpen(["search", [i, frm, item, child, j]]);
 																}}
 															>
@@ -381,7 +390,12 @@ export default function OrderAttribute(props: any) {
 			<Dialog
 				open={open[0] === "search"}
 				defaultOpen={false}
-				onOpenChange={(open) => setOpen([open ? "search" : "", null])}>
+				onOpenChange={(open) => {
+					setSearch([]);
+					setLoading(true);
+					setOpen([open ? "search" : "", null])
+				}}
+			>
 				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
 					<DialogHeader>
 						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ''}</DialogTitle>
@@ -390,11 +404,6 @@ export default function OrderAttribute(props: any) {
 						<Input
 							placeholder="Search..."
 							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-							onBlur={(e) => {
-								const search = (e.target as HTMLInputElement)?.value;
-								const parentId = open[1] ? open[1][1]?.id : '';
-								searchAttributeMeta(search, parentId);
-							}}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
 									const search = (e.target as HTMLInputElement)?.value;
@@ -402,55 +411,57 @@ export default function OrderAttribute(props: any) {
 									searchAttributeMeta(search, parentId);
 								}
 							}}
-							onClick={(e) => {
-								const search = (e.target as HTMLInputElement)?.value;
-								const parentId = open[1] ? open[1][1]?.id : '';
-								searchAttributeMeta(search, parentId);
-							}}
 						/>
 						<CommandList>
 							<CommandEmpty>No data found.</CommandEmpty>
-							{search?.length > 0 && (
-								<CommandGroup heading="Search Results" className="max-h-[300px] overflow-y-auto">
-									{search?.map((item: any, index: number) => (
-										<CommandItem
-											key={index}
-											value={item?.key}
-											className="cursor-pointer"
-											onSelect={() => {
-												const childIndex = open[1][0];
-												const frmIndex = open[1][4];
-												const getFrmbyIndex = open[1][3][frmIndex];
-												const _item = {
-													id: item?.id,
-													title: item?.key,
-													value: item?.value,
-												};
-												const updatedChildren = open[1][3].map((child: any, i: number) => {
-													if (i === frmIndex) {
-														return {
-															...child,
-															value: _item,
+							{loading && (
+								<AppLoading />
+							)}
+							{!loading && (
+								<>
+									{search?.length > 0 && (
+										<CommandGroup heading="Search Results" className="max-h-[300px] overflow-y-auto">
+											{search?.map((item: any, index: number) => (
+												<CommandItem
+													key={index}
+													value={item?.key}
+													className="cursor-pointer"
+													onSelect={() => {
+														const childIndex = open[1][0];
+														const frmIndex = open[1][4];
+														const getFrmbyIndex = open[1][3][frmIndex];
+														const _item = {
+															id: item?.id,
+															title: item?.key,
+															value: item?.value,
 														};
-													}
-													return child;
-												});
-												setSelected((prev: any) => {
-													const newSelected = [...prev];
-													const index = newSelected.findIndex((i: any) => i.id === open[1][2]?.id);
-													if (index !== -1) {
-														newSelected[index].children[childIndex] = updatedChildren;
-													}
-													return newSelected;
-												});
+														const updatedChildren = open[1][3].map((child: any, i: number) => {
+															if (i === frmIndex) {
+																return {
+																	...child,
+																	value: _item,
+																};
+															}
+															return child;
+														});
+														setSelected((prev: any) => {
+															const newSelected = [...prev];
+															const index = newSelected.findIndex((i: any) => i.id === open[1][2]?.id);
+															if (index !== -1) {
+																newSelected[index].children[childIndex] = updatedChildren;
+															}
+															return newSelected;
+														});
 
-												setSearch([]);
-												setOpen(["", null]);
-											}}>
-											{item?.key}
-										</CommandItem>
-									))}
-								</CommandGroup>
+														setSearch([]);
+														setOpen(["", null]);
+													}}>
+													{item?.key}
+												</CommandItem>
+											))}
+										</CommandGroup>
+									)}
+								</>
 							)}
 						</CommandList>
 					</Command>

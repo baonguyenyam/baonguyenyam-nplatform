@@ -25,7 +25,7 @@ import { autoOderDate } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
-import OrderAttribute from "./attribute";
+import OrderAttribute from "./attribute_group";
 import { ConnectUser } from "./connect";
 
 const FormSchema = z.object({
