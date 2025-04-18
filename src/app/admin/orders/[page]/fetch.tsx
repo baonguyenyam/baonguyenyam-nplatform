@@ -18,6 +18,7 @@ import { useAppSelector } from "@/store";
 import * as actions from "./actions";
 import FormEdit from "./edit";
 import FormView from "./view";
+import { Badge } from "@/components/ui/badge";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
@@ -257,12 +258,21 @@ export default function Fetch(props: any) {
 				closable={false}
 				open={open[0] === "show"}
 				onClose={() => setOpen(["", null])}
-				title={`Order Details`}
+				title={<div className="flex items-center space-x-2">
+					<div className="t">
+						{open[1]?.title}
+					</div>
+					<div className="status">
+						<Badge variant="outline">
+							<span className={`text-sm ${enumOrderStatus.find((item) => item.value === open[1]?.status)?.className}`}>{enumOrderStatus.find((item) => item.value === open[1]?.status)?.label}</span>
+						</Badge>
+					</div>
+				</div>}
 				placement="right"
 				width={`100%`}
 				destroyOnClose={true}
 				extra={
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center space-x-3">
 						<Button
 							type="button"
 							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"

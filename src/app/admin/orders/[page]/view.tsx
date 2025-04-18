@@ -45,7 +45,10 @@ export default function FormView(props: any) {
 		<>
 			{loading && <AppLoading />}
 			{!loading && (
-				<OrderAttribute data={data} />
+				<div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
+					<div className="item"><OrderAttribute data={data} /></div>
+					<div className="item">ádsadá</div>
+				</div>
 			)}
 		</>
 	);
