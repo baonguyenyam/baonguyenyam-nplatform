@@ -48,7 +48,7 @@ export default function FormEdit(props: any) {
 	const { id, onChange } = props;
 	const memoriez = useAppSelector((state) => state.categoriesState.data);
 	const categories = useMemo(() => {
-		return memoriez.filter((item) => item?.type === type);
+		return memoriez.filter((item: any) => item?.type === type);
 	}, [memoriez]);
 
 	const [loading, setLoading] = useState(true);

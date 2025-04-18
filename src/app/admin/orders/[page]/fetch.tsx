@@ -17,6 +17,7 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
+import FormView from "./view";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
@@ -115,7 +116,9 @@ export default function Fetch(props: any) {
 							custom: (row: any) => {
 								return (
 									<>
-										<div className="flex items-center space-x-1">
+										<div className="flex items-center space-x-1 cursor-pointer underline"
+											onClick={() => setOpen(["show", row])}
+										>
 											{row.published ? (
 												<span className="text-green-800 font-semibold">
 													<CircleCheck className="w-4 h-4" />
@@ -247,6 +250,29 @@ export default function Fetch(props: any) {
 							fetchData();
 						}
 					}}
+				/>
+			</Drawer>
+			<Drawer
+				maskClosable={false}
+				closable={false}
+				open={open[0] === "show"}
+				onClose={() => setOpen(["", null])}
+				title={`Order Details`}
+				placement="right"
+				width={`100%`}
+				destroyOnClose={true}
+				extra={
+					<div className="flex items-center space-x-2">
+						<Button
+							type="button"
+							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
+							onClick={() => setOpen(["", null])}>
+							<X />
+						</Button>
+					</div>
+				}>
+				<FormView
+					id={open[1]?.id}
 				/>
 			</Drawer>
 		</>

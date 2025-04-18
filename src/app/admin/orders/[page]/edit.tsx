@@ -87,7 +87,7 @@ export default function FormEdit(props: any) {
 	const { id, onChange } = props;
 	const memoriez = useAppSelector((state) => state.categoriesState.data);
 	const categories = useMemo(() => {
-		return memoriez.filter((item) => item.type === "order");
+		return memoriez.filter((item: any) => item.type === "order");
 	}, [memoriez]);
 	const [users, setUsers] = useState<any>([]);
 	const [customers, setCustomers] = useState<any>([]);
@@ -260,6 +260,16 @@ export default function FormEdit(props: any) {
 									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="basic">
 									Basic Info
+								</TabsTrigger>
+								<TabsTrigger
+									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									value="receiving">
+									Receiving
+								</TabsTrigger>
+								<TabsTrigger
+									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									value="shipping">
+									Shipping
 								</TabsTrigger>
 								<TabsTrigger
 									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"

@@ -16,7 +16,7 @@ export default function OrderAttribute(props: any) {
 	const { data } = props;
 	const memoriez = useAppSelector((state) => state.attributeState.data);
 	const atts = useMemo(() => {
-		return memoriez.filter((item) => item?.mapto === "order");
+		return memoriez.filter((item: any) => item?.mapto === "order");
 	}, [memoriez]);
 	const [open, setOpen] = useState<any>(["", null]);
 	const [selected, setSelected] = useState<any>([]);
