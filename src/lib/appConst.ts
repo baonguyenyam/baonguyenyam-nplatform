@@ -1,6 +1,6 @@
-import { BookOpen, FerrisWheel, File, Home, HomeIcon, Image, LayoutDashboard, Package, Settings, ShoppingCart, Store, User, Users } from "lucide-react";
+import { BookOpen, FerrisWheel, File, Home, HomeIcon, Image, LayoutDashboard, Map, Package, Settings, ShoppingCart, Store, User, Users } from "lucide-react";
 
-// title: String 
+// title: String
 // url: String
 // icon: String
 // role: Array of String => This role will show/hide the menu item
@@ -59,6 +59,14 @@ export const MenuItems = [
 		url: "/admin/attributes",
 		icon: FerrisWheel,
 		role: ["ADMIN", "MODERATOR"],
+		items: [
+			{
+				title: "Mapping",
+				url: "/admin/attributes/mapping",
+				icon: Map,
+				role: ["ADMIN", "MODERATOR"],
+			},
+		],
 	},
 	{
 		title: "User",

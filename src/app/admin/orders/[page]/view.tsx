@@ -51,21 +51,16 @@ export default function FormView(props: any) {
 								<div className="group">
 									<div className="flex flex-col">
 										<label className="text-sm font-semibold mb-2">Customer</label>
-										{data?.customer && data?.customer?.map((item: any) => (
-											<div key={item.id} className="flex items-center">
-												{item?.name}
-												{item?.email && (
-													<span className="text-xs text-gray-500 ml-2">
-														({item?.email})
-													</span>
-												)}
-											</div>
-										))}
-										{data?.customer?.length === 0 && (
-											<div className="text-xs text-gray-500">
-												No customer assigned
-											</div>
-										)}
+										{data?.customer &&
+											data?.customer?.map((item: any) => (
+												<div
+													key={item.id}
+													className="flex items-center">
+													{item?.name}
+													{item?.email && <span className="text-xs text-gray-500 ml-2">({item?.email})</span>}
+												</div>
+											))}
+										{data?.customer?.length === 0 && <div className="text-xs text-gray-500">No customer assigned</div>}
 									</div>
 								</div>
 								<div className="group">
@@ -100,26 +95,27 @@ export default function FormView(props: any) {
 								<div className="group">
 									<div className="flex flex-col">
 										<label className="text-sm font-semibold mb-2">Category</label>
-										{data?.categories && data?.categories?.map((item: any) => (
-											<div key={item.id} className="flex items-center">
-												{item?.title}
-											</div>
-										))}
+										{data?.categories &&
+											data?.categories?.map((item: any) => (
+												<div
+													key={item.id}
+													className="flex items-center">
+													{item?.title}
+												</div>
+											))}
 									</div>
 								</div>
 								<div className="group">
 									<div className="flex flex-col">
 										<label className="text-sm font-semibold mb-2">Note</label>
-										<div dangerouslySetInnerHTML={{ __html: data?.content || '-' }} />
+										<div dangerouslySetInnerHTML={{ __html: data?.content || "-" }} />
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div className="medias col-span-2">
-							<h2 className="text-lg font-bold mb-5">
-								Images
-							</h2>
+							<h2 className="text-lg font-bold mb-5">Images</h2>
 							{ImageList({
 								role,
 								data: data,

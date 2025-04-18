@@ -27,7 +27,7 @@ export default function OrderAttribute(props: any) {
 		});
 
 		return longestItem;
-	}
+	};
 
 	useEffect(() => {
 		if (data?.data) {
@@ -38,7 +38,6 @@ export default function OrderAttribute(props: any) {
 
 	return (
 		<div className="block w-full">
-
 			<div className="flex flex-col">
 				{/* Loop through selected attributes */}
 				{selected?.map((item: any, index: number) => (
@@ -53,9 +52,7 @@ export default function OrderAttribute(props: any) {
 							id={`father_${item?.id}`}
 							className="space-y-1 whitespace-nowrap mb-5">
 							<thead>
-								<tr
-									className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
-								>
+								<tr className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}>
 									{/* Find item?.children longest */}
 									{/* {item?.children.find((child: any) => child?.length > 0)?.map((child: any, i: number) => (
 										<Fragment key={i}>
@@ -67,9 +64,7 @@ export default function OrderAttribute(props: any) {
 
 									{findLongestItem(item?.children)?.map((child: any, i: number) => (
 										<Fragment key={i}>
-											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">
-												{child?.title}
-											</th>
+											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">{child?.title}</th>
 										</Fragment>
 									))}
 								</tr>
@@ -78,8 +73,7 @@ export default function OrderAttribute(props: any) {
 								{item?.children?.map((child: any, i: number) => (
 									<tr
 										key={i}
-										className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
-									>
+										className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}>
 										{child?.map((frm: any, j: number) => (
 											<Fragment key={j}>
 												{frm?.value && (
@@ -88,8 +82,7 @@ export default function OrderAttribute(props: any) {
 															<div className="flex items-center justify-between space-x-2 font-light">
 																{/* Selectbox */}
 																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "checkbox" && (
-																	<div
-																		className="flex items-center space-x-1 font-light">
+																	<div className="flex items-center space-x-1 font-light">
 																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
 																			<>
 																				<div
@@ -114,8 +107,7 @@ export default function OrderAttribute(props: any) {
 																				<div
 																					key={k}
 																					className="relative flex items-center group space-x-1">
-																					<div
-																						className="flex items-center space-x-1 font-light">
+																					<div className="flex items-center space-x-1 font-light">
 																						{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
 																							<>
 																								<div
@@ -133,9 +125,7 @@ export default function OrderAttribute(props: any) {
 																				</div>
 																			))}
 																		{/* IF No value */}
-																		{frm?.value?.length === 0 && (
-																			<>N/A</>
-																		)}
+																		{frm?.value?.length === 0 && <>N/A</>}
 																	</div>
 																)}
 															</div>

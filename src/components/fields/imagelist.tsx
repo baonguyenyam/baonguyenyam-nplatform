@@ -1,7 +1,7 @@
-import lgZoom from 'lightgallery/plugins/zoom';
-import LightGallery from 'lightgallery/react';
+import lgZoom from "lightgallery/plugins/zoom";
+import LightGallery from "lightgallery/react";
 import { X } from "lucide-react";
-import Link from 'next/link';
+import Link from "next/link";
 import { toast } from "sonner";
 
 import AppImage from "@/components/AppImage";
@@ -9,10 +9,10 @@ import AppImage from "@/components/AppImage";
 import { Button } from "../ui/button";
 
 // import styles
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
 
-export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setThumbnail?: any; fetchData?: any; onChange?: any, viewOnly?: boolean }) {
+export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setThumbnail?: any; fetchData?: any; onChange?: any; viewOnly?: boolean }) {
 	const { role, data, thumbnail, setThumbnail, fetchData, onChange, viewOnly } = props;
 
 	return (
@@ -22,8 +22,7 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 					<LightGallery
 						speed={500}
 						plugins={[lgZoom]}
-						elementClassNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
-					>
+						elementClassNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
 						{data.files.map((item: any) => (
 							<Link
 								key={item.id}
@@ -45,7 +44,7 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 										className="max-w-full max-h-24 2xl:max-h-30 object-cover border-1 border-gray-300 rounded-lg"
 									/>
-									{(role === "ADMIN" && !viewOnly) && (
+									{role === "ADMIN" && !viewOnly && (
 										<Button
 											type="button"
 											size="icon"

@@ -7,7 +7,7 @@ export const enumOrderStatus = [
 		className: "text-yellow-700",
 		bgClassName: "bg-yellow-100",
 		borderClassName: "border-yellow-700",
-		icon: CircleAlert
+		icon: CircleAlert,
 	},
 	{
 		label: "Completed",
@@ -15,7 +15,7 @@ export const enumOrderStatus = [
 		className: "text-green-700",
 		bgClassName: "bg-green-100",
 		borderClassName: "border-green-700",
-		icon: CheckCheck
+		icon: CheckCheck,
 	},
 	{
 		label: "Cancelled",
@@ -23,7 +23,7 @@ export const enumOrderStatus = [
 		className: "text-red-700",
 		bgClassName: "bg-red-100",
 		borderClassName: "border-red-700",
-		icon: Ban
+		icon: Ban,
 	},
 	{
 		label: "Refunded",
@@ -31,7 +31,7 @@ export const enumOrderStatus = [
 		className: "text-slate-700",
 		bgClassName: "bg-slate-100",
 		borderClassName: "border-slate-700",
-		icon: TicketX
+		icon: TicketX,
 	},
 	{
 		label: "Waiting",
@@ -39,7 +39,7 @@ export const enumOrderStatus = [
 		className: "text-teal-700",
 		bgClassName: "bg-teal-100",
 		borderClassName: "border-teal-700",
-		icon: Hourglass
+		icon: Hourglass,
 	},
 	{
 		label: "Processing",
@@ -47,7 +47,7 @@ export const enumOrderStatus = [
 		className: "text-blue-700",
 		bgClassName: "bg-blue-100",
 		borderClassName: "border-blue-700",
-		icon: Clock
+		icon: Clock,
 	},
 	{
 		label: "Shipped",
@@ -55,7 +55,7 @@ export const enumOrderStatus = [
 		className: "text-orange-700",
 		bgClassName: "bg-orange-100",
 		borderClassName: "border-orange-700",
-		icon: Truck
+		icon: Truck,
 	},
 	{
 		label: "Delivered",
@@ -63,7 +63,7 @@ export const enumOrderStatus = [
 		className: "text-green-700",
 		bgClassName: "bg-green-100",
 		borderClassName: "border-green-700",
-		icon: MapPinCheck
+		icon: MapPinCheck,
 	},
 ];
 
@@ -74,7 +74,7 @@ export const enumPublished = [
 		className: "text-green-700",
 		bgClassName: "bg-green-100",
 		borderClassName: "border-green-700",
-		icon: CheckCheck
+		icon: CheckCheck,
 	},
 	{
 		label: "Unpublished",
@@ -82,7 +82,7 @@ export const enumPublished = [
 		className: "text-red-700",
 		bgClassName: "bg-red-100",
 		borderClassName: "border-red-700",
-		icon: Ban
+		icon: Ban,
 	},
 ];
 

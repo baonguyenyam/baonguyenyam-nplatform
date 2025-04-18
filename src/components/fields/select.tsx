@@ -10,18 +10,14 @@ export function FieldSelect(props: { field: any; data: any; type?: string; place
 			<Select
 				onValueChange={field.onChange}
 				defaultValue={field.value}>
-				<FormControl
-					className={`${enumOrderStatus.find((status) => status.value === field.value)?.className ?? enumPublished.find((status) => status.value === field.value)?.className} ${enumOrderStatus.find((status) => status.value === field.value)?.bgClassName ?? enumPublished.find((status) => status.value === field.value)?.bgClassName} ${enumOrderStatus.find((status) => status.value === field.value)?.borderClassName ?? enumPublished.find((status) => status.value === field.value)?.borderClassName}`}
-				>
+				<FormControl className={`${enumOrderStatus.find((status) => status.value === field.value)?.className ?? enumPublished.find((status) => status.value === field.value)?.className} ${enumOrderStatus.find((status) => status.value === field.value)?.bgClassName ?? enumPublished.find((status) => status.value === field.value)?.bgClassName} ${enumOrderStatus.find((status) => status.value === field.value)?.borderClassName ?? enumPublished.find((status) => status.value === field.value)?.borderClassName}`}>
 					<SelectTrigger>
-						<SelectGroup >
+						<SelectGroup>
 							<SelectValue placeholder={placeholder} />
 						</SelectGroup>
 					</SelectTrigger>
 				</FormControl>
-				<SelectContent
-					align={align}
-				>
+				<SelectContent align={align}>
 					{(data ?? []).map((item: any) => (
 						<SelectItem
 							className={enumOrderStatus.find((status) => status.value === item.id)?.className ?? enumPublished.find((status) => status.value === item.id)?.className}

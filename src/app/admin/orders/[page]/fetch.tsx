@@ -116,9 +116,9 @@ export default function Fetch(props: any) {
 							custom: (row: any) => {
 								return (
 									<>
-										<div className="flex items-center space-x-1 cursor-pointer underline"
-											onClick={() => setOpen(["show", row])}
-										>
+										<div
+											className="flex items-center space-x-1 cursor-pointer underline"
+											onClick={() => setOpen(["show", row])}>
 											{row.published ? (
 												<span className="text-green-800 font-semibold">
 													<CircleCheck className="w-4 h-4" />
@@ -139,7 +139,12 @@ export default function Fetch(props: any) {
 							header: "Status",
 							accessor: "status",
 							custom: (row: any) => {
-								return <AppStatus size="small" data={row.status} />;
+								return (
+									<AppStatus
+										size="small"
+										data={row.status}
+									/>
+								);
 							},
 						},
 						{
@@ -257,14 +262,14 @@ export default function Fetch(props: any) {
 				closable={false}
 				open={open[0] === "show"}
 				onClose={() => setOpen(["", null])}
-				title={<div className="flex items-center space-x-2">
-					<div className="t">
-						{open[1]?.title}
+				title={
+					<div className="flex items-center space-x-2">
+						<div className="t">{open[1]?.title}</div>
+						<div className="status">
+							<AppStatus data={open[1]?.status} />
+						</div>
 					</div>
-					<div className="status">
-						<AppStatus data={open[1]?.status} />
-					</div>
-				</div>}
+				}
 				placement="right"
 				width={`100%`}
 				destroyOnClose={true}
@@ -278,9 +283,7 @@ export default function Fetch(props: any) {
 						</Button>
 					</div>
 				}>
-				<FormView
-					id={open[1]?.id}
-				/>
+				<FormView id={open[1]?.id} />
 			</Drawer>
 		</>
 	);

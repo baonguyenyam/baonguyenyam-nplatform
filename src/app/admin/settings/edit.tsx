@@ -362,9 +362,7 @@ export default function FormEdit() {
 										value="tab-4"
 										className="space-y-10">
 										<div className="item">
-											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
-												Local Storage
-											</h3>
+											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">Local Storage</h3>
 											{Object.keys(localStorage)?.map((key) => {
 												return (
 													<div
@@ -380,13 +378,9 @@ export default function FormEdit() {
 																}}>
 																<X className="h-3 w-3" />
 															</Button>
-															<span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-																{key}
-															</span>
+															<span className="text-sm font-medium text-gray-700 dark:text-gray-200">{key}</span>
 														</div>
-														<div className="text-xs">
-															{localStorage.getItem(key)?.length} bytes
-														</div>
+														<div className="text-xs">{localStorage.getItem(key)?.length} bytes</div>
 													</div>
 												);
 											})}

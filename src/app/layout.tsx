@@ -36,9 +36,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
 						defaultTheme="system"
 						enableSystem
 						disableTransitionOnChange>
-						<StoreProvider>
-							{children}
-						</StoreProvider>
+						<StoreProvider>{children}</StoreProvider>
 					</ThemeProvider>
 					<Toaster richColors />
 				</body>

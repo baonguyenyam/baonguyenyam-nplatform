@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { appState, FooterItems, MenuItems } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
@@ -22,6 +22,7 @@ const FormSchema = z.object({
 
 export function AppSidebar() {
 	const router = useRouter();
+	const pathname = usePathname();
 	const role = useCurrentRole();
 	const _state = useAppSelector((state) => state.appState) as { title?: string };
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -30,6 +31,12 @@ export function AppSidebar() {
 			f_s: "",
 		},
 	});
+
+	const checkActiveMenu = (item: { url: string; items?: { url: string }[] }) => {
+		if (pathname === item.url) {
+			return true;
+		}
+	};
 
 	async function onSubmit(values: z.infer<typeof FormSchema>) {
 		const search = values.f_s;
@@ -89,7 +96,9 @@ export function AppSidebar() {
 								<Fragment key={item.title}>
 									{role && (item?.role ?? []).includes(role) && (
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild>
+											<SidebarMenuButton
+												asChild
+												isActive={checkActiveMenu(item)}>
 												<div
 													className="cursor-pointer"
 													onClick={() => router.push(item.url)}>
@@ -97,6 +106,25 @@ export function AppSidebar() {
 													<span>{item.title}</span>
 												</div>
 											</SidebarMenuButton>
+											{item.items?.length ? (
+												<SidebarMenuSub>
+													{item.items.map((item) => (
+														<SidebarMenuSubItem key={item.title}>
+															<SidebarMenuSubButton
+																asChild
+																isActive={checkActiveMenu(item)}
+																onClick={() => router.push(item.url)}>
+																<div
+																	className="cursor-pointer"
+																	onClick={() => router.push(item.url)}>
+																	<item.icon />
+																	<span>{item.title}</span>
+																</div>
+															</SidebarMenuSubButton>
+														</SidebarMenuSubItem>
+													))}
+												</SidebarMenuSub>
+											) : null}
 										</SidebarMenuItem>
 									)}
 								</Fragment>

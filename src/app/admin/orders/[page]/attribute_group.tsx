@@ -235,8 +235,7 @@ export default function OrderAttribute(props: any) {
 								<div
 									key={i}
 									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-10`}
-									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}
-								>
+									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}>
 									<div className="group absolute left-2 top-1/2 transform -translate-y-1/2 pl-1">
 										<div
 											className="flex items-center space-x-2 cursor-pointer"
