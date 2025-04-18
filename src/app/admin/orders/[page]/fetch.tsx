@@ -218,7 +218,7 @@ export default function Fetch(props: any) {
 				title={`Edit ${title}`}
 				placement="right"
 				keyboard={false}
-				width={1200}
+				width={`100%`}
 				destroyOnClose={true}
 				extra={
 					<div className="flex items-center space-x-2">

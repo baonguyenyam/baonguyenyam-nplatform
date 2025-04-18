@@ -163,6 +163,8 @@ model Order {
   user_technical User[] @relation("OrderUserTechnical")
   user_packaging User[] @relation("OrderUserPackaging")
 
+  vendor User[] @relation("OrderVendor")
+
   @@unique([id])
 }
 
@@ -251,6 +253,8 @@ model User {
   order_financial Order[] @relation("OrderUserFinancial")
   order_technical Order[] @relation("OrderUserTechnical")
   order_packaging Order[] @relation("OrderUserPackaging")
+
+  vendor Order[] @relation("OrderVendor")
 
   @@unique([id])
 }

@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import * as customer_actions from "@/app/admin/customers/[page]/actions";
 import * as user_actions from "@/app/admin/users/[page]/actions";
+import * as vendor_actions from "@/app/admin/vendors/[page]/actions";
 import { AppEditor } from "@/components/AppEditor";
 import AppLoading from "@/components/AppLoading";
 import { Attribute } from "@/components/fields/attribute";
@@ -72,6 +73,10 @@ const FormSchema = z.object({
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
+	f_vendor: z
+		.string()
+		.optional()
+		.transform((e) => (e === "" ? undefined : e)),
 	f_file: z
 		.any()
 		.optional()
@@ -86,6 +91,7 @@ export default function FormEdit(props: any) {
 	}, [memoriez]);
 	const [users, setUsers] = useState<any>([]);
 	const [customers, setCustomers] = useState<any>([]);
+	const [vendors, setVendors] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any>(null);
 	const [thumbnail, setThumbnail] = useState<any>(null);
@@ -132,6 +138,9 @@ export default function FormEdit(props: any) {
 			},
 			user_manager: {
 				connect: !id ? (values.f_user_manager ? [{ id: values.f_user_manager }] : undefined) : undefined,
+			},
+			vendor: {
+				connect: !id ? (values.f_vendor ? [{ id: values.f_vendor }] : undefined) : undefined,
 			},
 		};
 		const _attributes = values.f_attributes?.map((item: any) => {
@@ -208,6 +217,7 @@ export default function FormEdit(props: any) {
 				f_user: Array.isArray(res?.data?.user) ? res?.data?.user[0]?.id || "" : "",
 				f_user_product: Array.isArray(res?.data?.user_product) ? res?.data?.user_product[0]?.id || "" : "",
 				f_user_manager: Array.isArray(res?.data?.user_manager) ? res?.data?.user_manager[0]?.id || "" : "",
+				f_vendor: Array.isArray(res?.data?.vendor) ? res?.data?.vendor[0]?.id || "" : "",
 				f_file: res?.data?.image || "",
 			});
 			setThumbnail(res?.data?.image);
@@ -254,7 +264,7 @@ export default function FormEdit(props: any) {
 								<TabsTrigger
 									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="user_product">
-									User manager
+									User/Vendor manager
 								</TabsTrigger>
 								<TabsTrigger
 									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
@@ -537,6 +547,39 @@ export default function FormEdit(props: any) {
 																setUsers(_users);
 															} else {
 																setUsers([]);
+															}
+														},
+													})}
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="f_vendor"
+											render={({ field }) => (
+												<FormItem className="flex flex-col">
+													<FormLabel>Vendor</FormLabel>
+													{ConnectUser({
+														form,
+														field,
+														data,
+														users: vendors,
+														id,
+														key: "vendor",
+														model: "vendor",
+														onChange: async (e: any) => {
+															const res = await vendor_actions.getAll({ s: e });
+															if (res.success === "success" && res.data) {
+																const _vendors = res?.data?.map((item: any) => {
+																	return {
+																		id: item.id,
+																		name: item.name,
+																	};
+																});
+																setVendors(_vendors);
+															} else {
+																setVendors([]);
 															}
 														},
 													})}
