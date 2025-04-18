@@ -115,11 +115,13 @@ model Customer {
   avatar        String?
   type          String?   @default("customer")
   files         File[]
-  orders        Order[]
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
   published     Boolean   @default(false)
   data          String?   @db.Text
+
+  order_customer Order[] @relation("OrderCustomer")
+  order_vendor   Order[] @relation("OrderVendor")
 
   @@unique([id])
 }
@@ -148,7 +150,6 @@ model Order {
   date_closed     DateTime?
   date_approved   DateTime?
 
-  customer   Customer[]
   files      File[]
   meta       OrderMeta[]
   categories Category[]
@@ -163,7 +164,8 @@ model Order {
   user_technical User[] @relation("OrderUserTechnical")
   user_packaging User[] @relation("OrderUserPackaging")
 
-  vendor User[] @relation("OrderVendor")
+  vendor   Customer[] @relation("OrderVendor")
+  customer Customer[] @relation("OrderCustomer")
 
   @@unique([id])
 }
@@ -253,8 +255,6 @@ model User {
   order_financial Order[] @relation("OrderUserFinancial")
   order_technical Order[] @relation("OrderUserTechnical")
   order_packaging Order[] @relation("OrderUserPackaging")
-
-  vendor Order[] @relation("OrderVendor")
 
   @@unique([id])
 }
