@@ -91,7 +91,9 @@ export default function OrderAttribute(props: any) {
 											<DropdownMenuTrigger className="cursor-pointer px-1 text-gray-500 dark:text-gray-400">
 												<PlusCircle className="w-6 h-6" />
 											</DropdownMenuTrigger>
-											<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
+											<DropdownMenuContent
+												align="end"
+												className="dark:bg-gray-800 dark:border-gray-700">
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
@@ -132,7 +134,9 @@ export default function OrderAttribute(props: any) {
 														<DropdownMenuTrigger className="shadow-xs hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-7 h-7 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
 															<Plus className="w-4 h-4" />
 														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
+														<DropdownMenuContent
+															align="end"
+															className="dark:bg-gray-800 dark:border-gray-700">
 															<DropdownMenuItem
 																className="cursor-pointer flex items-center space-x-2"
 																onClick={() => {
@@ -369,7 +373,7 @@ export default function OrderAttribute(props: any) {
 				onOpenChange={(open) => setOpen([open ? "search" : "", null])}>
 				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
 					<DialogHeader>
-						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ''}</DialogTitle>
+						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ""}</DialogTitle>
 					</DialogHeader>
 					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
 						<Input
@@ -377,13 +381,13 @@ export default function OrderAttribute(props: any) {
 							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
 							onBlur={(e) => {
 								const search = (e.target as HTMLInputElement)?.value;
-								const parentId = open[1] ? open[1][1]?.id : '';
+								const parentId = open[1] ? open[1][1]?.id : "";
 								searchAttributeMeta(search, parentId);
 							}}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
 									const search = (e.target as HTMLInputElement)?.value;
-									const parentId = open[1] ? open[1][1]?.id : '';
+									const parentId = open[1] ? open[1][1]?.id : "";
 									searchAttributeMeta(search, parentId);
 								}
 							}}
@@ -416,8 +420,8 @@ export default function OrderAttribute(props: any) {
 												// ]
 												// Now add the selected item to the meta of the children of the parent
 												setSelected((prev: any) => {
-													const rootId = open[1] ? open[1][0]?.id : '';
-													// Find Root 
+													const rootId = open[1] ? open[1][0]?.id : "";
+													// Find Root
 													const root = prev.find((i: any) => i.id === rootId);
 													const child = root?.children?.find((j: any) => j.id === open[1][1]?.id);
 													if (child) {
@@ -480,6 +484,6 @@ export default function OrderAttribute(props: any) {
 					</Command>
 				</DialogContent>
 			</Dialog>
-		</div >
+		</div>
 	);
 }

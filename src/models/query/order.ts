@@ -106,7 +106,7 @@ export const getOrderById = async (id: string) => {
 						zip: true,
 						country: true,
 					},
-				}
+				},
 			},
 		});
 

@@ -162,7 +162,6 @@ export const AttributeSeed = async () => {
 					}
 				}
 			}
-
 		}
 	});
 

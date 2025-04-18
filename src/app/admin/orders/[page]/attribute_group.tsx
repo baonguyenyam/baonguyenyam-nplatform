@@ -78,7 +78,7 @@ export default function OrderAttribute(props: any) {
 		} else {
 			toast.error("Item not found");
 		}
-	}
+	};
 
 	const handleUpdateInput = async (frm: any, item: any, value: any, i: number, j: number, child: any) => {
 		const _item = {
@@ -103,7 +103,7 @@ export default function OrderAttribute(props: any) {
 			}
 			return newSelected;
 		});
-	}
+	};
 
 	const handleAddAttributeMeta = async (item: any) => {
 		const children = atts?.find((att: any) => att?.id === item?.id)?.children;
@@ -113,10 +113,10 @@ export default function OrderAttribute(props: any) {
 				const _item = {
 					title: child?.title,
 					id: child?.id,
-					value: ''
-				}
+					value: "",
+				};
 				_data.push(_item);
-			})
+			});
 			const existingItem = selected.find((i: any) => i.id === item?.id);
 			if (existingItem) {
 				if (existingItem.children) {
@@ -141,11 +141,10 @@ export default function OrderAttribute(props: any) {
 					});
 				}
 			}
-
 		} else {
 			toast.error("No children found");
 		}
-	}
+	};
 
 	const handleDuplicateAttributeMeta = async (item: any, index: number, i: number) => {
 		const children = selected[index]?.children;
@@ -155,7 +154,7 @@ export default function OrderAttribute(props: any) {
 			newSelected[index].children = newChildren;
 			return newSelected;
 		});
-	}
+	};
 
 	useEffect(() => {
 		if (data?.data) {
@@ -187,8 +186,7 @@ export default function OrderAttribute(props: any) {
 				{/* Loop through selected attributes */}
 				{selected?.map((item: any, index: number) => (
 					<Fragment key={index}>
-						<div
-							className="flex flex-col">
+						<div className="flex flex-col">
 							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg dark:bg-gray-900">
 								<div className="text-lg font-bold pl-1">{item?.title}</div>
 								<div className="ml-auto">
@@ -197,12 +195,14 @@ export default function OrderAttribute(props: any) {
 											<DropdownMenuTrigger className="cursor-pointer px-1 text-gray-500 dark:text-gray-400">
 												<PlusCircle className="w-6 h-6" />
 											</DropdownMenuTrigger>
-											<DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
+											<DropdownMenuContent
+												align="end"
+												className="dark:bg-gray-800 dark:border-gray-700">
 												<DropdownMenuItem
 													className="cursor-pointer flex items-center space-x-2"
 													onClick={() => {
 														// Add new attribute
-														handleAddAttributeMeta(item)
+														handleAddAttributeMeta(item);
 													}}>
 													<Plus className="w-4 h-4" />
 													<span>Add New {item?.title}</span>
@@ -226,19 +226,20 @@ export default function OrderAttribute(props: any) {
 							</div>
 						</div>
 						{/* Loop through children */}
-						<div id={`father_${item?.id}`} className="flex flex-col space-y-1 whitespace-nowrap">
+						<div
+							id={`father_${item?.id}`}
+							className="flex flex-col space-y-1 whitespace-nowrap">
 							{item?.children?.map((child: any, i: number) => (
 								<div
 									key={i}
 									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-10`}
-									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}
-								>
+									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}>
 									<div className="group absolute left-2 top-1/2 transform -translate-y-1/2 pl-1">
-										<div className="flex items-center space-x-2 cursor-pointer"
+										<div
+											className="flex items-center space-x-2 cursor-pointer"
 											onClick={() => {
-												handleDuplicateAttributeMeta(selected[index]?.children[i], index, i)
-											}}
-										>
+												handleDuplicateAttributeMeta(selected[index]?.children[i], index, i);
+											}}>
 											<Copy className="w-4 h-4 text-gray-500 dark:text-gray-400" />
 										</div>
 									</div>
@@ -249,7 +250,7 @@ export default function OrderAttribute(props: any) {
 												{frm?.value && (
 													<div className="item flex items-center justify-between group space-x-2">
 														{/* IF Type is text field then show input */}
-														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
+														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "text" && (
 															<div className="flex items-center space-x-2">
 																<span>{frm?.title}</span>
 																<Input
@@ -269,18 +270,18 @@ export default function OrderAttribute(props: any) {
 															</div>
 														)}
 														{/* IF Type is not text field then show select/checkbox */}
-														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text") && (
+														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
 															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light">
 																{/* Selectbox */}
-																{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "select") && (
-																	<div className="flex items-center space-x-1 font-light"
+																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "select" && (
+																	<div
+																		className="flex items-center space-x-1 font-light"
 																		onClick={() => {
 																			setSearch([]);
 																			setLoading(true);
 																			searchAttributeMeta("", frm?.id);
 																			setOpen(["search", [i, frm, item, child, j]]);
-																		}}
-																	>
+																		}}>
 																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
 																			<>
 																				<div
@@ -297,46 +298,49 @@ export default function OrderAttribute(props: any) {
 																	</div>
 																)}
 																{/* Checkbox */}
-																{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "checkbox") && (
+																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "checkbox" && (
 																	<div className="flex flex-col space-y-1 font-light">
 																		{/* Loop through checkbox values */}
-																		{frm?.value.length > 0 && frm?.value?.map((v: any, k: number) => (
-																			<div key={k} className="relative flex items-center group space-x-1">
-																				<div className="flex items-center space-x-1 font-light"
-																					onClick={() => {
-																						setSearch([]);
-																						setLoading(true);
-																						searchAttributeMeta("", frm?.id);
-																						setOpen(["search", [i, frm, item, child, j]]);
-																					}}
-																				>
-																					{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
-																						<>
-																							<div
-																								className="w-4 h-4 rounded-full border border-gray-300"
-																								style={{ backgroundColor: v?.value }}></div>
-																							<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
-																						</>
-																					)}
-																					{checkStringIsTextOrColorHexOrURL(v?.value) !== "color" && (
-																						<>
-																							<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
-																						</>
-																					)}
-																				</div>
-																				{/* Delete */}
-																				<div className="del text-red-500 cursor-pointer">
+																		{frm?.value.length > 0 &&
+																			frm?.value?.map((v: any, k: number) => (
+																				<div
+																					key={k}
+																					className="relative flex items-center group space-x-1">
 																					<div
+																						className="flex items-center space-x-1 font-light"
 																						onClick={() => {
-																							if (confirm("Are you sure you want to remove this item?")) {
-																								deleteCheckboxValue(frm, item, v, i, j, child);
-																							}
+																							setSearch([]);
+																							setLoading(true);
+																							searchAttributeMeta("", frm?.id);
+																							setOpen(["search", [i, frm, item, child, j]]);
 																						}}>
-																						<X className="w-4 h-4" />
+																						{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
+																							<>
+																								<div
+																									className="w-4 h-4 rounded-full border border-gray-300"
+																									style={{ backgroundColor: v?.value }}></div>
+																								<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
+																							</>
+																						)}
+																						{checkStringIsTextOrColorHexOrURL(v?.value) !== "color" && (
+																							<>
+																								<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
+																							</>
+																						)}
+																					</div>
+																					{/* Delete */}
+																					<div className="del text-red-500 cursor-pointer">
+																						<div
+																							onClick={() => {
+																								if (confirm("Are you sure you want to remove this item?")) {
+																									deleteCheckboxValue(frm, item, v, i, j, child);
+																								}
+																							}}>
+																							<X className="w-4 h-4" />
+																						</div>
 																					</div>
 																				</div>
-																			</div>
-																		))}
+																			))}
 																		{/* IF No value */}
 																		{frm?.value?.length === 0 && (
 																			<span
@@ -346,15 +350,13 @@ export default function OrderAttribute(props: any) {
 																					setLoading(true);
 																					searchAttributeMeta("", frm?.id);
 																					setOpen(["search", [i, frm, item, child, j]]);
-																				}}
-																			>
+																				}}>
 																				<Search className="w-4 h-4" />
 																				<span>{frm?.title}</span>
 																			</span>
 																		)}
 																	</div>
 																)}
-
 															</div>
 														)}
 													</div>
@@ -363,7 +365,7 @@ export default function OrderAttribute(props: any) {
 												{!frm?.value && (
 													<div className="flex items-center justify-between group space-x-2">
 														{/* IF Type is text field then show input */}
-														{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "text") && (
+														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "text" && (
 															<div className="flex items-center space-x-2">
 																<span>{frm?.title}</span>
 																<Input
@@ -382,7 +384,7 @@ export default function OrderAttribute(props: any) {
 															</div>
 														)}
 														{/* IF Type is not text field then show select/checkbox */}
-														{(atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
+														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
 															<span
 																className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
 																onClick={() => {
@@ -390,8 +392,7 @@ export default function OrderAttribute(props: any) {
 																	setLoading(true);
 																	searchAttributeMeta("", frm?.id);
 																	setOpen(["search", [i, frm, item, child, j]]);
-																}}
-															>
+																}}>
 																<Search className="w-4 h-4" />
 																<span>{frm?.title}</span>
 															</span>
@@ -486,19 +487,17 @@ export default function OrderAttribute(props: any) {
 				</DialogContent>
 			</Dialog>
 
-
 			<Dialog
 				open={open[0] === "search"}
 				defaultOpen={false}
 				onOpenChange={(open) => {
 					setSearch([]);
 					setLoading(true);
-					setOpen([open ? "search" : "", null])
-				}}
-			>
+					setOpen([open ? "search" : "", null]);
+				}}>
 				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
 					<DialogHeader>
-						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ''}</DialogTitle>
+						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ""}</DialogTitle>
 					</DialogHeader>
 					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
 						<Input
@@ -507,20 +506,20 @@ export default function OrderAttribute(props: any) {
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
 									const search = (e.target as HTMLInputElement)?.value;
-									const parentId = open[1] ? open[1][1]?.id : '';
+									const parentId = open[1] ? open[1][1]?.id : "";
 									searchAttributeMeta(search, parentId);
 								}
 							}}
 						/>
 						<CommandList>
 							<CommandEmpty>No data found.</CommandEmpty>
-							{loading && (
-								<AppLoading />
-							)}
+							{loading && <AppLoading />}
 							{!loading && (
 								<>
 									{search?.length > 0 && (
-										<CommandGroup heading="Search Results" className="max-h-[300px] overflow-y-auto">
+										<CommandGroup
+											heading="Search Results"
+											className="max-h-[300px] overflow-y-auto">
 											{search?.map((item: any, index: number) => (
 												<CommandItem
 													key={index}
@@ -536,7 +535,7 @@ export default function OrderAttribute(props: any) {
 															value: item?.value,
 														};
 														// Check type
-														const type = atts?.find((att: any) => att?.id === open[1][2]?.id)?.children?.find((c: any) => c?.id === getFrmbyIndex?.id)?.type
+														const type = atts?.find((att: any) => att?.id === open[1][2]?.id)?.children?.find((c: any) => c?.id === getFrmbyIndex?.id)?.type;
 														const updatedChildren = open[1][3]?.map((child: any, i: number) => {
 															if (i === frmIndex) {
 																// if type != checkbox then set value {} but if type == checkbox then set value [{}]
@@ -591,7 +590,6 @@ export default function OrderAttribute(props: any) {
 					</Command>
 				</DialogContent>
 			</Dialog>
-
 		</div>
 	);
 }

@@ -168,7 +168,7 @@ export default function Fetch(props: any) {
 				onClose={() => setOpen(["", null])}
 				open={open[0] === "create"}
 				destroyOnClose={true}
-				width={800}
+				width={1200}
 				maskClosable={false}
 				extra={
 					<Button
@@ -194,7 +194,7 @@ export default function Fetch(props: any) {
 				onClose={() => setOpen(["", null])}
 				title={`Edit ${title}`}
 				placement="right"
-				width={800}
+				width={1200}
 				destroyOnClose={true}
 				extra={
 					<div className="flex items-center space-x-2">

@@ -10,6 +10,7 @@ import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { enumPermission, enumPublished } from "@/lib/enum";
 import { stringToKeyValue } from "@/lib/utils";
@@ -330,50 +331,64 @@ export default function FormEdit(props: any) {
 							/>
 						</div>
 
-						{/* Loop through the attribute data and create the fields dynamically */}
-						{atts?.map((item: any) => {
-							return (
-								<Fragment key={item.id}>
-									<h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-5">{item.title}</h3>
-									<div className="grid grid-cols-3 gap-5">
-										{item?.children?.map((child: any) => {
-											const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
-											return (
-												<Fragment key={child.id}>
-													<FormField
-														control={form.control}
-														name={fieldName as keyof z.infer<typeof FormSchema>}
-														render={({ field }) => (
-															<FormItem>
-																<FormLabel>{child.title}</FormLabel>
-																{child?.type === "text" && (
-																	<FormControl>
-																		<Input {...field} />
-																	</FormControl>
-																)}
-																{(child?.type === "select" || child?.type === "checkbox") && (
-																	<>
-																		{FieldSelectAttribute({
-																			mode: id ? "edit" : "create",
-																			field,
-																			form,
-																			type: child?.type,
-																			key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
-																			id: child.id,
-																		})}
-																	</>
-																)}
-																<FormMessage />
-															</FormItem>
-														)}
-													/>
-												</Fragment>
-											);
-										})}
-									</div>
-								</Fragment>
-							);
-						})}
+						<Tabs
+							defaultValue={atts?.[0]?.id}
+							className="mb-10">
+							<TabsList className="mt-5 mb-2">
+								{atts?.map((item: any) => (
+									<TabsTrigger
+										key={item.id}
+										value={item.id}>
+										{item.title}
+									</TabsTrigger>
+								))}
+							</TabsList>
+							<div className="grow text-start">
+								{atts?.map((item: any) => (
+									<TabsContent
+										key={item.id}
+										value={item.id}
+										className="space-y-15">
+										<div className="grid grid-cols-3 gap-5">
+											{item?.children?.map((child: any) => {
+												const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
+												return (
+													<Fragment key={child.id}>
+														<FormField
+															control={form.control}
+															name={fieldName as keyof z.infer<typeof FormSchema>}
+															render={({ field }) => (
+																<FormItem>
+																	<FormLabel>{child.title}</FormLabel>
+																	{child?.type === "text" && (
+																		<FormControl>
+																			<Input {...field} />
+																		</FormControl>
+																	)}
+																	{(child?.type === "select" || child?.type === "checkbox") && (
+																		<>
+																			{FieldSelectAttribute({
+																				mode: id ? "edit" : "create",
+																				field,
+																				form,
+																				type: child?.type,
+																				key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																				id: child.id,
+																			})}
+																		</>
+																	)}
+																	<FormMessage />
+																</FormItem>
+															)}
+														/>
+													</Fragment>
+												);
+											})}
+										</div>
+									</TabsContent>
+								))}
+							</div>
+						</Tabs>
 
 						{role === "ADMIN" && (
 							<>

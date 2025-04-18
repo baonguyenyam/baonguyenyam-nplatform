@@ -146,26 +146,25 @@ export default function FormEdit(props: any) {
 								</FormItem>
 							)}
 						/>
-						{role === "ADMIN" && (
-							<FormField
-								control={form.control}
-								name="f_published"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Published</FormLabel>
-										{FieldSelect({
-											field,
-											data: enumPublished.map((item) => ({
-												id: item.value,
-												name: item.label,
-											})),
-										})}
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						)}
-						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-end space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+							{role === "ADMIN" && (
+								<FormField
+									control={form.control}
+									name="f_published"
+									render={({ field }) => (
+										<FormItem>
+											{FieldSelect({
+												field,
+												data: enumPublished.map((item) => ({
+													id: item.value,
+													name: item.label,
+												})),
+											})}
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 							<Button
 								type="submit"
 								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
