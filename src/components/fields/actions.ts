@@ -10,6 +10,8 @@ export async function searchAttribute(attributeId: string, s: string) {
 		const db = await models.AttributeMeta.getAllAttributeByParentID({
 			parent: Number(attributeId),
 			s,
+			take: 30,
+			skip: 0,
 		});
 		return {
 			data: db,

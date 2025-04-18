@@ -16,25 +16,18 @@ export function FieldSelectAttribute(props: any) {
 	const [select, setSelect] = useState<any>([]);
 
 	const searchAll = (e: any) => {
-		if (e.length > 0 && e.length < 3) {
-			return;
-		}
-		if (e.length > 2) {
-			actions.searchAttribute(id, e).then((res: any) => {
-				if (res.success === "success") {
-					// data: [
-					// 	{
-					// 		"id": Number,
-					// 		"key": String,
-					// 		"value": String,
-					// 	}
-					// ]
-					setData(res.data);
-				}
-			});
-		} else {
-			setData([]);
-		}
+		actions.searchAttribute(id, e).then((res: any) => {
+			if (res.success === "success") {
+				// data: [
+				// 	{
+				// 		"id": Number,
+				// 		"key": String,
+				// 		"value": String,
+				// 	}
+				// ]
+				setData(res.data);
+			}
+		});
 	};
 
 	const fetchData = useCallback(async () => {
@@ -109,18 +102,21 @@ export function FieldSelectAttribute(props: any) {
 					<Button
 						variant="outline"
 						role="combobox"
+						onClick={() => {
+							searchAll("");
+						}}
 						className={cn("justify-between", !field.value && "text-muted-foreground")}>
 						{type === "select" && <>{field.value ? data?.find((item: any) => item.value === field.value)?.key : "Select one"}</>}
 						{type === "checkbox" && (
 							<>
 								{select && select.length > 0
 									? select.map((item: any) => (
-											<span
-												key={item}
-												className="mr-2">
-												{data?.find((i: any) => i.value === item)?.key},
-											</span>
-										))
+										<span
+											key={item}
+											className="mr-2">
+											{data?.find((i: any) => i.value === item)?.key},
+										</span>
+									))
 									: "Select one"}
 							</>
 						)}

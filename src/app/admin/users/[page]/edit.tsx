@@ -331,64 +331,66 @@ export default function FormEdit(props: any) {
 							/>
 						</div>
 
-						<Tabs
-							defaultValue={atts?.[0]?.id}
-							className="mb-10">
-							<TabsList className="mt-5 mb-2">
-								{atts?.map((item: any) => (
-									<TabsTrigger
-										key={item.id}
-										value={item.id}>
-										{item.title}
-									</TabsTrigger>
-								))}
-							</TabsList>
-							<div className="grow text-start">
-								{atts?.map((item: any) => (
-									<TabsContent
-										key={item.id}
-										value={item.id}
-										className="space-y-15">
-										<div className="grid grid-cols-3 gap-5">
-											{item?.children?.map((child: any) => {
-												const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
-												return (
-													<Fragment key={child.id}>
-														<FormField
-															control={form.control}
-															name={fieldName as keyof z.infer<typeof FormSchema>}
-															render={({ field }) => (
-																<FormItem>
-																	<FormLabel>{child.title}</FormLabel>
-																	{child?.type === "text" && (
-																		<FormControl>
-																			<Input {...field} />
-																		</FormControl>
-																	)}
-																	{(child?.type === "select" || child?.type === "checkbox") && (
-																		<>
-																			{FieldSelectAttribute({
-																				mode: id ? "edit" : "create",
-																				field,
-																				form,
-																				type: child?.type,
-																				key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
-																				id: child.id,
-																			})}
-																		</>
-																	)}
-																	<FormMessage />
-																</FormItem>
-															)}
-														/>
-													</Fragment>
-												);
-											})}
-										</div>
-									</TabsContent>
-								))}
-							</div>
-						</Tabs>
+						{atts?.length > 0 && (
+							<Tabs
+								defaultValue={atts?.[0]?.id}
+								className="mb-10">
+								<TabsList className="mt-5 mb-2">
+									{atts?.map((item: any) => (
+										<TabsTrigger
+											key={item.id}
+											value={item.id}>
+											{item.title}
+										</TabsTrigger>
+									))}
+								</TabsList>
+								<div className="grow text-start">
+									{atts?.map((item: any) => (
+										<TabsContent
+											key={item.id}
+											value={item.id}
+											className="space-y-15">
+											<div className="grid grid-cols-3 gap-5">
+												{item?.children?.map((child: any) => {
+													const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
+													return (
+														<Fragment key={child.id}>
+															<FormField
+																control={form.control}
+																name={fieldName as keyof z.infer<typeof FormSchema>}
+																render={({ field }) => (
+																	<FormItem>
+																		<FormLabel>{child.title}</FormLabel>
+																		{child?.type === "text" && (
+																			<FormControl>
+																				<Input {...field} />
+																			</FormControl>
+																		)}
+																		{(child?.type === "select" || child?.type === "checkbox") && (
+																			<>
+																				{FieldSelectAttribute({
+																					mode: id ? "edit" : "create",
+																					field,
+																					form,
+																					type: child?.type,
+																					key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																					id: child.id,
+																				})}
+																			</>
+																		)}
+																		<FormMessage />
+																	</FormItem>
+																)}
+															/>
+														</Fragment>
+													);
+												})}
+											</div>
+										</TabsContent>
+									))}
+								</div>
+							</Tabs>
+						)}
 
 						{role === "ADMIN" && (
 							<>
@@ -410,12 +412,15 @@ export default function FormEdit(props: any) {
 										</FormItem>
 									)}
 								/>
+							</>
+						)}
+						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+							{role === "ADMIN" && (
 								<FormField
 									control={form.control}
 									name="f_published"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Published</FormLabel>
 											{FieldSelect({
 												field,
 												data: enumPublished.map((item) => ({
@@ -427,9 +432,7 @@ export default function FormEdit(props: any) {
 										</FormItem>
 									)}
 								/>
-							</>
-						)}
-						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-end space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+							)}
 							<Button
 								type="submit"
 								disabled={!form.formState.isDirty || form.formState.isSubmitting}>

@@ -15,13 +15,13 @@ export default function CheckAdminState() {
 	const memoriezCategories = useAppSelector((state) => state.categoriesState.data);
 
 	const fetchData = useCallback(async () => {
-		if (!memoriezAtts || !Array.isArray(memoriezAtts) || memoriezAtts.length === 0) {
+		if (!memoriezAtts || !Array.isArray(memoriezAtts)) {
 			const _attribute = await actions.getAllAttributes();
 			if (_attribute.success === "success") {
 				dispatch(setAttribute(_attribute.data));
 			}
 		}
-		if (!memoriezCategories || !Array.isArray(memoriezCategories) || memoriezCategories.length === 0) {
+		if (!memoriezCategories || !Array.isArray(memoriezCategories)) {
 			const _categories = await actions.getAllCategories();
 			if (_categories.success === "success") {
 				dispatch(setCategory(_categories.data));

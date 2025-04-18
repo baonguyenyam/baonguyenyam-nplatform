@@ -171,15 +171,17 @@ export default function OrderAttribute(props: any) {
 					<h3 className="font-semibold mb-0">Additional Information</h3>
 					<p className="text-sm text-muted-foreground">You can add more information about this order here.</p>
 				</div>
-				<div className="ml-auto flex items-center space-x-2">
-					<Info className={`w-4 h-4 text-red-500 ${selected === current ? "hidden" : ""}`} />
-					<Button
-						type="button"
-						disabled={selected === current}
-						onClick={saveAttributeMeta}>
-						Save
-					</Button>
-				</div>
+				{atts?.length > 0 && (
+					<div className="ml-auto flex items-center space-x-2">
+						<Info className={`w-4 h-4 text-red-500 ${selected === current ? "hidden" : ""}`} />
+						<Button
+							type="button"
+							disabled={selected === current}
+							onClick={saveAttributeMeta}>
+							Save
+						</Button>
+					</div>
+				)}
 			</div>
 
 			<div className="flex flex-col space-y-4">
@@ -431,6 +433,12 @@ export default function OrderAttribute(props: any) {
 					</Fragment>
 				))}
 			</div>
+
+			{atts?.length === 0 && (
+				<div className="flex items-center justify-between py-2 text-gray-500">
+					<p>No attributes found, please add attributes first</p>
+				</div>
+			)}
 
 			<Dialog
 				open={open[0] === "create"}
