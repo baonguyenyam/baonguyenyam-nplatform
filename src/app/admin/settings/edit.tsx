@@ -102,7 +102,7 @@ export default function FormEdit() {
 		button.classList.add("opacity-50");
 		button.classList.remove("hover:bg-red-500");
 		button.classList.add("cursor-not-allowed");
-		toast.success("Cache cleared");
+		toast.success("Local Storage cleared");
 	};
 
 	const fetchData = useCallback(async () => {
@@ -165,7 +165,7 @@ export default function FormEdit() {
 									<TabsTrigger
 										value="tab-4"
 										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
-										Cache configuration
+										Local configuration
 									</TabsTrigger>
 								</TabsList>
 								<div className="grow text-start">
@@ -363,7 +363,7 @@ export default function FormEdit() {
 										className="space-y-10">
 										<div className="item">
 											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
-												Cache
+												Local Storage
 											</h3>
 											{Object.keys(localStorage)?.map((key) => {
 												return (
@@ -397,9 +397,9 @@ export default function FormEdit() {
 												onClick={(e) => {
 													e.preventDefault();
 													localStorage.clear();
-													toast.success("All cache cleared");
+													toast.success("All Local Storage cleared");
 												}}>
-												Clear all cache
+												Clear all Local Storage
 											</Button>
 										</div>
 									</TabsContent>
