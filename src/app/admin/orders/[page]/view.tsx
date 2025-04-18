@@ -21,7 +21,6 @@ export default function FormView(props: any) {
 			setData(res.data);
 			setThumbnail(res?.data?.image);
 			setLoading(false);
-			console.log("res.data", res.data);
 		} else {
 			setData(null);
 			setLoading(false);
