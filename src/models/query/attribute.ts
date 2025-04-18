@@ -106,7 +106,9 @@ export const getAllAttributes = async (query: any) => {
 						},
 					},
 				},
-				orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
+				orderBy: {
+					order: "asc",
+				}
 			});
 
 		return attributes;
