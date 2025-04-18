@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -80,7 +80,10 @@ const FormSchema = z.object({
 
 export default function FormEdit(props: any) {
 	const { id, onChange } = props;
-	const categories = useAppSelector((state) => state?.categoriesState.data.filter((item) => item.type === "order"));
+	const memoriez = useAppSelector((state) => state.categoriesState.data);
+	const categories = useMemo(() => {
+		return memoriez.filter((item) => item.type === "order");
+	}, [memoriez]);
 	const [users, setUsers] = useState<any>([]);
 	const [customers, setCustomers] = useState<any>([]);
 	const [loading, setLoading] = useState(true);

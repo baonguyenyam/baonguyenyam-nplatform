@@ -31,7 +31,6 @@ export default function CheckState() {
 		if (state?.pageSize === undefined) {
 			const res = await actions.getAllSettings();
 			if (res.success === "success") {
-				console.log("res", res.data);
 				dispatch(
 					SET_APP_STATE({
 						pageSize: res.data?.find((item: any) => item.key === "page")?.value ?? 10,

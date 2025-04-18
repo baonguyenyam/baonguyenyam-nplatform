@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Copy, EllipsisVertical, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
@@ -15,7 +15,11 @@ import * as actions from "./actions";
 
 export default function OrderAttribute(props: any) {
 	const { data } = props;
-	const atts = useAppSelector((state) => state.attributeState.data).filter((item) => item?.mapto === "order");
+	const memoriez = useAppSelector((state) => state.attributeState.data);
+	const atts = useMemo(() => {
+		return memoriez.filter((item) => item?.mapto === "order");
+	}, [memoriez]);
+
 	const [open, setOpen] = useState<any>(["", null]);
 	const [selected, setSelected] = useState<any>([]);
 	const [current, setCurrent] = useState<any>(null);
@@ -456,6 +460,11 @@ export default function OrderAttribute(props: any) {
 														setSearch([]);
 														setOpen(["", null]);
 													}}>
+													{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
+														<div
+															className="w-4 h-4 rounded-full border border-gray-300"
+															style={{ backgroundColor: item?.value }}></div>
+													)}
 													{item?.key}
 												</CommandItem>
 											))}

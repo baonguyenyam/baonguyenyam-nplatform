@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -47,7 +47,10 @@ const FormSchema = z.object({
 export default function FormEdit(props: any) {
 	const type = "post";
 	const { id, onChange } = props;
-	const categories = useAppSelector((state) => state.categoriesState.data).filter((item) => item.type === type);
+	const memoriez = useAppSelector((state) => state.categoriesState.data);
+	const categories = useMemo(() => {
+		return memoriez.filter((item) => item?.type === type);
+	}, [memoriez]);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any>(null);
 	const [thumbnail, setThumbnail] = useState<any>(null);
