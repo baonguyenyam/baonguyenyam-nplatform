@@ -13,6 +13,22 @@ export default function OrderAttribute(props: any) {
 
 	const [selected, setSelected] = useState<any>([]);
 
+	const findLongestItem = (arr: any) => {
+		if (!arr || arr.length === 0) {
+			return null;
+		}
+		let longest = 0;
+		let longestItem: any = null;
+		arr.forEach((item: any) => {
+			if (item?.length > longest) {
+				longest = item?.length;
+				longestItem = item;
+			}
+		});
+
+		return longestItem;
+	}
+
 	useEffect(() => {
 		if (data?.data) {
 			const dataParsed = JSON.parse(data?.data);
@@ -41,10 +57,19 @@ export default function OrderAttribute(props: any) {
 								<tr
 									className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
 								>
-									{item?.children[0]?.map((frm: any, j: number) => (
-										<Fragment key={j}>
+									{/* Find item?.children longest */}
+									{/* {item?.children.find((child: any) => child?.length > 0)?.map((child: any, i: number) => (
+										<Fragment key={i}>
 											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">
-												{frm?.title}
+												{child?.title}
+											</th>
+										</Fragment>
+									))} */}
+
+									{findLongestItem(item?.children)?.map((child: any, i: number) => (
+										<Fragment key={i}>
+											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">
+												{child?.title}
 											</th>
 										</Fragment>
 									))}
