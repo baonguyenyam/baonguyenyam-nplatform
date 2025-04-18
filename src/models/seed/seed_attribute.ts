@@ -7,7 +7,6 @@ export const AttributeSeed = async () => {
 	// Create 10 more attribute
 	const Arr = ["Screen", "Tshirt"];
 	const SubCategories = ["Screen Size", "Screen Color", "Screen Type"];
-	const type = ["select", "select", "checkbox", "select"];
 	const SizesScreen = ["1900x1200", "2560x1600", "3840x2160", "5120x2880"];
 	const Sizes = ["S", "M", "L", "XL", "XXL"];
 	const tshirt = ["Color", "Size", "Company", "Number"];
@@ -34,10 +33,11 @@ export const AttributeSeed = async () => {
 			value: "#0000FF",
 		},
 	];
-	const UserArr = ["Interest", "Demographic"];
-	const UserCategories = ["Design", "IT", "Marketing", "Sales"];
-	const UserType = ["text"];
+	const UserArr = ["Interest", "Demographic", "Job", "Education"];
+	const Job = ["Software Engineer", "Data Scientist", "Product Manager", "Designer", "Marketing"];
+	const Education = ["High School", "Bachelor's Degree", "Master's Degree", "PhD", "Other"];
 	const UserDemographic = ["Sex", "Age", "Location", "Income", "Weight", "Height"];
+	const sex = ["Male", "Female"];
 
 	Arr.forEach(async (item) => {
 		// check if the attribute already exists
@@ -187,50 +187,44 @@ export const AttributeSeed = async () => {
 			});
 
 			if (item === "Interest") {
-				for (let i = 0; i < UserCategories.length; i++) {
-					const SubID = await prisma.attribute.create({
-						data: {
-							title: UserCategories[i],
-							content: faker.lorem.paragraph(),
-							createdAt: new Date(),
-							childrenId: getID.id,
-							type: UserType[i] ?? "text",
-							published: true,
-						},
-					});
-					if (UserCategories[i] === "Design") {
-						await prisma.attributeMeta.create({
-							data: {
-								attributeId: SubID.id,
-								value: "Graphic Design",
-								key: `Graphic Design`,
-							},
-						});
-						await prisma.attributeMeta.create({
-							data: {
-								attributeId: SubID.id,
-								value: "Web Design",
-								key: `Web Design`,
-							},
-						});
-					}
-					if (UserCategories[i] === "IT") {
-						await prisma.attributeMeta.create({
-							data: {
-								attributeId: SubID.id,
-								value: "Software Development",
-								key: `Software Development`,
-							},
-						});
-						await prisma.attributeMeta.create({
-							data: {
-								attributeId: SubID.id,
-								value: "Hardware Development",
-								key: `Hardware Development`,
-							},
-						});
-					}
-				}
+				const SubID = await prisma.attribute.create({
+					data: {
+						title: "Interest",
+						content: faker.lorem.paragraph(),
+						createdAt: new Date(),
+						childrenId: getID.id,
+						type: "checkbox",
+						published: true,
+					},
+				});
+				await prisma.attributeMeta.create({
+					data: {
+						attributeId: SubID.id,
+						value: "Graphic Design",
+						key: `Graphic Design`,
+					},
+				});
+				await prisma.attributeMeta.create({
+					data: {
+						attributeId: SubID.id,
+						value: "Web Design",
+						key: `Web Design`,
+					},
+				});
+				await prisma.attributeMeta.create({
+					data: {
+						attributeId: SubID.id,
+						value: "Software Development",
+						key: `Software Development`,
+					},
+				});
+				await prisma.attributeMeta.create({
+					data: {
+						attributeId: SubID.id,
+						value: "Hardware Development",
+						key: `Hardware Development`,
+					},
+				});
 			}
 			if (item === "Demographic") {
 				for (let i = 0; i < UserDemographic.length; i++) {
@@ -239,11 +233,130 @@ export const AttributeSeed = async () => {
 							title: UserDemographic[i],
 							content: faker.lorem.paragraph(),
 							childrenId: getID.id,
-							type: UserType[i] ?? "text",
+							type: UserDemographic[i] === "Sex" ? "select" : "text",
 							published: true,
 						},
 					});
 				}
+				// Add Male, Female to Sex
+				const SubID = await prisma.attribute.findFirst({
+					where: {
+						title: "Sex",
+					},
+				});
+				if (SubID) {
+					for (let i = 0; i < sex.length; i++) {
+						await prisma.attributeMeta.create({
+							data: {
+								attributeId: SubID.id,
+								value: sex[i],
+								key: sex[i],
+							},
+						});
+					}
+				}
+			}
+			if (item === "Job") {
+				const SubID = await prisma.attribute.create({
+					data: {
+						title: "Work",
+						content: faker.lorem.paragraph(),
+						childrenId: getID.id,
+						type: "select",
+						published: true,
+					},
+				});
+				for (let i = 0; i < Job.length; i++) {
+					await prisma.attributeMeta.create({
+						data: {
+							attributeId: SubID.id,
+							value: Job[i],
+							key: Job[i],
+						},
+					});
+				}
+			}
+			if (item === "Education") {
+				const SubID = await prisma.attribute.create({
+					data: {
+						title: "Grade",
+						content: faker.lorem.paragraph(),
+						childrenId: getID.id,
+						type: "select",
+						published: true,
+					},
+				});
+				for (let i = 0; i < Education.length; i++) {
+					await prisma.attributeMeta.create({
+						data: {
+							attributeId: SubID.id,
+							value: Education[i],
+							key: Education[i],
+						},
+					});
+				}
+			}
+		}
+	});
+
+	const PostAtt = ["Author", "Source"];
+	const PostAttList = ["Author List", "Copyright"];
+	const PostType = ["checkbox", "text"];
+	const PostAuthor = ["John Doe", "Jane Doe", "Mark Smith", "Mary Jane"];
+
+	PostAtt.forEach(async (item) => {
+		// check if the attribute already exists
+		const existingAttribute = await prisma.attribute.findFirst({
+			where: {
+				title: item,
+			},
+		});
+		if (existingAttribute) {
+			return;
+		} else {
+			// create the attribute
+			const getID = await prisma.attribute.create({
+				data: {
+					title: item,
+					content: faker.lorem.paragraph(),
+					mapto: "post",
+					published: true,
+				},
+			});
+
+			// IF author => add author list then add post author to author list
+			if (item === "Author") {
+				const SubID = await prisma.attribute.create({
+					data: {
+						title: PostAttList[0],
+						content: faker.lorem.paragraph(),
+						childrenId: getID.id,
+						type: PostType[0],
+						published: true,
+					},
+				});
+				for (let i = 0; i < PostAuthor.length; i++) {
+					await prisma.attributeMeta.create({
+						data: {
+							attributeId: SubID.id,
+							value: PostAuthor[i],
+							key: PostAuthor[i],
+						},
+					});
+				}
+			}
+
+			// IF source => add copyright
+			if (item === "Source") {
+				await prisma.attribute.create({
+					data: {
+						title: PostAttList[1],
+						content: faker.lorem.paragraph(),
+						childrenId: getID.id,
+						type: PostType[1],
+						published: true,
+					},
+				});
 			}
 		}
 	});

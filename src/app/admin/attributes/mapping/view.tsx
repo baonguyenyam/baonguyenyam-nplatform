@@ -5,20 +5,26 @@ import { ArrowRight, Construction, Divide, Dot, Folder, List, ListCollapse, Minu
 
 import AppLoading from "@/components/AppLoading";
 import { Badge } from "@/components/ui/badge";
-import { useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { setAttribute } from "@/store/attributeSlice";
+
+import * as actions from "./actions";
 
 export default function View() {
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const [loading, setLoading] = useState(true);
 	const attrs = useAppSelector((state) => state.attributeState.data);
 	const att_users = useMemo(() => attrs?.filter((item: any) => item.mapto === "user"), [attrs]);
 	const att_orders = useMemo(() => attrs?.filter((item: any) => item.mapto === "order"), [attrs]);
 	const att_posts = useMemo(() => attrs?.filter((item: any) => item.mapto === "post"), [attrs]);
 
-	console.log("att_users", att_users);
-
 	const fetchData = useCallback(async () => {
+		const all = await actions.getAll({ min: true, published: true });
+		if (all?.data) {
+			dispatch(setAttribute(all?.data));
+		}
 		setLoading(false);
-	}, []);
+	}, [dispatch]);
 
 	const template = (item: any) => {
 		return (
