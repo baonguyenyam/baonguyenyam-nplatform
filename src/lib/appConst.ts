@@ -80,7 +80,7 @@ export const FooterItems = [
 
 export const appState = {
 	appName: "nPlatform",
-	appVersion: "1.0.0",
+	appVersion: "2.0.0",
 	appDescription: "nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
 	ACCEPTED_IMG_FILE_TYPES: ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"],
 	ACCEPTED_VIDEO_FILE_TYPES: ["video/mp4", "video/avi", "video/mov", "video/wmv", "video/flv"],
