@@ -11,7 +11,7 @@
     "reset": "prisma migrate reset --force --skip-seed",
     "migrate": "prisma migrate dev --name init",
     "update": "prisma migrate status --schema=./prisma/schema.prisma",
-    "seed": "prisma generate && npx prisma db seed -- --environment development"
+    "seed": "npx prisma db seed -- --environment development"
   },
   "prisma": {
     "seed": "tsx src/models/seed/index.ts"
@@ -59,7 +59,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "lexical": "^0.30.0",
-    "lucide-react": "^0.488.0",
+    "lucide-react": "^0.492.0",
     "memoize-one": "^6.0.0",
     "next": "15.3.1-canary.13",
     "next-auth": "^5.0.0-beta.25",

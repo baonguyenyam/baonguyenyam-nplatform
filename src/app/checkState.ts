@@ -6,8 +6,6 @@ import { appState } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
 import { useAppDispatch } from "@/store";
 import { SET_APP_STATE } from "@/store/appSlice";
-import { setAttribute } from "@/store/attributeSlice";
-import { setCategory } from "@/store/categoriesSlice";
 
 import * as actions from "./actions";
 
@@ -25,8 +23,6 @@ export default function CheckState() {
 		bill_company_info?: string;
 		bill_company_phone?: string;
 	};
-	const atts = useAppSelector((state) => state?.attributeState.data);
-	const categories = useAppSelector((state) => state?.categoriesState.data);
 	const fetchData = useCallback(async () => {
 		if (state?.pageSize === undefined) {
 			const res = await actions.getAllSettings();
@@ -47,19 +43,7 @@ export default function CheckState() {
 				);
 			}
 		}
-		if (atts?.length == 0) {
-			const _attribute = await actions.getAllAttributes();
-			if (_attribute.success === "success") {
-				dispatch(setAttribute(_attribute.data));
-			}
-		}
-		if (categories?.length == 0) {
-			const _categories = await actions.getAllCategories();
-			if (_categories.success === "success") {
-				dispatch(setCategory(_categories.data));
-			}
-		}
-	}, [atts?.length, categories?.length, dispatch, state]);
+	}, [dispatch, state]);
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
