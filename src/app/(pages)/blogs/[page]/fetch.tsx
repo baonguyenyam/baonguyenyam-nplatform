@@ -25,9 +25,10 @@ export default function Fetch(props: any) {
 	);
 
 	const fetchData = useCallback(async () => {
+		const public_APIUrl = process.env.public_APIUrl;
 		// get all items and leave the first one
 		const getAll = cache(async () => {
-			const res = await fetch(`${process.env.PUBLIC_API_URL}/public/posts?skip=${query.skip}&take=${Number(pageSize) + 1}`).then((res) => res.json());
+			const res = await fetch(`${public_APIUrl}/public/posts?skip=${query.skip}&take=${Number(pageSize) + 1}`).then((res) => res.json());
 			return res;
 		});
 		const resResult = await getAll();
