@@ -222,13 +222,6 @@ export const getAllOrders = async (query: any) => {
 					select: {
 						id: true,
 						name: true,
-						email: true,
-						phone: true,
-						address: true,
-						city: true,
-						state: true,
-						zip: true,
-						country: true,
 					},
 				},
 				date_created: true,
