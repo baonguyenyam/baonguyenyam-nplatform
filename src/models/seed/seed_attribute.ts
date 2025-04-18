@@ -69,7 +69,7 @@ export const AttributeSeed = async () => {
 							content: faker.lorem.paragraph(),
 							createdAt: new Date(),
 							childrenId: getID.id,
-							type: type[i],
+							type: "select",
 							published: true,
 						},
 					});

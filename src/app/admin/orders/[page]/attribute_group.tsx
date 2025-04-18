@@ -547,6 +547,9 @@ export default function OrderAttribute(props: any) {
 																	};
 																} else {
 																	// If already exist then do not add
+																	if (!child?.value) {
+																		child.value = [];
+																	}
 																	const isExist = child?.value?.find((v: any) => v?.id === _item?.id);
 																	if (isExist) {
 																		toast.error("Already exist");
