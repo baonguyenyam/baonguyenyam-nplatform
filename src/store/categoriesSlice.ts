@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: { data: any[] } = { data: [] }
+const initialState: { data: any } = { data: null }
 
 const categoriesSlice = createSlice({
 	name: "appState",

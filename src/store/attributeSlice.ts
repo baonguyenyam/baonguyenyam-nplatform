@@ -26,7 +26,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // 	]
 // }
 
-const initialState: { data: any[] } = { data: [] }
+const initialState: { data: any } = { data: null }
 
 const attributeSlice = createSlice({
 	name: "attributeState",

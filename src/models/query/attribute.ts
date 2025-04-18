@@ -57,6 +57,7 @@ export const getAllAttributes = async (query: any) => {
 					type: true,
 					mapto: true,
 					published: true,
+					order: true,
 					_count: {
 						select: {
 							meta: true,
@@ -79,6 +80,7 @@ export const getAllAttributes = async (query: any) => {
 					type: true,
 					mapto: true,
 					published: true,
+					order: true,
 					children: {
 						where: {
 							published: published ? published : undefined,
@@ -87,6 +89,7 @@ export const getAllAttributes = async (query: any) => {
 							id: true,
 							title: true,
 							type: true,
+							order: true,
 							// meta: {
 							// 	select: {
 							// 		id: true,
@@ -146,7 +149,7 @@ export const deleteAttribute = async (id: number) => {
 
 // update attribute
 export const updateAttribute = async (id: number, data: any) => {
-	const { title, content, type, parent, mapto } = data;
+	const { title, content, type, parent, mapto, order } = data;
 	const parentId = parent ? parseInt(parent) : null;
 
 	try {
@@ -161,6 +164,7 @@ export const updateAttribute = async (id: number, data: any) => {
 				childrenId: parentId,
 				mapto,
 				published: data.published ? data.published : false,
+				order,
 			},
 		});
 		return attribute;
@@ -187,7 +191,7 @@ export const deleteMulti = async (ids: number[]) => {
 
 // updateMulti
 export const updateMulti = async (ids: number[], data: any) => {
-	const { title, content, type, parent, mapto } = data;
+	const { title, content, type, parent, mapto, order } = data;
 	const parentId = parent ? parseInt(parent) : null;
 
 	try {
@@ -203,6 +207,7 @@ export const updateMulti = async (ids: number[], data: any) => {
 				type,
 				mapto,
 				published: data.published ? data.published : false,
+				order
 			},
 		});
 		return attribute;

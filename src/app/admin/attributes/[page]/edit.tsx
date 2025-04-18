@@ -24,6 +24,7 @@ const FormSchema = z.object({
 		.transform((e) => (e === "" ? undefined : e)),
 	f_mapto: z.string().optional().nullable(),
 	f_parent: z.string().optional().nullable(),
+	f_order: z.number().optional().nullable(),
 });
 
 export default function FormEdit(props: any) {
@@ -38,6 +39,7 @@ export default function FormEdit(props: any) {
 			f_title: "",
 			f_content: "",
 			f_mapto: enumAttribute[0].value || null,
+			f_order: 0,
 		},
 	});
 
@@ -48,6 +50,7 @@ export default function FormEdit(props: any) {
 			published: values.f_published === "TRUE" ? true : false,
 			parent: values.f_parent || null,
 			mapto: values.f_mapto || null,
+			order: values.f_order || 0,
 		};
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
@@ -76,6 +79,7 @@ export default function FormEdit(props: any) {
 				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
 				f_content: res?.data?.content || "",
 				f_mapto: res?.data?.mapto || null,
+				f_order: res?.data?.order || 0,
 			});
 			setLoading(false);
 		} else {
@@ -124,6 +128,28 @@ export default function FormEdit(props: any) {
 											{...field}
 											onChange={(e: any) => {
 												field.onChange(e);
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="f_order"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Order</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="0"
+											className="w-auto max-w-[100px]"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e: any) => {
+												field.onChange(Number(e.target.value));
 											}}
 										/>
 									</FormControl>

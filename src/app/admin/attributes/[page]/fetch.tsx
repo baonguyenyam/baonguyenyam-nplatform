@@ -138,6 +138,17 @@ export default function Fetch(props: any) {
 							},
 						},
 						{
+							header: "Order",
+							accessor: "order",
+							custom: (row: any) => {
+								return (
+									<div className="flex items-center space-x-2">
+										<span className="text-sm">{row?.order}</span>
+									</div>
+								);
+							},
+						},
+						{
 							header: "Childrens",
 							accessor: "childrens",
 							custom: (row: any) => {

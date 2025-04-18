@@ -154,6 +154,7 @@ CREATE TABLE "Attribute" (
     "mapto" VARCHAR(255) DEFAULT 'user',
     "published" BOOLEAN NOT NULL DEFAULT false,
     "childrenId" INTEGER,
+    "order" INTEGER DEFAULT 0,
 
     CONSTRAINT "Attribute_pkey" PRIMARY KEY ("id")
 );
@@ -167,6 +168,7 @@ CREATE TABLE "AttributeMeta" (
     "value" TEXT,
     "data" TEXT,
     "attributeId" INTEGER NOT NULL,
+    "order" INTEGER DEFAULT 0,
 
     CONSTRAINT "AttributeMeta_pkey" PRIMARY KEY ("id")
 );

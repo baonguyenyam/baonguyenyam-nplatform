@@ -198,6 +198,8 @@ model Attribute {
   children   Attribute[] @relation("Parent")
   parent     Attribute?  @relation("Parent", fields: [childrenId], references: [id])
 
+  order Int? @default(0)
+
   @@unique([id])
 }
 
@@ -210,6 +212,8 @@ model AttributeMeta {
   data        String?   @db.Text
   attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   attributeId Int
+
+  order Int? @default(0)
 
   @@unique([id])
 }
