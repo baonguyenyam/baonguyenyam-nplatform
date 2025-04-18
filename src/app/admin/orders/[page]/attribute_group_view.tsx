@@ -17,51 +17,53 @@ export default function OrderAttribute(props: any) {
 		if (data?.data) {
 			const dataParsed = JSON.parse(data?.data);
 			setSelected(dataParsed);
+			console.log("dataParsed", dataParsed);
 		}
 	}, [data?.data]);
 
 	return (
 		<div className="block w-full">
 
-			<div className="flex flex-col space-y-4">
+			<div className="flex flex-col">
 				{/* Loop through selected attributes */}
 				{selected?.map((item: any, index: number) => (
 					<Fragment key={index}>
 						<div className="flex flex-col">
-							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg dark:bg-gray-900">
+							<h2 className="">
 								<div className="text-lg font-bold pl-1">{item?.title}</div>
-							</div>
+							</h2>
 						</div>
 						{/* Loop through children */}
-						<div
+						<table
 							id={`father_${item?.id}`}
-							className="flex flex-col space-y-1 whitespace-nowrap">
-							{item?.children?.map((child: any, i: number) => (
-								<div
-									key={i}
-									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
-									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}
+							className="space-y-1 whitespace-nowrap mb-5">
+							<thead>
+								<tr
+									className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
 								>
-									{child?.map((frm: any, j: number) => (
+									{item?.children[0]?.map((frm: any, j: number) => (
 										<Fragment key={j}>
-											<div className="item flex items-center">
+											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">
+												{frm?.title}
+											</th>
+										</Fragment>
+									))}
+								</tr>
+							</thead>
+							<tbody>
+								{item?.children?.map((child: any, i: number) => (
+									<tr
+										key={i}
+										className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}
+									>
+										{child?.map((frm: any, j: number) => (
+											<Fragment key={j}>
 												{frm?.value && (
-													<div className="item flex items-center justify-between group space-x-2">
-														{/* IF Type is text field then show input */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "text" && (
-															<div className="flex items-center space-x-2">
-																<span>{frm?.title}</span>
-																<Input
-																	className="w-full px-2 py-0! h-7"
-																	defaultValue={frm?.value?.value}
-																/>
-															</div>
-														)}
-														{/* IF Type is not text field then show select/checkbox */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
+													<td className="">
+														<div className="p-2">
 															<div className="flex items-center justify-between space-x-2 font-light">
 																{/* Selectbox */}
-																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "select" && (
+																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "checkbox" && (
 																	<div
 																		className="flex items-center space-x-1 font-light">
 																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
@@ -113,19 +115,15 @@ export default function OrderAttribute(props: any) {
 																	</div>
 																)}
 															</div>
-														)}
-													</div>
+														</div>
+													</td>
 												)}
-												{/* IF Empty */}
-												{!frm?.value && (
-													<>N/A</>
-												)}
-											</div>
-										</Fragment>
-									))}
-								</div>
-							))}
-						</div>
+											</Fragment>
+										))}
+									</tr>
+								))}
+							</tbody>
+						</table>
 					</Fragment>
 				))}
 			</div>
