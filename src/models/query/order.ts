@@ -218,19 +218,6 @@ export const getAllOrders = async (query: any) => {
 						name: true,
 					},
 				},
-				customer: {
-					select: {
-						id: true,
-						name: true,
-						email: true,
-						phone: true,
-						address: true,
-						city: true,
-						state: true,
-						zip: true,
-						country: true,
-					},
-				},
 				vendor: {
 					select: {
 						id: true,
