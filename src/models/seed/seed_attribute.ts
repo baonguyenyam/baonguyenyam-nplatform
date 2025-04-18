@@ -123,7 +123,7 @@ export const AttributeSeed = async () => {
 							content: faker.lorem.paragraph(),
 							createdAt: new Date(),
 							childrenId: getID.id,
-							type: tshirt[i] === "Number" ? "text" : "select",
+							type: tshirt[i] === "Number" ? "text" : tshirt[i] === "Color" ? "checkbox" : "select",
 							published: true,
 						},
 					});

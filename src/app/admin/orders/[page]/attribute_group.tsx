@@ -53,6 +53,33 @@ export default function OrderAttribute(props: any) {
 		});
 	};
 
+	const deleteCheckboxValue = async (frm: any, item: any, v: any, i: number, j: number, child: any) => {
+		const getIndex = frm?.value?.findIndex((i: any) => i?.id === v?.id);
+		if (getIndex !== -1) {
+			const newValue = frm?.value?.filter((_: any, index: number) => index !== getIndex);
+			// Remove item from selected
+			const updatedChildren = child.map((child: any, i: number) => {
+				if (i === j) {
+					return {
+						...child,
+						value: newValue,
+					};
+				}
+				return child;
+			});
+			setSelected((prev: any) => {
+				const newSelected = [...prev];
+				const index = newSelected.findIndex((i: any) => i.id === item?.id);
+				if (index !== -1) {
+					newSelected[index].children[i] = updatedChildren;
+				}
+				return newSelected;
+			});
+		} else {
+			toast.error("Item not found");
+		}
+	}
+
 	const handleUpdateInput = async (frm: any, item: any, value: any, i: number, j: number, child: any) => {
 		const _item = {
 			id: frm?.id,
@@ -273,7 +300,7 @@ export default function OrderAttribute(props: any) {
 																{((atts.find((att: any) => att?.id === item?.id)?.children)?.find((c: any) => c?.id === frm?.id)?.type === "checkbox") && (
 																	<div className="flex flex-col space-y-1 font-light">
 																		{/* Loop through checkbox values */}
-																		{frm?.value?.map((v: any, k: number) => (
+																		{frm?.value.length > 0 && frm?.value?.map((v: any, k: number) => (
 																			<div key={k} className="relative flex items-center group space-x-1">
 																				<div className="flex items-center space-x-1 font-light"
 																					onClick={() => {
@@ -301,13 +328,30 @@ export default function OrderAttribute(props: any) {
 																				<div className="del text-red-500 cursor-pointer">
 																					<div
 																						onClick={() => {
-																							if (confirm("Are you sure you want to remove this item?")) { }
+																							if (confirm("Are you sure you want to remove this item?")) {
+																								deleteCheckboxValue(frm, item, v, i, j, child);
+																							}
 																						}}>
 																						<X className="w-4 h-4" />
 																					</div>
 																				</div>
 																			</div>
 																		))}
+																		{/* IF No value */}
+																		{frm?.value?.length === 0 && (
+																			<span
+																				className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
+																				onClick={() => {
+																					setSearch([]);
+																					setLoading(true);
+																					searchAttributeMeta("", frm?.id);
+																					setOpen(["search", [i, frm, item, child, j]]);
+																				}}
+																			>
+																				<Search className="w-4 h-4" />
+																				<span>{frm?.title}</span>
+																			</span>
+																		)}
 																	</div>
 																)}
 
