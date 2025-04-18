@@ -43,65 +43,68 @@ export const getAllAttributes = async (query: any) => {
 	try {
 		const attributes = !min
 			? await db.attribute.findMany({
-					take: take ? take : undefined,
-					skip: skip ? skip : undefined,
-					where: {
-						published: published ? published : undefined,
-						type: type ? type : filterBy ? filterBy : undefined,
-						childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
-					},
-					select: {
-						id: true,
-						title: true,
-						type: true,
-						mapto: true,
-						published: true,
-						_count: {
-							select: {
-								meta: true,
-								children: true,
-							},
+				take: take ? take : undefined,
+				skip: skip ? skip : undefined,
+				where: {
+					published: published ? published : undefined,
+					type: type ? type : filterBy ? filterBy : undefined,
+					childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
+					OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				},
+				select: {
+					id: true,
+					title: true,
+					type: true,
+					mapto: true,
+					published: true,
+					_count: {
+						select: {
+							meta: true,
+							children: true,
 						},
 					},
-					orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
-				})
+				},
+				orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
+			})
 			: await db.attribute.findMany({
-					where: {
-						type: type ? type : filterBy ? filterBy : undefined,
-						published: published ? published : undefined,
-						childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
-					},
-					select: {
-						id: true,
-						title: true,
-						type: true,
-						mapto: true,
-						published: true,
-						children: {
-							select: {
-								id: true,
-								title: true,
-								type: true,
-								// meta: {
-								// 	select: {
-								// 		id: true,
-								// 		key: true,
-								// 		value: true,
-								// 	},
-								// },
-							},
+				where: {
+					type: type ? type : filterBy ? filterBy : undefined,
+					published: published ? published : undefined,
+					childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
+					OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				},
+				select: {
+					id: true,
+					title: true,
+					type: true,
+					mapto: true,
+					published: true,
+					children: {
+						where: {
+							published: published ? published : undefined,
 						},
-						_count: {
-							select: {
-								meta: true,
-								children: true,
-							},
+						select: {
+							id: true,
+							title: true,
+							type: true,
+							// meta: {
+							// 	select: {
+							// 		id: true,
+							// 		key: true,
+							// 		value: true,
+							// 	},
+							// },
 						},
 					},
-					orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
-				});
+					_count: {
+						select: {
+							meta: true,
+							children: true,
+						},
+					},
+				},
+				orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
+			});
 
 		return attributes;
 	} catch (error) {

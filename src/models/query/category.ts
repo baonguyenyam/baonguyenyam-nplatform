@@ -48,36 +48,41 @@ export const getAllCategories = async (query: any) => {
 	try {
 		const categories = !min
 			? await db.category.findMany({
-					take: take ? take : undefined,
-					skip: skip ? skip : undefined,
-					where: {
-						published: published ? published : undefined,
-						type: type ? type : filterBy ? filterBy : undefined,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
-					},
-					select: {
-						id: true,
-						title: true,
-						slug: true,
-						createdAt: true,
-						type: true,
-						published: true,
-					},
-					orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
-				})
+				take: take ? take : undefined,
+				skip: skip ? skip : undefined,
+				where: {
+					published: published ? published : undefined,
+					type: type ? type : filterBy ? filterBy : undefined,
+					OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				},
+				select: {
+					id: true,
+					title: true,
+					slug: true,
+					createdAt: true,
+					type: true,
+					published: true,
+				},
+				orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
+			})
 			: await db.category.findMany({
-					where: {
-						published: published ? published : undefined,
-						type: type ? type : filterBy ? filterBy : undefined,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				where: {
+					published: published ? published : undefined,
+					type: type ? type : filterBy ? filterBy : undefined,
+					OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				},
+				select: {
+					id: true,
+					title: true,
+					type: true,
+					_count: {
+						select: {
+							posts: true,
+						},
 					},
-					select: {
-						id: true,
-						title: true,
-						type: true,
-					},
-					orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
-				});
+				},
+				orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
+			});
 		return categories;
 	} catch (error) {
 		return null;

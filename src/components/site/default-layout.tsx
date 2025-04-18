@@ -1,6 +1,7 @@
-import CheckState from "@/app/checkState";
 import Footer from "@/components/site/footer";
 import Header from "@/components/site/header";
+
+import CheckState from "./checkState";
 
 export default async function DefaultLayout({ children }: React.PropsWithChildren) {
 	return (
