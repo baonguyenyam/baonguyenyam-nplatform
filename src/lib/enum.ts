@@ -1,44 +1,86 @@
+import { Ban, CheckCheck, CircleAlert, Clock, Hourglass, MapPinCheck, TicketX, Truck } from "lucide-react";
+
 export const enumOrderStatus = [
 	{
 		label: "Pending",
 		value: "pending",
 		className: "text-yellow-700",
+		bgClassName: "bg-yellow-100",
+		borderClassName: "border-yellow-700",
+		icon: CircleAlert
 	},
 	{
 		label: "Completed",
 		value: "completed",
 		className: "text-green-700",
+		bgClassName: "bg-green-100",
+		borderClassName: "border-green-700",
+		icon: CheckCheck
 	},
 	{
 		label: "Cancelled",
 		value: "cancelled",
 		className: "text-red-700",
+		bgClassName: "bg-red-100",
+		borderClassName: "border-red-700",
+		icon: Ban
 	},
 	{
 		label: "Refunded",
 		value: "refunded",
-		className: "text-red-700",
+		className: "text-slate-700",
+		bgClassName: "bg-slate-100",
+		borderClassName: "border-slate-700",
+		icon: TicketX
 	},
 	{
 		label: "Waiting",
 		value: "waiting",
-		className: "text-yellow-700",
+		className: "text-teal-700",
+		bgClassName: "bg-teal-100",
+		borderClassName: "border-teal-700",
+		icon: Hourglass
 	},
 	{
 		label: "Processing",
 		value: "processing",
 		className: "text-blue-700",
+		bgClassName: "bg-blue-100",
+		borderClassName: "border-blue-700",
+		icon: Clock
 	},
 	{
 		label: "Shipped",
 		value: "shipped",
-		className: "text-blue-700",
+		className: "text-orange-700",
+		bgClassName: "bg-orange-100",
+		borderClassName: "border-orange-700",
+		icon: Truck
 	},
 	{
 		label: "Delivered",
 		value: "delivered",
-		className: "text-blue-700",
+		className: "text-green-700",
+		bgClassName: "bg-green-100",
+		borderClassName: "border-green-700",
+		icon: MapPinCheck
 	},
+	{
+		label: "Published",
+		value: "published",
+		className: "text-green-700",
+		bgClassName: "bg-green-100",
+		borderClassName: "border-green-700",
+		icon: CheckCheck
+	},
+	{
+		label: "Unpublished",
+		value: "unpublished",
+		className: "text-red-700",
+		bgClassName: "bg-red-100",
+		borderClassName: "border-red-700",
+		icon: Ban
+	}
 ];
 
 export const enumPublished = [

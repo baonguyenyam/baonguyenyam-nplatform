@@ -7,10 +7,10 @@ import { useSearchParams } from "next/navigation";
 
 import AppImage from "@/components/AppImage";
 import AppLoading from "@/components/AppLoading";
+import AppStatus from "@/components/AppStatus";
 import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
-import { enumOrderStatus } from "@/lib/enum";
 import initSupabase from "@/lib/supabase";
 import { dateFormat, pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
@@ -18,7 +18,6 @@ import { useAppSelector } from "@/store";
 import * as actions from "./actions";
 import FormEdit from "./edit";
 import FormView from "./view";
-import { Badge } from "@/components/ui/badge";
 
 export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
@@ -140,7 +139,7 @@ export default function Fetch(props: any) {
 							header: "Status",
 							accessor: "status",
 							custom: (row: any) => {
-								return <span className={`text-sm ${enumOrderStatus.find((item) => item.value === row.status)?.className}`}>{enumOrderStatus.find((item) => item.value === row.status)?.label}</span>;
+								return <AppStatus data={row.status} />;
 							},
 						},
 						{
@@ -263,9 +262,7 @@ export default function Fetch(props: any) {
 						{open[1]?.title}
 					</div>
 					<div className="status">
-						<Badge variant="outline">
-							<span className={`text-sm ${enumOrderStatus.find((item) => item.value === open[1]?.status)?.className}`}>{enumOrderStatus.find((item) => item.value === open[1]?.status)?.label}</span>
-						</Badge>
+						<AppStatus data={open[1]?.status} />
 					</div>
 				</div>}
 				placement="right"
