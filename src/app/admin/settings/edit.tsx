@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { X } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -92,6 +93,18 @@ export default function FormEdit() {
 		toast.success(update.message);
 	}
 
+	const clearCache = (key: string, e: any) => {
+		e.preventDefault();
+		localStorage.removeItem(key);
+		// Disable the button
+		const button = e.currentTarget;
+		button.disabled = true;
+		button.classList.add("opacity-50");
+		button.classList.remove("hover:bg-red-500");
+		button.classList.add("cursor-not-allowed");
+		toast.success("Cache cleared");
+	};
+
 	const fetchData = useCallback(async () => {
 		const res = await actions.getAllRecord();
 		if (res?.success === "success" && res?.data) {
@@ -148,6 +161,11 @@ export default function FormEdit() {
 										value="tab-3"
 										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
 										APIs configuration
+									</TabsTrigger>
+									<TabsTrigger
+										value="tab-4"
+										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
+										Cache configuration
 									</TabsTrigger>
 								</TabsList>
 								<div className="grow text-start">
@@ -340,9 +358,55 @@ export default function FormEdit() {
 										className="space-y-10">
 										This feature is not available yet.
 									</TabsContent>
+									<TabsContent
+										value="tab-4"
+										className="space-y-10">
+										<div className="item">
+											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
+												Cache
+											</h3>
+											{Object.keys(localStorage)?.map((key) => {
+												return (
+													<div
+														key={key}
+														className="flex items-center justify-between space-y-3 ">
+														<div className="flex items-center space-x-2">
+															<Button
+																size="icon"
+																className="w-5 h-5"
+																variant="destructive"
+																onClick={(e) => {
+																	clearCache(key, e);
+																}}>
+																<X className="h-3 w-3" />
+															</Button>
+															<span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+																{key}
+															</span>
+														</div>
+														<div className="text-xs">
+															{localStorage.getItem(key)?.length} bytes
+														</div>
+													</div>
+												);
+											})}
+											{/* Clear all btn */}
+											<Button
+												variant="destructive"
+												className="mt-5"
+												onClick={(e) => {
+													e.preventDefault();
+													localStorage.clear();
+													toast.success("All cache cleared");
+												}}>
+												Clear all cache
+											</Button>
+										</div>
+									</TabsContent>
 								</div>
 							</Tabs>
-							<div className="flex justify-end">
+							<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+								<div className="l"></div>
 								<Button
 									type="submit"
 									disabled={!form.formState.isDirty || form.formState.isSubmitting}>
