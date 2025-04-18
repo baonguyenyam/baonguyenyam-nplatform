@@ -94,6 +94,12 @@ export const getOrderById = async (id: string) => {
 						country: true,
 					},
 				},
+				vendor: {
+					select: {
+						id: true,
+						name: true,
+					},
+				}
 			},
 		});
 
@@ -205,6 +211,13 @@ export const getAllOrders = async (query: any) => {
 						name: true,
 					},
 				},
+				vendor: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+				date_received: true,
 				date_created: true,
 				date_production: true,
 				date_paid: true,
