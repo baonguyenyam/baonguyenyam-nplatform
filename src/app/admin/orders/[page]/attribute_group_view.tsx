@@ -33,7 +33,6 @@ export default function OrderAttribute(props: any) {
 		if (data?.data) {
 			const dataParsed = JSON.parse(data?.data);
 			setSelected(dataParsed);
-			console.log("dataParsed", dataParsed);
 		}
 	}, [data?.data]);
 

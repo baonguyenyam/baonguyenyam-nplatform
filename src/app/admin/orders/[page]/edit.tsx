@@ -251,38 +251,38 @@ export default function FormEdit(props: any) {
 							<TabsList className="flex-col rounded-none bg-transparent p-0 min-w-[200px] space-y-1">
 								{id && (
 									<TabsTrigger
-										className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+										className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 										value="general">
 										General
 									</TabsTrigger>
 								)}
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="basic">
 									Basic Info
 								</TabsTrigger>
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="receiving">
 									Receiving
 								</TabsTrigger>
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="shipping">
 									Shipping
 								</TabsTrigger>
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="user_product">
 									User/Vendor manager
 								</TabsTrigger>
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="files">
 									Medias
 								</TabsTrigger>
 								<TabsTrigger
-									className="text-[1.2em] relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="advance">
 									Advance
 								</TabsTrigger>

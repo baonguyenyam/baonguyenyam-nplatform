@@ -29,20 +29,21 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 								key={item.id}
 								href={item.url}
 								className="flex items-center flex-col gap-3 group relative">
-								<AppImage
+								<img
 									src={item.url}
-									alt=""
-									width={150}
-									height={150}
+									alt={item?.name || ""}
+									title={item?.name || ""}
 									className="hidden"
 								/>
 								<div className="relative">
 									<AppImage
 										src={item.url}
 										alt={item?.name || ""}
-										width={150}
-										height={150}
-										className="w-[150px] h-[150px] object-cover border-1 border-gray-300 rounded-lg"
+										title={item?.name || ""}
+										width={200}
+										height={200}
+										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+										className="max-w-full max-h-24 2xl:max-h-30 object-cover border-1 border-gray-300 rounded-lg"
 									/>
 									{(role === "ADMIN" && !viewOnly) && (
 										<Button

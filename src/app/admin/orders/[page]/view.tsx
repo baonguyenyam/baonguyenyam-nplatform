@@ -39,19 +39,12 @@ export default function FormView(props: any) {
 		<>
 			{loading && <AppLoading />}
 			{!loading && (
-				<div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
-					<div className="item">
+				<div className="flex flex-col gap-4 xl:flex-row xl:gap-10">
+					<div className="w-full xl:w-1/2">
 						<OrderAttribute data={data} />
-						{ImageList({
-							role,
-							data: data,
-							thumbnail,
-							setThumbnail,
-							fetchData,
-							viewOnly: true,
-						})}
+						dsfdsf
 					</div>
-					<div className=" grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
+					<div className="w-full xl:w-1/2 grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
 						<div className="group">
 							<h2 className="text-lg font-bold mb-5">Order Details</h2>
 							<div className="space-y-5">
@@ -121,6 +114,20 @@ export default function FormView(props: any) {
 									</div>
 								</div>
 							</div>
+						</div>
+
+						<div className="medias col-span-2">
+							<h2 className="text-lg font-bold mb-5">
+								Images
+							</h2>
+							{ImageList({
+								role,
+								data: data,
+								thumbnail,
+								setThumbnail,
+								fetchData,
+								viewOnly: true,
+							})}
 						</div>
 					</div>
 				</div>
