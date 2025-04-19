@@ -212,7 +212,7 @@ export default function OrderAttributeView(props: any) {
 					))}
 				</div>
 			) : (
-				<div className="flex items-center justify-center py-6 text-gray-500 dark:text-gray-400">
+				<div className="flex p-3 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-700 rounded-md bg-red-50 dark:bg-red-100 mb-10">
 					<p>No attribute data available for this order.</p>
 				</div>
 			)}

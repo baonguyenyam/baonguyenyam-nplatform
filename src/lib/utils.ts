@@ -179,3 +179,17 @@ export const removeUnderscoreAndDash = (str: string, addons: string) => {
 	const result = str.replace(/[_-]/g, " ").replace(regex, "");
 	return result;
 };
+
+// checkAllObjectEmpty
+export const checkAllObjectEmpty = (obj: any, key: string) => {
+	// Check in object find key and check value is empty
+	let arrCheck = false
+	if (obj && Array.isArray(obj)) {
+		for (let i = 0; i < obj.length; i++) {
+			if (obj[i]?.value === "" || obj[i]?.value === null || obj[i]?.value === undefined || obj[i]?.value === "[]") {
+				arrCheck = true
+			}
+		}
+	}
+	return arrCheck
+}
