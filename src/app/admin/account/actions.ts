@@ -81,7 +81,7 @@ export async function signIn(body: any) {
 		if (!email || !password) {
 			throw new Error("Email and password are required to sign in.");
 		}
-		const db = await models.User.signIn(email, password);
+		const db = await models.User.signIn(email);
 		if (!db) {
 			return {
 				success: "error",
