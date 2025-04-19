@@ -672,7 +672,7 @@ export default function OrderAttribute(props: any) {
 
 			{/* Message if no groups exist */}
 			{groupSelected.length === 0 && (
-				<div className="text-center text-gray-500 dark:text-gray-400 py-6">
+				<div className="text-center text-gray-500 dark:text-gray-400 py-6 flex items-center justify-center space-x-2">
 					<span>No attribute groups created yet. Click "Add Group" to start.</span>
 					<Dialog
 						open={open[0] === "create-group"}
@@ -680,7 +680,7 @@ export default function OrderAttribute(props: any) {
 						<DialogTrigger asChild>
 							<Button
 								size="icon"
-								className="rounded-full w-6 h-6"
+								className="rounded-full w-6 h-6 cursor-pointer"
 								type="button">
 								<Plus className="w-4 h-4" />
 							</Button>
@@ -691,6 +691,7 @@ export default function OrderAttribute(props: any) {
 							</DialogHeader>
 							<Input
 								placeholder="Group Name"
+								id="group-name"
 								className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
 								onKeyDown={(e) => {
 									if (e.key === "Enter") {
@@ -701,7 +702,8 @@ export default function OrderAttribute(props: any) {
 							/>
 							<Button
 								type="button"
-								onClick={() => handleAddGroup((document.querySelector('input[placeholder="Group Name"]') as HTMLInputElement)?.value)}>
+								onClick={() => handleAddGroup((document.querySelector('#group-name') as HTMLInputElement)?.value)}
+							>
 								Create Group
 							</Button>
 						</DialogContent>
