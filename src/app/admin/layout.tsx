@@ -10,7 +10,6 @@ import CheckAdminState from "./checkAdminState";
 export default async function AdminLayout({ children }: React.PropsWithChildren) {
 	const cookieStore = await cookies();
 	const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
 	return (
 		<main
 			suppressHydrationWarning={true}
