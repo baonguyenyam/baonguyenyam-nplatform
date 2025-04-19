@@ -41,23 +41,19 @@ export default function View() {
 								</h3>
 								<div className="space-y-2">
 									{item.children.map((child: any) => (
-										<div
-											key={child.id}>
+										<div key={child.id}>
 											<div
 												key={child.id}
 												className="flex items-center gap-2">
 												<Folder className="w-4 h-4" />
-												<span>
-													{child.title}
-												</span>
+												<span>{child.title}</span>
 												<Badge
 													className="text-xs text-gray-500 dark:text-gray-400"
 													variant="outline"
-													color="primary"
-												>
+													color="primary">
 													{child.type}
 												</Badge>
-												{child.type !== 'text' && (
+												{child.type !== "text" && (
 													<div className="flex items-center gap-1 text-xs">
 														<Minus className="w-4 h-4" />
 														<span>{child._count.meta}</span>

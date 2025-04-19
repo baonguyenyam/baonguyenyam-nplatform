@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { appState } from "@/lib/appConst";
 
 import { SignIn, SignOut } from "./auth-components";
 
@@ -28,7 +29,7 @@ export default function UserButton() {
 							className="relative h-8 w-8 rounded-full">
 							<Avatar className="h-8 w-8">
 								<AvatarImage
-									src={data?.image ?? `https://api.dicebear.com/9.x/thumbs/svg?seed=${Math.floor(Math.random() * 100000) + 1}&randomizeIds=true`}
+									src={data?.image ?? appState?.placeholder}
 									alt={data?.name ?? ""}
 								/>
 							</Avatar>

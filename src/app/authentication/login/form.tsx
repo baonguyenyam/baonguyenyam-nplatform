@@ -13,6 +13,7 @@ import { DEFAULT_LOGIN_REDIRECT, SIGNIN_ERROR_URL } from "@/routes";
 export async function Form({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
 	const query = await headers();
 	const { callbackUrl } = { callbackUrl: query.get("x-callbackUrl") ?? "/" };
+	const { error } = { error: query.get("x-error") ?? "" };
 
 	async function singInGitHubForm(formData: FormData) {
 		"use server";
@@ -53,7 +54,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 			(await signIn("credentials", {
 				email,
 				password,
-				redirectTo: DEFAULT_LOGIN_REDIRECT + "?callbackUrl=" + formData.get("callbackUrl"),
+				redirectTo: DEFAULT_LOGIN_REDIRECT,
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
@@ -76,6 +77,8 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 				<CardContent>
 					<div className="grid gap-6">
 						<div className="flex flex-col gap-4">
+							{/* Error */}
+							{error && <div className="text-red-500 text-sm text-center">{error === "CredentialsSignin" ? "Invalid email or password" : error === "OAuthAccountNotLinked" ? "Email already exists. Please login with your email and password." : error}</div>}
 							{/* Credentials */}
 							<form action={singInCredentialsForm}>
 								<input
@@ -107,8 +110,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 									<div className="flex items-center justify-between">
 										<Button
 											type="submit"
-											variant="outline"
-											className="w-full">
+											className="w-full dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white dark:hover:text-gray-900">
 											Sign in
 										</Button>
 									</div>

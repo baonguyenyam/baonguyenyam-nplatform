@@ -163,4 +163,4 @@ export const signIn = async (email: string) => {
 	// This function simply wraps getUserByEmail, which is fine.
 	// It will return the user object with the password hash or null.
 	return getUserByEmail(email);
-}
+};

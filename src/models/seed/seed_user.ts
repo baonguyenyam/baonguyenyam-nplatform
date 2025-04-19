@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 export const UserSeed = async () => {
-
 	const password = await bcrypt.hash("demo", 10);
 
 	const user = await prisma.user.findFirst({

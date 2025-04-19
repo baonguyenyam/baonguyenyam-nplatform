@@ -1,10 +1,11 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 import models from "@/models"; // Assuming models.User.signIn maps to getUserByEmail
 
 // Sign in with credentials
 export async function POST(req: Request) {
-	try { // Add a try...catch block for better error handling
+	try {
+		// Add a try...catch block for better error handling
 		const { email, password } = await req.json();
 
 		// Basic validation
@@ -38,7 +39,6 @@ export async function POST(req: Request) {
 			console.warn(`Sign-in attempt failed for email: ${email}. Invalid password.`);
 			return Response.json({ message: "Invalid email or password" }, { status: 401 });
 		}
-
 	} catch (error) {
 		console.error("Sign-in API error:", error);
 		// Generic server error for unexpected issues

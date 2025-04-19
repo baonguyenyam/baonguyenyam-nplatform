@@ -72,7 +72,7 @@ export async function updateRecord(body: any) {
 	}
 }
 
-// Sign In 
+// Sign In
 export async function signIn(body: any) {
 	const { email, password } = body;
 	const session = await auth();
@@ -93,8 +93,7 @@ export async function signIn(body: any) {
 			success: "success",
 			message: "User signed in successfully",
 		};
-	}
-	catch (error) {
+	} catch (error) {
 		return {
 			success: "error",
 			message: "Error signing in user",

@@ -16,12 +16,14 @@ export default auth((req) => {
 	const filterBy = secureSearchString(searchParams?.get("filterBy")) || "";
 	const byCat = secureSearchString(searchParams?.get("cat")) || "";
 	const callbackUrl = secureSearchString(searchParams?.get("callbackUrl")) || "";
+	const error = secureSearchString(searchParams?.get("error")) || "";
 	// Set headers
 	response?.headers?.set("x-search", search ?? "");
 	response?.headers?.set("x-orderBy", orderBy ?? "");
 	response?.headers?.set("x-filterBy", filterBy ?? "");
 	response?.headers?.set("x-cat", byCat ?? "");
 	response?.headers?.set("x-callbackUrl", callbackUrl ?? "");
+	response?.headers?.set("x-error", error ?? "");
 
 	const { nextUrl } = req;
 	const isLoggedIn = !!req.auth;

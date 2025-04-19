@@ -95,12 +95,12 @@ export default function OrderAttribute(props: any) {
 
 	// --- Derived State ---
 	const activeGroup = useMemo(() => {
-		return groupSelected.find(group => group.id === activeGroupId);
+		return groupSelected.find((group) => group.id === activeGroupId);
 	}, [groupSelected, activeGroupId]);
 
 	const availableAttsForActiveGroup = useMemo(() => {
 		if (!activeGroup) return [];
-		const selectedIds = activeGroup.attributes.map(attr => attr.id);
+		const selectedIds = activeGroup.attributes.map((attr) => attr.id);
 		return atts.filter((att: any) => !selectedIds.includes(att.id));
 	}, [atts, activeGroup]);
 
@@ -167,7 +167,7 @@ export default function OrderAttribute(props: any) {
 		setGroupSelected(
 			produce((draft) => {
 				draft.push(newGroup);
-			})
+			}),
 		);
 		setActiveGroupId(newGroup.id); // Activate the new group
 		setOpen(["", null]); // Close dialog
@@ -184,13 +184,13 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
-				if (group && !group.attributes.some(attr => attr.id === newAttributeInstance.id)) {
+				const group = draft.find((g) => g.id === activeGroupId);
+				if (group && !group.attributes.some((attr) => attr.id === newAttributeInstance.id)) {
 					group.attributes.push(newAttributeInstance);
 				} else if (group) {
 					toast.info(`Attribute "${newAttributeInstance.title}" already added to this group.`);
 				}
-			})
+			}),
 		);
 		setOpen(["", null]); // Close dialog
 	};
@@ -208,19 +208,19 @@ export default function OrderAttribute(props: any) {
 		const newRow: AttributeItem[] = attributeDefinition.children.map((child: any) => ({
 			id: child.id,
 			title: child.title,
-			value: child.type === 'checkbox' ? [] : "", // Initialize based on type
+			value: child.type === "checkbox" ? [] : "", // Initialize based on type
 		}));
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					const attribute = group.attributes.find((attr) => attr.id === attributeId);
 					if (attribute) {
 						attribute.children.push(newRow);
 					}
 				}
-			})
+			}),
 		);
 	};
 
@@ -229,16 +229,16 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					const attribute = group.attributes.find((attr) => attr.id === attributeId);
 					if (attribute && attribute.children[rowIndex]) {
 						// Deep copy the row to duplicate
 						const rowToDuplicate = JSON.parse(JSON.stringify(attribute.children[rowIndex]));
 						attribute.children.splice(rowIndex + 1, 0, rowToDuplicate); // Insert duplicate below original
 					}
 				}
-			})
+			}),
 		);
 	};
 
@@ -249,29 +249,29 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					const attribute = group.attributes.find((attr) => attr.id === attributeId);
 					if (attribute) {
 						attribute.children.splice(rowIndex, 1);
 					}
 				}
-			})
+			}),
 		);
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
 		if (!activeGroupId) return;
 
-		if (!confirm(`Are you sure you want to remove the entire "${activeGroup?.attributes.find(a => a.id === attributeId)?.title}" attribute section from this group?`)) return;
+		if (!confirm(`Are you sure you want to remove the entire "${activeGroup?.attributes.find((a) => a.id === attributeId)?.title}" attribute section from this group?`)) return;
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					group.attributes = group.attributes.filter(attr => attr.id !== attributeId);
+					group.attributes = group.attributes.filter((attr) => attr.id !== attributeId);
 				}
-			})
+			}),
 		);
 	};
 
@@ -280,14 +280,14 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					const attribute = group.attributes.find((attr) => attr.id === attributeId);
 					if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
 						attribute.children[rowIndex][fieldIndex].value = newValue;
 					}
 				}
-			})
+			}),
 		);
 	};
 
@@ -296,9 +296,9 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const group = draft.find(g => g.id === activeGroupId);
+				const group = draft.find((g) => g.id === activeGroupId);
 				if (group) {
-					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					const attribute = group.attributes.find((attr) => attr.id === attributeId);
 					if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
 						const field = attribute.children[rowIndex][fieldIndex];
 						if (!Array.isArray(field.value)) {
@@ -312,7 +312,8 @@ export default function OrderAttribute(props: any) {
 							} else {
 								toast.error("Already selected.");
 							}
-						} else { // Remove
+						} else {
+							// Remove
 							if (existingIndex !== -1) {
 								field.value.splice(existingIndex, 1);
 							} else {
@@ -321,7 +322,7 @@ export default function OrderAttribute(props: any) {
 						}
 					}
 				}
-			})
+			}),
 		);
 	};
 
@@ -336,11 +337,11 @@ export default function OrderAttribute(props: any) {
 
 		setGroupSelected(
 			produce((draft) => {
-				const index = draft.findIndex(g => g.id === groupId);
+				const index = draft.findIndex((g) => g.id === groupId);
 				if (index !== -1) {
 					draft.splice(index, 1);
 				}
-			})
+			}),
 		);
 
 		// Active first group if available
@@ -381,11 +382,11 @@ export default function OrderAttribute(props: any) {
 											if (newName) {
 												setGroupSelected(
 													produce((draft) => {
-														const g = draft.find(g => g.id === group.id);
+														const g = draft.find((g) => g.id === group.id);
 														if (g) {
 															g.title = newName.trim();
 														}
-													})
+													}),
 												);
 											}
 										}}
@@ -425,7 +426,7 @@ export default function OrderAttribute(props: any) {
 									/>
 									<Button
 										type="button"
-										onClick={() => handleAddGroup((document.querySelector('#group-namecreate') as HTMLInputElement)?.value)}>
+										onClick={() => handleAddGroup((document.querySelector("#group-namecreate") as HTMLInputElement)?.value)}>
 										Create Group
 									</Button>
 								</DialogContent>
@@ -455,8 +456,6 @@ export default function OrderAttribute(props: any) {
 						</div>
 					</div>
 
-
-
 					{/* Content for each Group */}
 					{groupSelected.map((group) => (
 						<TabsContent
@@ -475,8 +474,7 @@ export default function OrderAttribute(props: any) {
 											<div
 												className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hidden group-hover:block cursor-pointer ml-2"
 												onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
-												title={`Remove ${attributeInstance.title} section`}
-											>
+												title={`Remove ${attributeInstance.title} section`}>
 												<X className="w-5 h-5" />
 											</div>
 											<div className="ml-auto">
@@ -485,8 +483,7 @@ export default function OrderAttribute(props: any) {
 													<div
 														className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
 														onClick={() => handleAddAttributeRow(attributeInstance.id)}
-														title={`Add new row for ${attributeInstance.title}`}
-													>
+														title={`Add new row for ${attributeInstance.title}`}>
 														<PlusCircle className="w-6 h-6" />
 													</div>
 												</div>
@@ -516,8 +513,7 @@ export default function OrderAttribute(props: any) {
 																type="button"
 																className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
 																title="Delete Row"
-																onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}
-															>
+																onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}>
 																<X className="w-4 h-4" />
 															</Button>
 														</div>
@@ -528,8 +524,7 @@ export default function OrderAttribute(props: any) {
 																type="button"
 																className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
 																title="Duplicate Row"
-																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}
-															>
+																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}>
 																<Copy className="w-4 h-4" />
 															</Button>
 														</div>
@@ -537,7 +532,7 @@ export default function OrderAttribute(props: any) {
 														{/* Fields within the Row */}
 														{row.map((field, fieldIndex) => {
 															const fieldDefinition = attributeDefinition?.children?.[fieldIndex];
-															const fieldType = fieldDefinition?.type ?? 'text'; // Default to text
+															const fieldType = fieldDefinition?.type ?? "text"; // Default to text
 
 															return (
 																<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
@@ -571,7 +566,9 @@ export default function OrderAttribute(props: any) {
 																					{field.value?.value ? (
 																						<div className="flex items-center space-x-1">
 																							{checkStringIsTextOrColorHexOrURL(field.value.value) === "color" && (
-																								<div className="w-3 h-3 rounded-full border border-gray-300 mr-1" style={{ backgroundColor: field.value.value }}></div>
+																								<div
+																									className="w-3 h-3 rounded-full border border-gray-300 mr-1"
+																									style={{ backgroundColor: field.value.value }}></div>
 																							)}
 																							<span className="truncate">{field.value.value}</span>
 																						</div>
@@ -587,22 +584,27 @@ export default function OrderAttribute(props: any) {
 																			{fieldType === "checkbox" && (
 																				<div className="flex flex-col space-y-1">
 																					{/* Display selected checkbox values */}
-																					{Array.isArray(field.value) && field.value.length > 0 && field.value.map((v: any, k: number) => (
-																						<div key={k} className="relative flex items-center group space-x-1 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
-																							{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
-																								<div className="w-3 h-3 rounded-full border border-gray-300" style={{ backgroundColor: v?.value }}></div>
-																							)}
-																							<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
-																							{/* Delete single checkbox value */}
-																							<button
-																								className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
-																								onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
-																								title={`Remove ${v?.value}`}
-																							>
-																								<X className="w-3 h-3" />
-																							</button>
-																						</div>
-																					))}
+																					{Array.isArray(field.value) &&
+																						field.value.length > 0 &&
+																						field.value.map((v: any, k: number) => (
+																							<div
+																								key={k}
+																								className="relative flex items-center group space-x-1 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
+																								{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
+																									<div
+																										className="w-3 h-3 rounded-full border border-gray-300"
+																										style={{ backgroundColor: v?.value }}></div>
+																								)}
+																								<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
+																								{/* Delete single checkbox value */}
+																								<button
+																									className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																									onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																									title={`Remove ${v?.value}`}>
+																									<X className="w-3 h-3" />
+																								</button>
+																							</div>
+																						))}
 																					{/* Button to add more checkbox values */}
 																					<Button
 																						variant="outline"
@@ -641,8 +643,7 @@ export default function OrderAttribute(props: any) {
 								{availableAttsForActiveGroup.length > 0 && (
 									<Dialog
 										open={open[0] === "create" && open[1]?.groupId === group.id} // Only open for the active group
-										onOpenChange={(isOpen) => setOpen([isOpen ? "create" : "", isOpen ? { groupId: group.id } : null])}
-									>
+										onOpenChange={(isOpen) => setOpen([isOpen ? "create" : "", isOpen ? { groupId: group.id } : null])}>
 										<DialogTrigger asChild>
 											<Button
 												type="button"
@@ -666,8 +667,7 @@ export default function OrderAttribute(props: any) {
 															size="sm"
 															type="button"
 															className="text-xs"
-															onClick={() => handleSelectAttributeForGroup(item)}
-														>
+															onClick={() => handleSelectAttributeForGroup(item)}>
 															Add
 														</Button>
 													</div>
@@ -678,13 +678,8 @@ export default function OrderAttribute(props: any) {
 								)}
 
 								{/* Message if no attributes are in the group */}
-								{group.attributes?.length === 0 && (
-									<div className="text-center text-gray-500 dark:text-gray-400 py-4">
-										No attributes added to this group yet.
-									</div>
-								)}
+								{group.attributes?.length === 0 && <div className="text-center text-gray-500 dark:text-gray-400 py-4">No attributes added to this group yet.</div>}
 							</div>
-
 
 							{/* Delete the group */}
 							<div className="flex justify-center mt-10">
@@ -694,8 +689,7 @@ export default function OrderAttribute(props: any) {
 											type="button"
 											variant="outline"
 											size="sm"
-											className="rounded-full cursor-pointer"
-										>
+											className="rounded-full cursor-pointer">
 											<Settings className="w-4 h-4" />
 											Group Settings
 										</Button>
@@ -703,16 +697,12 @@ export default function OrderAttribute(props: any) {
 									<DropdownMenuContent align="end">
 										<DropdownMenuItem
 											className="cursor-pointer"
-											onClick={() => handleDeleteGroup(group.id)}
-										>
-											<div className="text-red-500">
-												Delete Group
-											</div>
+											onClick={() => handleDeleteGroup(group.id)}>
+											<div className="text-red-500">Delete Group</div>
 										</DropdownMenuItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
-
 						</TabsContent>
 					))}
 				</Tabs>
@@ -750,8 +740,7 @@ export default function OrderAttribute(props: any) {
 							/>
 							<Button
 								type="button"
-								onClick={() => handleAddGroup((document.querySelector('#group-name') as HTMLInputElement)?.value)}
-							>
+								onClick={() => handleAddGroup((document.querySelector("#group-name") as HTMLInputElement)?.value)}>
 								Create Group
 							</Button>
 						</DialogContent>
@@ -808,9 +797,10 @@ export default function OrderAttribute(props: any) {
 													value: item?.value,
 												};
 
-												if (fieldType === 'checkbox') {
+												if (fieldType === "checkbox") {
 													handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
-												} else { // select or other types that take a single object
+												} else {
+													// select or other types that take a single object
 													handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
 												}
 
@@ -822,7 +812,9 @@ export default function OrderAttribute(props: any) {
 													className="w-4 h-4 rounded-full border border-gray-300"
 													style={{ backgroundColor: item?.value }}></div>
 											)}
-											<span>{item?.key} ({item?.value})</span>
+											<span>
+												{item?.key} ({item?.value})
+											</span>
 										</CommandItem>
 									))}
 								</CommandGroup>

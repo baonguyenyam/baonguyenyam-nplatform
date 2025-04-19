@@ -90,7 +90,9 @@ export default function OrderAttributeView(props: any) {
 				<div className="flex flex-col space-y-6">
 					{/* Loop through groups */}
 					{groupSelected.map((group) => (
-						<div key={group.id} className="group-section mb-10">
+						<div
+							key={group.id}
+							className="group-section mb-10">
 							<h2 className="text-xl font-semibold mb-3 border-b pb-2 dark:border-gray-700">{group.title}</h2>
 							{group.attributes && group.attributes.length > 0 ? (
 								<div className="flex flex-col space-y-4">
@@ -98,7 +100,9 @@ export default function OrderAttributeView(props: any) {
 									{group.attributes.map((attributeInstance) => {
 										const longestRowForHeader = findLongestRow(attributeInstance.children);
 										return (
-											<div key={attributeInstance.id} className="attribute-instance">
+											<div
+												key={attributeInstance.id}
+												className="attribute-instance">
 												<h3 className="text-base font-medium mb-2 pl-1">{attributeInstance.title}</h3>
 												{attributeInstance.children && attributeInstance.children.length > 0 ? (
 													<table
@@ -108,7 +112,9 @@ export default function OrderAttributeView(props: any) {
 															<tr className="bg-gray-100 dark:bg-gray-800">
 																{/* Generate headers based on the longest row */}
 																{longestRowForHeader?.map((headerField) => (
-																	<th key={headerField.id} className="text-left p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium">
+																	<th
+																		key={headerField.id}
+																		className="text-left p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium">
 																		{headerField.title}
 																	</th>
 																))}
@@ -117,21 +123,25 @@ export default function OrderAttributeView(props: any) {
 														<tbody>
 															{/* Loop through rows (children) */}
 															{attributeInstance.children.map((row, rowIndex) => (
-																<tr key={rowIndex} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+																<tr
+																	key={rowIndex}
+																	className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50">
 																	{/* Loop through fields within the row */}
 																	{row.map((field) => {
 																		const fieldDefinition = findFieldDefinition(attributeInstance.id, field.id);
-																		const fieldType = fieldDefinition?.type ?? 'text'; // Default to text if definition not found
+																		const fieldType = fieldDefinition?.type ?? "text"; // Default to text if definition not found
 
 																		return (
-																			<td key={field.id} className="p-2 border-r border-gray-200 dark:border-gray-700 last:border-r-0 align-top">
+																			<td
+																				key={field.id}
+																				className="p-2 border-r border-gray-200 dark:border-gray-700 last:border-r-0 align-top">
 																				{/* --- Render based on field type --- */}
 
 																				{/* Text or Select (Single Value) */}
-																				{(fieldType === 'text' || fieldType === 'select') && field.value && (
+																				{(fieldType === "text" || fieldType === "select") && field.value && (
 																					<div className="flex items-center space-x-1">
 																						{/* Check if value is an object (likely from select) */}
-																						{typeof field.value === 'object' && field.value !== null && field.value.value ? (
+																						{typeof field.value === "object" && field.value !== null && field.value.value ? (
 																							<>
 																								{checkStringIsTextOrColorHexOrURL(field.value.value) === "color" && (
 																									<div
@@ -148,17 +158,19 @@ export default function OrderAttributeView(props: any) {
 																				)}
 
 																				{/* Checkbox (Multiple Values) */}
-																				{fieldType === 'checkbox' && Array.isArray(field.value) && (
+																				{fieldType === "checkbox" && Array.isArray(field.value) && (
 																					<div className="flex flex-col space-y-1">
 																						{field.value.length > 0 ? (
 																							field.value.map((v: any, k: number) => (
-																								<div key={k} className="flex items-center space-x-1">
+																								<div
+																									key={k}
+																									className="flex items-center space-x-1">
 																									{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
 																										<div
 																											className="w-3 h-3 rounded-full border border-gray-300 dark:border-gray-600 flex-shrink-0"
 																											style={{ backgroundColor: v?.value }}></div>
 																									)}
-																									<span className="text-gray-700 dark:text-gray-200 break-words">{v?.value ?? 'N/A'}</span>
+																									<span className="text-gray-700 dark:text-gray-200 break-words">{v?.value ?? "N/A"}</span>
 																								</div>
 																							))
 																						) : (
@@ -168,20 +180,20 @@ export default function OrderAttributeView(props: any) {
 																				)}
 
 																				{/* Handle cases where value might be empty/null */}
-																				{(!field.value || (Array.isArray(field.value) && field.value.length === 0 && fieldType !== 'checkbox')) && (
-																					<span className="text-gray-400 dark:text-gray-500 italic">N/A</span>
-																				)}
+																				{(!field.value || (Array.isArray(field.value) && field.value.length === 0 && fieldType !== "checkbox")) && <span className="text-gray-400 dark:text-gray-500 italic">N/A</span>}
 																			</td>
 																		);
 																	})}
 																	{/* Add empty cells if row is shorter than header row */}
-																	{longestRowForHeader && row.length < longestRowForHeader.length &&
+																	{longestRowForHeader &&
+																		row.length < longestRowForHeader.length &&
 																		Array.from({ length: longestRowForHeader.length - row.length }).map((_, emptyIndex) => (
-																			<td key={`empty-${rowIndex}-${emptyIndex}`} className="p-2 border-r border-gray-200 dark:border-gray-700 last:border-r-0">
+																			<td
+																				key={`empty-${rowIndex}-${emptyIndex}`}
+																				className="p-2 border-r border-gray-200 dark:border-gray-700 last:border-r-0">
 																				<span className="text-gray-400 dark:text-gray-500 italic">--</span>
 																			</td>
-																		))
-																	}
+																		))}
 																</tr>
 															))}
 														</tbody>
@@ -206,11 +218,7 @@ export default function OrderAttributeView(props: any) {
 			)}
 
 			{/* Message if attribute definitions are missing (optional, but good sanity check) */}
-			{atts?.length === 0 && groupSelected.length > 0 && (
-				<div className="mt-4 text-sm text-orange-600 dark:text-orange-400">
-					Warning: Attribute definitions seem to be missing. Display might be incomplete.
-				</div>
-			)}
+			{atts?.length === 0 && groupSelected.length > 0 && <div className="mt-4 text-sm text-orange-600 dark:text-orange-400">Warning: Attribute definitions seem to be missing. Display might be incomplete.</div>}
 		</div>
 	);
 }

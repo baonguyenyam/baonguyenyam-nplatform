@@ -25,7 +25,6 @@ export const publicRoutes: string[] = [
 export const authRoutes: string[] = [
 	"/authentication/login",
 	"/authentication/register",
-	"/authentication/error",
 	"/authentication/reset",
 	"/authentication/new-password"
 ];
@@ -44,4 +43,4 @@ export const pathAuthPrefix: string = "/admin";
  */
 export const DEFAULT_LOGIN_REDIRECT: string = "/admin";
 export const DEFAULT_LOGOUT_REDIRECT: string = "/authentication/logout/success";
-export const SIGNIN_ERROR_URL: string = "/authentication/error";
+export const SIGNIN_ERROR_URL: string = "/authentication/login";

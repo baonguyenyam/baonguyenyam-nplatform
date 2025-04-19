@@ -8,11 +8,8 @@ import { z } from "zod";
 
 // Consider moving this schema to a shared location if used elsewhere (e.g., the login form)
 const FormSchema = z.object({
-	email: z.string({ required_error: "Email is required" })
-		.min(1, "Email is required")
-		.email("Invalid email"),
-	password: z.string({ required_error: "Password is required" })
-		.min(1, "Password is required")
+	email: z.string({ required_error: "Email is required" }).min(1, "Email is required").email("Invalid email"),
+	password: z.string({ required_error: "Password is required" }).min(1, "Password is required"),
 	// You might remove min/max length checks here if you prefer the API to handle all validation
 	// .min(8, "Password must be more than 8 characters")
 	// .max(32, "Password must be less than 32 characters"),
@@ -35,7 +32,8 @@ export default {
 			// 	email: { label: "Email", type: "text", placeholder: "Email" },
 			// 	password: { label: "Password", type: "password", placeholder: "Password" },
 			// },
-			async authorize(credentials: any) { // credentials type is any, which is okay here
+			async authorize(credentials: any) {
+				// credentials type is any, which is okay here
 				try {
 					// 1. Validate input using Zod
 					const { email, password } = await FormSchema.parseAsync(credentials);
@@ -69,7 +67,6 @@ export default {
 					// 4. Return the user object if authentication was successful
 					console.log("API Sign-in successful for:", responseBody.user.email);
 					return responseBody.user; // Return the user object nested under 'user'
-
 				} catch (error) {
 					// Handle Zod validation errors
 					if (error instanceof ZodError) {

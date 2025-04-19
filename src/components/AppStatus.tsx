@@ -16,7 +16,7 @@ export default function AppStatus(props: any) {
 	const IconComponent = status?.icon ? status.icon : null;
 	const size = props.size ? props.size : "default";
 
-	useEffect(() => { }, []);
+	useEffect(() => {}, []);
 
 	return (
 		<>
