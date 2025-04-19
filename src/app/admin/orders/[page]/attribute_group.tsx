@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { produce } from "immer"; // Import immer for easier state updates
 import { Copy, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
@@ -8,10 +9,32 @@ import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { checkStringIsTextOrColorHexOrURL } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
 import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
+
+interface AttributeItem {
+	id: string;
+	title: string;
+	value?: any; // Can be string, object, or array depending on type
+}
+
+interface AttributeInstance {
+	id: string;
+	title: string;
+	children: AttributeItem[][]; // Array of rows, each row is an array of attribute items
+}
+
+interface AttributeGroup {
+	id: string;
+	title: string;
+	attributes: AttributeInstance[];
+}
+
+// Helper to generate unique IDs (replace with a more robust solution if needed)
+const generateId = () => `group_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
 export default function OrderAttribute(props: any) {
 	const { data } = props;
@@ -20,626 +43,684 @@ export default function OrderAttribute(props: any) {
 		return memoriez.filter((item: any) => item?.mapto === "order");
 	}, [memoriez]);
 
-	const [open, setOpen] = useState<any>(["", null]);
-	const [groupSelected, setGroupSelected] = useState<any>([]);
-	const [selected, setSelected] = useState<any>([]);
-	const [current, setCurrent] = useState<any>(null);
+	const [open, setOpen] = useState<any>(["", null]); // [dialogType, dialogData]
+	const [groupSelected, setGroupSelected] = useState<AttributeGroup[]>([]);
+	const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
+	const [savedGroupData, setSavedGroupData] = useState<AttributeGroup[]>([]); // Renamed 'current'
 	const [search, setSearch] = useState<any>([]);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(true); // For search dialog
 
-	const searchAttributeMeta = async (e: any, attributeId: string) => {
-		await actions.searchAttributeMeta(e, attributeId).then((res: any) => {
-			if (res.success === "success") {
-				// data: [
-				// 	{
-				// 		"id": Number,
-				// 		"key": String,
-				// 		"value": String,
-				// 	}
-				// ]
-				setSearch(res.data);
-				setLoading(false);
-			}
-		});
-	};
-
-	const saveAttributeMeta = async () => {
-		const orderId = data?.id;
-		const orderData = JSON.stringify(selected);
-		await actions.updateRecord(orderId, { data: orderData }).then((res: any) => {
-			if (res.success === "success") {
-				toast.success("Order attributes updated successfully");
-				setCurrent(selected);
-			}
-		});
-	};
-
-	const deleteCheckboxValue = async (frm: any, item: any, v: any, i: number, j: number, child: any) => {
-		const getIndex = frm?.value?.findIndex((i: any) => i?.id === v?.id);
-		if (getIndex !== -1) {
-			const newValue = frm?.value?.filter((_: any, index: number) => index !== getIndex);
-			// Remove item from selected
-			const updatedChildren = child.map((child: any, i: number) => {
-				if (i === j) {
-					return {
-						...child,
-						value: newValue,
-					};
-				}
-				return child;
-			});
-			setSelected((prev: any) => {
-				const newSelected = [...prev];
-				const index = newSelected.findIndex((i: any) => i.id === item?.id);
-				if (index !== -1) {
-					newSelected[index].children[i] = updatedChildren;
-				}
-				return newSelected;
-			});
-		} else {
-			toast.error("Item not found");
-		}
-	};
-
-	const handleUpdateInput = async (frm: any, item: any, value: any, i: number, j: number, child: any) => {
-		const _item = {
-			id: frm?.id,
-			title: frm?.title,
-			value: value,
-		};
-		const updatedChildren = child.map((child: any, i: number) => {
-			if (i === j) {
-				return {
-					...child,
-					value: _item,
-				};
-			}
-			return child;
-		});
-		setSelected((prev: any) => {
-			const newSelected = [...prev];
-			const index = newSelected.findIndex((i: any) => i.id === item?.id);
-			if (index !== -1) {
-				newSelected[index].children[i] = updatedChildren;
-			}
-			return newSelected;
-		});
-	};
-
-	const handleAddAttributeMeta = async (item: any) => {
-		const children = atts?.find((att: any) => att?.id === item?.id)?.children;
-		if (children.length > 0) {
-			const _data: any = [];
-			children?.forEach((child: any) => {
-				const _item = {
-					title: child?.title,
-					id: child?.id,
-					value: "",
-				};
-				_data.push(_item);
-			});
-			const existingItem = selected.find((i: any) => i.id === item?.id);
-			if (existingItem) {
-				if (existingItem.children) {
-					const newChildren = [...existingItem.children, ...[_data]];
-					setSelected((prev: any) => {
-						const newSelected = [...prev];
-						const index = newSelected.findIndex((i: any) => i.id === item?.id);
-						if (index !== -1) {
-							newSelected[index].children = newChildren;
-						}
-						return newSelected;
-					});
-				} else {
-					existingItem.children = [_data];
-					setSelected((prev: any) => {
-						const newSelected = [...prev];
-						const index = newSelected.findIndex((i: any) => i.id === item?.id);
-						if (index !== -1) {
-							newSelected[index] = existingItem;
-						}
-						return newSelected;
-					});
-				}
-			}
-		} else {
-			toast.error("No children found");
-		}
-	};
-
-	const handleDuplicateAttributeMeta = async (item: any, index: number, i: number) => {
-		const children = selected[index]?.children;
-		setSelected((prev: any) => {
-			const newSelected = [...prev];
-			const newChildren = [...children, item];
-			newSelected[index].children = newChildren;
-			return newSelected;
-		});
-	};
+	// --- Data Fetching & Initialization ---
 
 	useEffect(() => {
 		if (data?.data) {
-			const dataParsed = JSON.parse(data?.data);
-			setSelected(dataParsed);
-			setCurrent(dataParsed);
+			try {
+				const parsedData = JSON.parse(data.data);
+				// Check if it's the new grouped structure or the old flat structure
+				if (Array.isArray(parsedData) && parsedData.length > 0 && parsedData[0]?.attributes !== undefined) {
+					// New structure
+					setGroupSelected(parsedData);
+					setSavedGroupData(parsedData); // Initialize saved state
+					if (parsedData.length > 0 && !activeGroupId) {
+						setActiveGroupId(parsedData[0].id); // Activate first group
+					}
+				} else if (Array.isArray(parsedData) && parsedData.length > 0 && parsedData[0]?.attributes === undefined) {
+					// Old structure - migrate to a default group
+					const defaultGroup: AttributeGroup = {
+						id: generateId(),
+						title: "Default Group",
+						attributes: parsedData,
+					};
+					setGroupSelected([defaultGroup]);
+					setSavedGroupData([defaultGroup]); // Initialize saved state
+					setActiveGroupId(defaultGroup.id); // Activate the default group
+				} else {
+					// Handle empty or invalid data
+					setGroupSelected([]);
+					setSavedGroupData([]);
+					setActiveGroupId(null);
+				}
+			} catch (error) {
+				console.error("Failed to parse order data:", error);
+				toast.error("Failed to load order attributes.");
+				setGroupSelected([]);
+				setSavedGroupData([]);
+				setActiveGroupId(null);
+			}
+		} else {
+			setGroupSelected([]);
+			setSavedGroupData([]);
+			setActiveGroupId(null);
 		}
-	}, [data?.data]);
+	}, [data?.data]); // Dependency on data.data
+
+	// --- Derived State ---
+	const activeGroup = useMemo(() => {
+		return groupSelected.find(group => group.id === activeGroupId);
+	}, [groupSelected, activeGroupId]);
+
+	const availableAttsForActiveGroup = useMemo(() => {
+		if (!activeGroup) return [];
+		const selectedIds = activeGroup.attributes.map(attr => attr.id);
+		return atts.filter(att => !selectedIds.includes(att.id));
+	}, [atts, activeGroup]);
+
+	const hasChanges = useMemo(() => {
+		return JSON.stringify(groupSelected) !== JSON.stringify(savedGroupData);
+	}, [groupSelected, savedGroupData]);
+
+	// --- API Calls ---
+
+	const searchAttributeMeta = async (searchTerm: string, attributeId: string) => {
+		setLoading(true);
+		setSearch([]);
+		try {
+			const res: any = await actions.searchAttributeMeta(searchTerm, attributeId);
+			if (res.success === "success") {
+				setSearch(res.data || []);
+			} else {
+				toast.error("Failed to search attribute values.");
+				setSearch([]);
+			}
+		} catch (error) {
+			console.error("Search error:", error);
+			toast.error("An error occurred during search.");
+			setSearch([]);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const saveAttributeMeta = async () => {
+		if (!hasChanges) return;
+		const orderId = data?.id;
+		if (!orderId) {
+			toast.error("Order ID is missing.");
+			return;
+		}
+		const orderData = JSON.stringify(groupSelected);
+		try {
+			const res: any = await actions.updateRecord(orderId, { data: orderData });
+			if (res.success === "success") {
+				toast.success("Order attributes updated successfully");
+				setSavedGroupData(groupSelected); // Update saved state on success
+			} else {
+				toast.error("Failed to update order attributes.");
+			}
+		} catch (error) {
+			console.error("Save error:", error);
+			toast.error("An error occurred while saving.");
+		}
+	};
+
+	// --- State Update Handlers (using Immer for immutability) ---
+
+	const handleAddGroup = (groupName: string) => {
+		if (!groupName.trim()) {
+			toast.error("Group name cannot be empty.");
+			return;
+		}
+		const newGroup: AttributeGroup = {
+			id: generateId(),
+			title: groupName.trim(),
+			attributes: [],
+		};
+		setGroupSelected(
+			produce((draft) => {
+				draft.push(newGroup);
+			})
+		);
+		setActiveGroupId(newGroup.id); // Activate the new group
+		setOpen(["", null]); // Close dialog
+	};
+
+	const handleSelectAttributeForGroup = (attributeDefinition: any) => {
+		if (!activeGroupId) return;
+
+		const newAttributeInstance: AttributeInstance = {
+			title: attributeDefinition.title,
+			id: attributeDefinition.id,
+			children: [], // Initialize with no rows
+		};
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group && !group.attributes.some(attr => attr.id === newAttributeInstance.id)) {
+					group.attributes.push(newAttributeInstance);
+				} else if (group) {
+					toast.info(`Attribute "${newAttributeInstance.title}" already added to this group.`);
+				}
+			})
+		);
+		setOpen(["", null]); // Close dialog
+	};
+
+	const handleAddAttributeRow = (attributeId: string) => {
+		if (!activeGroupId) return;
+
+		const attributeDefinition = atts.find((att: any) => att.id === attributeId);
+		if (!attributeDefinition || !attributeDefinition.children) {
+			toast.error("Attribute definition not found or has no fields.");
+			return;
+		}
+
+		// Create a new row based on the attribute definition's children (fields)
+		const newRow: AttributeItem[] = attributeDefinition.children.map((child: any) => ({
+			id: child.id,
+			title: child.title,
+			value: child.type === 'checkbox' ? [] : "", // Initialize based on type
+		}));
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					if (attribute) {
+						attribute.children.push(newRow);
+					}
+				}
+			})
+		);
+	};
+
+	const handleDuplicateAttributeRow = (attributeId: string, rowIndex: number) => {
+		if (!activeGroupId) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					if (attribute && attribute.children[rowIndex]) {
+						// Deep copy the row to duplicate
+						const rowToDuplicate = JSON.parse(JSON.stringify(attribute.children[rowIndex]));
+						attribute.children.splice(rowIndex + 1, 0, rowToDuplicate); // Insert duplicate below original
+					}
+				}
+			})
+		);
+	};
+
+	const handleDeleteAttributeRow = (attributeId: string, rowIndex: number) => {
+		if (!activeGroupId) return;
+
+		if (!confirm("Are you sure you want to remove this row?")) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					if (attribute) {
+						attribute.children.splice(rowIndex, 1);
+					}
+				}
+			})
+		);
+	};
+
+	const handleDeleteAttributeInstance = (attributeId: string) => {
+		if (!activeGroupId) return;
+
+		if (!confirm(`Are you sure you want to remove the entire "${activeGroup?.attributes.find(a => a.id === attributeId)?.title}" attribute section from this group?`)) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					group.attributes = group.attributes.filter(attr => attr.id !== attributeId);
+				}
+			})
+		);
+	};
+
+	const handleUpdateFieldValue = (attributeId: string, rowIndex: number, fieldIndex: number, newValue: any) => {
+		if (!activeGroupId) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
+						attribute.children[rowIndex][fieldIndex].value = newValue;
+					}
+				}
+			})
+		);
+	};
+
+	const handleUpdateCheckboxValue = (attributeId: string, rowIndex: number, fieldIndex: number, selectedMetaItem: any, add: boolean) => {
+		if (!activeGroupId) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const group = draft.find(g => g.id === activeGroupId);
+				if (group) {
+					const attribute = group.attributes.find(attr => attr.id === attributeId);
+					if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
+						const field = attribute.children[rowIndex][fieldIndex];
+						if (!Array.isArray(field.value)) {
+							field.value = []; // Initialize if not an array
+						}
+						const existingIndex = field.value.findIndex((v: any) => v?.id === selectedMetaItem?.id);
+
+						if (add) {
+							if (existingIndex === -1) {
+								field.value.push(selectedMetaItem);
+							} else {
+								toast.error("Already selected.");
+							}
+						} else { // Remove
+							if (existingIndex !== -1) {
+								field.value.splice(existingIndex, 1);
+							} else {
+								toast.error("Item not found to remove.");
+							}
+						}
+					}
+				}
+			})
+		);
+	};
+
+	const handleDeleteCheckboxSingleValue = (attributeId: string, rowIndex: number, fieldIndex: number, valueToRemove: any) => {
+		if (!activeGroupId) return;
+		if (!confirm("Are you sure you want to remove this item?")) return;
+		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
+	};
+
+	// --- Render ---
 
 	return (
 		<div className="block w-full">
-			<div className="flex items-center justify-between mb-5">
-				<div className="l">
-					<h3 className="font-semibold mb-0">Additional Information</h3>
-					<p className="text-sm text-muted-foreground">You can add more information about this order here.</p>
-				</div>
-				{atts?.length > 0 && (
-					<div className="ml-auto flex items-center space-x-2">
-						<Info className={`w-4 h-4 text-red-500 ${selected === current ? "hidden" : ""}`} />
+			{/* Group Management */}
+			<div className="flex items-center space-x-2 mb-4">
+				<Dialog
+					open={open[0] === "create-group"}
+					onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>
+					<DialogTrigger asChild>
 						<Button
-							type="button"
-							disabled={selected === current}
-							onClick={saveAttributeMeta}>
-							Save
+							size="sm"
+							variant="outline"
+							type="button">
+							<Plus className="w-4 h-4 mr-1" />
+							Add Group
 						</Button>
-					</div>
-				)}
-			</div>
-
-			<div className="flex flex-col space-y-4">
-				{/* Loop through selected attributes */}
-				{selected?.map((item: any, index: number) => (
-					<Fragment key={index}>
-						<div className="flex flex-col">
-							<div className="flex items-center justify-between group bg-gray-100 px-2 py-2 rounded-lg dark:bg-gray-900">
-								<div className="text-lg font-bold pl-1">{item?.title}</div>
-								<div className="ml-auto">
-									<div className="flex items-center space-x-2">
-										<DropdownMenu>
-											<DropdownMenuTrigger className="cursor-pointer px-1 text-gray-500 dark:text-gray-400">
-												<PlusCircle className="w-6 h-6" />
-											</DropdownMenuTrigger>
-											<DropdownMenuContent
-												align="end"
-												className="dark:bg-gray-800 dark:border-gray-700">
-												<DropdownMenuItem
-													className="cursor-pointer flex items-center space-x-2"
-													onClick={() => {
-														// Add new attribute
-														handleAddAttributeMeta(item);
-													}}>
-													<Plus className="w-4 h-4" />
-													<span>Add New {item?.title}</span>
-												</DropdownMenuItem>
-												<DropdownMenuSeparator />
-												<DropdownMenuItem
-													className="cursor-pointer flex items-center space-x-2 text-red-600"
-													onClick={() => {
-														// Delete attribute
-														if (confirm("Are you sure you want to remove this item?")) {
-															setSelected((prev: any) => prev.filter((i: any) => i !== item));
-														}
-													}}>
-													<X className="w-4 h-4" />
-													<span>Remove</span>
-												</DropdownMenuItem>
-											</DropdownMenuContent>
-										</DropdownMenu>
-									</div>
-								</div>
-							</div>
-						</div>
-						{/* Loop through children */}
-						<div
-							id={`father_${item?.id}`}
-							className="flex flex-col space-y-1 whitespace-nowrap">
-							{item?.children?.map((child: any, i: number) => (
-								<div
-									key={i}
-									className={`grid grid-cols-${child?.length} gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-10`}
-									style={{ gridTemplateColumns: `repeat(${child?.length}, 1fr)` }}>
-									<div className="group absolute left-2 top-1/2 transform -translate-y-1/2 pl-1">
-										<div
-											className="flex items-center space-x-2 cursor-pointer"
-											onClick={() => {
-												handleDuplicateAttributeMeta(selected[index]?.children[i], index, i);
-											}}>
-											<Copy className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-										</div>
-									</div>
-
-									{child?.map((frm: any, j: number) => (
-										<Fragment key={j}>
-											<div className="item flex items-center">
-												{frm?.value && (
-													<div className="item flex items-center justify-between group space-x-2">
-														{/* IF Type is text field then show input */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "text" && (
-															<div className="flex items-center space-x-2">
-																<span>{frm?.title}</span>
-																<Input
-																	className="w-full px-2 py-0! h-7"
-																	onBlur={(e) => {
-																		const value = (e.target as HTMLInputElement)?.value;
-																		handleUpdateInput(frm, item, value, i, j, child);
-																	}}
-																	onKeyDown={(e) => {
-																		if (e.key === "Enter") {
-																			const value = (e.target as HTMLInputElement)?.value;
-																			handleUpdateInput(frm, item, value, i, j, child);
-																		}
-																	}}
-																	defaultValue={frm?.value?.value}
-																/>
-															</div>
-														)}
-														{/* IF Type is not text field then show select/checkbox */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
-															<div className="cursor-pointer flex items-center justify-between space-x-2 font-light">
-																{/* Selectbox */}
-																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "select" && (
-																	<div
-																		className="flex items-center space-x-1 font-light"
-																		onClick={() => {
-																			setSearch([]);
-																			setLoading(true);
-																			searchAttributeMeta("", frm?.id);
-																			setOpen(["search", [i, frm, item, child, j]]);
-																		}}>
-																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) === "color" && (
-																			<>
-																				<div
-																					className="w-4 h-4 rounded-full border border-gray-300"
-																					style={{ backgroundColor: frm?.value?.value }}></div>
-																				<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																			</>
-																		)}
-																		{checkStringIsTextOrColorHexOrURL(frm?.value?.value) !== "color" && (
-																			<>
-																				<p className="text-sm text-gray-500 dark:text-white">{frm?.value?.value}</p>
-																			</>
-																		)}
-																	</div>
-																)}
-																{/* Checkbox */}
-																{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "checkbox" && (
-																	<div className="flex flex-col space-y-1 font-light">
-																		{/* Loop through checkbox values */}
-																		{frm?.value.length > 0 &&
-																			frm?.value?.map((v: any, k: number) => (
-																				<div
-																					key={k}
-																					className="relative flex items-center group space-x-1">
-																					<div
-																						className="flex items-center space-x-1 font-light"
-																						onClick={() => {
-																							setSearch([]);
-																							setLoading(true);
-																							searchAttributeMeta("", frm?.id);
-																							setOpen(["search", [i, frm, item, child, j]]);
-																						}}>
-																						{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
-																							<>
-																								<div
-																									className="w-4 h-4 rounded-full border border-gray-300"
-																									style={{ backgroundColor: v?.value }}></div>
-																								<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
-																							</>
-																						)}
-																						{checkStringIsTextOrColorHexOrURL(v?.value) !== "color" && (
-																							<>
-																								<p className="text-sm text-gray-500 dark:text-white">{v?.value}</p>
-																							</>
-																						)}
-																					</div>
-																					{/* Delete */}
-																					<div className="del text-red-500 cursor-pointer">
-																						<div
-																							onClick={() => {
-																								if (confirm("Are you sure you want to remove this item?")) {
-																									deleteCheckboxValue(frm, item, v, i, j, child);
-																								}
-																							}}>
-																							<X className="w-4 h-4" />
-																						</div>
-																					</div>
-																				</div>
-																			))}
-																		{/* IF No value */}
-																		{frm?.value?.length === 0 && (
-																			<span
-																				className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
-																				onClick={() => {
-																					setSearch([]);
-																					setLoading(true);
-																					searchAttributeMeta("", frm?.id);
-																					setOpen(["search", [i, frm, item, child, j]]);
-																				}}>
-																				<Search className="w-4 h-4" />
-																				<span>{frm?.title}</span>
-																			</span>
-																		)}
-																	</div>
-																)}
-															</div>
-														)}
-													</div>
-												)}
-												{/* IF Empty */}
-												{!frm?.value && (
-													<div className="flex items-center justify-between group space-x-2">
-														{/* IF Type is text field then show input */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type === "text" && (
-															<div className="flex items-center space-x-2">
-																<span>{frm?.title}</span>
-																<Input
-																	className="w-full px-2 py-0! h-7"
-																	onBlur={(e) => {
-																		const value = (e.target as HTMLInputElement)?.value;
-																		handleUpdateInput(frm, item, value, i, j, child);
-																	}}
-																	onKeyDown={(e) => {
-																		if (e.key === "Enter") {
-																			const value = (e.target as HTMLInputElement)?.value;
-																			handleUpdateInput(frm, item, value, i, j, child);
-																		}
-																	}}
-																/>
-															</div>
-														)}
-														{/* IF Type is not text field then show select/checkbox */}
-														{atts.find((att: any) => att?.id === item?.id)?.children?.find((c: any) => c?.id === frm?.id)?.type !== "text" && (
-															<span
-																className="flex items-center space-x-2 cursor-pointer text-gray-500 dark:text-gray-400"
-																onClick={() => {
-																	setSearch([]);
-																	setLoading(true);
-																	searchAttributeMeta("", frm?.id);
-																	setOpen(["search", [i, frm, item, child, j]]);
-																}}>
-																<Search className="w-4 h-4" />
-																<span>{frm?.title}</span>
-															</span>
-														)}
-													</div>
-												)}
-											</div>
-										</Fragment>
-									))}
-
-									<div className="group absolute top-2 right-2">
-										<Button
-											type="button"
-											size="icon"
-											variant="outline"
-											className="text-sm flex flex-row items-center justify-center w-4 h-4 bg-transparent font-medium text-red-500 border-0 shadow-none dark:text-white"
-											onClick={() => {
-												if (confirm("Are you sure you want to remove this item?")) {
-													// Find the parent item
-													const parentIndex = selected.findIndex((i: any) => i.id === item?.id);
-													if (parentIndex !== -1) {
-														const newSelected = [...selected];
-														newSelected[parentIndex].children = newSelected[parentIndex].children.filter((_: any, index: number) => index !== i);
-														setSelected(newSelected);
-													} else {
-														toast.error("Item not found");
-													}
-												}
-											}}>
-											<X className="w-4 h-4" />
-										</Button>
-									</div>
-								</div>
-							))}
-						</div>
-					</Fragment>
-				))}
-			</div>
-
-			{atts?.length === 0 && (
-				<div className="flex items-center justify-between py-2 text-gray-500">
-					<p>No attributes found, please add attributes first</p>
-				</div>
-			)}
-
-			{/* Group Selected */}
-			<Dialog
-				open={open[0] === "create-group"}
-				defaultOpen={false}
-				onOpenChange={(open) => setOpen([open ? "create-group" : "", null])}>
-				<DialogTrigger asChild>
-					<Button
-						type="button"
-						className="mt-5 mb-5">
-						<Plus />
-						Add Group
-					</Button>
-				</DialogTrigger>
-				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-					<DialogHeader>
-						<DialogTitle>Add Group</DialogTitle>
-					</DialogHeader>
-					<div className="flex flex-col">
+					</DialogTrigger>
+					<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+						<DialogHeader>
+							<DialogTitle>Add New Group</DialogTitle>
+						</DialogHeader>
 						<Input
 							placeholder="Group Name"
 							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
-									const groupName = (e.target as HTMLInputElement)?.value;
-									if (groupName) {
-										const _item = {
-											title: groupName,
-											id: Date.now(),
-											children: [],
-										};
-										setGroupSelected((prev: any) => {
-											const newSelected = [...prev];
-											newSelected.push(_item);
-											return newSelected;
-										});
-										setOpen(["", null]);
-									} else {
-										toast.error("Group name is required");
+									handleAddGroup((e.target as HTMLInputElement)?.value);
+								}
+							}}
+							autoFocus
+						/>
+						<Button
+							type="button"
+
+							onClick={() => handleAddGroup((document.querySelector('input[placeholder="Group Name"]') as HTMLInputElement)?.value)}>
+							Create Group
+						</Button>
+					</DialogContent>
+				</Dialog>
+				{/* Add other group management buttons here if needed (e.g., Rename, Delete Group) */}
+			</div>
+
+			{/* Tabs for Groups */}
+			{groupSelected && groupSelected.length > 0 && (
+				<Tabs
+					value={activeGroupId ?? ""} // Controlled component
+					onValueChange={setActiveGroupId} // Update active group on tab change
+					className="mb-5 w-full">
+					<TabsList className="mb-2">
+						{groupSelected.map((group) => (
+							<TabsTrigger
+								key={group.id}
+								value={group.id}>
+								{group.title}
+								{/* Add delete/edit icons for group here if needed */}
+							</TabsTrigger>
+						))}
+					</TabsList>
+
+					{/* Save Button Area */}
+					<div className="flex items-center justify-between mb-5 pt-2">
+						<div className="l">
+							<h3 className="font-semibold mb-0">Additional Information</h3>
+							<p className="text-sm text-muted-foreground">Manage attributes within the selected group.</p>
+						</div>
+						{atts?.length > 0 && (
+							<div className="ml-auto flex items-center space-x-2">
+								<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
+								<Button
+									type="button"
+									disabled={!hasChanges}
+									onClick={saveAttributeMeta}>
+									Save Changes
+								</Button>
+							</div>
+						)}
+					</div>
+
+					{/* Content for each Group */}
+					{groupSelected.map((group) => (
+						<TabsContent
+							key={group.id}
+							value={group.id}
+							className="mt-0 pt-4 border-t border-border dark:border-gray-700" // Added border top
+						>
+							{/* Attribute Instances within the Active Group */}
+							<div className="flex flex-col space-y-4">
+								{group.attributes?.map((attributeInstance, attrIndex) => (
+									<Fragment key={`${group.id}-${attributeInstance.id}`}>
+										{/* Attribute Instance Header */}
+										<div className="flex items-center justify-between group bg-gray-100 px-3 py-2 rounded-lg dark:bg-gray-900">
+											<div className="text-base font-semibold">{attributeInstance.title}</div>
+											<div className="ml-auto">
+												<div className="flex items-center space-x-1">
+													{/* Add Row Button */}
+													<Button
+														variant="ghost"
+														size="icon"
+														type="button"
+														className="w-7 h-7 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+														onClick={() => handleAddAttributeRow(attributeInstance.id)}
+														title={`Add new row for ${attributeInstance.title}`}
+													>
+														<PlusCircle className="w-5 h-5" />
+													</Button>
+													{/* Delete Attribute Instance Button */}
+													<Button
+														variant="ghost"
+														size="icon"
+														type="button"
+														className="w-7 h-7 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+														onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
+														title={`Remove ${attributeInstance.title} section`}
+													>
+														<X className="w-5 h-5" />
+													</Button>
+												</div>
+											</div>
+										</div>
+
+										{/* Rows (Children) for this Attribute Instance */}
+										<div
+											id={`group_${group.id}_attr_${attributeInstance.id}`}
+											className="flex flex-col space-y-2 pl-2">
+											{attributeInstance.children?.map((row, rowIndex) => {
+												// Find the definition to determine column count and field types
+												const attributeDefinition = atts.find((att: any) => att.id === attributeInstance.id);
+												const colCount = attributeDefinition?.children?.length ?? 1;
+
+												return (
+													<div
+														key={`${group.id}-${attributeInstance.id}-row-${rowIndex}`}
+														className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative pl-10`} // Adjusted padding
+														style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
+													>
+														{/* Row Actions (Duplicate, Delete) */}
+														<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-col space-y-1">
+															<Button
+																variant="ghost"
+																size="icon"
+																type="button"
+																className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+																title="Duplicate Row"
+																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}
+															>
+																<Copy className="w-4 h-4" />
+															</Button>
+															<Button
+																variant="ghost"
+																size="icon"
+																type="button"
+																className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+																title="Delete Row"
+																onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}
+															>
+																<X className="w-4 h-4" />
+															</Button>
+														</div>
+
+														{/* Fields within the Row */}
+														{row.map((field, fieldIndex) => {
+															const fieldDefinition = attributeDefinition?.children?.[fieldIndex];
+															const fieldType = fieldDefinition?.type ?? 'text'; // Default to text
+
+															return (
+																<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
+																	<div className="item flex flex-col space-y-1">
+																		<span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span>
+																		<div className="field-content">
+																			{/* --- Text Input --- */}
+																			{fieldType === "text" && (
+																				<Input
+																					className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
+																					value={field.value || ""} // Controlled component
+																					onChange={(e) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, e.target.value)}
+																					placeholder={field.title}
+																				/>
+																			)}
+
+																			{/* --- Select Input --- */}
+																			{fieldType === "select" && (
+																				<Button
+																					variant="outline"
+																					type="button"
+																					size="sm"
+																					className="w-full justify-start font-normal h-8 text-sm" // Adjusted size
+																					onClick={() => {
+																						setSearch([]);
+																						setLoading(true);
+																						searchAttributeMeta("", field.id);
+																						// Store necessary info to update the correct field
+																						setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																					}}>
+																					{field.value?.value ? (
+																						<div className="flex items-center space-x-1">
+																							{checkStringIsTextOrColorHexOrURL(field.value.value) === "color" && (
+																								<div className="w-3 h-3 rounded-full border border-gray-300 mr-1" style={{ backgroundColor: field.value.value }}></div>
+																							)}
+																							<span className="truncate">{field.value.value}</span>
+																						</div>
+																					) : (
+																						<span className="text-gray-500 dark:text-gray-400 flex items-center">
+																							<Search className="w-3 h-3 mr-1" /> Select {field.title}
+																						</span>
+																					)}
+																				</Button>
+																			)}
+
+																			{/* --- Checkbox Input --- */}
+																			{fieldType === "checkbox" && (
+																				<div className="flex flex-col space-y-1">
+																					{/* Display selected checkbox values */}
+																					{Array.isArray(field.value) && field.value.length > 0 && field.value.map((v: any, k: number) => (
+																						<div key={k} className="relative flex items-center group space-x-1 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
+																							{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
+																								<div className="w-3 h-3 rounded-full border border-gray-300" style={{ backgroundColor: v?.value }}></div>
+																							)}
+																							<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
+																							{/* Delete single checkbox value */}
+																							<button
+																								className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																								onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																								title={`Remove ${v?.value}`}
+																							>
+																								<X className="w-3 h-3" />
+																							</button>
+																						</div>
+																					))}
+																					{/* Button to add more checkbox values */}
+																					<Button
+																						variant="outline"
+																						size="sm"
+																						type="button"
+																						className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																						onClick={() => {
+																							setSearch([]);
+																							setLoading(true);
+																							searchAttributeMeta("", field.id);
+																							setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																						}}>
+																						<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																					</Button>
+																				</div>
+																			)}
+																		</div>
+																	</div>
+																</Fragment>
+															);
+														})}
+													</div>
+												);
+											})}
+											{/* Show message if no rows exist for this attribute */}
+											{attributeInstance.children?.length === 0 && (
+												<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-2">
+													No rows added yet for "{attributeInstance.title}". Click <PlusCircle className="w-4 h-4 inline-block mx-1" /> above to add one.
+												</div>
+											)}
+										</div>
+									</Fragment>
+								))}
+
+								{/* Add Attribute to Group Button */}
+								{availableAttsForActiveGroup.length > 0 && (
+									<Dialog
+										open={open[0] === "create" && open[1]?.groupId === group.id} // Only open for the active group
+										onOpenChange={(isOpen) => setOpen([isOpen ? "create" : "", isOpen ? { groupId: group.id } : null])}
+									>
+										<DialogTrigger asChild>
+											<Button
+												type="button"
+												variant="outline"
+												className="mt-4">
+												<Plus className="w-4 h-4 mr-1" />
+												Add Attribute to "{group.title}"
+											</Button>
+										</DialogTrigger>
+										<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+											<DialogHeader>
+												<DialogTitle>Add Attribute to "{group.title}"</DialogTitle>
+											</DialogHeader>
+											<div className="flex flex-col max-h-[400px] overflow-y-auto">
+												{availableAttsForActiveGroup.map((item: any, index: number) => (
+													<div
+														key={index}
+														className={`flex items-center justify-between py-2 border-b border-border dark:border-gray-700 last:border-b-0`}>
+														<p className="text-sm">{item?.title}</p>
+														<Button
+															size="sm"
+															type="button"
+															className="text-xs"
+															onClick={() => handleSelectAttributeForGroup(item)}
+														>
+															Add
+														</Button>
+													</div>
+												))}
+											</div>
+										</DialogContent>
+									</Dialog>
+								)}
+
+								{/* Message if no attributes are in the group */}
+								{group.attributes?.length === 0 && (
+									<div className="text-center text-gray-500 dark:text-gray-400 py-4">
+										No attributes added to this group yet.
+									</div>
+								)}
+							</div>
+						</TabsContent>
+					))}
+				</Tabs>
+			)}
+
+			{/* Message if no groups exist */}
+			{groupSelected.length === 0 && (
+				<div className="text-center text-gray-500 dark:text-gray-400 py-6">
+					No attribute groups created yet. Click "Add Group" to start.
+				</div>
+			)}
+
+			{/* Search Dialog */}
+			<Dialog
+				open={open[0] === "search"}
+				onOpenChange={(isOpen) => {
+					if (!isOpen) {
+						setSearch([]);
+						setLoading(true); // Reset loading state for next open
+						setOpen(["", null]);
+					}
+				}}>
+				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+					<DialogHeader>
+						{/* Use optional chaining for safety */}
+						<DialogTitle>Search in {open[1]?.fieldTitle ?? "Attribute"}</DialogTitle>
+					</DialogHeader>
+					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
+						<Input
+							placeholder="Search or type value..."
+							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+							autoFocus
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									const searchTerm = (e.target as HTMLInputElement)?.value;
+									const fieldId = open[1]?.fieldId; // Get fieldId from dialog data
+									if (fieldId) {
+										searchAttributeMeta(searchTerm, fieldId);
 									}
 								}
 							}}
 						/>
-					</div>
-				</DialogContent>
-			</Dialog>
-
-			<Dialog
-				open={open[0] === "create"}
-				defaultOpen={false}
-				onOpenChange={(open) => setOpen([open ? "create" : "", null])}>
-				<DialogTrigger asChild>
-					{selected?.length < atts?.length && (
-						<Button
-							type="button"
-							className="mt-5 mb-5">
-							<Plus />
-							Add Attribute
-						</Button>
-					)}
-				</DialogTrigger>
-				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-					<DialogHeader>
-						<DialogTitle>List of Attributes</DialogTitle>
-					</DialogHeader>
-					<div className="flex flex-col">
-						{atts?.map((item: any, index: number) => (
-							<div
-								key={index}
-								className={`flex items-center justify-between py-2 hover:text-black text-gray-500 dark:hover:text-white`}>
-								<p>{item?.title}</p>
-								<Button
-									type="button"
-									className="text-sm bg-black text-white hover:bg-gray-900 hover:text-white dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-									onClick={() => {
-										setSelected((prev: any) => {
-											const newSelected = [...prev];
-											if (newSelected.includes(item)) {
-												return newSelected.filter((i: any) => i !== item);
-											} else {
-												const _item = {
-													title: item?.title,
-													id: item?.id,
-												};
-												return [...newSelected, _item];
-											}
-										});
-									}}
-									disabled={selected?.find((i: any) => i.id === item?.id)}>
-									Select
-								</Button>
-							</div>
-						))}
-						{atts?.length === 0 && (
-							<div className="flex items-center justify-between py-2 text-gray-500">
-								<p>No attributes found</p>
-							</div>
-						)}
-					</div>
-				</DialogContent>
-			</Dialog>
-
-			<Dialog
-				open={open[0] === "search"}
-				defaultOpen={false}
-				onOpenChange={(open) => {
-					setSearch([]);
-					setLoading(true);
-					setOpen([open ? "search" : "", null]);
-				}}>
-				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-					<DialogHeader>
-						<DialogTitle>Search in {open[1] ? open[1][1]?.title : ""}</DialogTitle>
-					</DialogHeader>
-					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
-						<Input
-							placeholder="Search..."
-							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									const search = (e.target as HTMLInputElement)?.value;
-									const parentId = open[1] ? open[1][1]?.id : "";
-									searchAttributeMeta(search, parentId);
-								}
-							}}
-						/>
 						<CommandList>
-							<CommandEmpty>No data found.</CommandEmpty>
-							{loading && <AppLoading />}
-							{!loading && (
-								<>
-									{search?.length > 0 && (
-										<CommandGroup
-											heading="Search Results"
-											className="max-h-[300px] overflow-y-auto">
-											{search?.map((item: any, index: number) => (
-												<CommandItem
-													key={index}
-													value={item?.key}
-													className="cursor-pointer"
-													onSelect={() => {
-														const childIndex = open[1][0];
-														const frmIndex = open[1][4];
-														const getFrmbyIndex = open[1][3][frmIndex];
-														const _item = {
-															id: item?.id,
-															title: item?.key,
-															value: item?.value,
-														};
-														// Check type
-														const type = atts?.find((att: any) => att?.id === open[1][2]?.id)?.children?.find((c: any) => c?.id === getFrmbyIndex?.id)?.type;
-														const updatedChildren = open[1][3]?.map((child: any, i: number) => {
-															if (i === frmIndex) {
-																// if type != checkbox then set value {} but if type == checkbox then set value [{}]
-																if (type !== "checkbox") {
-																	return {
-																		...child,
-																		value: _item,
-																	};
-																} else {
-																	// If already exist then do not add
-																	if (!child?.value) {
-																		child.value = [];
-																	}
-																	const isExist = child?.value?.find((v: any) => v?.id === _item?.id);
-																	if (isExist) {
-																		toast.error("Already exist");
-																		return child;
-																	}
-																	return {
-																		...child,
-																		value: [...child?.value, _item],
-																	};
-																}
-															}
-															return child;
-														});
-														setSelected((prev: any) => {
-															const newSelected = [...prev];
-															const index = newSelected.findIndex((i: any) => i.id === open[1][2]?.id);
-															if (index !== -1) {
-																newSelected[index].children[childIndex] = updatedChildren;
-															}
-															return newSelected;
-														});
-														setSearch([]);
-														setOpen(["", null]);
-													}}>
-													{/* Show Color Picker */}
-													{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
-														<div
-															className="w-4 h-4 rounded-full border border-gray-300"
-															style={{ backgroundColor: item?.value }}></div>
-													)}
-													{item?.key}
-												</CommandItem>
-											))}
-										</CommandGroup>
-									)}
-								</>
+							<CommandEmpty>{loading ? "Loading..." : "No results found."}</CommandEmpty>
+							{!loading && search?.length > 0 && (
+								<CommandGroup
+									heading="Search Results"
+									className="max-h-[300px] overflow-y-auto">
+									{search.map((item: any, index: number) => (
+										<CommandItem
+											key={index}
+											value={item?.key} // Use key for potential filtering
+											className="cursor-pointer flex items-center space-x-2"
+											onSelect={() => {
+												const { groupId, attributeId, rowIndex, fieldIndex, fieldType } = open[1];
+												const selectedMetaItem = {
+													id: item?.id,
+													title: item?.key, // Usually the same as key for meta
+													value: item?.value,
+												};
+
+												if (fieldType === 'checkbox') {
+													handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
+												} else { // select or other types that take a single object
+													handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
+												}
+
+												setOpen(["", null]); // Close dialog
+											}}>
+											{/* Show Color Picker */}
+											{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
+												<div
+													className="w-4 h-4 rounded-full border border-gray-300"
+													style={{ backgroundColor: item?.value }}></div>
+											)}
+											<span>{item?.key} ({item?.value})</span>
+										</CommandItem>
+									))}
+								</CommandGroup>
 							)}
 						</CommandList>
 					</Command>
