@@ -46,34 +46,34 @@ export default function FormView(props: any) {
 						<h2 className="text-lg font-bold mb-5">Mics</h2>
 						{/* data?meta */}
 						<div className="space-y-5 grid grid-cols-1 gap-4 xl:grid-cols-3 xl:gap-10">
-							{data?.meta && data?.meta?.length > 0 && data?.meta?.map((item: any, index: number) => (
-								<Fragment key={index}>
-									<div className="flex flex-col">
-										{(item?.key === "order_attributes" && item?.value?.length > 0) && (
-											<>
-												{convertStringToJson(item?.value)?.map((item: any, index: number) => (
-													<Fragment key={index}>
-														<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
-														<div
-															key={index}
-															className="flex flex-col">
-															{item?.value}
-														</div>
-													</Fragment>
-												))}
-											</>
-										)}
-										{(item?.key !== "order_attributes" && item?.value?.length > 0) && (
-											<>
-												<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
-												<div className="flex flex-col">
-													{item?.value}
-												</div>
-											</>
-										)}
-									</div>
-								</Fragment>
-							))}
+							{data?.meta &&
+								data?.meta?.length > 0 &&
+								data?.meta?.map((item: any, index: number) => (
+									<Fragment key={index}>
+										<div className="flex flex-col">
+											{item?.key === "order_attributes" && item?.value?.length > 0 && (
+												<>
+													{convertStringToJson(item?.value)?.map((item: any, index: number) => (
+														<Fragment key={index}>
+															<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
+															<div
+																key={index}
+																className="flex flex-col">
+																{item?.value}
+															</div>
+														</Fragment>
+													))}
+												</>
+											)}
+											{item?.key !== "order_attributes" && item?.value?.length > 0 && (
+												<>
+													<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
+													<div className="flex flex-col">{item?.value}</div>
+												</>
+											)}
+										</div>
+									</Fragment>
+								))}
 						</div>
 					</div>
 					<div className="w-full xl:w-1/2 grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
