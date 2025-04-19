@@ -71,3 +71,33 @@ export async function updateRecord(body: any) {
 		};
 	}
 }
+
+// Sign In 
+export async function signIn(body: any) {
+	const { email, password } = body;
+	const session = await auth();
+	const { id, role } = session?.user || {};
+	try {
+		if (!email || !password) {
+			throw new Error("Email and password are required to sign in.");
+		}
+		const db = await models.User.signIn(email, password);
+		if (!db) {
+			return {
+				success: "error",
+				message: "Invalid email or password",
+			};
+		}
+		return {
+			data: db,
+			success: "success",
+			message: "User signed in successfully",
+		};
+	}
+	catch (error) {
+		return {
+			success: "error",
+			message: "Error signing in user",
+		};
+	}
+}

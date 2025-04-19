@@ -250,6 +250,10 @@ model User {
   published             Boolean                @default(false)
   data                  String?                @db.Text
 
+  salt     String? @db.Text
+  hash     String? @db.Text
+  password String? @db.Text
+
   orders          Order[] @relation("OrderUsers")
   order_products  Order[] @relation("OrderUserProducts")
   order_delivery  Order[] @relation("OrderUserDelivery")

@@ -195,6 +195,9 @@ CREATE TABLE "User" (
     "updatedAt" TIMESTAMP(3),
     "published" BOOLEAN NOT NULL DEFAULT false,
     "data" TEXT,
+    "salt" TEXT,
+    "hash" TEXT,
+    "password" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

@@ -157,3 +157,23 @@ export const updateMulti = async (ids: string[], data: any) => {
 		return null;
 	}
 };
+
+// signIn
+export const signIn = async (email: string, password: string) => {
+	try {
+		const user = await db.user.findUnique({
+			where: {
+				email,
+			},
+		});
+		if (!user) {
+			return null;
+		}
+		if (user.password !== password) {
+			return null;
+		}
+		return user;
+	} catch (error) {
+		return null;
+	}
+}

@@ -1,9 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 export const UserSeed = async () => {
+
+	const password = await bcrypt.hash("demo", 10);
+
 	const user = await prisma.user.findFirst({
 		where: {
 			email: "baonguyenyam@gmail.com",
@@ -26,6 +30,7 @@ export const UserSeed = async () => {
 				avatar: "https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
 				role: "ADMIN",
 				published: true,
+				password,
 			},
 		});
 		await prisma.user.create({
@@ -44,6 +49,7 @@ export const UserSeed = async () => {
 				avatar: faker.image.avatar(),
 				role: "ADMIN",
 				published: true,
+				password,
 			},
 		});
 	}
@@ -65,6 +71,7 @@ export const UserSeed = async () => {
 				avatar: faker.image.avatar(),
 				role: "USER",
 				published: false,
+				password,
 			},
 		});
 	}
