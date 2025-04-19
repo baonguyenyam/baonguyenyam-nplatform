@@ -90,7 +90,7 @@ export default function OrderAttributeView(props: any) {
 				<div className="flex flex-col space-y-6">
 					{/* Loop through groups */}
 					{groupSelected.map((group) => (
-						<div key={group.id} className="group-section">
+						<div key={group.id} className="group-section mb-10">
 							<h2 className="text-xl font-semibold mb-3 border-b pb-2 dark:border-gray-700">{group.title}</h2>
 							{group.attributes && group.attributes.length > 0 ? (
 								<div className="flex flex-col space-y-4">

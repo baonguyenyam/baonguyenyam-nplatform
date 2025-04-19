@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { produce } from "immer"; // Import immer for easier state updates
-import { Copy, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
+import { Copy, Info, Pen, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
 import { useAppSelector } from "@/store";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 import * as actions from "./actions";
 
@@ -343,26 +344,38 @@ export default function OrderAttribute(props: any) {
 					onValueChange={setActiveGroupId} // Update active group on tab change
 					className="mb-5 w-full">
 					<div className="w-full flex items-center justify-between bg-gray-100 dark:bg-gray-800">
-						<TabsList className="m-0 p-0 border-0 bg-transparent! shadow-none! h-auto">
-							{groupSelected.map((group) => (
-								<TabsTrigger
-									// Change to border top on active tab
-									className={cn(
-										"border-t-3 border-x-0 border-b-0 border-t-transparent dark:border-gray-700",
-										{
-											"border-black": activeGroupId === group.id,
-											"border-transparent": activeGroupId !== group.id,
-										},
-										"rounded-none cursor-pointer px-5 py-3 shadow-none!",
-									)}
-									key={group.id}
-									value={group.id}>
-									{group.title}
-									{/* Add delete/edit icons for group here if needed */}
-								</TabsTrigger>
-							))}
-						</TabsList>
-						<div className="flex items-center space-x-5 mr-4">
+						<div className="group flex items-center">
+							<TabsList className="m-0 p-0 border-0 bg-transparent! shadow-none! h-auto">
+								{groupSelected.map((group) => (
+									<TabsTrigger
+										// Change to border top on active tab
+										className={cn(
+											"border-t-3 border-x-0 border-b-0 border-t-transparent dark:border-gray-700",
+											{
+												"border-black": activeGroupId === group.id,
+												"border-transparent": activeGroupId !== group.id,
+											},
+											"rounded-none cursor-pointer px-5 py-3 shadow-none!",
+										)}
+										key={group.id}
+										value={group.id}>
+										{group.title}
+										{/* Add delete/edit icons for group here if needed */}
+									</TabsTrigger>
+								))}
+							</TabsList>
+							{/* Dropdown Add/Edit/Delete */}
+							<Button
+								className="rounded-full w-6 h-6 ml-4"
+								type="button"
+								size={"icon"}
+								onClick={() => {
+								}}
+							>
+								<Plus className="w-4 h-4" />
+							</Button>
+						</div>
+						<div className="flex items-center space-x-5 mr-2">
 							{/* Save Button Area */}
 							<div className="flex items-center justify-between">
 								{/* <div className="l">
@@ -382,7 +395,7 @@ export default function OrderAttribute(props: any) {
 									</div>
 								)}
 							</div>
-							<Dialog
+							{/* <Dialog
 								open={open[0] === "create-group"}
 								onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>
 								<DialogTrigger asChild>
@@ -414,7 +427,7 @@ export default function OrderAttribute(props: any) {
 										Create Group
 									</Button>
 								</DialogContent>
-							</Dialog>
+							</Dialog> */}
 							{/* Add other group management buttons here if needed (e.g., Rename, Delete Group) */}
 						</div>
 					</div>
@@ -660,7 +673,39 @@ export default function OrderAttribute(props: any) {
 			{/* Message if no groups exist */}
 			{groupSelected.length === 0 && (
 				<div className="text-center text-gray-500 dark:text-gray-400 py-6">
-					No attribute groups created yet. Click "Add Group" to start.
+					<span>No attribute groups created yet. Click "Add Group" to start.</span>
+					<Dialog
+						open={open[0] === "create-group"}
+						onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>
+						<DialogTrigger asChild>
+							<Button
+								size="icon"
+								className="rounded-full w-6 h-6"
+								type="button">
+								<Plus className="w-4 h-4" />
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+							<DialogHeader>
+								<DialogTitle>Add New Group</DialogTitle>
+							</DialogHeader>
+							<Input
+								placeholder="Group Name"
+								className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										handleAddGroup((e.target as HTMLInputElement)?.value);
+									}
+								}}
+								autoFocus
+							/>
+							<Button
+								type="button"
+								onClick={() => handleAddGroup((document.querySelector('input[placeholder="Group Name"]') as HTMLInputElement)?.value)}>
+								Create Group
+							</Button>
+						</DialogContent>
+					</Dialog>
 				</div>
 			)}
 
