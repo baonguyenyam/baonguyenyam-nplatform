@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { checkStringIsTextOrColorHexOrURL } from "@/lib/utils";
 import { useAppSelector } from "@/store";
@@ -22,7 +22,7 @@ interface AttributeGroup {
 	attributes: AttributeInstance[];
 }
 
-export default function OrderAttributeView(props: any) {
+export default function AttributeTab(props: any) {
 	const { data } = props;
 	const memoriez = useAppSelector((state) => state.attributeState.data);
 	const atts = useMemo(() => {

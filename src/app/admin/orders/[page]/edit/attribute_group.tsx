@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
 import { useAppSelector } from "@/store";
 
-import * as actions from "./actions";
+import * as actions from "../actions";
 
 interface AttributeItem {
 	id: string;
@@ -35,7 +35,7 @@ interface AttributeGroup {
 // Helper to generate unique IDs (replace with a more robust solution if needed)
 const generateId = () => `group_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
-export default function OrderAttribute(props: any) {
+export default function OrderAttributeGroup(props: any) {
 	const { data } = props;
 	const memoriez = useAppSelector((state) => state.attributeState.data);
 	const atts = useMemo(() => {

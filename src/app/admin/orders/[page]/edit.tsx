@@ -25,9 +25,9 @@ import { enumOrderStatus, enumPublished } from "@/lib/enum";
 import { autoOderDate } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
+import OrderAttributeGroup from "./edit/attribute_group";
+import { ConnectUser } from "./edit/connect";
 import * as actions from "./actions";
-import OrderAttribute from "./attribute_group";
-import { ConnectUser } from "./connect";
 
 const FormSchema = z.object({
 	f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
@@ -317,7 +317,7 @@ export default function FormEdit(props: any) {
 									<TabsContent
 										value="general"
 										className="space-y-15">
-										<OrderAttribute data={data} />
+										<OrderAttributeGroup data={data} />
 									</TabsContent>
 								)}
 								<TabsContent

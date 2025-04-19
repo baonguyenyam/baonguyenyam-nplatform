@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { checkStringIsTextOrColorHexOrURL } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
-import * as actions from "./actions";
+import * as actions from "../actions";
 
 export default function OrderAttribute(props: any) {
 	const { data } = props;

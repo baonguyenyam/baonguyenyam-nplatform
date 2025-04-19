@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { FieldDropDown } from "@/components/fields/dropdown";
 import { Button } from "@/components/ui/button";
 
-import * as actions from "./actions";
+import * as actions from "../actions";
 
 export function ConnectUser({ form, field, data, users, id, key, model, onChange }: { form?: any; field?: any; data?: any; users?: any; id?: any; key?: string; model?: string; onChange?: any }) {
 	const disconnectUser = async (item: any) => {
