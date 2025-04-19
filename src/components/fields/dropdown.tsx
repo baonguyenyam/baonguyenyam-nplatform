@@ -20,8 +20,8 @@ export function FieldDropDown(props: { field: any; form: any; key?: string; data
 						variant="outline"
 						role="combobox"
 						className={cn("justify-between", !field.value && "text-muted-foreground")}>
-						{/* {field.value ? data?.find((item: any) => item.id === field.value)?.name : "Select one"} 
-						*/}
+						{/* {field.value ? data?.find((item: any) => item.id === field.value)?.name : "Select one"}
+						 */}
 						{data?.find((item: any) => item.id === field.value)?.name || "Select one"}
 						<ChevronsUpDown className="opacity-50" />
 					</Button>

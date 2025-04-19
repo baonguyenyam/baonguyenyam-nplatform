@@ -110,11 +110,10 @@ export default function OrderAttribute(props: any) {
 
 	const hasChanges = useMemo(() => {
 		// Add checks to prevent errors if states are not arrays
-		const currentString = Array.isArray(groupSelected) ? JSON.stringify(groupSelected) : '[]';
-		const savedString = Array.isArray(savedGroupData) ? JSON.stringify(savedGroupData) : '[]';
+		const currentString = Array.isArray(groupSelected) ? JSON.stringify(groupSelected) : "[]";
+		const savedString = Array.isArray(savedGroupData) ? JSON.stringify(savedGroupData) : "[]";
 		return currentString !== savedString;
 	}, [groupSelected, savedGroupData]);
-
 
 	// --- API Calls ---
 

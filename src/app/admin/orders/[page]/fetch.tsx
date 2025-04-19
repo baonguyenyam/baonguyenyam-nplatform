@@ -129,7 +129,9 @@ export default function Fetch(props: any) {
 													<X className="w-4 h-4" />
 												</span>
 											)}
-											<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{row.title}-{numOfTab}</span>
+											<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
+												{row.title}-{numOfTab}
+											</span>
 										</div>
 										<div className="text-gray-500 text-xs">{dateFormat(row?.date_created)}</div>
 									</>
@@ -226,7 +228,9 @@ export default function Fetch(props: any) {
 				onClose={() => setOpen(["", null])}
 				title={
 					<div className="flex items-center space-x-2">
-						<div className="t">{open[1]?.title}-{countObjectArray(open[1]?.data)}</div>
+						<div className="t">
+							{open[1]?.title}-{countObjectArray(open[1]?.data)}
+						</div>
 						<div className="status">
 							<AppStatus data={open[1]?.status} />
 						</div>
@@ -272,7 +276,9 @@ export default function Fetch(props: any) {
 				onClose={() => setOpen(["", null])}
 				title={
 					<div className="flex items-center space-x-2">
-						<div className="t">{open[1]?.title}-{countObjectArray(open[1]?.data)}</div>
+						<div className="t">
+							{open[1]?.title}-{countObjectArray(open[1]?.data)}
+						</div>
 						<div className="status">
 							<AppStatus data={open[1]?.status} />
 						</div>

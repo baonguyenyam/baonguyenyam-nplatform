@@ -139,3 +139,43 @@ export const countObjectArray = (arr: string) => {
 	}
 	return 0;
 };
+
+// Check is String or json.string
+export const checkIsStringOrJson = (str: string) => {
+	if (typeof str === "string") {
+		try {
+			const parsed = JSON.parse(str);
+			if (typeof parsed === "object") {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (e) {
+			return false;
+		}
+	}
+	return false;
+};
+
+// Convert String to JSON
+export const convertStringToJson = (str: string) => {
+	// Check if the string is valid JSON
+	if (typeof str === "string") {
+		try {
+			const parsed = JSON.parse(str);
+			if (typeof parsed === "object" && parsed !== null) {
+				return parsed;
+			}
+		} catch (e) {
+			// Not valid JSON
+		}
+	}
+	return null;
+};
+
+export const removeUnderscoreAndDash = (str: string, addons: string) => {
+	// Remove _ and - from string and remove addons to empty string
+	const regex = new RegExp(`${addons}`, "g");
+	const result = str.replace(/[_-]/g, " ").replace(regex, "");
+	return result;
+};

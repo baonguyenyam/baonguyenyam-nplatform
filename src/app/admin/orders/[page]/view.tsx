@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 
 import AppLoading from "@/components/AppLoading";
 import { ImageList } from "@/components/fields/imagelist";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
-import { dateFormat } from "@/lib/utils";
+import { checkIsStringOrJson, convertStringToJson, dateFormat, removeUnderscoreAndDash } from "@/lib/utils";
 
 import * as actions from "./actions";
 import OrderAttributeView from "./attribute_group_view";
@@ -45,17 +45,35 @@ export default function FormView(props: any) {
 						<OrderAttributeView data={data} />
 						<h2 className="text-lg font-bold mb-5">Mics</h2>
 						{/* data?meta */}
-						<div className="space-y-5">
-							{/* {data?.meta}
-							{data?.meta &&
-								data?.meta?.map((item: any) => (
-									<div
-										key={item.id}
-										className="flex flex-col">
-										<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{item?.title}</label>
-										<div dangerouslySetInnerHTML={{ __html: item?.content || "-" }} />
+						<div className="space-y-5 grid grid-cols-1 gap-4 xl:grid-cols-3 xl:gap-10">
+							{data?.meta && data?.meta?.length > 0 && data?.meta?.map((item: any, index: number) => (
+								<Fragment key={index}>
+									<div className="flex flex-col">
+										{(item?.key === "order_attributes" && item?.value?.length > 0) && (
+											<>
+												{convertStringToJson(item?.value)?.map((item: any, index: number) => (
+													<Fragment key={index}>
+														<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
+														<div
+															key={index}
+															className="flex flex-col">
+															{item?.value}
+														</div>
+													</Fragment>
+												))}
+											</>
+										)}
+										{(item?.key !== "order_attributes" && item?.value?.length > 0) && (
+											<>
+												<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{removeUnderscoreAndDash(item?.key, "order")}</label>
+												<div className="flex flex-col">
+													{item?.value}
+												</div>
+											</>
+										)}
 									</div>
-								))} */}
+								</Fragment>
+							))}
 						</div>
 					</div>
 					<div className="w-full xl:w-1/2 grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
@@ -144,7 +162,6 @@ export default function FormView(props: any) {
 										{data?.date_returned ? dateFormat(data?.date_returned) : "-"}
 									</div>
 								</div>
-
 							</div>
 							<h2 className="text-lg font-bold mb-5 mt-10">Shipping Info</h2>
 							<div className="space-y-5">
@@ -161,9 +178,7 @@ export default function FormView(props: any) {
 									</div>
 								</div>
 							</div>
-
 						</div>
-
 
 						<div className="user col-span-2">
 							<h2 className="text-lg font-bold mb-5">Users</h2>
@@ -250,7 +265,6 @@ export default function FormView(props: any) {
 								viewOnly: true,
 							})}
 						</div>
-
 					</div>
 				</div>
 			)}
