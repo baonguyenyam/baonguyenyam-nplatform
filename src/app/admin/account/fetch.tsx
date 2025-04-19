@@ -101,7 +101,8 @@ export default function Fetch(props: any) {
 			{loading && <AppLoading />}
 			{!loading && (
 				<>
-					<div className="shadow-lg w-full max-w-xl mx-auto space-y-8 p-6 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xs rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
+					<div className="shadow-lg w-full max-w-xl mx-auto space-y-8 p-6 bg-white/50 dark:bg-gray-900 dark:border-gray-700 dark:bg-gray-800 rounded-lg">
+
 						<div className="flex items-center justify-center flex-col gap-3">
 							<Avatar className="mt-10 h-24 w-24 rounded-full border-2 border-zinc-200/80 dark:border-zinc-800/80 shadow-xs">
 								<AvatarImage

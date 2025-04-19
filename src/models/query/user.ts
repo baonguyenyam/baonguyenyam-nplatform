@@ -159,7 +159,7 @@ export const updateMulti = async (ids: string[], data: any) => {
 };
 
 // signIn
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (email: string) => {
 	try {
 		const user = await db.user.findUnique({
 			where: {
@@ -167,9 +167,6 @@ export const signIn = async (email: string, password: string) => {
 			},
 		});
 		if (!user) {
-			return null;
-		}
-		if (user.password !== password) {
 			return null;
 		}
 		return user;

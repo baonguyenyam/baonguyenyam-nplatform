@@ -27,7 +27,7 @@ export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"di
 		<div
 			className={cn("flex flex-col gap-6", className)}
 			{...props}>
-			<Card>
+			<Card className="dark:bg-gray-800 w-full max-w-sm rounded-lg border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
 				<CardHeader className="text-center">
 					<CardTitle className="text-xl">Sign out</CardTitle>
 					<CardDescription>Sign out from your account</CardDescription>

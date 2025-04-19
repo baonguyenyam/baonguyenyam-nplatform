@@ -44,10 +44,16 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 
 	async function singInCredentialsForm(formData: FormData) {
 		"use server";
+		const email = formData.get("email");
+		const password = formData.get("password");
+		if (!email || !password) {
+			return redirect(`${SIGNIN_ERROR_URL}?error=CredentialsSignin`);
+		}
 		try {
 			(await signIn("credentials", {
-				email: formData.get("email"),
-				password: formData.get("password"),
+				redirect: false,
+				email,
+				password,
 				redirectTo: DEFAULT_LOGIN_REDIRECT + "?callbackUrl=" + formData.get("callbackUrl"),
 			})) as { user?: { name?: string } };
 		} catch (error) {
@@ -62,7 +68,8 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 		<div
 			className={cn("flex flex-col gap-6", className)}
 			{...props}>
-			<Card>
+			<Card className="dark:bg-gray-800 w-full max-w-sm rounded-lg border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
+				{/* Header */}
 				<CardHeader className="text-center">
 					<CardTitle className="text-xl">Welcome back</CardTitle>
 					<CardDescription>Login with your account</CardDescription>

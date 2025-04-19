@@ -40,10 +40,10 @@ export default {
 				},
 			},
 			// The name to display on the sign-in form (e.g. "Sign in with...")
-			async authorize(credentials) {
+			async authorize(credentials: any) {
 				try {
 					const { email, password } = await FormSchema.parseAsync(credentials);
-					const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/signin`, {
+					const res = await fetch(`${process.env.PUBLIC_SITE_URL}/api/auth/signin`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

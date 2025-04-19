@@ -399,7 +399,7 @@ export default function FormEdit() {
 									</TabsContent>
 								</div>
 							</Tabs>
-							<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
+							<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
 								<div className="l"></div>
 								<Button
 									type="submit"
