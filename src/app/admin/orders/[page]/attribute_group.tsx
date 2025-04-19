@@ -3,11 +3,9 @@ import { produce } from "immer"; // Import immer for easier state updates
 import { Copy, Info, Plus, PlusCircle, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
 
-import AppLoading from "@/components/AppLoading";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
@@ -102,7 +100,7 @@ export default function OrderAttribute(props: any) {
 	const availableAttsForActiveGroup = useMemo(() => {
 		if (!activeGroup) return [];
 		const selectedIds = activeGroup.attributes.map(attr => attr.id);
-		return atts.filter(att => !selectedIds.includes(att.id));
+		return atts.filter((att: any) => !selectedIds.includes(att.id));
 	}, [atts, activeGroup]);
 
 	const hasChanges = useMemo(() => {
@@ -337,43 +335,6 @@ export default function OrderAttribute(props: any) {
 	return (
 		<div className="block w-full">
 			{/* Group Management */}
-			<div className="flex items-center space-x-2 mb-4">
-				<Dialog
-					open={open[0] === "create-group"}
-					onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>
-					<DialogTrigger asChild>
-						<Button
-							size="sm"
-							variant="outline"
-							type="button">
-							<Plus className="w-4 h-4 mr-1" />
-							Add Group
-						</Button>
-					</DialogTrigger>
-					<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-						<DialogHeader>
-							<DialogTitle>Add New Group</DialogTitle>
-						</DialogHeader>
-						<Input
-							placeholder="Group Name"
-							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									handleAddGroup((e.target as HTMLInputElement)?.value);
-								}
-							}}
-							autoFocus
-						/>
-						<Button
-							type="button"
-
-							onClick={() => handleAddGroup((document.querySelector('input[placeholder="Group Name"]') as HTMLInputElement)?.value)}>
-							Create Group
-						</Button>
-					</DialogContent>
-				</Dialog>
-				{/* Add other group management buttons here if needed (e.g., Rename, Delete Group) */}
-			</div>
 
 			{/* Tabs for Groups */}
 			{groupSelected && groupSelected.length > 0 && (
@@ -381,42 +342,91 @@ export default function OrderAttribute(props: any) {
 					value={activeGroupId ?? ""} // Controlled component
 					onValueChange={setActiveGroupId} // Update active group on tab change
 					className="mb-5 w-full">
-					<TabsList className="mb-2">
-						{groupSelected.map((group) => (
-							<TabsTrigger
-								key={group.id}
-								value={group.id}>
-								{group.title}
-								{/* Add delete/edit icons for group here if needed */}
-							</TabsTrigger>
-						))}
-					</TabsList>
-
-					{/* Save Button Area */}
-					<div className="flex items-center justify-between mb-5 pt-2">
-						<div className="l">
-							<h3 className="font-semibold mb-0">Additional Information</h3>
-							<p className="text-sm text-muted-foreground">Manage attributes within the selected group.</p>
-						</div>
-						{atts?.length > 0 && (
-							<div className="ml-auto flex items-center space-x-2">
-								<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
-								<Button
-									type="button"
-									disabled={!hasChanges}
-									onClick={saveAttributeMeta}>
-									Save Changes
-								</Button>
+					<div className="w-full flex items-center justify-between bg-gray-100 dark:bg-gray-800">
+						<TabsList className="m-0 p-0 border-0 bg-transparent! shadow-none! h-auto">
+							{groupSelected.map((group) => (
+								<TabsTrigger
+									// Change to border top on active tab
+									className={cn(
+										"border-t-3 border-x-0 border-b-0 border-t-transparent dark:border-gray-700",
+										{
+											"border-black": activeGroupId === group.id,
+											"border-transparent": activeGroupId !== group.id,
+										},
+										"rounded-none cursor-pointer px-5 py-3 shadow-none!",
+									)}
+									key={group.id}
+									value={group.id}>
+									{group.title}
+									{/* Add delete/edit icons for group here if needed */}
+								</TabsTrigger>
+							))}
+						</TabsList>
+						<div className="flex items-center space-x-5 mr-4">
+							{/* Save Button Area */}
+							<div className="flex items-center justify-between">
+								{/* <div className="l">
+									<h3 className="font-semibold mb-0">Additional Information</h3>
+									<p className="text-sm text-muted-foreground">Manage attributes within the selected group.</p>
+								</div> */}
+								{atts?.length > 0 && (
+									<div className="ml-auto flex items-center space-x-2">
+										<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
+										<Button
+											type="button"
+											disabled={!hasChanges}
+											className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 px-2 h-8 bg-gray-200 font-medium hover:text-black text-black border-2 border-gray-400 rounded-lg"
+											onClick={saveAttributeMeta}>
+											Save Changes
+										</Button>
+									</div>
+								)}
 							</div>
-						)}
+							<Dialog
+								open={open[0] === "create-group"}
+								onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>
+								<DialogTrigger asChild>
+									<Button
+										size="icon"
+										className="rounded-full w-6 h-6"
+										type="button">
+										<Plus className="w-4 h-4" />
+									</Button>
+								</DialogTrigger>
+								<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+									<DialogHeader>
+										<DialogTitle>Add New Group</DialogTitle>
+									</DialogHeader>
+									<Input
+										placeholder="Group Name"
+										className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+										onKeyDown={(e) => {
+											if (e.key === "Enter") {
+												handleAddGroup((e.target as HTMLInputElement)?.value);
+											}
+										}}
+										autoFocus
+									/>
+									<Button
+										type="button"
+
+										onClick={() => handleAddGroup((document.querySelector('input[placeholder="Group Name"]') as HTMLInputElement)?.value)}>
+										Create Group
+									</Button>
+								</DialogContent>
+							</Dialog>
+							{/* Add other group management buttons here if needed (e.g., Rename, Delete Group) */}
+						</div>
 					</div>
+
+
 
 					{/* Content for each Group */}
 					{groupSelected.map((group) => (
 						<TabsContent
 							key={group.id}
 							value={group.id}
-							className="mt-0 pt-4 border-t border-border dark:border-gray-700" // Added border top
+							className="mt-0 pt-4" // Added border top
 						>
 							{/* Attribute Instances within the Active Group */}
 							<div className="flex flex-col space-y-4">
@@ -456,7 +466,7 @@ export default function OrderAttribute(props: any) {
 										{/* Rows (Children) for this Attribute Instance */}
 										<div
 											id={`group_${group.id}_attr_${attributeInstance.id}`}
-											className="flex flex-col space-y-2 pl-2">
+											className="flex flex-col space-y-2">
 											{attributeInstance.children?.map((row, rowIndex) => {
 												// Find the definition to determine column count and field types
 												const attributeDefinition = atts.find((att: any) => att.id === attributeInstance.id);
@@ -465,21 +475,11 @@ export default function OrderAttribute(props: any) {
 												return (
 													<div
 														key={`${group.id}-${attributeInstance.id}-row-${rowIndex}`}
-														className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative pl-10`} // Adjusted padding
+														className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative pl-20`} // Adjusted padding
 														style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
 													>
 														{/* Row Actions (Duplicate, Delete) */}
-														<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-col space-y-1">
-															<Button
-																variant="ghost"
-																size="icon"
-																type="button"
-																className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-																title="Duplicate Row"
-																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}
-															>
-																<Copy className="w-4 h-4" />
-															</Button>
+														<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
 															<Button
 																variant="ghost"
 																size="icon"
@@ -489,6 +489,16 @@ export default function OrderAttribute(props: any) {
 																onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}
 															>
 																<X className="w-4 h-4" />
+															</Button>
+															<Button
+																variant="ghost"
+																size="icon"
+																type="button"
+																className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+																title="Duplicate Row"
+																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}
+															>
+																<Copy className="w-4 h-4" />
 															</Button>
 														</div>
 
@@ -518,7 +528,7 @@ export default function OrderAttribute(props: any) {
 																					variant="outline"
 																					type="button"
 																					size="sm"
-																					className="w-full justify-start font-normal h-8 text-sm" // Adjusted size
+																					className="w-full justify-start font-normal h-8 text-sm border-0 shadow-none cursor-pointer" // Adjusted size
 																					onClick={() => {
 																						setSearch([]);
 																						setLoading(true);
@@ -606,7 +616,7 @@ export default function OrderAttribute(props: any) {
 												type="button"
 												variant="outline"
 												className="mt-4">
-												<Plus className="w-4 h-4 mr-1" />
+												<PlusCircle className="w-4 h-4 mr-1" />
 												Add Attribute to "{group.title}"
 											</Button>
 										</DialogTrigger>
