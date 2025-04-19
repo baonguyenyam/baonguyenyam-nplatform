@@ -331,6 +331,24 @@ export default function OrderAttribute(props: any) {
 		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
 	};
 
+	const handleDeleteGroup = (groupId: string) => {
+		if (!confirm("Are you sure you want to delete this group?")) return;
+
+		setGroupSelected(
+			produce((draft) => {
+				const index = draft.findIndex(g => g.id === groupId);
+				if (index !== -1) {
+					draft.splice(index, 1);
+				}
+			})
+		);
+
+		// Active first group if available
+		if (groupSelected.length > 0) {
+			setActiveGroupId(groupSelected[0].id);
+		}
+	};
+
 	// --- Render ---
 
 	return (
@@ -357,6 +375,20 @@ export default function OrderAttribute(props: any) {
 											},
 											"rounded-none cursor-pointer px-5 py-3 shadow-none! bg-gray-100",
 										)}
+										// Double click to edit group name
+										onDoubleClick={() => {
+											const newName = prompt("Enter new group name", group.title);
+											if (newName) {
+												setGroupSelected(
+													produce((draft) => {
+														const g = draft.find(g => g.id === group.id);
+														if (g) {
+															g.title = newName.trim();
+														}
+													})
+												);
+											}
+										}}
 										key={group.id}
 										value={group.id}>
 										{group.title}
@@ -652,6 +684,35 @@ export default function OrderAttribute(props: any) {
 									</div>
 								)}
 							</div>
+
+
+							{/* Delete the group */}
+							<div className="flex justify-center mt-10">
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button
+											type="button"
+											variant="outline"
+											size="sm"
+											className="rounded-full cursor-pointer"
+										>
+											<Settings className="w-4 h-4" />
+											Group Settings
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align="end">
+										<DropdownMenuItem
+											className="cursor-pointer"
+											onClick={() => handleDeleteGroup(group.id)}
+										>
+											<div className="text-red-500">
+												Delete Group
+											</div>
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+							</div>
+
 						</TabsContent>
 					))}
 				</Tabs>

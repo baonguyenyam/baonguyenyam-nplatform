@@ -20,7 +20,7 @@ export default function UserButton() {
 	return (
 		<div className="flex items-center gap-6">
 			<div className="flex items-center gap-2">
-				<span className="hidden text-sm sm:inline-flex">{data?.email}</span>
+				<span className="hidden text-sm sm:inline-flex">{data?.name}</span>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button

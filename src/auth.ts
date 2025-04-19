@@ -61,6 +61,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 						},
 					});
 				}
+				// IF exits user update avatar
+				if (existingUser && user.image) {
+					await models.User.updateUser(existingUser?.id, {
+						avatar: user.image,
+					});
+				}
 			} catch (error) {
 				console.error("Error creating user:", error);
 			}
