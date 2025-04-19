@@ -199,7 +199,9 @@ export default function FormEdit(props: any) {
 		}
 		toast.success(res.message);
 		// IF Enabled auto close after submit
-		// onChange("submit", values);
+		if (!id) {
+			onChange("submit", values);
+		}
 	}
 
 	async function changeFeature(e: any) {

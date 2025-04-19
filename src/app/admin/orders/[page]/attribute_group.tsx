@@ -51,47 +51,50 @@ export default function OrderAttribute(props: any) {
 
 	// --- Data Fetching & Initialization ---
 
+	// --- Data Fetching & Initialization ---
+
+	// Effect 1: Parse data.data and set groupSelected/savedGroupData
 	useEffect(() => {
+		let parsedGroups: AttributeGroup[] = [];
 		if (data?.data) {
 			try {
 				const parsedData = JSON.parse(data.data);
-				// Check if it's the new grouped structure or the old flat structure
 				if (Array.isArray(parsedData) && parsedData.length > 0 && parsedData[0]?.attributes !== undefined) {
 					// New structure
-					setGroupSelected(parsedData);
-					setSavedGroupData(parsedData); // Initialize saved state
-					if (parsedData.length > 0 && !activeGroupId) {
-						setActiveGroupId(parsedData[0].id); // Activate first group
-					}
+					parsedGroups = parsedData;
 				} else if (Array.isArray(parsedData) && parsedData.length > 0 && parsedData[0]?.attributes === undefined) {
-					// Old structure - migrate to a default group
+					// Old structure - migrate
 					const defaultGroup: AttributeGroup = {
 						id: generateId(),
 						title: "Default Group",
-						attributes: parsedData,
+						attributes: parsedData, // Assuming old structure was AttributeInstance[]
 					};
-					setGroupSelected([defaultGroup]);
-					setSavedGroupData([defaultGroup]); // Initialize saved state
-					setActiveGroupId(defaultGroup.id); // Activate the default group
-				} else {
-					// Handle empty or invalid data
-					setGroupSelected([]);
-					setSavedGroupData([]);
-					setActiveGroupId(null);
+					parsedGroups = [defaultGroup];
 				}
 			} catch (error) {
 				console.error("Failed to parse order data:", error);
 				toast.error("Failed to load order attributes.");
-				setGroupSelected([]);
-				setSavedGroupData([]);
-				setActiveGroupId(null);
+				// Keep parsedGroups as []
 			}
-		} else {
-			setGroupSelected([]);
-			setSavedGroupData([]);
+		}
+		setGroupSelected(parsedGroups);
+		setSavedGroupData(parsedGroups);
+		// We will set the activeGroupId in the next effect
+	}, [data?.data]); // Only depends on data.data
+
+	// Effect 2: Set the initial active group ID based on parsed data
+	useEffect(() => {
+		// Only set the initial active ID if groups exist and no active group is currently selected.
+		if (groupSelected && groupSelected.length > 0 && !activeGroupId) {
+			setActiveGroupId(groupSelected[0].id);
+		}
+		// If groups become empty, ensure activeGroupId is nullified
+		else if (groupSelected && groupSelected.length === 0 && activeGroupId) {
 			setActiveGroupId(null);
 		}
-	}, [data?.data]); // Dependency on data.data
+		// This effect runs when groupSelected changes (after parsing) or if activeGroupId changes.
+		// The condition `!activeGroupId` prevents it from overriding an active selection later.
+	}, [groupSelected, activeGroupId]); // Depends on the parsed result and current active ID
 
 	// --- Derived State ---
 	const activeGroup = useMemo(() => {
@@ -100,13 +103,18 @@ export default function OrderAttribute(props: any) {
 
 	const availableAttsForActiveGroup = useMemo(() => {
 		if (!activeGroup) return [];
-		const selectedIds = activeGroup.attributes.map((attr) => attr.id);
+		// Ensure activeGroup.attributes is an array before mapping
+		const selectedIds = Array.isArray(activeGroup.attributes) ? activeGroup.attributes.map((attr) => attr.id) : [];
 		return atts.filter((att: any) => !selectedIds.includes(att.id));
 	}, [atts, activeGroup]);
 
 	const hasChanges = useMemo(() => {
-		return JSON.stringify(groupSelected) !== JSON.stringify(savedGroupData);
+		// Add checks to prevent errors if states are not arrays
+		const currentString = Array.isArray(groupSelected) ? JSON.stringify(groupSelected) : '[]';
+		const savedString = Array.isArray(savedGroupData) ? JSON.stringify(savedGroupData) : '[]';
+		return currentString !== savedString;
 	}, [groupSelected, savedGroupData]);
+
 
 	// --- API Calls ---
 
