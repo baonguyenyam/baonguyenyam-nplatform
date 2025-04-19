@@ -19,6 +19,7 @@ export default function FormView(props: any) {
 		const res = await actions.getRecord(id);
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
+			console.log("res.data", res.data);
 			setThumbnail(res?.data?.image);
 			setLoading(false);
 		} else {
@@ -42,6 +43,20 @@ export default function FormView(props: any) {
 				<div className="flex flex-col gap-4 xl:flex-row xl:gap-10">
 					<div className="w-full xl:w-1/2">
 						<OrderAttributeView data={data} />
+						<h2 className="text-lg font-bold mb-5">Mics</h2>
+						{/* data?meta */}
+						<div className="space-y-5">
+							{/* {data?.meta}
+							{data?.meta &&
+								data?.meta?.map((item: any) => (
+									<div
+										key={item.id}
+										className="flex flex-col">
+										<label className="text-xs font-semibold mb-2 uppercase text-gray-500">{item?.title}</label>
+										<div dangerouslySetInnerHTML={{ __html: item?.content || "-" }} />
+									</div>
+								))} */}
+						</div>
 					</div>
 					<div className="w-full xl:w-1/2 grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
 						<div className="group">

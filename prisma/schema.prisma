@@ -156,8 +156,8 @@ model Order {
 
   user           User[] @relation("OrderUsers")
   user_product   User[] @relation("OrderUserProducts")
-  user_sales      User[] @relation("OrderUserSales")
-  user_shipping   User[] @relation("OrderUserShipping")
+  user_sales     User[] @relation("OrderUserSales")
+  user_shipping  User[] @relation("OrderUserShipping")
   user_delivery  User[] @relation("OrderUserDelivery")
   user_manager   User[] @relation("OrderUserManager")
   user_quality   User[] @relation("OrderUserQuality")

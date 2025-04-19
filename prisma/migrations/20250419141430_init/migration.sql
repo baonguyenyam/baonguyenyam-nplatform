@@ -259,20 +259,6 @@ CREATE TABLE "TwoFactorConfirmation" (
 );
 
 -- CreateTable
-CREATE TABLE "Authenticator" (
-    "credentialID" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "providerAccountId" TEXT NOT NULL,
-    "credentialPublicKey" TEXT NOT NULL,
-    "counter" INTEGER NOT NULL,
-    "credentialDeviceType" TEXT NOT NULL,
-    "credentialBackedUp" BOOLEAN NOT NULL,
-    "transports" TEXT,
-
-    CONSTRAINT "Authenticator_pkey" PRIMARY KEY ("credentialID")
-);
-
--- CreateTable
 CREATE TABLE "_CategoryToPost" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
@@ -342,6 +328,22 @@ CREATE TABLE "_OrderUserProducts" (
     "B" TEXT NOT NULL,
 
     CONSTRAINT "_OrderUserProducts_AB_pkey" PRIMARY KEY ("A","B")
+);
+
+-- CreateTable
+CREATE TABLE "_OrderUserSales" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_OrderUserSales_AB_pkey" PRIMARY KEY ("A","B")
+);
+
+-- CreateTable
+CREATE TABLE "_OrderUserShipping" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_OrderUserShipping_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
@@ -470,9 +472,6 @@ CREATE UNIQUE INDEX "TwoFactorToken_email_token_key" ON "TwoFactorToken"("email"
 CREATE UNIQUE INDEX "TwoFactorConfirmation_userId_key" ON "TwoFactorConfirmation"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Authenticator_userId_credentialID_key" ON "Authenticator"("userId", "credentialID");
-
--- CreateIndex
 CREATE INDEX "_CategoryToPost_B_index" ON "_CategoryToPost"("B");
 
 -- CreateIndex
@@ -498,6 +497,12 @@ CREATE INDEX "_OrderUsers_B_index" ON "_OrderUsers"("B");
 
 -- CreateIndex
 CREATE INDEX "_OrderUserProducts_B_index" ON "_OrderUserProducts"("B");
+
+-- CreateIndex
+CREATE INDEX "_OrderUserSales_B_index" ON "_OrderUserSales"("B");
+
+-- CreateIndex
+CREATE INDEX "_OrderUserShipping_B_index" ON "_OrderUserShipping"("B");
 
 -- CreateIndex
 CREATE INDEX "_OrderUserDelivery_B_index" ON "_OrderUserDelivery"("B");
@@ -543,9 +548,6 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "TwoFactorConfirmation" ADD CONSTRAINT "TwoFactorConfirmation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Authenticator" ADD CONSTRAINT "Authenticator_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CategoryToPost" ADD CONSTRAINT "_CategoryToPost_A_fkey" FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -600,6 +602,18 @@ ALTER TABLE "_OrderUserProducts" ADD CONSTRAINT "_OrderUserProducts_A_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "_OrderUserProducts" ADD CONSTRAINT "_OrderUserProducts_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_OrderUserSales" ADD CONSTRAINT "_OrderUserSales_A_fkey" FOREIGN KEY ("A") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_OrderUserSales" ADD CONSTRAINT "_OrderUserSales_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_OrderUserShipping" ADD CONSTRAINT "_OrderUserShipping_A_fkey" FOREIGN KEY ("A") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_OrderUserShipping" ADD CONSTRAINT "_OrderUserShipping_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_OrderUserDelivery" ADD CONSTRAINT "_OrderUserDelivery_A_fkey" FOREIGN KEY ("A") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
