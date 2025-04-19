@@ -49,7 +49,6 @@ export default function useReport(): (arg0: string) => ReturnType<typeof setTime
 
 	return useCallback(
 		(content) => {
-			console.log(content);
 			const element = getElement();
 			clearTimeout(timer.current as ReturnType<typeof setTimeout>);
 			element.innerHTML = content;

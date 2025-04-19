@@ -12,7 +12,7 @@ import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
 import initSupabase from "@/lib/supabase";
-import { dateFormat, pageSkip } from "@/lib/utils";
+import { countObjectArray, dateFormat, pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
@@ -114,6 +114,7 @@ export default function Fetch(props: any) {
 							header: "Name",
 							accessor: "title",
 							custom: (row: any) => {
+								const numOfTab = countObjectArray(row?.data);
 								return (
 									<>
 										<div
@@ -128,7 +129,7 @@ export default function Fetch(props: any) {
 													<X className="w-4 h-4" />
 												</span>
 											)}
-											<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{row.title}</span>
+											<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{row.title}-{numOfTab}</span>
 										</div>
 										<div className="text-gray-500 text-xs">{dateFormat(row?.date_created)}</div>
 									</>
@@ -223,7 +224,14 @@ export default function Fetch(props: any) {
 				closable={false}
 				open={open[0] === "edit"}
 				onClose={() => setOpen(["", null])}
-				title={`Edit ${title}`}
+				title={
+					<div className="flex items-center space-x-2">
+						<div className="t">{open[1]?.title}-{countObjectArray(open[1]?.data)}</div>
+						<div className="status">
+							<AppStatus data={open[1]?.status} />
+						</div>
+					</div>
+				}
 				placement="right"
 				keyboard={false}
 				width={`100%`}
@@ -264,7 +272,7 @@ export default function Fetch(props: any) {
 				onClose={() => setOpen(["", null])}
 				title={
 					<div className="flex items-center space-x-2">
-						<div className="t">{open[1]?.title}</div>
+						<div className="t">{open[1]?.title}-{countObjectArray(open[1]?.data)}</div>
 						<div className="status">
 							<AppStatus data={open[1]?.status} />
 						</div>

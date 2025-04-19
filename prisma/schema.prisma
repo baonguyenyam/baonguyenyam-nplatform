@@ -156,6 +156,8 @@ model Order {
 
   user           User[] @relation("OrderUsers")
   user_product   User[] @relation("OrderUserProducts")
+  user_sales      User[] @relation("OrderUserSales")
+  user_shipping   User[] @relation("OrderUserShipping")
   user_delivery  User[] @relation("OrderUserDelivery")
   user_manager   User[] @relation("OrderUserManager")
   user_quality   User[] @relation("OrderUserQuality")
@@ -263,6 +265,8 @@ model User {
   order_financial Order[] @relation("OrderUserFinancial")
   order_technical Order[] @relation("OrderUserTechnical")
   order_packaging Order[] @relation("OrderUserPackaging")
+  order_sales     Order[] @relation("OrderUserSales")
+  order_shipping  Order[] @relation("OrderUserShipping")
 
   @@unique([id])
 }

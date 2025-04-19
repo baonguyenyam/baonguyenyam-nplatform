@@ -124,3 +124,18 @@ export const getIdFromAttributeKey = (key: string) => {
 	}
 	return null;
 };
+
+// Count Object Array
+export const countObjectArray = (arr: string) => {
+	if (arr && typeof arr === "string") {
+		try {
+			const parsedArr = JSON.parse(arr);
+			if (Array.isArray(parsedArr)) {
+				return parsedArr.length;
+			}
+		} catch (error) {
+			console.error("Error parsing JSON:", error);
+		}
+	}
+	return 0;
+};

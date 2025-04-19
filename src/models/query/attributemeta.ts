@@ -183,7 +183,6 @@ export const deleteAttributeMeta = async (id: number) => {
 export const updateAttributeMeta = async (id: number, data: any) => {
 	const getdb = data.data;
 	const res: any = [];
-	console.log("getdb", getdb);
 	try {
 		for (let i = 0; i < getdb.length; i++) {
 			const attributeMeta = await db.attributeMeta.update({

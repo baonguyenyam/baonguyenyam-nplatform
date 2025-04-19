@@ -57,6 +57,18 @@ const FormSchema = z.object({
 		.date()
 		.optional()
 		.transform((e) => (e === undefined ? undefined : e)),
+	f_date_delivered: z
+		.date()
+		.optional()
+		.transform((e) => (e === undefined ? undefined : e)),
+	f_date_completed: z
+		.date()
+		.optional()
+		.transform((e) => (e === undefined ? undefined : e)),
+	f_date_refunded: z
+		.date()
+		.optional()
+		.transform((e) => (e === undefined ? undefined : e)),
 	f_customer: z
 		.string()
 		.optional()
@@ -70,6 +82,10 @@ const FormSchema = z.object({
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
 	f_user_manager: z
+		.string()
+		.optional()
+		.transform((e) => (e === "" ? undefined : e)),
+	f_user_shipping: z
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
@@ -127,6 +143,9 @@ export default function FormEdit(props: any) {
 			date_created: values.f_date_created,
 			date_production: values.f_date_production,
 			date_shipped: values.f_date_shipped,
+			date_delivered: values.f_date_delivered,
+			date_completed: values.f_date_completed,
+			date_refunded: values.f_date_refunded,
 			customer: {
 				connect: !id ? (values.f_customer ? [{ id: values.f_customer }] : undefined) : undefined,
 			},
@@ -138,6 +157,9 @@ export default function FormEdit(props: any) {
 			},
 			user_manager: {
 				connect: !id ? (values.f_user_manager ? [{ id: values.f_user_manager }] : undefined) : undefined,
+			},
+			user_shipping: {
+				connect: !id ? (values.f_user_shipping ? [{ id: values.f_user_shipping }] : undefined) : undefined,
 			},
 			vendor: {
 				connect: !id ? (values.f_vendor ? [{ id: values.f_vendor }] : undefined) : undefined,
@@ -176,7 +198,8 @@ export default function FormEdit(props: any) {
 			return;
 		}
 		toast.success(res.message);
-		onChange("submit", values);
+		// IF Enabled auto close after submit
+		// onChange("submit", values);
 	}
 
 	async function changeFeature(e: any) {
@@ -214,9 +237,13 @@ export default function FormEdit(props: any) {
 				f_date_created: res?.data?.date_created ? new Date(res?.data?.date_created) : undefined,
 				f_date_production: res?.data?.date_production ? new Date(res?.data?.date_production) : undefined,
 				f_date_shipped: res?.data?.date_shipped ? new Date(res?.data?.date_shipped) : undefined,
+				f_date_delivered: res?.data?.date_delivered ? new Date(res?.data?.date_delivered) : undefined,
+				f_date_completed: res?.data?.date_completed ? new Date(res?.data?.date_completed) : undefined,
+				f_date_refunded: res?.data?.date_refunded ? new Date(res?.data?.date_refunded) : undefined,
 				f_user: Array.isArray(res?.data?.user) ? res?.data?.user[0]?.id || "" : "",
 				f_user_product: Array.isArray(res?.data?.user_product) ? res?.data?.user_product[0]?.id || "" : "",
 				f_user_manager: Array.isArray(res?.data?.user_manager) ? res?.data?.user_manager[0]?.id || "" : "",
+				f_user_shipping: Array.isArray(res?.data?.user_shipping) ? res?.data?.user_shipping[0]?.id || "" : "",
 				f_vendor: Array.isArray(res?.data?.vendor) ? res?.data?.vendor[0]?.id || "" : "",
 				f_file: res?.data?.image || "",
 			});
@@ -366,7 +393,7 @@ export default function FormEdit(props: any) {
 											)}
 										/>
 									</div>
-									<div className="grid grid-cols-3 gap-15">
+									<div className="grid grid-cols-4 gap-15">
 										<FormField
 											control={form.control}
 											name="f_date_created"
@@ -391,10 +418,21 @@ export default function FormEdit(props: any) {
 										/>
 										<FormField
 											control={form.control}
-											name="f_date_shipped"
+											name="f_date_completed"
 											render={({ field }) => (
 												<FormItem className="flex flex-col">
-													<FormLabel>Date Shipping</FormLabel>
+													<FormLabel>Date Completed</FormLabel>
+													{FieldDate({ field })}
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="f_date_refunded"
+											render={({ field }) => (
+												<FormItem className="flex flex-col">
+													<FormLabel>Date Refunded</FormLabel>
 													{FieldDate({ field })}
 													<FormMessage />
 												</FormItem>
@@ -438,7 +476,30 @@ export default function FormEdit(props: any) {
 								<TabsContent
 									value="shipping"
 									className="space-y-15">
-									Working
+									<div className="grid grid-cols-3 gap-15">
+										<FormField
+											control={form.control}
+											name="f_date_shipped"
+											render={({ field }) => (
+												<FormItem className="flex flex-col">
+													<FormLabel>Date Shipping</FormLabel>
+													{FieldDate({ field })}
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="f_date_delivered"
+											render={({ field }) => (
+												<FormItem className="flex flex-col">
+													<FormLabel>Date Delivered</FormLabel>
+													{FieldDate({ field })}
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
 								</TabsContent>
 
 								<TabsContent
@@ -524,6 +585,39 @@ export default function FormEdit(props: any) {
 														users: users,
 														id,
 														key: "user_manager",
+														model: "user",
+														onChange: async (e: any) => {
+															const res = await user_actions.getAll({ s: e });
+															if (res.success === "success" && res.data) {
+																const _users = res?.data?.map((item: any) => {
+																	return {
+																		id: item.id,
+																		name: item.name,
+																	};
+																});
+																setUsers(_users);
+															} else {
+																setUsers([]);
+															}
+														},
+													})}
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="f_user_shipping"
+											render={({ field }) => (
+												<FormItem className="flex flex-col">
+													<FormLabel>User Shipping</FormLabel>
+													{ConnectUser({
+														form,
+														field,
+														data,
+														users: users,
+														id,
+														key: "user_shipping",
 														model: "user",
 														onChange: async (e: any) => {
 															const res = await user_actions.getAll({ s: e });

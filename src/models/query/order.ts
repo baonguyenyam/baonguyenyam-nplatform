@@ -235,6 +235,7 @@ export const getAllOrders = async (query: any) => {
 				date_failed: true,
 				date_closed: true,
 				date_approved: true,
+				data: true,
 			},
 
 			orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
