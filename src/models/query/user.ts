@@ -160,17 +160,7 @@ export const updateMulti = async (ids: string[], data: any) => {
 
 // signIn
 export const signIn = async (email: string) => {
-	try {
-		const user = await db.user.findUnique({
-			where: {
-				email,
-			},
-		});
-		if (!user) {
-			return null;
-		}
-		return user;
-	} catch (error) {
-		return null;
-	}
+	// This function simply wraps getUserByEmail, which is fine.
+	// It will return the user object with the password hash or null.
+	return getUserByEmail(email);
 }

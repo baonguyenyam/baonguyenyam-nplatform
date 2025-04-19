@@ -51,7 +51,6 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 		}
 		try {
 			(await signIn("credentials", {
-				redirect: false,
 				email,
 				password,
 				redirectTo: DEFAULT_LOGIN_REDIRECT + "?callbackUrl=" + formData.get("callbackUrl"),
