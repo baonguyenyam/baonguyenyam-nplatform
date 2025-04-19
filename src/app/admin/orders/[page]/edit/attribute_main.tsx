@@ -24,8 +24,8 @@ interface AttributeInstance {
 	children: AttributeItem[][]; // Array of rows, each row is an array of attribute items
 }
 
-export default function OrderAttribute(props: any) {
-	const { data } = props; // Order data containing the saved attributes structure
+export default function OrderAttributeMain(props: any) {
+	const { data, onChange } = props; // Order data containing the saved attributes structure
 	const memoriez = useAppSelector((state) => state.attributeState.data); // All available attribute definitions
 
 	// Filter available attribute definitions for 'order' type
@@ -43,9 +43,9 @@ export default function OrderAttribute(props: any) {
 	// --- Data Fetching & Initialization ---
 	useEffect(() => {
 		let initialAttributes: AttributeInstance[] = [];
-		if (data?.data) {
+		if (data?.data_main) {
 			try {
-				const parsedData = JSON.parse(data.data);
+				const parsedData = JSON.parse(data.data_main);
 				if (Array.isArray(parsedData)) {
 					// Check if it's the old group structure
 					if (parsedData.length > 0 && parsedData[0]?.attributes !== undefined && Array.isArray(parsedData[0].attributes)) {
@@ -69,7 +69,7 @@ export default function OrderAttribute(props: any) {
 		}
 		setAttributes(initialAttributes);
 		setSavedAttributes(initialAttributes); // Initialize saved state
-	}, [data?.data]); // Re-run only when the input data changes
+	}, [data.data_main]); // Re-run only when the input data changes
 
 	// --- Derived State ---
 
@@ -118,7 +118,7 @@ export default function OrderAttribute(props: any) {
 		// Save the flattened attributes array directly
 		const orderData = JSON.stringify(attributes);
 		try {
-			const res: any = await actions.updateRecord(orderId, { data: orderData });
+			const res: any = await actions.updateRecord(orderId, { data_main: orderData });
 			if (res.success === "success") {
 				toast.success("Order attributes updated successfully");
 				setSavedAttributes(attributes); // Update saved state on success
@@ -139,7 +139,6 @@ export default function OrderAttribute(props: any) {
 			id: attributeDefinition.id,
 			children: [], // Initialize with no rows
 		};
-
 		setAttributes(
 			produce((draft) => {
 				// Prevent adding duplicates
@@ -150,6 +149,7 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+		// onChange(attributes); // Save immediately after adding
 		setOpen(["", null]); // Close dialog
 	};
 
@@ -175,6 +175,8 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
 	};
 
 	const handleDuplicateAttributeRow = (attributeId: string, rowIndex: number) => {
@@ -188,6 +190,8 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
 	};
 
 	const handleDeleteAttributeRow = (attributeId: string, rowIndex: number) => {
@@ -201,6 +205,9 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
+
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
@@ -215,6 +222,9 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
+
 	};
 
 	const handleUpdateFieldValue = (attributeId: string, rowIndex: number, fieldIndex: number, newValue: any) => {
@@ -226,6 +236,9 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
+
 	};
 
 	const handleUpdateCheckboxValue = (attributeId: string, rowIndex: number, fieldIndex: number, selectedMetaItem: any, add: boolean) => {
@@ -256,19 +269,25 @@ export default function OrderAttribute(props: any) {
 				}
 			}),
 		);
+
+		// onChange(attributes); // Save immediately after adding
+
 	};
 
 	const handleDeleteCheckboxSingleValue = (attributeId: string, rowIndex: number, fieldIndex: number, valueToRemove: any) => {
 		if (!confirm("Are you sure you want to remove this item?")) return;
 		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
+
+		// onChange(attributes); // Save immediately after adding
+
 	};
 
 	// --- Render ---
 
 	return (
-		<div className="block w-full space-y-6">
+		<div className="block w-full">
 			{/* Save Button Area */}
-			<div className="flex items-center justify-end space-x-2 sticky top-0 bg-white dark:bg-gray-950 py-3 z-10 border-b border-border dark:border-gray-800">
+			<div className="flex items-center justify-end space-x-2 sticky top-0 bg-white dark:bg-gray-950 z-10 mb-3">
 				<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
 				<Button
 					type="button"
@@ -280,12 +299,18 @@ export default function OrderAttribute(props: any) {
 			</div>
 
 			{/* Attribute Instances */}
-			<div className="flex flex-col space-y-4">
+			<div className="flex flex-col space-y-4 p-10 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800">
 				{attributes?.map((attributeInstance) => (
 					<Fragment key={attributeInstance.id}>
 						{/* Attribute Instance Header */}
-						<div className="flex items-center justify-between group bg-gray-100 px-3 py-2 rounded-lg dark:bg-gray-900">
+						<div className="flex items-center justify-between group bg-gray-200 px-3 py-2 rounded-lg dark:bg-gray-900 group">
 							<div className="text-base font-semibold">{attributeInstance.title}</div>
+							<div
+								className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2 hidden group-hover:flex"
+								onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
+								title={`Remove ${attributeInstance.title} section`}>
+								<X className="w-5 h-5" />
+							</div>
 							<div className="flex items-center space-x-1 ml-auto">
 								{/* Add Row Button */}
 								<div
@@ -295,12 +320,6 @@ export default function OrderAttribute(props: any) {
 									<PlusCircle className="w-6 h-6" />
 								</div>
 								{/* Delete Attribute Instance Button */}
-								<div
-									className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2"
-									onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
-									title={`Remove ${attributeInstance.title} section`}>
-									<X className="w-5 h-5" />
-								</div>
 							</div>
 						</div>
 
@@ -316,7 +335,7 @@ export default function OrderAttribute(props: any) {
 								return (
 									<div
 										key={`${attributeInstance.id}-row-${rowIndex}`} // Simplified key
-										className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative px-10 group`} // Adjusted padding
+										className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 bg-white dark:bg-transparent relative px-10 group`} // Adjusted padding
 										style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
 									>
 										{/* Row Actions (Duplicate, Delete) */}
@@ -445,56 +464,58 @@ export default function OrderAttribute(props: any) {
 								);
 							})}
 							{/* Show message if no rows exist for this attribute */}
-							{attributeInstance.children?.length === 0 && (
+							{/* {attributeInstance.children?.length === 0 && (
 								<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-2">
 									No rows added yet for "{attributeInstance.title}". Click <PlusCircle className="w-4 h-4 inline-block mx-1" /> above to add one.
 								</div>
-							)}
+							)} */}
 						</div>
 					</Fragment>
 				))}
+
+				{/* Add Attribute Button */}
+				{availableAttsToAdd.length > 0 && (
+					<Dialog
+						open={open[0] === "add-attribute"}
+						onOpenChange={(isOpen) => setOpen([isOpen ? "add-attribute" : "", null])}>
+						<DialogTrigger asChild>
+							<Button
+								type="button"
+								variant="outline"
+								className="cursor-pointer w-full border-dashed">
+								<PlusCircle className="w-4 h-4 mr-1" />
+								Add Main Attribute
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+							<DialogHeader>
+								<DialogTitle>Add Main Attribute</DialogTitle>
+							</DialogHeader>
+							<div className="flex flex-col max-h-[400px] overflow-y-auto">
+								{availableAttsToAdd.map((item: any, index: number) => (
+									<div
+										key={index}
+										className={`flex items-center justify-between py-2 border-b border-border dark:border-gray-700 last:border-b-0`}>
+										<p className="text-sm">{item?.title}</p>
+										<Button
+											size="sm"
+											type="button"
+											className="text-xs"
+											onClick={() => handleSelectAttribute(item)}>
+											Add
+										</Button>
+									</div>
+								))}
+							</div>
+						</DialogContent>
+					</Dialog>
+				)}
+
+				{/* Message if no attributes are added */}
+				{/* {attributes.length === 0 && <div className="text-center text-gray-500 dark:text-gray-400 py-4">No attributes added yet.</div>} */}
+
 			</div>
 
-			{/* Add Attribute Button */}
-			{availableAttsToAdd.length > 0 && (
-				<Dialog
-					open={open[0] === "add-attribute"}
-					onOpenChange={(isOpen) => setOpen([isOpen ? "add-attribute" : "", null])}>
-					<DialogTrigger asChild>
-						<Button
-							type="button"
-							variant="outline"
-							className="mt-4 cursor-pointer w-full border-dashed">
-							<PlusCircle className="w-4 h-4 mr-1" />
-							Add Attribute Section
-						</Button>
-					</DialogTrigger>
-					<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-						<DialogHeader>
-							<DialogTitle>Add Attribute Section</DialogTitle>
-						</DialogHeader>
-						<div className="flex flex-col max-h-[400px] overflow-y-auto">
-							{availableAttsToAdd.map((item: any, index: number) => (
-								<div
-									key={index}
-									className={`flex items-center justify-between py-2 border-b border-border dark:border-gray-700 last:border-b-0`}>
-									<p className="text-sm">{item?.title}</p>
-									<Button
-										size="sm"
-										type="button"
-										className="text-xs"
-										onClick={() => handleSelectAttribute(item)}>
-										Add
-									</Button>
-								</div>
-							))}
-						</div>
-					</DialogContent>
-				</Dialog>
-			)}
-
-			{/* Message if no attributes are added */}
-			{attributes.length === 0 && <div className="text-center text-gray-500 dark:text-gray-400 py-4">No attributes added yet.</div>}
 
 			{/* Search Dialog (Remains largely the same, but context passed in 'open' state is simplified) */}
 			<Dialog
@@ -551,8 +572,10 @@ export default function OrderAttribute(props: any) {
 													// select or other types that take a single object
 													handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
 												}
-
 												setOpen(["", null]); // Close dialog
+
+												// onChange(attributes)
+
 											}}>
 											{/* Show Color Picker */}
 											{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (

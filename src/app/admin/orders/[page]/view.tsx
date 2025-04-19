@@ -7,6 +7,7 @@ import { checkAllObjectEmpty, convertStringToJson, dateFormat, removeUnderscoreA
 
 import AttributeDetail from "./view/attribute_detail";
 import AttributeMisc from "./view/attribute_misc";
+import AttributeRoot from "./view/attribute_root";
 import AttributeTab from "./view/attribute_tab";
 import * as actions from "./actions";
 
@@ -43,6 +44,7 @@ export default function FormView(props: any) {
 			{!loading && (
 				<div className="flex flex-col gap-4 xl:flex-row xl:gap-10">
 					<div className="w-full xl:w-1/2">
+						<AttributeRoot data={data} />
 						<AttributeTab data={data} />
 						<AttributeMisc data={data} />
 					</div>

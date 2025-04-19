@@ -26,6 +26,7 @@ import { autoOderDate } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
 import OrderAttributeGroup from "./edit/attribute_group";
+import OrderAttributeMain from "./edit/attribute_main";
 import { ConnectUser } from "./edit/connect";
 import * as actions from "./actions";
 
@@ -199,9 +200,7 @@ export default function FormEdit(props: any) {
 		}
 		toast.success(res.message);
 		// IF Enabled auto close after submit
-		if (!id) {
-			onChange("submit", values);
-		}
+		onChange("submit", values);
 	}
 
 	async function changeFeature(e: any) {
@@ -317,6 +316,11 @@ export default function FormEdit(props: any) {
 									<TabsContent
 										value="general"
 										className="space-y-15">
+										<OrderAttributeMain data={data}
+											onChange={(e: any) => {
+												console.log(e);
+											}}
+										/>
 										<OrderAttributeGroup data={data} />
 									</TabsContent>
 								)}

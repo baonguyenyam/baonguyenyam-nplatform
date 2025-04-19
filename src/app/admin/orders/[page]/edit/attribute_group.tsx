@@ -716,7 +716,7 @@ export default function OrderAttributeGroup(props: any) {
 			{/* Message if no groups exist */}
 			{groupSelected.length === 0 && (
 				<div className="text-center text-gray-500 dark:text-gray-400 py-6 flex items-center justify-center space-x-2">
-					<span>No attribute groups created yet. Click "Add Group" to start.</span>
+					<span>No data created yet. Click "Add Group" to start.</span>
 					<Dialog
 						open={open[0] === "create-group"}
 						onOpenChange={(isOpen) => setOpen([isOpen ? "create-group" : "", null])}>

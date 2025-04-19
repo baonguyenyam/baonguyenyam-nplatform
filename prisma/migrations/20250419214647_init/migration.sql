@@ -116,6 +116,7 @@ CREATE TABLE "Order" (
     "image" TEXT,
     "published" BOOLEAN NOT NULL DEFAULT false,
     "data" TEXT,
+    "data_main" TEXT,
     "date_created" TIMESTAMP(3),
     "date_production" TIMESTAMP(3),
     "date_paid" TIMESTAMP(3),

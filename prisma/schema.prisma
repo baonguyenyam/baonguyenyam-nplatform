@@ -137,6 +137,7 @@ model Order {
   image     String?
   published Boolean   @default(false)
   data      String?   @db.Text
+  data_main String?   @db.Text
 
   date_created    DateTime?
   date_production DateTime?
