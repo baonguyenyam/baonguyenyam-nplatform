@@ -51,8 +51,6 @@ export default function OrderAttribute(props: any) {
 
 	// --- Data Fetching & Initialization ---
 
-	// --- Data Fetching & Initialization ---
-
 	// Effect 1: Parse data.data and set groupSelected/savedGroupData
 	useEffect(() => {
 		let parsedGroups: AttributeGroup[] = [];
@@ -454,7 +452,7 @@ export default function OrderAttribute(props: any) {
 											disabled={!hasChanges}
 											className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 px-2 h-8 bg-gray-200 font-medium hover:text-black text-black border-2 border-gray-400 rounded-lg"
 											onClick={saveAttributeMeta}>
-											Save Changes
+											Save Data
 										</Button>
 									</div>
 								)}

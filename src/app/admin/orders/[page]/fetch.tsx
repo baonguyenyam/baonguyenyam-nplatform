@@ -242,7 +242,7 @@ export default function Fetch(props: any) {
 				destroyOnClose={true}
 				extra={
 					<div className="flex items-center space-x-2">
-						<Button
+						{/* <Button
 							type="button"
 							className="hover:bg-red-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-red-800 px-2 h-8 bg-red-200 font-medium hover:text-black text-black border-2 border-red-400 rounded-lg"
 							onClick={() => {
@@ -250,7 +250,7 @@ export default function Fetch(props: any) {
 								setOpen(["", open[1]]);
 							}}>
 							<Trash /> Delete
-						</Button>
+						</Button> */}
 						<Button
 							type="button"
 							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
