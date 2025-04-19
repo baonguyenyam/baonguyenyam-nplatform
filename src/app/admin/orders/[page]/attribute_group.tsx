@@ -343,7 +343,7 @@ export default function OrderAttribute(props: any) {
 					value={activeGroupId ?? ""} // Controlled component
 					onValueChange={setActiveGroupId} // Update active group on tab change
 					className="mb-5 w-full">
-					<div className="w-full flex items-start justify-between border-b border-gray-200 dark:border-gray-700 min-h-10">
+					<div className="w-full flex items-start justify-between border-b border-gray-200 dark:border-gray-700">
 						<div className="group flex items-center">
 							<TabsList className="m-0 p-0 border-0 bg-transparent! shadow-none! h-auto -mb-[1px]">
 								{groupSelected.map((group) => (
@@ -371,7 +371,7 @@ export default function OrderAttribute(props: any) {
 								<DialogTrigger asChild>
 									<Button
 										size="icon"
-										className="rounded-full w-6 h-6"
+										className="rounded-full w-6 h-6 ml-4 cursor-pointer"
 										type="button">
 										<Plus className="w-4 h-4" />
 									</Button>
@@ -437,32 +437,26 @@ export default function OrderAttribute(props: any) {
 								{group.attributes?.map((attributeInstance, attrIndex) => (
 									<Fragment key={`${group.id}-${attributeInstance.id}`}>
 										{/* Attribute Instance Header */}
-										<div className="flex items-center justify-between group bg-gray-100 px-3 py-2 rounded-lg dark:bg-gray-900">
+										<div className="flex items-center justify-between group bg-gray-100 px-3 py-2 rounded-lg dark:bg-gray-900 group">
 											<div className="text-base font-semibold">{attributeInstance.title}</div>
+											{/* Delete Attribute Instance Button */}
+											<div
+												className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hidden group-hover:block cursor-pointer ml-2"
+												onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
+												title={`Remove ${attributeInstance.title} section`}
+											>
+												<X className="w-5 h-5" />
+											</div>
 											<div className="ml-auto">
 												<div className="flex items-center space-x-1">
 													{/* Add Row Button */}
-													<Button
-														variant="ghost"
-														size="icon"
-														type="button"
-														className="w-7 h-7 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+													<div
+														className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
 														onClick={() => handleAddAttributeRow(attributeInstance.id)}
 														title={`Add new row for ${attributeInstance.title}`}
 													>
-														<PlusCircle className="w-5 h-5" />
-													</Button>
-													{/* Delete Attribute Instance Button */}
-													<Button
-														variant="ghost"
-														size="icon"
-														type="button"
-														className="w-7 h-7 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-														onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
-														title={`Remove ${attributeInstance.title} section`}
-													>
-														<X className="w-5 h-5" />
-													</Button>
+														<PlusCircle className="w-6 h-6" />
+													</div>
 												</div>
 											</div>
 										</div>
@@ -479,11 +473,11 @@ export default function OrderAttribute(props: any) {
 												return (
 													<div
 														key={`${group.id}-${attributeInstance.id}-row-${rowIndex}`}
-														className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative pl-20`} // Adjusted padding
+														className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-transparent relative px-10 group`} // Adjusted padding
 														style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
 													>
 														{/* Row Actions (Duplicate, Delete) */}
-														<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
+														<div className="absolute right-2 top-2 hidden group-hover:block">
 															<Button
 																variant="ghost"
 																size="icon"
@@ -494,6 +488,8 @@ export default function OrderAttribute(props: any) {
 															>
 																<X className="w-4 h-4" />
 															</Button>
+														</div>
+														<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
 															<Button
 																variant="ghost"
 																size="icon"
@@ -514,7 +510,7 @@ export default function OrderAttribute(props: any) {
 															return (
 																<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
 																	<div className="item flex flex-col space-y-1">
-																		<span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span>
+																		{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 																		<div className="field-content">
 																			{/* --- Text Input --- */}
 																			{fieldType === "text" && (
@@ -618,8 +614,8 @@ export default function OrderAttribute(props: any) {
 										<DialogTrigger asChild>
 											<Button
 												type="button"
-												variant="outline"
-												className="mt-4">
+												// variant="outline"
+												className="mt-4 cursor-pointer">
 												<PlusCircle className="w-4 h-4 mr-1" />
 												Add Attribute to "{group.title}"
 											</Button>
