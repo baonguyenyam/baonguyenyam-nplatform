@@ -21,8 +21,8 @@ const FormSchema = z.object({
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
-	f_type: z.enum(enumType.map((item) => item.value) as [string, ...string[]], { required_error: "Type is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_type: z.enum(enumType.map((item: any) => item.value) as [string, ...string[]], { required_error: "Type is required" }).optional(),
 });
 
 export default function FormEdit(props: any) {
@@ -137,7 +137,7 @@ export default function FormEdit(props: any) {
 									<FormLabel>Type</FormLabel>
 									{FieldSelect({
 										field,
-										data: enumType.map((item) => ({
+										data: enumType.map((item: any) => ({
 											id: item.value,
 											name: item.label,
 										})),
@@ -155,7 +155,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

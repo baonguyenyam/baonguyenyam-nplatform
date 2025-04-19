@@ -122,7 +122,7 @@ export default function Fetch(props: any) {
 							header: "Role",
 							accessor: "role",
 							custom: (row: any) => {
-								const type = enumPermission.find((item) => item.value === row.role);
+								const type = enumPermission.find((item: any) => item.value === row.role);
 								return <span className={`text-sm ${type?.className}`}>{type?.label}</span>;
 							},
 						},

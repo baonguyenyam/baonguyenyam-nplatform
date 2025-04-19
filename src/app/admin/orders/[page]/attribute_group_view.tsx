@@ -1,10 +1,9 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 
-import { Input } from "@/components/ui/input";
 import { checkStringIsTextOrColorHexOrURL } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
-export default function OrderAttribute(props: any) {
+export default function OrderAttributeView(props: any) {
 	const { data } = props;
 	const memoriez = useAppSelector((state) => state.attributeState.data);
 	const atts = useMemo(() => {
@@ -53,15 +52,6 @@ export default function OrderAttribute(props: any) {
 							className="space-y-1 whitespace-nowrap mb-5">
 							<thead>
 								<tr className={`gap-5 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-600 relative px-3`}>
-									{/* Find item?.children longest */}
-									{/* {item?.children.find((child: any) => child?.length > 0)?.map((child: any, i: number) => (
-										<Fragment key={i}>
-											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">
-												{child?.title}
-											</th>
-										</Fragment>
-									))} */}
-
 									{findLongestItem(item?.children)?.map((child: any, i: number) => (
 										<Fragment key={i}>
 											<th className="text-left bg-gray-100 dark:bg-gray-900 p-2">{child?.title}</th>

@@ -33,7 +33,7 @@ export default function FormEdit(props: any) {
 			.string()
 			.optional()
 			.transform((e) => (e === "" ? undefined : e)),
-		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+		f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 		f_categories: z
 			.array(z.number())
 			.refine((data) => data.length > 0 && data[0] !== 0, { message: "Please select at least one category" })
@@ -63,7 +63,7 @@ export default function FormEdit(props: any) {
 	const attributeData = useAppSelector((state) => state?.attributeState.data);
 	const atts = useMemo(() => {
 		if (attributeData) {
-			return attributeData.filter((item) => item.mapto === "post");
+			return attributeData.filter((item: any) => item.mapto === "post");
 		}
 		return [];
 	}, [attributeData]);
@@ -416,7 +416,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

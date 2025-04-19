@@ -16,7 +16,7 @@ import * as actions from "./actions";
 
 const FormSchema = z.object({
 	f_email: z.string().email({ message: "Invalid email address." }),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 	f_address: z.string().optional(),
 	f_city: z.string().optional(),
 	f_state: z.string().optional(),
@@ -274,7 +274,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

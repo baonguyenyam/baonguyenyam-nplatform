@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export default function AppStatus(props: any) {
 	const { data } = props;
-	const status = enumOrderStatus.find((item) => item.value === data);
+	const status = enumOrderStatus.find((item: any) => item.value === data);
 
 	const label = status?.label ? status.label : "Unknown";
 	const className = status?.className ? status.className : "text-gray-700";
@@ -16,7 +16,7 @@ export default function AppStatus(props: any) {
 	const IconComponent = status?.icon ? status.icon : null;
 	const size = props.size ? props.size : "default";
 
-	useEffect(() => {}, []);
+	useEffect(() => { }, []);
 
 	return (
 		<>

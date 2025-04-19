@@ -21,6 +21,7 @@ export default function OrderAttribute(props: any) {
 	}, [memoriez]);
 
 	const [open, setOpen] = useState<any>(["", null]);
+	const [groupSelected, setGroupSelected] = useState<any>([]);
 	const [selected, setSelected] = useState<any>([]);
 	const [current, setCurrent] = useState<any>(null);
 	const [search, setSearch] = useState<any>([]);
@@ -439,6 +440,52 @@ export default function OrderAttribute(props: any) {
 					<p>No attributes found, please add attributes first</p>
 				</div>
 			)}
+
+			{/* Group Selected */}
+			<Dialog
+				open={open[0] === "create-group"}
+				defaultOpen={false}
+				onOpenChange={(open) => setOpen([open ? "create-group" : "", null])}>
+				<DialogTrigger asChild>
+					<Button
+						type="button"
+						className="mt-5 mb-5">
+						<Plus />
+						Add Group
+					</Button>
+				</DialogTrigger>
+				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+					<DialogHeader>
+						<DialogTitle>Add Group</DialogTitle>
+					</DialogHeader>
+					<div className="flex flex-col">
+						<Input
+							placeholder="Group Name"
+							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									const groupName = (e.target as HTMLInputElement)?.value;
+									if (groupName) {
+										const _item = {
+											title: groupName,
+											id: Date.now(),
+											children: [],
+										};
+										setGroupSelected((prev: any) => {
+											const newSelected = [...prev];
+											newSelected.push(_item);
+											return newSelected;
+										});
+										setOpen(["", null]);
+									} else {
+										toast.error("Group name is required");
+									}
+								}
+							}}
+						/>
+					</div>
+				</DialogContent>
+			</Dialog>
 
 			<Dialog
 				open={open[0] === "create"}

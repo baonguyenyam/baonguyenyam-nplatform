@@ -92,7 +92,7 @@ export function AppSidebar() {
 					<SidebarGroupLabel>Platform</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{MenuItems.map((item) => (
+							{MenuItems.map((item: any) => (
 								<Fragment key={item.title}>
 									{role && (item?.role ?? []).includes(role) && (
 										<SidebarMenuItem>
@@ -108,7 +108,7 @@ export function AppSidebar() {
 											</SidebarMenuButton>
 											{item.items?.length ? (
 												<SidebarMenuSub>
-													{item.items.map((item) => (
+													{item.items.map((item: any) => (
 														<SidebarMenuSubItem key={item.title}>
 															<SidebarMenuSubButton
 																asChild
@@ -137,7 +137,7 @@ export function AppSidebar() {
 				<SidebarGroupContent>
 					<SidebarGroupLabel>Settings</SidebarGroupLabel>
 					<SidebarMenu>
-						{FooterItems.map((item) => (
+						{FooterItems.map((item: any) => (
 							<Fragment key={item.title}>
 								{role && (item?.role ?? []).includes(role) && (
 									<SidebarMenuItem>

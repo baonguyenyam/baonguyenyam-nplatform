@@ -22,8 +22,8 @@ export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
 		f_email: z.string().email({ message: "Invalid email address." }),
-		f_role: z.enum(enumPermission.map((item) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
-		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+		f_role: z.enum(enumPermission.map((item: any) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
+		f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 		f_address: z.string().optional(),
 		f_city: z.string().optional(),
 		f_state: z.string().optional(),
@@ -41,7 +41,7 @@ export default function FormEdit(props: any) {
 	const attributeData = useAppSelector((state) => state?.attributeState.data);
 	const atts = useMemo(() => {
 		if (attributeData) {
-			return attributeData.filter((item) => item.mapto === "user");
+			return attributeData.filter((item: any) => item.mapto === "user");
 		}
 		return [];
 	}, [attributeData]);
@@ -402,7 +402,7 @@ export default function FormEdit(props: any) {
 											<FormLabel>Role</FormLabel>
 											{FieldSelect({
 												field,
-												data: enumPermission.map((item) => ({
+												data: enumPermission.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),
@@ -423,7 +423,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

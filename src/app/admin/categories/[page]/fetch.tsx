@@ -130,7 +130,7 @@ export default function Fetch(props: any) {
 							header: "Type",
 							accessor: "type",
 							custom: (row: any) => {
-								const type = enumType.find((item) => item.value === row.type);
+								const type = enumType.find((item: any) => item.value === row.type);
 								return <span className={`text-sm`}>{type?.label}</span>;
 							},
 						},

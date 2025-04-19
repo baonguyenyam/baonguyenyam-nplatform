@@ -35,8 +35,8 @@ const FormSchema = z.object({
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
-	f_status: z.enum(enumOrderStatus.map((item) => item.value) as [string, ...string[]], { required_error: "Status is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_status: z.enum(enumOrderStatus.map((item: any) => item.value) as [string, ...string[]], { required_error: "Status is required" }).optional(),
 	f_categories: z
 		.array(z.number())
 		.refine((data) => data.length > 0 && data[0] !== 0, { message: "Please select at least one category" })
@@ -263,11 +263,6 @@ export default function FormEdit(props: any) {
 								</TabsTrigger>
 								<TabsTrigger
 									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
-									value="receiving">
-									Receiving
-								</TabsTrigger>
-								<TabsTrigger
-									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="shipping">
 									Shipping
 								</TabsTrigger>
@@ -322,7 +317,7 @@ export default function FormEdit(props: any) {
 													<FormLabel>Status</FormLabel>
 													{FieldSelect({
 														field,
-														data: enumOrderStatus.map((item) => {
+														data: enumOrderStatus.map((item: any) => {
 															return {
 																id: item.value,
 																name: item.label,
@@ -438,6 +433,12 @@ export default function FormEdit(props: any) {
 									/>
 
 									<div className="flex items-center gap-4"></div>
+								</TabsContent>
+
+								<TabsContent
+									value="shipping"
+									className="space-y-15">
+									Working
 								</TabsContent>
 
 								<TabsContent
@@ -667,7 +668,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

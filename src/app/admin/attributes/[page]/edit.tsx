@@ -17,7 +17,7 @@ import * as actions from "./actions";
 
 const FormSchema = z.object({
 	f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 	f_content: z
 		.string()
 		.optional()
@@ -165,7 +165,7 @@ export default function FormEdit(props: any) {
 									<FormLabel>Map to</FormLabel>
 									{FieldSelect({
 										field,
-										data: enumAttribute.map((item) => ({
+										data: enumAttribute.map((item: any) => ({
 											name: item.label,
 											id: item.value,
 										})),
@@ -183,7 +183,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

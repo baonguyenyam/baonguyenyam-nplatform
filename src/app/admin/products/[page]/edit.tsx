@@ -28,7 +28,7 @@ const FormSchema = z.object({
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 	f_categories: z
 		.array(z.number())
 		.refine((data) => data.length > 0 && data[0] !== 0, { message: "Please select at least one category" })
@@ -262,7 +262,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

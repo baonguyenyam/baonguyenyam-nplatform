@@ -19,7 +19,7 @@ import * as actions from "./actions";
 const FormSchema = z.object({
 	f_name: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
 	f_data: z.string().min(2, { message: "Content must be at least 2 characters." }),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
 	f_type: z.enum(["product", "post", "media"], { required_error: "Type is required" }).optional(),
 });
 
@@ -137,7 +137,7 @@ export default function FormEdit(props: any) {
 										<FormItem>
 											{FieldSelect({
 												field,
-												data: enumPublished.map((item) => ({
+												data: enumPublished.map((item: any) => ({
 													id: item.value,
 													name: item.label,
 												})),

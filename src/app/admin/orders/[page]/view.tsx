@@ -6,7 +6,7 @@ import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { dateFormat } from "@/lib/utils";
 
 import * as actions from "./actions";
-import OrderAttribute from "./attribute_group_view";
+import OrderAttributeView from "./attribute_group_view";
 
 export default function FormView(props: any) {
 	const { id, onChange } = props;
@@ -41,8 +41,7 @@ export default function FormView(props: any) {
 			{!loading && (
 				<div className="flex flex-col gap-4 xl:flex-row xl:gap-10">
 					<div className="w-full xl:w-1/2">
-						<OrderAttribute data={data} />
-						dsfdsf
+						<OrderAttributeView data={data} />
 					</div>
 					<div className="w-full xl:w-1/2 grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-10">
 						<div className="group">
