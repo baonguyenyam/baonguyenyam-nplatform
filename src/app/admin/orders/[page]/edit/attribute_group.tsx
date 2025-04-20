@@ -408,7 +408,6 @@ export default function OrderAttributeGroup(props: any) {
 	};
 
 	const handleDeleteCheckboxSingleValue = (attributeId: string, rowIndex: number, fieldIndex: number, valueToRemove: any) => {
-		if (!activeGroupId) return;
 		if (!confirm("Are you sure you want to remove this item?")) return;
 		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
 	};
@@ -728,34 +727,30 @@ export default function OrderAttributeGroup(props: any) {
 																										)}
 																										<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
 																										{/* Delete single checkbox value */}
-																										{!permission && (
-																											<button
-																												type="button"
-																												className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
-																												onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
-																												title={`Remove ${v?.value}`}>
-																												<X className="w-3 h-3" />
-																											</button>
-																										)}
+																										<button
+																											type="button"
+																											className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																											onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																											title={`Remove ${v?.value}`}>
+																											<X className="w-3 h-3" />
+																										</button>
 																									</div>
 																								))}
 																							{/* Button to add more checkbox values */}
-																							{!permission && (
-																								<Button
-																									variant="outline"
-																									size="sm"
-																									type="button"
-																									className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
-																									disabled={!orderPermissionItem} // Disable if permission is not granted
-																									onClick={() => {
-																										setSearch([]);
-																										setLoading(true);
-																										searchAttributeMeta("", field.id);
-																										setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
-																									}}>
-																									<Search className="w-3 h-3 mr-1" /> Add {field.title}
-																								</Button>
-																							)}
+																							<Button
+																								variant="outline"
+																								size="sm"
+																								type="button"
+																								className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																								disabled={!orderPermissionItem} // Disable if permission is not granted
+																								onClick={() => {
+																									setSearch([]);
+																									setLoading(true);
+																									searchAttributeMeta("", field.id);
+																									setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																								}}>
+																								<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																							</Button>
 																						</div>
 																					)}
 																				</div>
