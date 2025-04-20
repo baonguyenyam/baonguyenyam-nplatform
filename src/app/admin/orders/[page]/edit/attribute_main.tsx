@@ -25,13 +25,20 @@ interface AttributeInstance {
 }
 
 export default function OrderAttributeMain(props: any) {
-	const { data, onChange, permission, setkey, orderPermission } = props; // Order data containing the saved attributes structure
+	const { data, onChange, permission, setkey, orderPermission, tab } = props; // Order data containing the saved attributes structure
 	const memoriez = useAppSelector((state) => state.attributeState.data); // All available attribute definitions
-
 	// Filter available attribute definitions for 'order' type
 	const availableAttributeDefinitions = useMemo(() => {
 		return memoriez.filter((item: any) => item?.mapto === "order");
 	}, [memoriez]);
+
+
+	console.log("OrderAttributeMain", orderPermission);
+	console.log("tab", tab);
+	// [ { "id": 1, "title": "Screen", "children": [ { "id": 15, "permission": [ { "key": "shipping", "checked": true }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 6, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 2, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] } ] }, { "id": 3, "title": "Tshirt", "children": [ { "id": 17, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 5, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 25, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 26, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 27, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 28, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] }, { "id": 29, "permission": [ { "key": "shipping", "checked": false }, { "key": "payment", "checked": false }, { "key": "product", "checked": false }, { "key": "package", "checked": false } ] } ] } ]
+	console.log("availableAttributeDefinitions", availableAttributeDefinitions);
+	// [ { "id": 1, "title": "Screen", "type": null, "mapto": "order", "published": true, "order": 0, "children": [ { "id": 15, "title": "Screen Type", "type": "select", "order": 0, "_count": { "meta": 2 } }, { "id": 6, "title": "Screen Color", "type": "select", "order": 0, "_count": { "meta": 5 } }, { "id": 2, "title": "Screen Size", "type": "select", "order": 0, "_count": { "meta": 4 } } ], "_count": { "meta": 0, "children": 3 } }, { "id": 3, "title": "Tshirt", "type": null, "mapto": "order", "published": true, "order": 0, "children": [ { "id": 17, "title": "Size", "type": "select", "order": 0, "_count": { "meta": 5 } }, { "id": 5, "title": "Color", "type": "checkbox", "order": 0, "_count": { "meta": 5 } }, { "id": 25, "title": "Company", "type": "select", "order": 0, "_count": { "meta": 5 } }, { "id": 26, "title": "Number", "type": "text", "order": 0, "_count": { "meta": 0 } }, { "id": 27, "title": "Recieve", "type": "text", "order": 0, "_count": { "meta": 0 } }, { "id": 28, "title": "Count", "type": "text", "order": 0, "_count": { "meta": 0 } }, { "id": 29, "title": "Package", "type": "text", "order": 0, "_count": { "meta": 0 } } ], "_count": { "meta": 0, "children": 7 } } ]
+	// Compare orderPermission and availableAttributeDefinitions above and then find where key = tab then get value of children
 
 	// --- State ---
 	const [open, setOpen] = useState<any>(["", null]); // [dialogType, dialogData] for modals

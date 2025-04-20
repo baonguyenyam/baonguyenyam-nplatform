@@ -117,6 +117,7 @@ export default function FormEdit(props: any) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any>(null);
 	const [thumbnail, setThumbnail] = useState<any>(null);
+	const [isTab, setIsTab] = useState(false);
 	const [imgs, setImgs] = useState<any>([]);
 	const role = useCurrentRole();
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -282,6 +283,7 @@ export default function FormEdit(props: any) {
 							orientation="vertical"
 							// Event on change
 							onValueChange={(e: any) => {
+								setIsTab(e);
 								fetchData();
 							}}
 							className="flex w-full items-start gap-10">
@@ -516,8 +518,8 @@ export default function FormEdit(props: any) {
 											)}
 										/>
 									</div>
-									<OrderAttributeMain data={data} permission={true} orderPermission={orderPermission} />
-									<OrderAttributeGroup data={data} permission={true} orderPermission={orderPermission} />
+									<OrderAttributeMain data={data} permission={true} tab={isTab} orderPermission={orderPermission} />
+									<OrderAttributeGroup data={data} permission={true} tab={isTab} orderPermission={orderPermission} />
 
 								</TabsContent>
 

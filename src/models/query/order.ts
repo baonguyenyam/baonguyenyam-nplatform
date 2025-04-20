@@ -32,6 +32,12 @@ export const getOrderById = async (id: string) => {
 						name: true,
 					},
 				},
+				user_shipping: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
 				user_quality: {
 					select: {
 						id: true,
@@ -183,6 +189,12 @@ export const getAllOrders = async (query: any) => {
 					},
 				},
 				user_manager: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+				user_shipping: {
 					select: {
 						id: true,
 						name: true,

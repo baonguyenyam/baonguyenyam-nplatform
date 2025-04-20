@@ -173,9 +173,5 @@ export const enumOrderType = [
 	{
 		label: "Package",
 		value: "package",
-	},
-	{
-		label: "Shipped",
-		value: "shipped",
-	},
+	}
 ];
