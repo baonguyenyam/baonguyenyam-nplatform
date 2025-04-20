@@ -678,7 +678,7 @@ export default function OrderAttributeGroup(props: any) {
 																									handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, (e.target as HTMLInputElement)?.value);
 																								}
 																							}}
-																							// placeholder={field.title}
+																						// placeholder={field.title}
 																						/>
 																					)}
 																					{fieldType === "date" && (
@@ -691,13 +691,14 @@ export default function OrderAttributeGroup(props: any) {
 																							}}
 																							type="date"
 																							disabled={!orderPermissionItem} // Disable if permission is not granted
-																							// placeholder={field.title}
+																						// placeholder={field.title}
 																						/>
 																					)}
 																					{fieldType === "toggle" && (
 																						<Switch
 																							checked={field?.value || false}
 																							defaultChecked={field?.value || false}
+																							disabled={!orderPermissionItem} // Disable if permission is not granted
 																							onCheckedChange={(checked) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, checked)}
 																						/>
 																					)}
