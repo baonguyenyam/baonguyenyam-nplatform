@@ -92,7 +92,7 @@ export default function Fetch(props: any) {
 				</div>
 				<Button onClick={() => setOpen(["create", null])}>
 					<Plus />
-					Create {title}
+					Create {title} Type
 				</Button>
 			</div>
 
@@ -131,7 +131,7 @@ export default function Fetch(props: any) {
 												</span>
 											)}
 											<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
-												{row.type === "text" ? (
+												{row.type === "text" || row.type === "date" || row.type === "number" || row.type === "toggle" ? (
 													<span className="text-sm text-gray-600">{row.title}</span>
 												) : (
 													<span

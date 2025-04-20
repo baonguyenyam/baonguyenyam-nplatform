@@ -148,12 +148,24 @@ export const enumFieldType = [
 		value: "text",
 	},
 	{
+		label: "Number",
+		value: "number",
+	},
+	{
 		label: "Select",
 		value: "select",
 	},
 	{
 		label: "Checkbox",
 		value: "checkbox",
+	},
+	{
+		label: "Toggle",
+		value: "toggle",
+	},
+	{
+		label: "Date",
+		value: "date",
 	},
 ];
 
@@ -173,5 +185,5 @@ export const enumOrderType = [
 	{
 		label: "Package",
 		value: "package",
-	}
+	},
 ];

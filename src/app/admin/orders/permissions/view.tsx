@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Lock, } from "lucide-react";
+import { Lock } from "lucide-react";
+import { toast } from "sonner";
 
 import AppLoading from "@/components/AppLoading";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { SET_APP_STATE } from "@/store/appSlice";
 import { setAttribute } from "@/store/attributeSlice";
 
 import * as actions from "./actions";
-import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
 
 export default function View() {
 	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
@@ -50,19 +51,25 @@ export default function View() {
 											</div>
 											<div className="ml-6 mt-2 mb-5 flex flex-wrap gap-2">
 												{enumOrderType.map((type) => (
-													<div className="" key={type.value}>
+													<div
+														className=""
+														key={type.value}>
 														<div className="flex items-center gap-2 text-sm">
-															<input
+															{/* <input
 																type="checkbox"
 																className="form-checkbox h-4 w-4 border-gray-300 rounded"
 																id={`${child.id}-${type.value}`}
 																name={`${child.id}-${type.value}`}
 																value={type.value}
 																checked={child.attributes?.includes(type.value)}
+															/> */}
+															<Switch
+																id={`${child.id}-${type.value}`}
+																name={`${child.id}-${type.value}`}
+																defaultChecked={child.attributes?.includes(type.value)}
+																checked={child.attributes?.includes(type.value)}
 															/>
-															<label htmlFor={`${child.id}-${type.value}`}>
-																{type.label}
-															</label>
+															<label htmlFor={`${child.id}-${type.value}`}>{type.label}</label>
 														</div>
 													</div>
 												))}
@@ -95,7 +102,7 @@ export default function View() {
 							className="mt-4 px-4 py-2 inline-flex"
 							onClick={async () => {
 								// {
-								// 	item: Number, 
+								// 	item: Number,
 								// 	children: [
 								// 		{
 								// 			id: Number,
@@ -140,14 +147,12 @@ export default function View() {
 
 								// Save to appState
 								dispatch(SET_APP_STATE({ order_permission: data }));
-
 							}}>
 							Save Changes
 						</Button>
 					</div>
-				</div >
-			)
-			}
+				</div>
+			)}
 		</>
 	);
 }

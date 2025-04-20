@@ -8,6 +8,7 @@ import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
 import { useAppSelector } from "@/store";
@@ -241,7 +242,6 @@ export default function OrderAttributeGroup(props: any) {
 		saveAttributeMeta(nextGroupSelected);
 	};
 
-
 	const handleAddAttributeRow = (attributeId: string) => {
 		if (!activeGroupId) return;
 
@@ -413,19 +413,21 @@ export default function OrderAttributeGroup(props: any) {
 	};
 
 	const handleDeleteGroup = (groupId: string) => {
-		const groupToDelete = groupSelected.find(g => g.id === groupId);
+		const groupToDelete = groupSelected.find((g) => g.id === groupId);
 		if (!groupToDelete) return; // Group not found
 
 		if (!confirm(`Are you sure you want to delete the group "${groupToDelete.title}"?`)) return;
 
 		// Calculate the next state *before* calling setGroupSelected
-		const nextGroupSelected = groupSelected.filter(g => g.id !== groupId);
+		const nextGroupSelected = groupSelected.filter((g) => g.id !== groupId);
 
 		// Determine the next active group ID
 		let nextActiveGroupId = activeGroupId;
-		if (activeGroupId === groupId) { // If the deleted group was active
+		if (activeGroupId === groupId) {
+			// If the deleted group was active
 			nextActiveGroupId = nextGroupSelected.length > 0 ? nextGroupSelected[0].id : null;
-		} else if (nextGroupSelected.length === 0) { // If no groups left
+		} else if (nextGroupSelected.length === 0) {
+			// If no groups left
 			nextActiveGroupId = null;
 		}
 		// Otherwise, keep the current activeGroupId if it still exists
@@ -592,7 +594,7 @@ export default function OrderAttributeGroup(props: any) {
 												className="w-full border-collapse border border-gray-200 dark:border-gray-700 text-sm">
 												<thead>
 													<tr className="bg-gray-100 dark:bg-gray-800">
-														{(!permission && longestRowForHeader?.length) && (
+														{!permission && longestRowForHeader?.length && (
 															<>
 																<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4"></th>
 																<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4">D</th>
@@ -609,7 +611,6 @@ export default function OrderAttributeGroup(props: any) {
 												</thead>
 
 												<tbody>
-
 													{attributeInstance.children?.map((row, rowIndex) => {
 														// Find the definition to determine column count and field types
 														const attributeDefinition = atts.find((att: any) => att.id === attributeInstance.id);
@@ -617,9 +618,7 @@ export default function OrderAttributeGroup(props: any) {
 														return (
 															<tr
 																key={`${group.id}-${attributeInstance.id}-row-${rowIndex}`}
-																className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-
-															>
+																className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50">
 																{/* Row Actions (Duplicate, Delete) */}
 																{!permission && (
 																	<>
@@ -656,7 +655,11 @@ export default function OrderAttributeGroup(props: any) {
 																	const getFParentInstanceId = attributeInstance.id; // Use attribute instance ID
 																	const getFieldId = fieldDefinition?.id ?? field.id; // Use field definition ID if available
 																	// Find in orderPermission
-																	const orderPermissionItem = orderPermission?.find((item: any) => item.id === Number(getFParentInstanceId))?.children?.find((item: any) => item.id === Number(getFieldId))?.permission.find((item: any) => item.key === tab)?.checked ?? true
+																	const orderPermissionItem =
+																		orderPermission
+																			?.find((item: any) => item.id === Number(getFParentInstanceId))
+																			?.children?.find((item: any) => item.id === Number(getFieldId))
+																			?.permission.find((item: any) => item.key === tab)?.checked ?? true;
 
 																	return (
 																		<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
@@ -664,17 +667,38 @@ export default function OrderAttributeGroup(props: any) {
 																				{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 																				<div className="field-content">
 																					{/* --- Text Input --- */}
-																					{fieldType === "text" && (
+																					{(fieldType === "text" || fieldType === "number") && (
 																						<Input
 																							className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
 																							defaultValue={field?.value || ""} // Default value for uncontrolled component
 																							disabled={!orderPermissionItem} // Disable if permission is not granted
+																							type={fieldType === "number" ? "number" : "text"}
 																							onKeyDown={(e) => {
 																								if (e.key === "Enter") {
 																									handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, (e.target as HTMLInputElement)?.value);
 																								}
 																							}}
-																						// placeholder={field.title}
+																							// placeholder={field.title}
+																						/>
+																					)}
+																					{fieldType === "date" && (
+																						<Input
+																							className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
+																							defaultValue={field?.value || ""} // Default value for uncontrolled component
+																							onChange={(e) => {
+																								const target = e.target as HTMLInputElement;
+																								handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
+																							}}
+																							type="date"
+																							disabled={!orderPermissionItem} // Disable if permission is not granted
+																							// placeholder={field.title}
+																						/>
+																					)}
+																					{fieldType === "toggle" && (
+																						<Switch
+																							checked={field?.value || false}
+																							defaultChecked={field?.value || false}
+																							onCheckedChange={(checked) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, checked)}
 																						/>
 																					)}
 
@@ -764,12 +788,13 @@ export default function OrderAttributeGroup(props: any) {
 
 													{attributeInstance.children?.length === 0 && !permission && (
 														<tr className="text-center text-sm text-gray-500 dark:text-gray-400">
-															<td className="p-2" colSpan={!permission ? (Number(longestRowForHeader?.length ?? 0) + 2) : longestRowForHeader?.length ?? 0}>
+															<td
+																className="p-2"
+																colSpan={!permission ? Number(longestRowForHeader?.length ?? 0) + 2 : (longestRowForHeader?.length ?? 0)}>
 																No rows added yet for "{attributeInstance.title}". Click <PlusCircle className="w-4 h-4 inline-block mx-1" /> above to add one.
 															</td>
 														</tr>
 													)}
-
 												</tbody>
 												{/* Show message if no rows exist for this attribute */}
 											</table>
@@ -837,7 +862,7 @@ export default function OrderAttributeGroup(props: any) {
 											<DropdownMenuItem
 												className="cursor-pointer"
 												onClick={() => {
-													handleDeleteGroup(group.id)
+													handleDeleteGroup(group.id);
 												}}>
 												<div className="text-red-500">Delete Group</div>
 											</DropdownMenuItem>

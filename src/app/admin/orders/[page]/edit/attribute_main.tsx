@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { checkStringIsTextOrColorHexOrURL, cn } from "@/lib/utils"; // Assuming cn is available
 import { useAppSelector } from "@/store";
 
@@ -392,10 +393,9 @@ export default function OrderAttributeMain(props: any) {
 							<table
 								id={`attr_${attributeInstance.id}`}
 								className="w-full border-collapse border border-gray-200 dark:border-gray-700 text-sm">
-
 								<thead>
 									<tr className="bg-gray-100 dark:bg-gray-800">
-										{(!permission && longestRowForHeader?.length) && (
+										{!permission && longestRowForHeader?.length && (
 											<>
 												<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4"></th>
 												<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4">D</th>
@@ -411,7 +411,6 @@ export default function OrderAttributeMain(props: any) {
 									</tr>
 								</thead>
 								<tbody>
-
 									{attributeInstance.children?.map((row, rowIndex) => {
 										// Find the definition to determine column count and field types
 										const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeInstance.id);
@@ -420,8 +419,7 @@ export default function OrderAttributeMain(props: any) {
 										return (
 											<tr
 												key={`${attributeInstance.id}-row-${rowIndex}`} // Simplified key
-												className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-											>
+												className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50">
 												{/* Row Actions (Duplicate, Delete) */}
 												{!permission && (
 													<>
@@ -457,7 +455,11 @@ export default function OrderAttributeMain(props: any) {
 													const getFParentInstanceId = attributeInstance.id; // Use attribute instance ID
 													const getFieldId = fieldDefinition?.id ?? field.id; // Use field definition ID if available
 													// Find in orderPermission
-													const orderPermissionItem = orderPermission?.find((item: any) => item.id === Number(getFParentInstanceId))?.children?.find((item: any) => item.id === Number(getFieldId))?.permission.find((item: any) => item.key === tab)?.checked ?? true
+													const orderPermissionItem =
+														orderPermission
+															?.find((item: any) => item.id === Number(getFParentInstanceId))
+															?.children?.find((item: any) => item.id === Number(getFieldId))
+															?.permission.find((item: any) => item.key === tab)?.checked ?? true;
 
 													return (
 														<Fragment key={`${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
@@ -465,7 +467,7 @@ export default function OrderAttributeMain(props: any) {
 																{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 																<div className="field-content">
 																	{/* --- Text Input --- */}
-																	{fieldType === "text" && (
+																	{(fieldType === "text" || fieldType === "number") && (
 																		<Input
 																			className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
 																			defaultValue={field?.value || ""} // Default value for uncontrolled component
@@ -475,8 +477,29 @@ export default function OrderAttributeMain(props: any) {
 																					handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
 																				}
 																			}}
+																			type={fieldType === "number" ? "number" : "text"}
 																			disabled={!orderPermissionItem} // Disable if permission is not granted
-																		// placeholder={field.title}
+																			// placeholder={field.title}
+																		/>
+																	)}
+																	{fieldType === "date" && (
+																		<Input
+																			className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
+																			defaultValue={field?.value || ""} // Default value for uncontrolled component
+																			onChange={(e) => {
+																				const target = e.target as HTMLInputElement;
+																				handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
+																			}}
+																			type="date"
+																			disabled={!orderPermissionItem} // Disable if permission is not granted
+																			// placeholder={field.title}
+																		/>
+																	)}
+																	{fieldType === "toggle" && (
+																		<Switch
+																			checked={field?.value || false}
+																			defaultChecked={field?.value || false}
+																			onCheckedChange={(checked) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, checked)}
 																		/>
 																	)}
 
@@ -563,7 +586,6 @@ export default function OrderAttributeMain(props: any) {
 											</tr>
 										);
 									})}
-
 								</tbody>
 
 								{/* Show message if no rows exist for this attribute */}
