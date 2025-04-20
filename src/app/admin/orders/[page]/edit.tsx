@@ -275,6 +275,10 @@ export default function FormEdit(props: any) {
 						<Tabs
 							defaultValue={id ? "general" : "basic"}
 							orientation="vertical"
+							// Event on change
+							onValueChange={(e: any) => {
+								fetchData();
+							}}
 							className="flex w-full items-start gap-10">
 							<TabsList className="flex-col rounded-none bg-transparent p-0 min-w-[200px] space-y-1">
 								{id && (
@@ -316,7 +320,8 @@ export default function FormEdit(props: any) {
 									<TabsContent
 										value="general"
 										className="space-y-15">
-										<OrderAttributeMain data={data}
+										<OrderAttributeMain
+											data={data}
 											onChange={(e: any) => {
 												console.log(e);
 											}}
@@ -506,6 +511,9 @@ export default function FormEdit(props: any) {
 											)}
 										/>
 									</div>
+									<OrderAttributeMain data={data} permission={true} />
+									<OrderAttributeGroup data={data} permission={true} />
+
 								</TabsContent>
 
 								<TabsContent

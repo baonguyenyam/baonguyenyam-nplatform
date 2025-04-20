@@ -25,7 +25,7 @@ interface AttributeInstance {
 }
 
 export default function OrderAttributeMain(props: any) {
-	const { data, onChange } = props; // Order data containing the saved attributes structure
+	const { data, onChange, permission, setkey } = props; // Order data containing the saved attributes structure
 	const memoriez = useAppSelector((state) => state.attributeState.data); // All available attribute definitions
 
 	// Filter available attribute definitions for 'order' type
@@ -207,7 +207,6 @@ export default function OrderAttributeMain(props: any) {
 		);
 
 		// onChange(attributes); // Save immediately after adding
-
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
@@ -224,7 +223,6 @@ export default function OrderAttributeMain(props: any) {
 		);
 
 		// onChange(attributes); // Save immediately after adding
-
 	};
 
 	const handleUpdateFieldValue = (attributeId: string, rowIndex: number, fieldIndex: number, newValue: any) => {
@@ -238,7 +236,6 @@ export default function OrderAttributeMain(props: any) {
 		);
 
 		// onChange(attributes); // Save immediately after adding
-
 	};
 
 	const handleUpdateCheckboxValue = (attributeId: string, rowIndex: number, fieldIndex: number, selectedMetaItem: any, add: boolean) => {
@@ -271,7 +268,6 @@ export default function OrderAttributeMain(props: any) {
 		);
 
 		// onChange(attributes); // Save immediately after adding
-
 	};
 
 	const handleDeleteCheckboxSingleValue = (attributeId: string, rowIndex: number, fieldIndex: number, valueToRemove: any) => {
@@ -279,7 +275,6 @@ export default function OrderAttributeMain(props: any) {
 		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
 
 		// onChange(attributes); // Save immediately after adding
-
 	};
 
 	// --- Render ---
@@ -298,6 +293,8 @@ export default function OrderAttributeMain(props: any) {
 				</Button>
 			</div>
 
+			{/* Header */}
+
 			{/* Attribute Instances */}
 			<div className="flex flex-col space-y-4 p-10 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800">
 				{attributes?.map((attributeInstance) => (
@@ -305,22 +302,26 @@ export default function OrderAttributeMain(props: any) {
 						{/* Attribute Instance Header */}
 						<div className="flex items-center justify-between group bg-gray-200 px-3 py-2 rounded-lg dark:bg-gray-900 group">
 							<div className="text-base font-semibold">{attributeInstance.title}</div>
-							<div
-								className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2 hidden group-hover:flex"
-								onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
-								title={`Remove ${attributeInstance.title} section`}>
-								<X className="w-5 h-5" />
-							</div>
-							<div className="flex items-center space-x-1 ml-auto">
-								{/* Add Row Button */}
-								<div
-									className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
-									onClick={() => handleAddAttributeRow(attributeInstance.id)}
-									title={`Add new row for ${attributeInstance.title}`}>
-									<PlusCircle className="w-6 h-6" />
-								</div>
-								{/* Delete Attribute Instance Button */}
-							</div>
+							{!permission && (
+								<>
+									<div
+										className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2 hidden group-hover:flex"
+										onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
+										title={`Remove ${attributeInstance.title} section`}>
+										<X className="w-5 h-5" />
+									</div>
+									<div className="flex items-center space-x-1 ml-auto">
+										{/* Add Row Button */}
+										<div
+											className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
+											onClick={() => handleAddAttributeRow(attributeInstance.id)}
+											title={`Add new row for ${attributeInstance.title}`}>
+											<PlusCircle className="w-6 h-6" />
+										</div>
+										{/* Delete Attribute Instance Button */}
+									</div>
+								</>
+							)}
 						</div>
 
 						{/* Rows (Children) for this Attribute Instance */}
@@ -335,32 +336,36 @@ export default function OrderAttributeMain(props: any) {
 								return (
 									<div
 										key={`${attributeInstance.id}-row-${rowIndex}`} // Simplified key
-										className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 bg-white dark:bg-transparent relative px-10 group`} // Adjusted padding
+										className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 bg-white dark:bg-transparent relative group ${!permission ? 'px-10' : ''}`} // Adjusted padding
 										style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
 									>
 										{/* Row Actions (Duplicate, Delete) */}
-										<div className="absolute right-2 top-2 hidden group-hover:flex flex-col space-y-1">
-											<Button
-												variant="ghost"
-												size="icon"
-												type="button"
-												className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-												title="Delete Row"
-												onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}>
-												<X className="w-4 h-4" />
-											</Button>
-										</div>
-										<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
-											<Button
-												variant="ghost"
-												size="icon"
-												type="button"
-												className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-												title="Duplicate Row"
-												onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}>
-												<Copy className="w-4 h-4" />
-											</Button>
-										</div>
+										{!permission && (
+											<>
+												<div className="absolute right-2 top-2 hidden group-hover:flex flex-col space-y-1">
+													<Button
+														variant="ghost"
+														size="icon"
+														type="button"
+														className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+														title="Delete Row"
+														onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}>
+														<X className="w-4 h-4" />
+													</Button>
+												</div>
+												<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
+													<Button
+														variant="ghost"
+														size="icon"
+														type="button"
+														className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+														title="Duplicate Row"
+														onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}>
+														<Copy className="w-4 h-4" />
+													</Button>
+												</div>
+											</>
+										)}
 
 										{/* Fields within the Row */}
 										{row.map((field, fieldIndex) => {
@@ -369,7 +374,7 @@ export default function OrderAttributeMain(props: any) {
 
 											return (
 												<Fragment key={`${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
-													<div className="item flex flex-col space-y-1">
+													<div className="item flex flex-col space-y-1 justify-center">
 														{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 														<div className="field-content">
 															{/* --- Text Input --- */}
@@ -430,29 +435,33 @@ export default function OrderAttributeMain(props: any) {
 																				)}
 																				<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
 																				{/* Delete single checkbox value */}
-																				<button
-																					type="button"
-																					className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
-																					onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
-																					title={`Remove ${v?.value}`}>
-																					<X className="w-3 h-3" />
-																				</button>
+																				{!permission && (
+																					<button
+																						type="button"
+																						className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																						onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																						title={`Remove ${v?.value}`}>
+																						<X className="w-3 h-3" />
+																					</button>
+																				)}
 																			</div>
 																		))}
 																	{/* Button to add more checkbox values */}
-																	<Button
-																		variant="outline"
-																		size="sm"
-																		type="button"
-																		className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
-																		onClick={() => {
-																			setSearch([]);
-																			setLoading(true);
-																			searchAttributeMeta("", field.id); // Use field.id (field definition ID) for search
-																			setOpen(["search", { attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
-																		}}>
-																		<Search className="w-3 h-3 mr-1" /> Add {field.title}
-																	</Button>
+																	{!permission && (
+																		<Button
+																			variant="outline"
+																			size="sm"
+																			type="button"
+																			className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																			onClick={() => {
+																				setSearch([]);
+																				setLoading(true);
+																				searchAttributeMeta("", field.id); // Use field.id (field definition ID) for search
+																				setOpen(["search", { attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																			}}>
+																			<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																		</Button>
+																	)}
 																</div>
 															)}
 														</div>
@@ -474,7 +483,7 @@ export default function OrderAttributeMain(props: any) {
 				))}
 
 				{/* Add Attribute Button */}
-				{availableAttsToAdd.length > 0 && (
+				{availableAttsToAdd.length > 0 && !permission && (
 					<Dialog
 						open={open[0] === "add-attribute"}
 						onOpenChange={(isOpen) => setOpen([isOpen ? "add-attribute" : "", null])}>
@@ -513,87 +522,86 @@ export default function OrderAttributeMain(props: any) {
 
 				{/* Message if no attributes are added */}
 				{/* {attributes.length === 0 && <div className="text-center text-gray-500 dark:text-gray-400 py-4">No attributes added yet.</div>} */}
-
 			</div>
 
-
 			{/* Search Dialog (Remains largely the same, but context passed in 'open' state is simplified) */}
-			<Dialog
-				open={open[0] === "search"}
-				onOpenChange={(isOpen) => {
-					if (!isOpen) {
-						setSearch([]);
-						setLoading(true); // Reset loading state for next open
-						setOpen(["", null]);
-					}
-				}}>
-				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-					<DialogHeader>
-						<DialogTitle>Search in {open[1]?.fieldTitle ?? "Attribute"}</DialogTitle>
-					</DialogHeader>
-					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
-						<Input
-							placeholder="Search or type value..."
-							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-							autoFocus
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									const searchTerm = (e.target as HTMLInputElement)?.value;
-									const fieldId = open[1]?.fieldId; // Get fieldId from dialog data
-									if (fieldId) {
-										searchAttributeMeta(searchTerm, fieldId);
+			{!permission && (
+				<Dialog
+					open={open[0] === "search"}
+					onOpenChange={(isOpen) => {
+						if (!isOpen) {
+							setSearch([]);
+							setLoading(true); // Reset loading state for next open
+							setOpen(["", null]);
+						}
+					}}>
+					<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+						<DialogHeader>
+							<DialogTitle>Search in {open[1]?.fieldTitle ?? "Attribute"}</DialogTitle>
+						</DialogHeader>
+						<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
+							<Input
+								placeholder="Search or type value..."
+								className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+								autoFocus
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										const searchTerm = (e.target as HTMLInputElement)?.value;
+										const fieldId = open[1]?.fieldId; // Get fieldId from dialog data
+										if (fieldId) {
+											searchAttributeMeta(searchTerm, fieldId);
+										}
 									}
-								}
-							}}
-						/>
-						<CommandList>
-							<CommandEmpty>{loading ? "Loading..." : "No results found."}</CommandEmpty>
-							{!loading && search?.length > 0 && (
-								<CommandGroup
-									heading="Search Results"
-									className="max-h-[300px] overflow-y-auto">
-									{search.map((item: any, index: number) => (
-										<CommandItem
-											key={index}
-											value={item?.key} // Use key for potential filtering
-											className="cursor-pointer flex items-center space-x-2"
-											onSelect={() => {
-												// Destructure simplified context from open[1]
-												const { attributeId, rowIndex, fieldIndex, fieldType } = open[1];
-												const selectedMetaItem = {
-													id: item?.id,
-													title: item?.key, // Usually the same as key for meta
-													value: item?.value,
-												};
+								}}
+							/>
+							<CommandList>
+								<CommandEmpty>{loading ? "Loading..." : "No results found."}</CommandEmpty>
+								{!loading && search?.length > 0 && (
+									<CommandGroup
+										heading="Search Results"
+										className="max-h-[300px] overflow-y-auto">
+										{search.map((item: any, index: number) => (
+											<CommandItem
+												key={index}
+												value={item?.key} // Use key for potential filtering
+												className="cursor-pointer flex items-center space-x-2"
+												onSelect={() => {
+													// Destructure simplified context from open[1]
+													const { attributeId, rowIndex, fieldIndex, fieldType } = open[1];
+													const selectedMetaItem = {
+														id: item?.id,
+														title: item?.key, // Usually the same as key for meta
+														value: item?.value,
+													};
 
-												if (fieldType === "checkbox") {
-													handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
-												} else {
-													// select or other types that take a single object
-													handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
-												}
-												setOpen(["", null]); // Close dialog
+													if (fieldType === "checkbox") {
+														handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
+													} else {
+														// select or other types that take a single object
+														handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
+													}
+													setOpen(["", null]); // Close dialog
 
-												// onChange(attributes)
-
-											}}>
-											{/* Show Color Picker */}
-											{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
-												<div
-													className="w-4 h-4 rounded-full border border-gray-300"
-													style={{ backgroundColor: item?.value }}></div>
-											)}
-											<span>
-												{item?.key} ({item?.value})
-											</span>
-										</CommandItem>
-									))}
-								</CommandGroup>
-							)}
-						</CommandList>
-					</Command>
-				</DialogContent>
-			</Dialog>
+													// onChange(attributes)
+												}}>
+												{/* Show Color Picker */}
+												{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
+													<div
+														className="w-4 h-4 rounded-full border border-gray-300"
+														style={{ backgroundColor: item?.value }}></div>
+												)}
+												<span>
+													{item?.key} ({item?.value})
+												</span>
+											</CommandItem>
+										))}
+									</CommandGroup>
+								)}
+							</CommandList>
+						</Command>
+					</DialogContent>
+				</Dialog>
+			)}
 		</div>
 	);
 }

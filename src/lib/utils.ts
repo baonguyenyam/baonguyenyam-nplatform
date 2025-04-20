@@ -183,13 +183,13 @@ export const removeUnderscoreAndDash = (str: string, addons: string) => {
 // checkAllObjectEmpty
 export const checkAllObjectEmpty = (obj: any, key: string) => {
 	// Check in object find key and check value is empty
-	let arrCheck = false
+	let arrCheck = false;
 	if (obj && Array.isArray(obj)) {
 		for (let i = 0; i < obj.length; i++) {
 			if (obj[i]?.value === "" || obj[i]?.value === null || obj[i]?.value === undefined || obj[i]?.value === "[]") {
-				arrCheck = true
+				arrCheck = true;
 			}
 		}
 	}
-	return arrCheck
-}
+	return arrCheck;
+};
