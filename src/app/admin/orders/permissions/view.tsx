@@ -125,18 +125,21 @@ export default function View() {
 									};
 								});
 
-								const _body = {
-									order_permission: data,
-								};
+								const json = JSON.stringify(data);
 
-								// Save to appState
-								dispatch(SET_APP_STATE({ order_permission: data }));
+								const _body = {
+									order_permission: json,
+								};
 
 								const update = await actions.updateAllRecord(_body);
 								if (update?.success !== "success") {
 									toast.error(update.message);
 									return;
 								}
+								toast.success("Order permission updated successfully");
+
+								// Save to appState
+								dispatch(SET_APP_STATE({ order_permission: data }));
 
 							}}>
 							Save Changes

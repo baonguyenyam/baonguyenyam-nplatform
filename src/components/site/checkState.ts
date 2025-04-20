@@ -22,6 +22,7 @@ export default function CheckState() {
 		bill_company_address?: string;
 		bill_company_info?: string;
 		bill_company_phone?: string;
+		order_permission?: string[];
 	};
 	const fetchData = useCallback(async () => {
 		if (state?.pageSize === undefined) {
@@ -39,6 +40,9 @@ export default function CheckState() {
 						bill_company_address: res.data?.find((item: any) => item.key === "bill_company_address")?.value ?? "",
 						bill_company_info: res.data?.find((item: any) => item.key === "bill_company_info")?.value ?? "",
 						bill_company_phone: res.data?.find((item: any) => item.key === "bill_company_phone")?.value ?? "",
+						order_permission: res.data?.find((item: any) => item.key === "order_permission")?.value
+							? JSON.parse(res.data?.find((item: any) => item.key === "order_permission")?.value ?? "[]")
+							: []
 					}),
 				);
 			}
