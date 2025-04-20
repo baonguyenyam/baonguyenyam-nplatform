@@ -514,7 +514,7 @@ export default function OrderAttributeGroup(props: any) {
 									<h3 className="font-semibold mb-0">Additional Information</h3>
 									<p className="text-sm text-muted-foreground">Manage attributes within the selected group.</p>
 								</div> */}
-								{atts?.length > 0 && (
+								{/* {atts?.length > 0 && (
 									<div className="ml-auto flex items-center space-x-2">
 										<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
 										<Button
@@ -525,7 +525,7 @@ export default function OrderAttributeGroup(props: any) {
 											Save Data
 										</Button>
 									</div>
-								)}
+								)} */}
 							</div>
 							{/* Add other group management buttons here if needed (e.g., Rename, Delete Group) */}
 						</div>
@@ -619,15 +619,19 @@ export default function OrderAttributeGroup(props: any) {
 
 															return (
 																<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
-																	<div className="item flex flex-col space-y-1">
+																	<div className="item flex flex-col space-y-1 justify-center">
 																		{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 																		<div className="field-content">
 																			{/* --- Text Input --- */}
 																			{fieldType === "text" && (
 																				<Input
 																					className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
-																					value={field.value || ""} // Controlled component
-																					onChange={(e) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, e.target.value)}
+																					defaultValue={field?.value || ""} // Default value for uncontrolled component
+																					onKeyDown={(e) => {
+																						if (e.key === "Enter") {
+																							handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, (e.target as HTMLInputElement)?.value);
+																						}
+																					}}
 																					placeholder={field.title}
 																				/>
 																			)}
@@ -680,28 +684,33 @@ export default function OrderAttributeGroup(props: any) {
 																								)}
 																								<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
 																								{/* Delete single checkbox value */}
-																								<button
-																									className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
-																									onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
-																									title={`Remove ${v?.value}`}>
-																									<X className="w-3 h-3" />
-																								</button>
+																								{!permission && (
+																									<button
+																										type="button"
+																										className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																										onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																										title={`Remove ${v?.value}`}>
+																										<X className="w-3 h-3" />
+																									</button>
+																								)}
 																							</div>
 																						))}
 																					{/* Button to add more checkbox values */}
-																					<Button
-																						variant="outline"
-																						size="sm"
-																						type="button"
-																						className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
-																						onClick={() => {
-																							setSearch([]);
-																							setLoading(true);
-																							searchAttributeMeta("", field.id);
-																							setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
-																						}}>
-																						<Search className="w-3 h-3 mr-1" /> Add {field.title}
-																					</Button>
+																					{!permission && (
+																						<Button
+																							variant="outline"
+																							size="sm"
+																							type="button"
+																							className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																							onClick={() => {
+																								setSearch([]);
+																								setLoading(true);
+																								searchAttributeMeta("", field.id);
+																								setOpen(["search", { groupId: group.id, attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																							}}>
+																							<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																						</Button>
+																					)}
 																				</div>
 																			)}
 																		</div>

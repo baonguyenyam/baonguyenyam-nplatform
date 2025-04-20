@@ -108,52 +108,74 @@ export default function OrderAttributeMain(props: any) {
 		}
 	};
 
-	const saveAttributeMeta = async () => {
-		if (!hasChanges) return;
+	const saveAttributeMeta = async (attributesToSave?: AttributeInstance[]) => {
+		// Use the provided attributesToSave if available, otherwise use the current state
+		const dataToSave = attributesToSave ?? attributes;
+
+		// If called without specific data (e.g., from the Save button), check for changes.
+		// If called with specific data (after an action), always save.
+		if (!attributesToSave && !hasChanges) {
+			// console.log("Save skipped: No changes detected.");
+			return;
+		}
+
 		const orderId = data?.id;
 		if (!orderId) {
 			toast.error("Order ID is missing.");
 			return;
 		}
-		// Save the flattened attributes array directly
-		const orderData = JSON.stringify(attributes);
+
+		// Ensure dataToSave is an array before stringifying
+		const orderData = JSON.stringify(Array.isArray(dataToSave) ? dataToSave : []);
+
 		try {
 			const res: any = await actions.updateRecord(orderId, { data_main: orderData });
 			if (res.success === "success") {
-				toast.success("Order attributes updated successfully");
-				setSavedAttributes(attributes); // Update saved state on success
+				toast.success("Main attributes updated successfully");
+				// Update saved state with the data that was actually saved
+				setSavedAttributes(dataToSave);
 			} else {
-				toast.error("Failed to update order attributes.");
+				toast.error("Failed to update main attributes.");
 			}
 		} catch (error) {
 			console.error("Save error:", error);
-			toast.error("An error occurred while saving.");
+			toast.error("An error occurred while saving main attributes.");
 		}
 	};
 
 	// --- State Update Handlers (using Immer for immutability) ---
 
 	const handleSelectAttribute = (attributeDefinition: any) => {
+		if (permission) return; // Don't allow changes if read-only
+
 		const newAttributeInstance: AttributeInstance = {
 			title: attributeDefinition.title,
 			id: attributeDefinition.id,
 			children: [], // Initialize with no rows
 		};
-		setAttributes(
-			produce((draft) => {
-				// Prevent adding duplicates
-				if (!draft.some((attr) => attr.id === newAttributeInstance.id)) {
-					draft.push(newAttributeInstance);
-				} else {
-					toast.info(`Attribute "${newAttributeInstance.title}" already added.`);
-				}
-			}),
-		);
-		// onChange(attributes); // Save immediately after adding
-		setOpen(["", null]); // Close dialog
+
+		let attributeAlreadyExists = false;
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			if (!draft.some((attr) => attr.id === newAttributeInstance.id)) {
+				draft.push(newAttributeInstance);
+			} else {
+				toast.info(`Attribute "${newAttributeInstance.title}" already added.`);
+				attributeAlreadyExists = true;
+			}
+		});
+
+		// Only update state and save if the attribute was actually added
+		if (!attributeAlreadyExists) {
+			setAttributes(nextAttributes);
+			saveAttributeMeta(nextAttributes); // Save immediately
+		}
+		setOpen(["", null]); // Close dialog regardless
 	};
 
 	const handleAddAttributeRow = (attributeId: string) => {
+		if (permission) return;
+
 		const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeId);
 		if (!attributeDefinition || !attributeDefinition.children) {
 			toast.error("Attribute definition not found or has no fields.");
@@ -167,114 +189,140 @@ export default function OrderAttributeMain(props: any) {
 			value: child.type === "checkbox" ? [] : "", // Initialize based on type
 		}));
 
-		setAttributes(
-			produce((draft) => {
-				const attribute = draft.find((attr) => attr.id === attributeId);
-				if (attribute) {
-					attribute.children.push(newRow);
-				}
-			}),
-		);
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const attribute = draft.find((attr) => attr.id === attributeId);
+			if (attribute) {
+				attribute.children.push(newRow);
+			}
+		});
 
-		// onChange(attributes); // Save immediately after adding
+		// Update state
+		setAttributes(nextAttributes);
+		// Save the calculated next state
+		saveAttributeMeta(nextAttributes);
 	};
 
 	const handleDuplicateAttributeRow = (attributeId: string, rowIndex: number) => {
-		setAttributes(
-			produce((draft) => {
-				const attribute = draft.find((attr) => attr.id === attributeId);
-				if (attribute && attribute.children[rowIndex]) {
-					// Deep copy the row to duplicate
-					const rowToDuplicate = JSON.parse(JSON.stringify(attribute.children[rowIndex]));
-					attribute.children.splice(rowIndex + 1, 0, rowToDuplicate); // Insert duplicate below original
-				}
-			}),
-		);
+		if (permission) return;
 
-		// onChange(attributes); // Save immediately after adding
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const attribute = draft.find((attr) => attr.id === attributeId);
+			if (attribute && attribute.children[rowIndex]) {
+				// Deep copy the row to duplicate
+				const rowToDuplicate = JSON.parse(JSON.stringify(attribute.children[rowIndex]));
+				attribute.children.splice(rowIndex + 1, 0, rowToDuplicate); // Insert duplicate below original
+			}
+		});
+
+		// Update state
+		setAttributes(nextAttributes);
+		// Save the calculated next state
+		saveAttributeMeta(nextAttributes);
 	};
 
 	const handleDeleteAttributeRow = (attributeId: string, rowIndex: number) => {
+		if (permission) return;
 		if (!confirm("Are you sure you want to remove this row?")) return;
 
-		setAttributes(
-			produce((draft) => {
-				const attribute = draft.find((attr) => attr.id === attributeId);
-				if (attribute) {
-					attribute.children.splice(rowIndex, 1);
-				}
-			}),
-		);
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const attribute = draft.find((attr) => attr.id === attributeId);
+			if (attribute) {
+				attribute.children.splice(rowIndex, 1);
+			}
+		});
 
-		// onChange(attributes); // Save immediately after adding
+		// Update state
+		setAttributes(nextAttributes);
+		// Save the calculated next state
+		saveAttributeMeta(nextAttributes);
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
+		if (permission) return;
 		const attributeToDelete = attributes.find((a) => a.id === attributeId);
 		if (!confirm(`Are you sure you want to remove the entire "${attributeToDelete?.title}" attribute section?`)) return;
 
-		setAttributes(
-			produce((draft) => {
-				const index = draft.findIndex((attr) => attr.id === attributeId);
-				if (index !== -1) {
-					draft.splice(index, 1);
-				}
-			}),
-		);
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const index = draft.findIndex((attr) => attr.id === attributeId);
+			if (index !== -1) {
+				draft.splice(index, 1);
+			}
+		});
 
-		// onChange(attributes); // Save immediately after adding
+		// Update state
+		setAttributes(nextAttributes);
+		// Save the calculated next state
+		saveAttributeMeta(nextAttributes);
 	};
 
 	const handleUpdateFieldValue = (attributeId: string, rowIndex: number, fieldIndex: number, newValue: any) => {
-		setAttributes(
-			produce((draft) => {
-				const attribute = draft.find((attr) => attr.id === attributeId);
-				if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
-					attribute.children[rowIndex][fieldIndex].value = newValue;
-				}
-			}),
-		);
+		if (permission) return;
 
-		// onChange(attributes); // Save immediately after adding
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const attribute = draft.find((attr) => attr.id === attributeId);
+			if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
+				attribute.children[rowIndex][fieldIndex].value = newValue;
+			}
+		});
+
+		// Update state
+		setAttributes(nextAttributes);
+		// Save the calculated next state
+		saveAttributeMeta(nextAttributes);
 	};
 
 	const handleUpdateCheckboxValue = (attributeId: string, rowIndex: number, fieldIndex: number, selectedMetaItem: any, add: boolean) => {
-		setAttributes(
-			produce((draft) => {
-				const attribute = draft.find((attr) => attr.id === attributeId);
-				if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
-					const field = attribute.children[rowIndex][fieldIndex];
-					if (!Array.isArray(field.value)) {
-						field.value = []; // Initialize if not an array
-					}
-					const existingIndex = field.value.findIndex((v: any) => v?.id === selectedMetaItem?.id);
+		if (permission) return;
 
-					if (add) {
-						if (existingIndex === -1) {
-							field.value.push(selectedMetaItem);
-						} else {
-							toast.error("Already selected.");
-						}
+		let showToast = false; // Flag to prevent saving if toast is shown
+
+		// Calculate next state
+		const nextAttributes = produce(attributes, (draft) => {
+			const attribute = draft.find((attr) => attr.id === attributeId);
+			if (attribute && attribute.children[rowIndex] && attribute.children[rowIndex][fieldIndex]) {
+				const field = attribute.children[rowIndex][fieldIndex];
+				if (!Array.isArray(field.value)) {
+					field.value = []; // Initialize if not an array
+				}
+				const existingIndex = field.value.findIndex((v: any) => v?.id === selectedMetaItem?.id);
+
+				if (add) {
+					if (existingIndex === -1) {
+						field.value.push(selectedMetaItem);
 					} else {
-						// Remove
-						if (existingIndex !== -1) {
-							field.value.splice(existingIndex, 1);
-						} else {
-							toast.error("Item not found to remove.");
-						}
+						toast.error("Already selected.");
+						showToast = true; // Mark that toast was shown
+					}
+				} else {
+					// Remove
+					if (existingIndex !== -1) {
+						field.value.splice(existingIndex, 1);
+					} else {
+						toast.error("Item not found to remove.");
+						showToast = true; // Mark that toast was shown
 					}
 				}
-			}),
-		);
+			}
+		});
 
-		// onChange(attributes); // Save immediately after adding
+		// Only update state and save if no toast was shown (meaning a change occurred)
+		if (!showToast) {
+			setAttributes(nextAttributes);
+			saveAttributeMeta(nextAttributes);
+		}
 	};
 
 	const handleDeleteCheckboxSingleValue = (attributeId: string, rowIndex: number, fieldIndex: number, valueToRemove: any) => {
+		if (permission) return;
 		if (!confirm("Are you sure you want to remove this item?")) return;
-		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false); // Use the existing logic to remove
-
-		// onChange(attributes); // Save immediately after adding
+		// Use the existing logic to remove, which now handles saving internally
+		handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, valueToRemove, false);
+		// No need to call saveAttributeMeta here again
 	};
 
 	// --- Render ---
@@ -282,16 +330,16 @@ export default function OrderAttributeMain(props: any) {
 	return (
 		<div className="block w-full">
 			{/* Save Button Area */}
-			<div className="flex items-center justify-end space-x-2 sticky top-0 bg-white dark:bg-gray-950 z-10 mb-3">
+			{/* <div className="flex items-center justify-end space-x-2 sticky top-0 bg-white dark:bg-gray-950 z-10 mb-3">
 				<Info className={cn("w-4 h-4 text-orange-500 transition-opacity", hasChanges ? "opacity-100" : "opacity-0")} />
 				<Button
 					type="button"
 					disabled={!hasChanges}
 					className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 px-2 h-8 bg-gray-200 font-medium hover:text-black text-black border-2 border-gray-400 rounded-lg"
-					onClick={saveAttributeMeta}>
+					onClick={() => saveAttributeMeta()}>
 					Save Attributes
 				</Button>
-			</div>
+			</div> */}
 
 			{/* Header */}
 
@@ -381,8 +429,13 @@ export default function OrderAttributeMain(props: any) {
 															{fieldType === "text" && (
 																<Input
 																	className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
-																	value={field.value || ""} // Controlled component
-																	onChange={(e) => handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, e.target.value)}
+																	defaultValue={field?.value || ""} // Default value for uncontrolled component
+																	onKeyDown={(e) => {
+																		if (e.key === "Enter") {
+																			const target = e.target as HTMLInputElement;
+																			handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
+																		}
+																	}}
 																	placeholder={field.title}
 																/>
 															)}
