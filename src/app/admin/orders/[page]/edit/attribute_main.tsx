@@ -397,8 +397,12 @@ export default function OrderAttributeMain(props: any) {
 
 								<thead>
 									<tr className="bg-gray-100 dark:bg-gray-800">
-										<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4"></th>
-										<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4">D</th>
+										{(!permission && longestRowForHeader?.length) && (
+											<>
+												<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4"></th>
+												<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4">D</th>
+											</>
+										)}
 										{longestRowForHeader?.map((headerField) => (
 											<th
 												key={headerField.id}
