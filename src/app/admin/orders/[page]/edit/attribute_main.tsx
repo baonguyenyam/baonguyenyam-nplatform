@@ -473,7 +473,7 @@ export default function OrderAttributeMain(props: any) {
 																					handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
 																				}
 																			}}
-																			placeholder={field.title}
+																		// placeholder={field.title}
 																		/>
 																	)}
 
@@ -619,83 +619,81 @@ export default function OrderAttributeMain(props: any) {
 			</div>
 
 			{/* Search Dialog (Remains largely the same, but context passed in 'open' state is simplified) */}
-			{!permission && (
-				<Dialog
-					open={open[0] === "search"}
-					onOpenChange={(isOpen) => {
-						if (!isOpen) {
-							setSearch([]);
-							setLoading(true); // Reset loading state for next open
-							setOpen(["", null]);
-						}
-					}}>
-					<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
-						<DialogHeader>
-							<DialogTitle>Search in {open[1]?.fieldTitle ?? "Attribute"}</DialogTitle>
-						</DialogHeader>
-						<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
-							<Input
-								placeholder="Search or type value..."
-								className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-								autoFocus
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										const searchTerm = (e.target as HTMLInputElement)?.value;
-										const fieldId = open[1]?.fieldId; // Get fieldId from dialog data
-										if (fieldId) {
-											searchAttributeMeta(searchTerm, fieldId);
-										}
+			<Dialog
+				open={open[0] === "search"}
+				onOpenChange={(isOpen) => {
+					if (!isOpen) {
+						setSearch([]);
+						setLoading(true); // Reset loading state for next open
+						setOpen(["", null]);
+					}
+				}}>
+				<DialogContent className="w-full sm:max-w-[450px] dark:bg-gray-800 dark:border-gray-700">
+					<DialogHeader>
+						<DialogTitle>Search in {open[1]?.fieldTitle ?? "Attribute"}</DialogTitle>
+					</DialogHeader>
+					<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
+						<Input
+							placeholder="Search or type value..."
+							className="border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+							autoFocus
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									const searchTerm = (e.target as HTMLInputElement)?.value;
+									const fieldId = open[1]?.fieldId; // Get fieldId from dialog data
+									if (fieldId) {
+										searchAttributeMeta(searchTerm, fieldId);
 									}
-								}}
-							/>
-							<CommandList>
-								<CommandEmpty>{loading ? "Loading..." : "No results found."}</CommandEmpty>
-								{!loading && search?.length > 0 && (
-									<CommandGroup
-										heading="Search Results"
-										className="max-h-[300px] overflow-y-auto">
-										{search.map((item: any, index: number) => (
-											<CommandItem
-												key={index}
-												value={item?.key} // Use key for potential filtering
-												className="cursor-pointer flex items-center space-x-2"
-												onSelect={() => {
-													// Destructure simplified context from open[1]
-													const { attributeId, rowIndex, fieldIndex, fieldType } = open[1];
-													const selectedMetaItem = {
-														id: item?.id,
-														title: item?.key, // Usually the same as key for meta
-														value: item?.value,
-													};
+								}
+							}}
+						/>
+						<CommandList>
+							<CommandEmpty>{loading ? "Loading..." : "No results found."}</CommandEmpty>
+							{!loading && search?.length > 0 && (
+								<CommandGroup
+									heading="Search Results"
+									className="max-h-[300px] overflow-y-auto">
+									{search.map((item: any, index: number) => (
+										<CommandItem
+											key={index}
+											value={item?.key} // Use key for potential filtering
+											className="cursor-pointer flex items-center space-x-2"
+											onSelect={() => {
+												// Destructure simplified context from open[1]
+												const { attributeId, rowIndex, fieldIndex, fieldType } = open[1];
+												const selectedMetaItem = {
+													id: item?.id,
+													title: item?.key, // Usually the same as key for meta
+													value: item?.value,
+												};
 
-													if (fieldType === "checkbox") {
-														handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
-													} else {
-														// select or other types that take a single object
-														handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
-													}
-													setOpen(["", null]); // Close dialog
+												if (fieldType === "checkbox") {
+													handleUpdateCheckboxValue(attributeId, rowIndex, fieldIndex, selectedMetaItem, true); // Add value
+												} else {
+													// select or other types that take a single object
+													handleUpdateFieldValue(attributeId, rowIndex, fieldIndex, selectedMetaItem);
+												}
+												setOpen(["", null]); // Close dialog
 
-													// onChange(attributes)
-												}}>
-												{/* Show Color Picker */}
-												{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
-													<div
-														className="w-4 h-4 rounded-full border border-gray-300"
-														style={{ backgroundColor: item?.value }}></div>
-												)}
-												<span>
-													{item?.key} ({item?.value})
-												</span>
-											</CommandItem>
-										))}
-									</CommandGroup>
-								)}
-							</CommandList>
-						</Command>
-					</DialogContent>
-				</Dialog>
-			)}
+												// onChange(attributes)
+											}}>
+											{/* Show Color Picker */}
+											{checkStringIsTextOrColorHexOrURL(item?.value) === "color" && (
+												<div
+													className="w-4 h-4 rounded-full border border-gray-300"
+													style={{ backgroundColor: item?.value }}></div>
+											)}
+											<span>
+												{item?.key} ({item?.value})
+											</span>
+										</CommandItem>
+									))}
+								</CommandGroup>
+							)}
+						</CommandList>
+					</Command>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

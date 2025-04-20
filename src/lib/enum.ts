@@ -156,3 +156,30 @@ export const enumFieldType = [
 		value: "checkbox",
 	},
 ];
+
+export const enumOrderType = [
+	{
+		label: "General",
+		value: "general",
+	},
+	{
+		label: "Shipping",
+		value: "shipping",
+	},
+	{
+		label: "Payment",
+		value: "payment",
+	},
+	{
+		label: "Product",
+		value: "product",
+	},
+	{
+		label: "Package",
+		value: "package",
+	},
+	{
+		label: "Shipped",
+		value: "shipped",
+	},
+];
