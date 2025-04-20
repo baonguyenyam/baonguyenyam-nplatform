@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { produce } from "immer"; // Import immer
+// import { Lock } from "lucide-react"; // Lock icon seems unused, can be removed if not needed
 import { toast } from "sonner";
 
 import AppLoading from "@/components/AppLoading";
@@ -14,15 +14,10 @@ import { setAttribute } from "@/store/attributeSlice";
 
 import * as actions from "./actions";
 
-// Define a clearer type for permission structure
+// Define a type for the permission structure for better type safety
 type PermissionItem = {
-	key: string;
-	checked: boolean;
-};
-
-type AttributePermission = {
-	id: number; // Corresponds to child.id
-	permission: PermissionItem[];
+	id: number;
+	permission: Array<{ key: string; checked: boolean }>;
 };
 
 export default function View() {
@@ -32,148 +27,157 @@ export default function View() {
 	const att_orders = useMemo(() => memoriezAttrs?.filter((item: any) => item.mapto === "order"), [memoriezAttrs]);
 	const memoriezPermission = useAppSelector((state) => (state.appState && "order_permission" in state.appState ? state.appState.order_permission : []));
 
-	// Local state to manage UI changes
-	const [localPermissions, setLocalPermissions] = useState<AttributePermission[]>([]);
-	// State to track if changes have been made
-	const [hasChanges, setHasChanges] = useState(false);
+	// Use the PermissionItem type for better state management
+	const [saveData, setSaveData] = useState<PermissionItem[]>([]);
 
-	// Initialize local state when Redux state changes or component mounts
+	// Initialize saveData when component mounts or permissions change
 	useEffect(() => {
-		// Ensure memoriezPermission is treated as the correct type
-		const initialPermissions = (memoriezPermission || []) as AttributePermission[];
-		setLocalPermissions(initialPermissions);
-		setHasChanges(false); // Reset changes flag when data reloads
-	}, [memoriezPermission]);
+		// Initialize or update saveData based on the current permissions from the store
+		const initialSaveData = att_orders.flatMap((item: any) =>
+			item.children.map((child: any) => {
+				// Find existing permissions for this child ID from the Redux store
+				const existingPermission = (memoriezPermission as PermissionItem[])?.find(p => p.id === child.id);
+				return {
+					id: child.id,
+					permission: enumOrderType.map((type) => {
+						// Check if there's an existing permission setting for this type, otherwise default to false
+						const perm = existingPermission?.permission.find(p => p.key === type.value);
+						return {
+							key: type.value,
+							checked: perm ? perm.checked : false, // Default to false if not found
+						};
+					}),
+				};
+			})
+		);
+		setSaveData(initialSaveData);
+	}, [att_orders, memoriezPermission]); // Rerun when attributes or stored permissions change
+
 
 	const fetchData = useCallback(async () => {
-		setLoading(true); // Start loading
-		const all = await actions.getAll({ min: true, published: true });
-		if (all?.data) {
-			dispatch(setAttribute(all?.data));
-			// Fetch existing permissions from app state after attributes are loaded
-			// Note: This assumes app state might already have permissions or they are fetched elsewhere.
-			// If permissions need to be fetched specifically, add that call here.
-		} else {
-			toast.error("Failed to load attributes.");
+		setLoading(true); // Set loading true at the start
+		try {
+			const all = await actions.getAll({ min: true, published: true });
+			if (all?.data) {
+				dispatch(setAttribute(all?.data));
+			}
+			// Fetch initial permissions if needed or rely on useEffect initialization
+			// Example: Fetch app settings which might contain order_permission
+			// const appSettings = await someActionToGetAppSettings();
+			// if (appSettings?.order_permission) {
+			//   dispatch(SET_APP_STATE({ order_permission: JSON.parse(appSettings.order_permission) }));
+			// }
+		} catch (error) {
+			console.error("Failed to fetch data:", error);
+			toast.error("Failed to load initial data.");
+		} finally {
+			setLoading(false);
 		}
-		setLoading(false); // End loading
 	}, [dispatch]);
 
-	// Function to handle switch changes
-	const handlePermissionChange = (childId: number, permissionKey: string, isChecked: boolean) => {
-		setLocalPermissions(
-			produce((draft) => {
-				let attributePerm = draft.find((item) => item.id === childId);
+	// Handler for Switch changes
+	const handleCheckedChange = (childId: number, permissionKey: string, checked: boolean) => {
+		setSaveData(prevSaveData => {
+			// Create a deep copy to avoid direct state mutation
+			const newData = JSON.parse(JSON.stringify(prevSaveData));
+			// Find the item with the matching childId
+			const itemIndex = newData.findIndex((item: PermissionItem) => item.id === childId);
 
-				// If the attribute child doesn't exist in permissions yet, create it
-				if (!attributePerm) {
-					attributePerm = {
-						id: childId,
-						permission: enumOrderType.map((type) => ({
-							key: type.value,
-							// Initialize based on current change or default to false
-							checked: type.value === permissionKey ? isChecked : false,
-						})),
-					};
-					draft.push(attributePerm);
+			if (itemIndex !== -1) {
+				// Find the specific permission within that item
+				const permissionIndex = newData[itemIndex].permission.findIndex((perm: { key: string }) => perm.key === permissionKey);
+				if (permissionIndex !== -1) {
+					// Update the checked status
+					newData[itemIndex].permission[permissionIndex].checked = checked;
 				} else {
-					// If the attribute child exists, find the specific permission key
-					let permItem = attributePerm.permission.find((perm) => perm.key === permissionKey);
-					// If the permission key doesn't exist (shouldn't happen with enumOrderType), add it
-					if (!permItem) {
-						permItem = { key: permissionKey, checked: isChecked };
-						attributePerm.permission.push(permItem);
-					} else {
-						// Update the existing permission key's checked status
-						permItem.checked = isChecked;
-					}
+					// If permission key doesn't exist (shouldn't happen with proper init), add it
+					newData[itemIndex].permission.push({ key: permissionKey, checked: checked });
 				}
-			}),
-		);
-		setHasChanges(true); // Mark that changes have been made
+			} else {
+				// If childId doesn't exist (shouldn't happen with proper init), add it
+				newData.push({
+					id: childId,
+					permission: [{ key: permissionKey, checked: checked }]
+				});
+			}
+			return newData; // Return the updated array
+		});
 	};
 
-	// Function to get the checked state from localPermissions
+	// Function to get the checked state from saveData
 	const getCheckedState = (childId: number, permissionKey: string): boolean => {
-		const attributePerm = localPermissions.find((item) => item.id === childId);
-		if (!attributePerm) return false; // Default to false if attribute child not found
-		const permItem = attributePerm.permission.find((perm) => perm.key === permissionKey);
-		return permItem?.checked ?? false; // Default to false if permission key not found
+		const item = saveData.find(item => item.id === childId);
+		const permission = item?.permission.find(perm => perm.key === permissionKey);
+		return permission ? permission.checked : false; // Default to false if not found
 	};
+
 
 	const template = (items: any[]) => {
-		// Use localPermissions for rendering checked state
+		// Check if items is valid before mapping
+		if (!items || items.length === 0) {
+			return <p>No attribute groups found for orders.</p>;
+		}
+
 		return (
 			<div className="w-full overflow-auto">
-				{items && items.length > 0 ? (
-					items.map((item: any) => (
-						<div
-							key={item.id}
-							className="mb-4 text-sm gap-4">
-							<div className="mb-4">
-								<h3 className="text-xl font-semibold mb-2 flex items-center gap-2 border-b pb-2 mb-5">
-									<span>{item.title}</span>
-								</h3>
-								<div className="flex flex-row flex-wrap items-start gap-10"> {/* Added flex-wrap and items-start */}
+				{items.map((item: any) => (
+					<div
+						key={item.id}
+						className="text-sm gap-4 mb-10">
+						<div className="">
+							<h3 className="text-xl font-semibold mb-2 flex items-center gap-2 border-b pb-2 mb-5">
+								<span>{item.title}</span>
+							</h3>
+							{/* Check if children exist and have items */}
+							{item.children && item.children.length > 0 ? (
+								<div className="flex flex-row items-center gap-10 flex-wrap"> {/* Added flex-wrap */}
 									{item.children.map((child: any) => (
-										<div
-											key={child.id}
-											className="min-w-[150px]"> {/* Added min-width */}
-											<div className="flex items-center gap-2 uppercase text-xs font-semibold mb-2"> {/* Adjusted styling */}
-												<strong>{child.title}</strong>
+										<div key={child.id} className=""> {/* Added margin-bottom */}
+											<div
+												className="flex items-center gap-2 uppercase text-xs font-bold"> {/* Made title bold */}
+												{child.title}
 											</div>
-											<div className="flex flex-col space-y-1">
+											<div className="mt-2 flex flex-col space-y-1">
 												{enumOrderType.map((type) => (
 													<div
-														className="flex items-center gap-2 text-xs"
-														key={type.value}>
+														className="flex items-center gap-2 text-xs" // Ensure items are aligned
+														key={`${child.id}-${type.value}`}>
 														<Switch
-															className="" // Removed mr-2, gap-2 handles spacing
+															// className="mr-2" // Removed margin, using gap in parent instead
 															id={`${child.id}-${type.value}`}
 															name={`${child.id}-${type.value}`}
-															// Read checked state from localPermissions
+															// Use getCheckedState to ensure UI reflects saveData
 															checked={getCheckedState(child.id, type.value)}
-															// Update localPermissions on change
+															// No need for defaultChecked if using controlled 'checked'
 															onCheckedChange={(checked) => {
-																handlePermissionChange(child.id, type.value, checked);
+																handleCheckedChange(child.id, type.value, checked);
 															}}
 														/>
-														<label
-															htmlFor={`${child.id}-${type.value}`}
-															className="cursor-pointer"> {/* Added cursor-pointer */}
-															{type.label}
-														</label>
+														<label htmlFor={`${child.id}-${type.value}`}>{type.label}</label>
 													</div>
 												))}
 											</div>
 										</div>
 									))}
 								</div>
-							</div>
+							) : (
+								<p className="text-xs text-gray-500">No attributes in this group.</p> // Handle empty children
+							)}
 						</div>
-					))
-				) : (
-					<p>No attributes found for orders.</p> // Changed message slightly
-				)}
+					</div>
+				))}
 			</div>
 		);
 	};
+
 
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
-	// Save handler
 	const handleSaveChanges = async () => {
-		setLoading(true); // Indicate saving process
-
-		// Construct the final data structure using localPermissions
-		// We only need to save the localPermissions array directly as it holds the relevant structure.
-		const dataToSave = localPermissions;
-
-		console.log("Saving Data:", dataToSave);
-
-		const json = JSON.stringify(dataToSave);
+		// Use the current saveData state directly
+		const json = JSON.stringify(saveData);
 		const _body = {
 			order_permission: json,
 		};
@@ -182,17 +186,15 @@ export default function View() {
 			const update = await actions.updateAllRecord(_body);
 			if (update?.success !== "success") {
 				toast.error(update.message || "Failed to update permissions.");
-			} else {
-				toast.success("Order permissions updated successfully");
-				// Save the updated permissions to Redux appState
-				dispatch(SET_APP_STATE({ order_permission: dataToSave }));
-				setHasChanges(false); // Reset changes flag after successful save
+				return;
 			}
+			toast.success("Order permission updated successfully");
+
+			// Save the updated permissions to the global appState
+			dispatch(SET_APP_STATE({ order_permission: saveData }));
 		} catch (error) {
-			console.error("Save error:", error);
-			toast.error("An error occurred while saving permissions.");
-		} finally {
-			setLoading(false); // Finish loading/saving indicator
+			console.error("Failed to save changes:", error);
+			toast.error("An error occurred while saving changes.");
 		}
 	};
 
@@ -200,15 +202,13 @@ export default function View() {
 		<>
 			{loading && <AppLoading />}
 			{!loading && (
-				<div className="flex flex-col my-10">
+				<div className="flex flex-col mt-10">
 					{template(att_orders)}
 					<div className="flex mt-6"> {/* Added margin-top */}
 						<Button
-							className="px-4 py-2 inline-flex"
-							onClick={handleSaveChanges}
-							disabled={!hasChanges || loading} // Disable if no changes or already saving
-						>
-							{loading ? "Saving..." : "Save Changes"}
+							className="px-4 py-2 inline-flex" // Removed mt-4 as added to parent div
+							onClick={handleSaveChanges}>
+							Save Changes
 						</Button>
 					</div>
 				</div>
