@@ -615,7 +615,6 @@ export default function OrderAttributeGroup(props: any) {
 														// Find the definition to determine column count and field types
 														const attributeDefinition = atts.find((att: any) => att.id === attributeInstance.id);
 														const colCount = attributeDefinition?.children?.length ?? 1;
-
 														return (
 															<tr
 																key={`${group.id}-${attributeInstance.id}-row-${rowIndex}`}
@@ -655,9 +654,14 @@ export default function OrderAttributeGroup(props: any) {
 																	const fieldDefinition = attributeDefinition?.children?.[fieldIndex];
 																	const fieldType = fieldDefinition?.type ?? "text"; // Default to text
 
+																	const getFParentInstanceId = attributeInstance.id; // Use attribute instance ID
+																	const getFieldId = fieldDefinition?.id ?? field.id; // Use field definition ID if available
+																	// Find in orderPermission
+																	const orderPermissionItem = orderPermission?.find((item: any) => item.id === Number(getFParentInstanceId))?.children?.find((item: any) => item.id === Number(getFieldId))?.permission.find((item: any) => item.key === tab)?.checked ?? true
+
 																	return (
 																		<Fragment key={`${group.id}-${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
-																			<td className="p-2">
+																			<td className={`p-2 ${orderPermissionItem ? "cursor-pointer" : "cursor-not-allowed disabled"}`}>
 																				{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
 																				<div className="field-content">
 																					{/* --- Text Input --- */}
@@ -665,6 +669,7 @@ export default function OrderAttributeGroup(props: any) {
 																						<Input
 																							className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
 																							defaultValue={field?.value || ""} // Default value for uncontrolled component
+																							disabled={!orderPermissionItem} // Disable if permission is not granted
 																							onKeyDown={(e) => {
 																								if (e.key === "Enter") {
 																									handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, (e.target as HTMLInputElement)?.value);
@@ -681,6 +686,7 @@ export default function OrderAttributeGroup(props: any) {
 																							type="button"
 																							size="sm"
 																							className="w-full justify-start font-normal h-8 text-sm border-0 shadow-none cursor-pointer" // Adjusted size
+																							disabled={!orderPermissionItem} // Disable if permission is not granted
 																							onClick={() => {
 																								setSearch([]);
 																								setLoading(true);
@@ -740,6 +746,7 @@ export default function OrderAttributeGroup(props: any) {
 																									size="sm"
 																									type="button"
 																									className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																									disabled={!orderPermissionItem} // Disable if permission is not granted
 																									onClick={() => {
 																										setSearch([]);
 																										setLoading(true);

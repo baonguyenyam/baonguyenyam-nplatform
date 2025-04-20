@@ -459,7 +459,6 @@ export default function OrderAttributeMain(props: any) {
 													const getFieldId = fieldDefinition?.id ?? field.id; // Use field definition ID if available
 													// Find in orderPermission
 													const orderPermissionItem = orderPermission?.find((item: any) => item.id === Number(getFParentInstanceId))?.children?.find((item: any) => item.id === Number(getFieldId))?.permission.find((item: any) => item.key === tab)?.checked ?? true
-													console.log("orderPermissionItem");
 
 													return (
 														<Fragment key={`${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
