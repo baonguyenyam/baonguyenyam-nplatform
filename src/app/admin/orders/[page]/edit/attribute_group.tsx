@@ -36,7 +36,7 @@ const generateId = () => `group_${Date.now()}_${Math.random().toString(36).subst
 // Helper to generate unique IDs (replace with a more robust solution if needed)
 
 export default function OrderAttributeGroup(props: any) {
-	const { data, permission } = props;
+	const { data, permission, orderPermission } = props;
 	const memoriez = useAppSelector((state) => state.attributeState.data);
 	const atts = useMemo(() => {
 		return memoriez.filter((item: any) => item?.mapto === "order");

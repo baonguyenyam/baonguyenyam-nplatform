@@ -106,6 +106,11 @@ export default function FormEdit(props: any) {
 	const categories = useMemo(() => {
 		return memoriez.filter((item: any) => item.type === "order");
 	}, [memoriez]);
+	const memoriezPermission = useAppSelector((state) => (state.appState && 'order_permission' in state.appState ? state.appState.order_permission : []));
+	const orderPermission = useMemo(() => {
+		return memoriezPermission
+	}, [memoriezPermission]);
+
 	const [users, setUsers] = useState<any>([]);
 	const [customers, setCustomers] = useState<any>([]);
 	const [vendors, setVendors] = useState<any>([]);
@@ -511,8 +516,8 @@ export default function FormEdit(props: any) {
 											)}
 										/>
 									</div>
-									<OrderAttributeMain data={data} permission={true} />
-									<OrderAttributeGroup data={data} permission={true} />
+									<OrderAttributeMain data={data} permission={true} orderPermission={orderPermission} />
+									<OrderAttributeGroup data={data} permission={true} orderPermission={orderPermission} />
 
 								</TabsContent>
 

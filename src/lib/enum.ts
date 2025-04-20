@@ -159,10 +159,6 @@ export const enumFieldType = [
 
 export const enumOrderType = [
 	{
-		label: "General",
-		value: "general",
-	},
-	{
 		label: "Shipping",
 		value: "shipping",
 	},

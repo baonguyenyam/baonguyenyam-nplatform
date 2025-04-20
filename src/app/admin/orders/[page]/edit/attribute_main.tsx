@@ -25,7 +25,7 @@ interface AttributeInstance {
 }
 
 export default function OrderAttributeMain(props: any) {
-	const { data, onChange, permission, setkey } = props; // Order data containing the saved attributes structure
+	const { data, onChange, permission, setkey, orderPermission } = props; // Order data containing the saved attributes structure
 	const memoriez = useAppSelector((state) => state.attributeState.data); // All available attribute definitions
 
 	// Filter available attribute definitions for 'order' type
