@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Lock } from "lucide-react";
 import { toast } from "sonner";
 
 import AppLoading from "@/components/AppLoading";
@@ -23,8 +22,6 @@ export default function View() {
 	const orderPermission = useMemo(() => {
 		return memoriezPermission as Array<{ id: number; permission: Array<{ key: string; checked: boolean }> }>;
 	}, [memoriezPermission]);
-
-	const [saveData, setSaveData] = useState<any>([]);
 
 	const fetchData = useCallback(async () => {
 		const all = await actions.getAll({ min: true, published: true });
@@ -64,8 +61,6 @@ export default function View() {
 																className="mr-2"
 																id={`${child.id}-${type.value}`}
 																name={`${child.id}-${type.value}`}
-																checked={orderPermission?.find((item) => item.id === child.id)?.permission?.find((perm) => perm.key === type.value)?.checked}
-																defaultChecked={orderPermission?.find((item) => item.id === child.id)?.permission?.find((perm) => perm.key === type.value)?.checked}
 																onCheckedChange={(checked) => {
 																	///
 																}}
@@ -74,8 +69,6 @@ export default function View() {
 																type="checkbox"
 																id={`${child.id}-${type.value}`}
 																name={`${child.id}-${type.value}`}
-																// checked={orderPermission?.find((item) => item.id === child.id)?.permission?.find((perm) => perm.key === type.value)?.checked}
-																defaultChecked={orderPermission?.find((item) => item.id === child.id)?.permission?.find((perm) => perm.key === type.value)?.checked}
 															/>
 															<label htmlFor={`${child.id}-${type.value}`}>{type.label}</label>
 														</div>
