@@ -134,6 +134,19 @@ export const SettingSeed = async () => {
 			},
 		});
 	}
+	const order_permission = await prisma.setting.findFirst({
+		where: {
+			key: "order_permission",
+		},
+	});
+	if (!order_permission) {
+		await prisma.setting.create({
+			data: {
+				key: "order_permission",
+				value: "[]",
+			},
+		});
+	}
 
 	// image
 	const setting_file = await prisma.setting.findFirst({

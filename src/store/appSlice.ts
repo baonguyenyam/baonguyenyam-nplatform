@@ -12,6 +12,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // 	"bill_company_address": String,
 // 	"bill_company_info": String,
 // 	"bill_company_phone": String,
+// 	"order_permission": ObjectArray,
 // }
 
 const initialState = {}
