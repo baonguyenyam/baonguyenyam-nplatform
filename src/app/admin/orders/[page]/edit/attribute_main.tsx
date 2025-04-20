@@ -40,6 +40,22 @@ export default function OrderAttributeMain(props: any) {
 	const [search, setSearch] = useState<any>([]); // Search results for select/checkbox fields
 	const [loading, setLoading] = useState(true); // Loading state for search dialog
 
+	// Helper to find the row with the most columns (fields) for header generation
+	const findLongestRow = (rows: AttributeItem[][]): AttributeItem[] | null => {
+		if (!Array.isArray(rows) || rows.length === 0) {
+			return null;
+		}
+		let longestLength = 0;
+		let longestRow: AttributeItem[] | null = null;
+		rows.forEach((row) => {
+			if (Array.isArray(row) && row.length > longestLength) {
+				longestLength = row.length;
+				longestRow = row;
+			}
+		});
+		return longestRow;
+	};
+
 	// --- Data Fetching & Initialization ---
 	useEffect(() => {
 		let initialAttributes: AttributeInstance[] = [];
@@ -131,7 +147,7 @@ export default function OrderAttributeMain(props: any) {
 		try {
 			const res: any = await actions.updateRecord(orderId, { data_main: orderData });
 			if (res.success === "success") {
-				toast.success("Main attributes updated successfully");
+				// toast.success("Main attributes updated successfully");
 				// Update saved state with the data that was actually saved
 				setSavedAttributes(dataToSave);
 			} else {
@@ -344,196 +360,217 @@ export default function OrderAttributeMain(props: any) {
 			{/* Header */}
 
 			{/* Attribute Instances */}
-			<div className="flex flex-col space-y-4 p-10 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800">
-				{attributes?.map((attributeInstance) => (
-					<Fragment key={attributeInstance.id}>
-						{/* Attribute Instance Header */}
-						<div className="flex items-center justify-between group bg-gray-200 px-3 py-2 rounded-lg dark:bg-gray-900 group">
-							<div className="text-base font-semibold">{attributeInstance.title}</div>
-							{!permission && (
-								<>
-									<div
-										className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2 hidden group-hover:flex"
-										onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
-										title={`Remove ${attributeInstance.title} section`}>
-										<X className="w-5 h-5" />
-									</div>
-									<div className="flex items-center space-x-1 ml-auto">
-										{/* Add Row Button */}
+			<div className="flex flex-col space-y-4">
+				{attributes?.map((attributeInstance) => {
+					const longestRowForHeader = findLongestRow(attributeInstance.children);
+					return (
+						<Fragment key={attributeInstance.id}>
+							{/* Attribute Instance Header */}
+							<div className="flex items-center justify-between group">
+								<div className="text-base font-semibold">{attributeInstance.title}</div>
+								{!permission && (
+									<>
 										<div
-											className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
-											onClick={() => handleAddAttributeRow(attributeInstance.id)}
-											title={`Add new row for ${attributeInstance.title}`}>
-											<PlusCircle className="w-6 h-6" />
+											className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer ml-2 hidden group-hover:flex"
+											onClick={() => handleDeleteAttributeInstance(attributeInstance.id)}
+											title={`Remove ${attributeInstance.title} section`}>
+											<X className="w-5 h-5" />
 										</div>
-										{/* Delete Attribute Instance Button */}
-									</div>
-								</>
-							)}
-						</div>
+										<div className="flex items-center space-x-1 ml-auto">
+											{/* Add Row Button */}
+											<div
+												className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white cursor-pointer"
+												onClick={() => handleAddAttributeRow(attributeInstance.id)}
+												title={`Add new row for ${attributeInstance.title}`}>
+												<PlusCircle className="w-6 h-6" />
+											</div>
+											{/* Delete Attribute Instance Button */}
+										</div>
+									</>
+								)}
+							</div>
 
-						{/* Rows (Children) for this Attribute Instance */}
-						<div
-							id={`attr_${attributeInstance.id}`}
-							className="flex flex-col space-y-2">
-							{attributeInstance.children?.map((row, rowIndex) => {
-								// Find the definition to determine column count and field types
-								const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeInstance.id);
-								const colCount = attributeDefinition?.children?.length ?? 1;
+							{/* Rows (Children) for this Attribute Instance */}
+							<table
+								id={`attr_${attributeInstance.id}`}
+								className="w-full border-collapse border border-gray-200 dark:border-gray-700 text-sm">
 
-								return (
-									<div
-										key={`${attributeInstance.id}-row-${rowIndex}`} // Simplified key
-										className={`grid gap-3 border py-2 px-3 rounded-lg border-gray-200 dark:border-gray-600 bg-white dark:bg-transparent relative group ${!permission ? 'px-10' : ''}`} // Adjusted padding
-										style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }} // Use minmax for better responsiveness
-									>
-										{/* Row Actions (Duplicate, Delete) */}
-										{!permission && (
-											<>
-												<div className="absolute right-2 top-2 hidden group-hover:flex flex-col space-y-1">
-													<Button
-														variant="ghost"
-														size="icon"
-														type="button"
-														className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-														title="Delete Row"
-														onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}>
-														<X className="w-4 h-4" />
-													</Button>
-												</div>
-												<div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center space-x-1">
-													<Button
-														variant="ghost"
-														size="icon"
-														type="button"
-														className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-														title="Duplicate Row"
-														onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}>
-														<Copy className="w-4 h-4" />
-													</Button>
-												</div>
-											</>
-										)}
+								<thead>
+									<tr className="bg-gray-100 dark:bg-gray-800">
+										<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4"></th>
+										<th className="p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium w-4">D</th>
+										{longestRowForHeader?.map((headerField) => (
+											<th
+												key={headerField.id}
+												className="text-left p-2 border-b border-r border-gray-200 dark:border-gray-700 last:border-r-0 font-medium">
+												{headerField.title}
+											</th>
+										))}
+									</tr>
+								</thead>
+								<tbody>
 
-										{/* Fields within the Row */}
-										{row.map((field, fieldIndex) => {
-											const fieldDefinition = attributeDefinition?.children?.[fieldIndex];
-											const fieldType = fieldDefinition?.type ?? "text"; // Default to text
+									{attributeInstance.children?.map((row, rowIndex) => {
+										// Find the definition to determine column count and field types
+										const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeInstance.id);
+										const colCount = attributeDefinition?.children?.length ?? 1;
 
-											return (
-												<Fragment key={`${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
-													<div className="item flex flex-col space-y-1 justify-center">
-														{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
-														<div className="field-content">
-															{/* --- Text Input --- */}
-															{fieldType === "text" && (
-																<Input
-																	className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
-																	defaultValue={field?.value || ""} // Default value for uncontrolled component
-																	onKeyDown={(e) => {
-																		if (e.key === "Enter") {
-																			const target = e.target as HTMLInputElement;
-																			handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
-																		}
-																	}}
-																	placeholder={field.title}
-																/>
-															)}
+										return (
+											<tr
+												key={`${attributeInstance.id}-row-${rowIndex}`} // Simplified key
+												className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+											>
+												{/* Row Actions (Duplicate, Delete) */}
+												{!permission && (
+													<>
+														<td className="p-2">
+															<Button
+																variant="ghost"
+																size="icon"
+																type="button"
+																className="w-6 h-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+																title="Delete Row"
+																onClick={() => handleDeleteAttributeRow(attributeInstance.id, rowIndex)}>
+																<X className="w-4 h-4" />
+															</Button>
+														</td>
+														<td className="p-2">
+															<Button
+																variant="ghost"
+																size="icon"
+																type="button"
+																className="w-6 h-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+																title="Duplicate Row"
+																onClick={() => handleDuplicateAttributeRow(attributeInstance.id, rowIndex)}>
+																<Copy className="w-4 h-4" />
+															</Button>
+														</td>
+													</>
+												)}
 
-															{/* --- Select Input --- */}
-															{fieldType === "select" && (
-																<Button
-																	variant="outline"
-																	type="button"
-																	size="sm"
-																	className="w-full justify-start font-normal h-8 text-sm border-0 shadow-none cursor-pointer" // Adjusted size
-																	onClick={() => {
-																		setSearch([]);
-																		setLoading(true);
-																		searchAttributeMeta("", field.id); // Use field.id (field definition ID) for search
-																		// Store necessary info to update the correct field
-																		setOpen(["search", { attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
-																	}}>
-																	{field.value?.value ? (
-																		<div className="flex items-center space-x-1">
-																			{checkStringIsTextOrColorHexOrURL(field.value.value) === "color" && (
-																				<div
-																					className="w-3 h-3 rounded-full border border-gray-300 mr-1"
-																					style={{ backgroundColor: field.value.value }}></div>
-																			)}
-																			<span className="truncate">{field.value.value}</span>
-																		</div>
-																	) : (
-																		<span className="text-gray-500 dark:text-gray-400 flex items-center">
-																			<Search className="w-3 h-3 mr-1" /> Select {field.title}
-																		</span>
+												{/* Fields within the Row */}
+												{row.map((field, fieldIndex) => {
+													const fieldDefinition = attributeDefinition?.children?.[fieldIndex];
+													const fieldType = fieldDefinition?.type ?? "text"; // Default to text
+
+													return (
+														<Fragment key={`${attributeInstance.id}-row-${rowIndex}-field-${field.id}`}>
+															<td className="p-2">
+																{/* <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{field.title}</span> */}
+																<div className="field-content">
+																	{/* --- Text Input --- */}
+																	{fieldType === "text" && (
+																		<Input
+																			className="w-full px-2 py-1 h-8 text-sm" // Adjusted size
+																			defaultValue={field?.value || ""} // Default value for uncontrolled component
+																			onKeyDown={(e) => {
+																				if (e.key === "Enter") {
+																					const target = e.target as HTMLInputElement;
+																					handleUpdateFieldValue(attributeInstance.id, rowIndex, fieldIndex, target.value);
+																				}
+																			}}
+																			placeholder={field.title}
+																		/>
 																	)}
-																</Button>
-															)}
 
-															{/* --- Checkbox Input --- */}
-															{fieldType === "checkbox" && (
-																<div className="flex flex-col space-y-1">
-																	{/* Display selected checkbox values */}
-																	{Array.isArray(field.value) &&
-																		field.value.length > 0 &&
-																		field.value.map((v: any, k: number) => (
-																			<div
-																				key={k}
-																				className="relative flex items-center group space-x-1 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
-																				{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
-																					<div
-																						className="w-3 h-3 rounded-full border border-gray-300"
-																						style={{ backgroundColor: v?.value }}></div>
-																				)}
-																				<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
-																				{/* Delete single checkbox value */}
-																				{!permission && (
-																					<button
-																						type="button"
-																						className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
-																						onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
-																						title={`Remove ${v?.value}`}>
-																						<X className="w-3 h-3" />
-																					</button>
-																				)}
-																			</div>
-																		))}
-																	{/* Button to add more checkbox values */}
-																	{!permission && (
+																	{/* --- Select Input --- */}
+																	{fieldType === "select" && (
 																		<Button
 																			variant="outline"
-																			size="sm"
 																			type="button"
-																			className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																			size="sm"
+																			className="w-full justify-start font-normal h-8 text-sm border-0 shadow-none cursor-pointer" // Adjusted size
 																			onClick={() => {
 																				setSearch([]);
 																				setLoading(true);
 																				searchAttributeMeta("", field.id); // Use field.id (field definition ID) for search
+																				// Store necessary info to update the correct field
 																				setOpen(["search", { attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
 																			}}>
-																			<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																			{field.value?.value ? (
+																				<div className="flex items-center space-x-1">
+																					{checkStringIsTextOrColorHexOrURL(field.value.value) === "color" && (
+																						<div
+																							className="w-3 h-3 rounded-full border border-gray-300 mr-1"
+																							style={{ backgroundColor: field.value.value }}></div>
+																					)}
+																					<span className="truncate">{field.value.value}</span>
+																				</div>
+																			) : (
+																				<span className="text-gray-500 dark:text-gray-400 flex items-center">
+																					<Search className="w-3 h-3 mr-1" /> Select {field.title}
+																				</span>
+																			)}
 																		</Button>
 																	)}
+
+																	{/* --- Checkbox Input --- */}
+																	{fieldType === "checkbox" && (
+																		<div className="flex flex-col space-y-1">
+																			{/* Display selected checkbox values */}
+																			{Array.isArray(field.value) &&
+																				field.value.length > 0 &&
+																				field.value.map((v: any, k: number) => (
+																					<div
+																						key={k}
+																						className="relative flex items-center group space-x-1 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
+																						{checkStringIsTextOrColorHexOrURL(v?.value) === "color" && (
+																							<div
+																								className="w-3 h-3 rounded-full border border-gray-300"
+																								style={{ backgroundColor: v?.value }}></div>
+																						)}
+																						<span className="text-gray-700 dark:text-white flex-grow truncate">{v?.value}</span>
+																						{/* Delete single checkbox value */}
+																						{!permission && (
+																							<button
+																								type="button"
+																								className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+																								onClick={() => handleDeleteCheckboxSingleValue(attributeInstance.id, rowIndex, fieldIndex, v)}
+																								title={`Remove ${v?.value}`}>
+																								<X className="w-3 h-3" />
+																							</button>
+																						)}
+																					</div>
+																				))}
+																			{/* Button to add more checkbox values */}
+																			{!permission && (
+																				<Button
+																					variant="outline"
+																					size="sm"
+																					type="button"
+																					className="w-full justify-start font-normal h-8 text-sm mt-1" // Adjusted size
+																					onClick={() => {
+																						setSearch([]);
+																						setLoading(true);
+																						searchAttributeMeta("", field.id); // Use field.id (field definition ID) for search
+																						setOpen(["search", { attributeId: attributeInstance.id, rowIndex, fieldIndex, fieldId: field.id, fieldTitle: field.title, fieldType }]);
+																					}}>
+																					<Search className="w-3 h-3 mr-1" /> Add {field.title}
+																				</Button>
+																			)}
+																		</div>
+																	)}
 																</div>
-															)}
-														</div>
-													</div>
-												</Fragment>
-											);
-										})}
-									</div>
-								);
-							})}
-							{/* Show message if no rows exist for this attribute */}
-							{/* {attributeInstance.children?.length === 0 && (
+															</td>
+														</Fragment>
+													);
+												})}
+											</tr>
+										);
+									})}
+
+								</tbody>
+
+								{/* Show message if no rows exist for this attribute */}
+								{/* {attributeInstance.children?.length === 0 && (
 								<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-2">
 									No rows added yet for "{attributeInstance.title}". Click <PlusCircle className="w-4 h-4 inline-block mx-1" /> above to add one.
 								</div>
 							)} */}
-						</div>
-					</Fragment>
-				))}
+							</table>
+						</Fragment>
+					);
+				})}
 
 				{/* Add Attribute Button */}
 				{availableAttsToAdd.length > 0 && !permission && (
