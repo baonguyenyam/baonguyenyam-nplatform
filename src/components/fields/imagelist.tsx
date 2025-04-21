@@ -39,8 +39,8 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 										src={item.url}
 										alt={item?.name || ""}
 										title={item?.name || ""}
-										width={200}
-										height={200}
+										width={400}
+										height={400}
 										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 										className="max-w-full max-h-24 2xl:max-h-30 object-cover border-1 border-gray-300 rounded-lg"
 									/>

@@ -8,7 +8,7 @@ import AppImage from "@/components/AppImage";
 import { FormControl, FormMessage } from "@/components/ui/form";
 import { uploadFile } from "@/lib/upload";
 
-import { Input } from "../ui/input";
+// import { Input } from "../ui/input";
 
 // State for the upload dialog
 interface UploadDialogState {
@@ -34,7 +34,11 @@ export function FieldUpload(props: any) {
 		fileList: uploadDialogState.fileList,
 		// Accept file types
 		accept: accept?.join(","),
-		showUploadList: preview ? true : false,
+		showUploadList: preview ? {
+			showRemoveIcon: false,
+			showDownloadIcon: false,
+			// preview ? true : false
+		} : false,
 		// Use customRequest to handle the upload via your utility
 		customRequest: async ({ file, onSuccess, onError }) => {
 			try {
@@ -187,8 +191,8 @@ export function FieldUpload(props: any) {
 						id="previewimgList"
 						className="grid grid-cols-3 lg:grid-cols-5 gap-10"></div>
 				</div>
-			</FormControl>
+			</FormControl >
 			<FormMessage />
-		</div>
+		</div >
 	);
 }
