@@ -34,7 +34,7 @@ export function FieldUpload(props: any) {
 		fileList: uploadDialogState.fileList,
 		// Accept file types
 		accept: accept?.join(","),
-		// showUploadList: preview || !defaultValues.multiple ? true : false,
+		showUploadList: (preview || !defaultValues.multiple) ? true : false,
 		// Use customRequest to handle the upload via your utility
 		customRequest: async ({ file, onSuccess, onError }) => {
 			try {
@@ -45,6 +45,11 @@ export function FieldUpload(props: any) {
 				const result = await uploadFile([file]); // Use your uploadFile utility
 				if (result?.success && result?.data && result.data.length > 0) {
 					if (onSuccess) onSuccess(result.data[0], new XMLHttpRequest()); // Pass result data to onSuccess
+					const previewImg = document.getElementById("previewimgsrc") as HTMLImageElement;
+					if (previewImg) {
+						previewImg.src = result.data[0].url; // Assuming result.data[0].url contains the image URL
+						previewImg.className = "w-64 h-full max-h-32 object-cover border-2 border-gray-300 rounded-lg";
+					}
 					if (onChange) {
 						onChange([result]); // Call onChange with the uploaded file data
 					}

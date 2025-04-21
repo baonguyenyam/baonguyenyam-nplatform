@@ -23,6 +23,10 @@ const FormSchema = z.object({
 		.string()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
+	f_file: z
+		.any()
+		.optional()
+		.transform((e) => (e === "" ? undefined : e)),
 });
 
 export default function FormEdit(props: any) {
@@ -43,9 +47,10 @@ export default function FormEdit(props: any) {
 		const _body = [
 			{
 				key: values.f_key,
-				value: values.f_value,
+				value: values.f_file ? values.f_file : values.f_value,
 			},
 		];
+
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
 			if (update?.success !== "success") {
@@ -71,6 +76,7 @@ export default function FormEdit(props: any) {
 			form.reset({
 				f_key: res?.data?.key || "",
 				f_value: res?.data?.value || "",
+				f_file: res?.data?.value || "",
 			});
 			setLoading(false);
 		} else {
@@ -130,7 +136,7 @@ export default function FormEdit(props: any) {
 											onValueChange={(e) => {
 												setVal(e);
 											}}
-											defaultValue={checkStringIsTextOrColorHexOrURL(field?.value || "")}
+											defaultValue={checkStringIsTextOrColorHexOrURL(data?.type || "text")}
 											className="w-full">
 											<TabsList>
 												<TabsTrigger value="text">Text</TabsTrigger>
@@ -163,18 +169,27 @@ export default function FormEdit(props: any) {
 											</TabsContent>
 											<TabsContent value="photo">
 												{(val === "photo" || checkStringIsTextOrColorHexOrURL(field?.value || "") === "url") && (
-													<FormControl>
-														{FieldUpload({
-															field,
-															data,
-															multiple: false,
-															preview: true,
-															accept: appState.ACCEPTED_IMG_FILE_TYPES,
-															onChange: (e: any) => {
-																field.onChange(e[0]?.data[0]?.url);
-															},
-														})}
-													</FormControl>
+													<FormField
+														control={form.control}
+														name="f_file"
+														render={({ field }) => (
+															<FormItem>
+																<FormLabel>Upload Image</FormLabel>
+																{FieldUpload({
+																	field,
+																	data: {
+																		image: field?.value,
+																	},
+																	multiple: false,
+																	preview: true,
+																	accept: appState.ACCEPTED_IMG_FILE_TYPES,
+																	onChange: (e: any) => {
+																		field.onChange(e[0]?.data[0]?.url);
+																	},
+																})}
+															</FormItem>
+														)}
+													/>
 												)}
 											</TabsContent>
 										</Tabs>

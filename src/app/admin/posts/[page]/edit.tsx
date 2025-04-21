@@ -334,6 +334,7 @@ export default function FormEdit(props: any) {
 										field,
 										data,
 										accept: appState.ACCEPTED_IMG_FILE_TYPES,
+										preview: false,
 										onChange: (e: any) => {
 											field.onChange(e[0]?.data[0]?.url);
 											setThumbnail(e[0]?.data[0]?.url);
