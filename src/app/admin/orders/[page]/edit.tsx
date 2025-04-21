@@ -324,7 +324,7 @@ export default function FormEdit(props: any) {
 
 								<TabsTrigger
 									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
-									value="user_product">
+									value="user">
 									User/Vendor manager
 								</TabsTrigger>
 								<TabsTrigger
@@ -334,8 +334,8 @@ export default function FormEdit(props: any) {
 								</TabsTrigger>
 								<TabsTrigger
 									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
-									value="advance">
-									Advance
+									value="advanced">
+									Advanced
 								</TabsTrigger>
 							</TabsList>
 
@@ -594,7 +594,7 @@ export default function FormEdit(props: any) {
 								})}
 
 								<TabsContent
-									value="user_product"
+									value="user"
 									className="space-y-15">
 									<div className="space-y-15">
 										<FormField
@@ -802,7 +802,7 @@ export default function FormEdit(props: any) {
 								</TabsContent>
 
 								<TabsContent
-									value="advance"
+									value="advanced"
 									className="space-y-10">
 									<div className="mt-4 grid sm:grid-cols-3 gap-4">
 										<FormField

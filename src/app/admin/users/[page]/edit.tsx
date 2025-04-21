@@ -12,7 +12,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
-import { enumPermission, enumPublished } from "@/lib/enum";
+import { enumPermission, enumPublished, enumUserPermission } from "@/lib/enum";
 import { stringToKeyValue } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
@@ -32,6 +32,7 @@ export default function FormEdit(props: any) {
 		f_zip: z.string().optional(),
 		f_firstname: z.string().optional(),
 		f_lastname: z.string().optional(),
+		f_permissions: z.string().optional(),
 	});
 	const { id, onChange } = props;
 	const role = useCurrentRole();
@@ -71,6 +72,7 @@ export default function FormEdit(props: any) {
 			f_zip: "",
 			f_firstname: "",
 			f_lastname: "",
+			f_permissions: "[]",
 		},
 	});
 
@@ -113,6 +115,7 @@ export default function FormEdit(props: any) {
 			country: values.f_country,
 			zip: values.f_zip,
 			data: JSON.stringify(attrs),
+			permissions: JSON.stringify(values.f_permissions),
 		};
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
@@ -160,6 +163,7 @@ export default function FormEdit(props: any) {
 				f_zip: res?.data?.zip || "",
 				f_firstname: res?.data?.first_name || "",
 				f_lastname: res?.data?.last_name || "",
+				f_permissions: res?.data?.permissions || "[]",
 			});
 			// Parse the data attribute
 			const _attribute = res?.data?.data ? JSON.parse(res?.data?.data) : null;
@@ -408,6 +412,36 @@ export default function FormEdit(props: any) {
 												})),
 											})}
 											<FormDescription>This is your public display role.</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="f_permissions"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Permission</FormLabel>
+											{/* {FieldSelect({
+												field,
+												data: enumUserPermission.map((item: any) => ({
+													id: item.value,
+													name: item.label,
+												})),
+											})} */}
+											{/* <FormControl> */}
+											{enumUserPermission.map((item: any) => {
+												return (
+													<Input
+														key={item.id}
+														type="checkbox"
+														{...field}
+														defaultChecked={field.value === item.value}
+													/>
+												)
+											})}
+											{/* </FormControl> */}
+
 											<FormMessage />
 										</FormItem>
 									)}

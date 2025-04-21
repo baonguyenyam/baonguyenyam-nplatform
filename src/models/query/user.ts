@@ -67,6 +67,7 @@ export const getAllUsers = async (query: any) => {
 				isTwoFactorEnabled: true,
 				role: true,
 				published: true,
+				permissions: true,
 			},
 
 			orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },

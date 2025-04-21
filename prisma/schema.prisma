@@ -150,8 +150,8 @@ model Order {
   date_failed     DateTime?
   date_closed     DateTime?
   date_approved   DateTime?
-  date_payment   DateTime?
-  date_package  DateTime?
+  date_payment    DateTime?
+  date_package    DateTime?
 
   files      File[]
   meta       OrderMeta[]
@@ -254,6 +254,7 @@ model User {
   updatedAt             DateTime?              @updatedAt
   published             Boolean                @default(false)
   data                  String?                @db.Text
+  permissions           String?                @db.Text
 
   salt     String? @db.Text
   hash     String? @db.Text

@@ -187,3 +187,86 @@ export const enumOrderType = [
 		value: "package",
 	},
 ];
+
+export const enumUserPermission = [
+	{
+		label: "Settings",
+		value: "settings",
+	},
+	{
+		label: "Users",
+		value: "users",
+	},
+	{
+		label: "Orders",
+		value: "orders",
+		children: [
+			enumOrderType.map((item) => ({
+				label: item.label,
+				value: item.value,
+			})),
+			{
+				label: "General",
+				value: "general",
+			},
+			{
+				label: "Basic",
+				value: "basic",
+			},
+			{
+				label: "User",
+				value: "user",
+			},
+			{
+				label: "Files",
+				value: "files",
+			},
+			{
+				label: "Advanced",
+				value: "advanced",
+			},
+		]
+	},
+	{
+		label: "Products",
+		value: "products",
+	},
+	{
+		label: "Posts",
+		value: "posts",
+	},
+	{
+		label: "Categories",
+		value: "categories",
+	},
+	{
+		label: "Files",
+		value: "files",
+	},
+	{
+		label: "Vendors",
+		value: "vendors",
+	},
+	{
+		label: "Customers",
+		value: "customers",
+	},
+	{
+		label: "Attributes",
+		value: "attributes",
+		children: [
+			{
+				label: "View",
+				value: "view",
+			},
+			{
+				label: "Meta",
+				value: "meta",
+			},
+			{
+				label: "Mapping",
+				value: "mapping",
+			},
+		],
+	},
+]

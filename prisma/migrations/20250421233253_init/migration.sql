@@ -128,6 +128,8 @@ CREATE TABLE "Order" (
     "date_failed" TIMESTAMP(3),
     "date_closed" TIMESTAMP(3),
     "date_approved" TIMESTAMP(3),
+    "date_payment" TIMESTAMP(3),
+    "date_package" TIMESTAMP(3),
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -196,6 +198,7 @@ CREATE TABLE "User" (
     "updatedAt" TIMESTAMP(3),
     "published" BOOLEAN NOT NULL DEFAULT false,
     "data" TEXT,
+    "permissions" TEXT,
     "salt" TEXT,
     "hash" TEXT,
     "password" TEXT,

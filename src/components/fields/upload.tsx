@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // Import React
 import type { UploadFile, UploadProps } from "antd";
-import { Upload, Spin } from "antd"; // Import Spin for loading indicator
+import { Spin,Upload } from "antd"; // Import Spin for loading indicator
 import { Inbox, Loader2 } from "lucide-react"; // Using Loader2 for a spinner icon
 import { toast } from "sonner";
 
