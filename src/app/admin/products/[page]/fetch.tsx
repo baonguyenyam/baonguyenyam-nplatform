@@ -17,14 +17,38 @@ import { useAppSelector } from "@/store";
 import * as actions from "./actions";
 import FormEdit from "./edit";
 
+// Define interfaces for better type safety (replace 'any' with actual types if known)
+interface Post {
+	id: string;
+	title: string;
+	image?: string;
+	published?: boolean;
+	createdAt?: string | Date;
+	slug?: string;
+	user?: { name?: string };
+	// Add other post properties as needed
+}
+
+interface FetchResponse {
+	data: Post[] | any;
+	count: number | null;
+}
+
+interface DrawerState {
+	mode: "create" | "edit" | null;
+	data: Post | null;
+}
+
 export default function Fetch(props: any) {
 	const type = "product";
 	const { title, page, breadcrumb } = props;
-	const [open, setOpen] = useState<any>(["", null]);
-	const [db, setDb] = useState<any>([]);
+	const [drawerState, setDrawerState] = useState<DrawerState>({ mode: null, data: null });
+	const [db, setDb] = useState<FetchResponse | null>(null);
 	const [loading, setLoading] = useState(true);
 	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
+	const handleDrawerClose = () => setDrawerState({ mode: null, data: null });
+	// --- Data Fetching Logic ---
 	const query = useMemo(
 		() => ({
 			take: Number(pageSize),
@@ -39,18 +63,25 @@ export default function Fetch(props: any) {
 	);
 
 	const fetchData = useCallback(async () => {
-		const res = await actions.getAll(query);
-		if (res?.data) {
-			setDb(res);
+		try {
+			const res = await actions.getAll(query);
+			if (res?.data) {
+				setDb({ data: res.data, count: res.count });
+				setLoading(false);
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		} finally {
 			setLoading(false);
 		}
 	}, [query]);
 
 	const deteteRecord = async (id: string) => {
-		if (confirm("Are you sure you want to delete this record?")) {
+		if (window.confirm("Are you sure you want to delete this record?")) {
 			const res = await actions.deleteRecord(id);
 			if (res?.success === "success") {
 				fetchData();
+				handleDrawerClose(); // Close drawer if open for the deleted item
 			}
 		}
 	};
@@ -63,6 +94,47 @@ export default function Fetch(props: any) {
 		});
 	}, [fetchData]);
 
+	const handleFormChange = (event: string) => {
+		if (event === "submit") {
+			handleDrawerClose();
+			fetchData(); // Refetch data after successful submit
+		}
+	};
+
+	const renderDrawerExtra = () => (
+		<div className="flex items-center space-x-2">
+			{drawerState.mode === "edit" && drawerState.data?.id && (
+				<Button
+					variant="destructive" // Use destructive variant
+					size="sm" // Consistent size
+					onClick={() => deteteRecord(drawerState.data!.id)} // Use non-null assertion as id is checked
+					className="px-2 h-8 space-x-1">
+					<Trash className="h-4 w-4" />
+					<span>Delete</span>
+				</Button>
+			)}
+			<Button
+				variant="outline"
+				size="icon"
+				onClick={handleDrawerClose}
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400">
+				<X className="h-5 w-5" /> {/* Consistent icon size */}
+			</Button>
+		</div>
+	);
+
+	// --- Render Logic ---
+	const renderDrawerContent = () => {
+		if (!drawerState.mode) return null;
+		return (
+			<FormEdit
+				id={drawerState.mode === "edit" ? drawerState.data?.id : undefined}
+				initialData={drawerState.mode === "edit" ? drawerState.data : undefined} // Pass initial data for editing
+				onChange={handleFormChange}
+			/>
+		);
+	};
+
 	return (
 		<>
 			<div className="flex justify-between mb-5">
@@ -70,7 +142,7 @@ export default function Fetch(props: any) {
 					data={title}
 					breadcrumb={breadcrumb}
 				/>
-				<Button onClick={() => setOpen(["create", null])}>
+				<Button onClick={() => setDrawerState({ mode: "create", data: null })}>
 					<Plus />
 					Create {title}
 				</Button>
@@ -80,14 +152,14 @@ export default function Fetch(props: any) {
 			{!loading && (
 				<AppTable
 					actions={actions}
-					data={db.data}
-					count={db.count}
+					data={db?.data || []}
+					count={db?.count || 0}
 					url={`/admin/${type}s`}
 					page={page}
 					pageSize={pageSize}
 					onChange={(event: string, data: any) => {
 						if (event === "edit") {
-							setOpen([event, data]);
+							setDrawerState({ mode: "edit", data });
 						}
 						if (event === "delete") {
 							fetchData();
@@ -153,7 +225,7 @@ export default function Fetch(props: any) {
 									<Button
 										size="icon"
 										className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-										onClick={() => setOpen(["edit", row])}>
+										onClick={() => setDrawerState({ mode: "edit", data: row })}>
 										<Pencil />
 									</Button>
 								);
@@ -173,68 +245,17 @@ export default function Fetch(props: any) {
 				/>
 			)}
 			<Drawer
-				title={`Create ${title}`}
-				placement="right"
-				closable={false}
-				onClose={() => setOpen(["", null])}
-				open={open[0] === "create"}
-				destroyOnClose={true}
-				width={1200}
-				maskClosable={false}
-				extra={
-					<Button
-						type="button"
-						onClick={() => setOpen(["", null])}
-						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
-						<X />
-					</Button>
-				}>
-				<FormEdit
-					onChange={(event: string, data: any) => {
-						if (event === "submit") {
-							setOpen(["", null]);
-							fetchData();
-						}
-					}}
-				/>
-			</Drawer>
-			<Drawer
-				maskClosable={false}
-				closable={false}
-				open={open[0] === "edit"}
-				onClose={() => setOpen(["", null])}
-				title={`Edit ${title}`}
+				title={`${drawerState.mode === "create" ? "Create" : "Edit"} ${title}`}
 				placement="right"
 				width={1200}
-				destroyOnClose={true}
-				extra={
-					<div className="flex items-center space-x-2">
-						<Button
-							type="button"
-							className="hover:bg-red-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-red-800 px-2 h-8 bg-red-200 font-medium hover:text-black text-black border-2 border-red-400 rounded-lg"
-							onClick={() => {
-								deteteRecord(open[1]?.id);
-								setOpen(["", open[1]]);
-							}}>
-							<Trash /> Delete
-						</Button>
-						<Button
-							type="button"
-							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
-							onClick={() => setOpen(["", null])}>
-							<X />
-						</Button>
-					</div>
-				}>
-				<FormEdit
-					id={open[1]?.id}
-					onChange={(event: string, data: any) => {
-						if (event === "submit") {
-							setOpen(["", null]);
-							fetchData();
-						}
-					}}
-				/>
+				open={drawerState.mode !== null}
+				closable={false}
+				onClose={handleDrawerClose}
+				destroyOnClose={true} // Keep this if form state needs resetting
+				maskClosable={false}
+				extra={renderDrawerExtra()}
+			>
+				{renderDrawerContent()}
 			</Drawer>
 		</>
 	);

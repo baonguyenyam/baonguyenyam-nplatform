@@ -25,7 +25,6 @@ import { useAppSelector } from "@/store";
 import * as actions from "./actions";
 
 // --- Interfaces ---
-
 interface Category {
 	id: number; // Or string, depending on your data model
 	name: string;
@@ -103,7 +102,7 @@ export default function FormEdit(props: any) {
 	const attributeData = useAppSelector((state) => state?.attributeState.data);
 	const atts = useMemo(() => {
 		if (attributeData) {
-			return attributeData.filter((item: AttributeItem) => item.mapto === "post");
+			return attributeData.filter((item: AttributeItem) => item.mapto === type);
 		}
 		return [];
 	}, [attributeData]);
