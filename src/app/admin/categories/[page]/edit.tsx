@@ -4,131 +4,157 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { AppEditor } from "@/components/AppEditor";
 import AppLoading from "@/components/AppLoading";
-import { FieldSelect } from "@/components/fields/select";
+import { FieldInput } from "@/components/fields/input";
+import { FieldSelect } from "@/components/fields/select"; // For 'type' and 'published' status
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useCurrentRole } from "@/hooks/useCurrentRole";
-import { enumPublished, enumType } from "@/lib/enum";
+import { useCurrentRole } from "@/hooks/useCurrentRole"; // Keep if role affects fields
+import { enumPublished, enumType } from "@/lib/enum"; // Use enums
 
 import * as actions from "./actions";
 
+// --- Interfaces ---
+// Interface for the data structure expected by the form and API
+interface CategoryData {
+	id?: string; // Optional for create mode
+	title: string;
+	slug?: string;
+	type?: string;
+	published?: boolean;
+	// Add other relevant fields
+}
+
+// --- Component Props ---
+interface FormEditProps {
+	id?: string; // ID for editing existing category
+	initialData?: CategoryData | any; // Pre-populate form in edit mode
+	onChange: (event: string, data?: any) => void; // Callback for events like submit
+}
+
+// --- Zod Schema ---
+// Define the validation schema for the category form
 const FormSchema = z.object({
-	f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-	f_content: z
-		.string()
-		.optional()
-		.transform((e) => (e === "" ? undefined : e)),
-	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
-	f_type: z.enum(enumType.map((item: any) => item.value) as [string, ...string[]], { required_error: "Type is required" }).optional(),
+	f_title: z.string().min(2, { message: "Title must be at least 2 characters." }),
+	f_slug: z.string().optional(), // Slug might be auto-generated or optional
+	// Ensure the enum values are correctly typed for Zod
+	f_type: z.enum(enumType.map((item) => item.value) as [string, ...string[]]).optional(),
+	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
 });
 
-export default function FormEdit(props: any) {
-	const { id, onChange } = props;
-	const [data, setData] = useState<any>(null);
-	const [loading, setLoading] = useState(true);
-	const role = useCurrentRole();
+export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
+	const [loading, setLoading] = useState(!!id); // Start loading only if editing
+	const [data, setData] = useState<CategoryData | {} | null>(null); // Store fetched data if needed elsewhere
+	const role = useCurrentRole(); // Get user role if needed for conditional rendering
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			f_title: "",
-			f_content: "",
-			f_published: "FALSE",
-			f_type: "post",
+			f_title: initialData?.title || "",
+			f_slug: initialData?.slug || "",
+			f_type: initialData?.type || enumType[0]?.value, // Default to first type or handle undefined
+			f_published: initialData?.published === true ? "TRUE" : "FALSE",
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof FormSchema>) {
-		const _body = {
-			title: values.f_title,
-			content: values.f_content,
-			published: values.f_published === "TRUE" ? true : false,
-			type: values.f_type,
-		};
-		if (data) {
-			const update = await actions.updateRecord(id, _body);
-			if (update?.success !== "success") {
-				toast.error(update.message);
-				return;
-			}
-			toast.success(update.message);
-		} else {
-			const create = await actions.createRecord(_body);
-			if (create?.success !== "success") {
-				toast.error(create.message);
-				return;
-			}
-			toast.success(create.message);
-		}
-		onChange("submit", values);
-	}
-
+	// Fetch data function for edit mode
 	const fetchData = useCallback(async () => {
-		const res = await actions.getRecord(id);
-		if (res?.success === "success" && res?.data) {
-			setData(res.data);
-			form.reset({
-				f_title: res?.data?.title || "",
-				f_content: res?.data?.content || "",
-				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
-				f_type: res?.data?.type || "post",
-			});
+		if (!id) {
 			setLoading(false);
-		} else {
-			setData(null);
+			return; // No need to fetch if creating
+		}
+		setLoading(true);
+		try {
+			const res = await actions.getRecord(id); // Use the specific get action
+			if (res?.success === "success" && res?.data) {
+				const categoryData = res.data;
+				setData(categoryData);
+				// Reset form with fetched data
+				form.reset({
+					f_title: categoryData.title || "",
+					f_slug: categoryData.slug || "",
+					f_type: categoryData.type || enumType[0]?.value, // Handle potential undefined type
+					f_published: categoryData.published === true ? "TRUE" : "FALSE",
+				});
+			} else {
+				toast.error("Failed to load category data.");
+				setData(null); // Reset data on failure
+			}
+		} catch (error) {
+			console.error("Error fetching category:", error);
+			toast.error("An error occurred while fetching category data.");
+		} finally {
 			setLoading(false);
 		}
-	}, [form, id]);
+	}, [id, form]);
 
+	// Fetch data on mount if in edit mode
 	useEffect(() => {
-		if (id) {
-			fetchData();
-		} else {
-			setLoading(false);
+		fetchData();
+	}, [fetchData]); // Depend only on fetchData
+
+	// Form submission handler
+	async function onSubmit(values: z.infer<typeof FormSchema>) {
+		const body: Partial<CategoryData> = {
+			title: values.f_title,
+			slug: values.f_slug || undefined, // Send undefined if empty, backend might auto-generate
+			type: values.f_type,
+			published: values.f_published === "TRUE",
+		};
+
+		// Use update or create action based on presence of id
+		const action = id ? actions.updateRecord(id, body) : actions.createRecord(body); // Assuming meta is empty
+
+		try {
+			const res = await action;
+			if (res.success === "success") {
+				toast.success(res.message || (id ? "Category updated successfully!" : "Category created successfully!"));
+				onChange("submit", res.data); // Notify parent component
+			} else {
+				toast.error(res.message || "An error occurred.");
+			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			toast.error("An unexpected error occurred.");
 		}
-	}, [fetchData, id]);
+	}
 
 	return (
 		<>
 			{loading && <AppLoading />}
 			{!loading && (
 				<Form {...form}>
+					{/* Use pb-20 or similar to prevent overlap with bottom bar */}
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-6 pb-15">
+						className="w-full space-y-4 pb-20">
+						{/* Title Field */}
 						<FormField
 							control={form.control}
 							name="f_title"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Title</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
+									{FieldInput({ field })}
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+
+						{/* Slug Field (Optional) */}
 						<FormField
 							control={form.control}
-							name="f_content"
+							name="f_slug"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Content</FormLabel>
-									<FormControl>
-										<AppEditor
-											{...field}
-											onChange={(e: any) => {
-												field.onChange(e);
-											}}
-										/>
-									</FormControl>
+									<FormLabel>Slug</FormLabel>
+									{FieldInput({ field })}
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+
+						{/* Type Field */}
 						<FormField
 							control={form.control}
 							name="f_type"
@@ -137,7 +163,8 @@ export default function FormEdit(props: any) {
 									<FormLabel>Type</FormLabel>
 									{FieldSelect({
 										field,
-										data: enumType.map((item: any) => ({
+										placeholder: "Select type...",
+										data: enumType.map((item) => ({
 											id: item.value,
 											name: item.label,
 										})),
@@ -146,29 +173,33 @@ export default function FormEdit(props: any) {
 								</FormItem>
 							)}
 						/>
-						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-between space-x-2 border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
-							{role === "ADMIN" && (
-								<FormField
-									control={form.control}
-									name="f_published"
-									render={({ field }) => (
-										<FormItem>
-											{FieldSelect({
-												field,
-												data: enumPublished.map((item: any) => ({
-													id: item.value,
-													name: item.label,
-												})),
-											})}
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							)}
+
+						{/* Bottom Bar for Actions */}
+						<div className="fixed bottom-0 right-0 w-full md:w-[calc(800px-1rem)] border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700 flex items-center justify-between z-10">
+							{/* Published Status (Optional, based on role or always shown) */}
+							{/* Example: Always show published status for categories */}
+							<FormField
+								control={form.control}
+								name="f_published"
+								render={({ field }) => (
+									<FormItem className="w-32"> {/* Adjust width as needed */}
+										{FieldSelect({
+											field,
+											placeholder: "Status", // Add placeholder
+											data: enumPublished.map((item) => ({
+												id: item.value,
+												name: item.label,
+											})),
+										})}
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
 							<Button
 								type="submit"
 								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
-								Save changes
+								{form.formState.isSubmitting ? "Saving..." : "Save Changes"}
 							</Button>
 						</div>
 					</form>
