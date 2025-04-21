@@ -34,7 +34,7 @@ export function FieldUpload(props: any) {
 		fileList: uploadDialogState.fileList,
 		// Accept file types
 		accept: accept?.join(","),
-		showUploadList: (preview || !defaultValues.multiple) ? true : false,
+		showUploadList: defaultValues.preview ? true : false,
 		// Use customRequest to handle the upload via your utility
 		customRequest: async ({ file, onSuccess, onError }) => {
 			try {

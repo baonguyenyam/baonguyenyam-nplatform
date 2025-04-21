@@ -337,7 +337,11 @@ export default function FormEdit(props: any) {
 										onChange: (e: any) => {
 											field.onChange(e[0]?.data[0]?.url);
 											setThumbnail(e[0]?.data[0]?.url);
-											setImgs(e);
+											setImgs((prev: any) => [...prev, e[0]]);
+											setData((prev: any) => ({
+												...prev,
+												files: [...prev?.files, ...e[0]?.data],
+											}));
 										},
 									})}
 								</FormItem>
