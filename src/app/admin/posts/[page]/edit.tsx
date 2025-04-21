@@ -24,6 +24,46 @@ import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 
+// --- Interfaces ---
+
+interface Category {
+	id: number; // Or string, depending on your data model
+	name: string;
+	type?: string; // Optional: if categories are typed (e.g., 'post', 'product')
+}
+
+interface PostMeta {
+	key: string;
+	value: string;
+}
+
+interface AttributeItem {
+	id: number;
+	title: string;
+	mapto: string;
+	children?: {
+		id: number;
+		title: string;
+		type: "text" | "select" | "checkbox"; // Add other types if needed
+		options?: string[]; // For select/checkbox
+	}[];
+}
+
+interface PostData {
+	id: string; // Or number, depending on your data model
+	title: string;
+	slug: string;
+	content?: string;
+	published?: boolean;
+	image?: string; // URL of the featured image
+	type?: string; // e.g., 'post', 'page'
+	categories?: Category[]; // Array of associated categories
+	files?: { id: string }[]; // Array of associated file objects (adjust structure as needed)
+	data?: string; // JSON string potentially holding dynamic attribute data
+	meta?: PostMeta[]; // Array for metadata like SEO keywords, etc.
+	// Add any other relevant fields for your Post data structure
+}
+
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
@@ -51,10 +91,10 @@ export default function FormEdit(props: any) {
 	const { id, onChange } = props;
 	const memoriez = useAppSelector((state) => state.categoriesState.data);
 	const categories = useMemo(() => {
-		return memoriez.filter((item: any) => item?.type === type);
+		return memoriez.filter((item: Category) => item?.type === type);
 	}, [memoriez]);
 	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState<any>(null);
+	const [data, setData] = useState<PostData | {} | null>(null);
 	const [thumbnail, setThumbnail] = useState<any>(null);
 	const [imgs, setImgs] = useState<any>([]);
 	const role = useCurrentRole();
@@ -63,7 +103,7 @@ export default function FormEdit(props: any) {
 	const attributeData = useAppSelector((state) => state?.attributeState.data);
 	const atts = useMemo(() => {
 		if (attributeData) {
-			return attributeData.filter((item: any) => item.mapto === "post");
+			return attributeData.filter((item: AttributeItem) => item.mapto === "post");
 		}
 		return [];
 	}, [attributeData]);
@@ -83,6 +123,7 @@ export default function FormEdit(props: any) {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			f_title: "",
+			f_slug: "",
 			f_content: "",
 			f_published: "FALSE",
 			f_categories: [],
@@ -123,7 +164,7 @@ export default function FormEdit(props: any) {
 			image: !id ? thumbnail : undefined,
 			type: type,
 			categories: {
-				connect: values.f_categories?.map((category: any) => {
+				connect: values.f_categories?.map((category: number) => {
 					return { id: category };
 				}),
 			},
@@ -172,7 +213,7 @@ export default function FormEdit(props: any) {
 				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
 				f_categories: res?.data?.categories?.map((item: any) => item.id) || [],
 				f_seo_keywords: res?.data?.meta?.find((item: any) => item.key === "seo_keywords")?.value || "",
-				f_slug: res?.data?.slug || "",
+				f_slug: res?.data?.slug || "", // <--- Line 208
 			});
 			// Parse the data attribute
 			const _attribute = res?.data?.data ? JSON.parse(res?.data?.data) : null;
