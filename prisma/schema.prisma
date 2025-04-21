@@ -150,6 +150,8 @@ model Order {
   date_failed     DateTime?
   date_closed     DateTime?
   date_approved   DateTime?
+  date_payment   DateTime?
+  date_package  DateTime?
 
   files      File[]
   meta       OrderMeta[]

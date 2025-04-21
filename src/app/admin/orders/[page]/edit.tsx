@@ -98,6 +98,14 @@ const FormSchema = z.object({
 		.any()
 		.optional()
 		.transform((e) => (e === "" ? undefined : e)),
+	f_date_payment: z
+		.date()
+		.optional()
+		.transform((e) => (e === undefined ? undefined : e)),
+	f_date_package: z
+		.date()
+		.optional()
+		.transform((e) => (e === undefined ? undefined : e)),
 });
 
 export default function FormEdit(props: any) {
@@ -153,6 +161,8 @@ export default function FormEdit(props: any) {
 			date_delivered: values.f_date_delivered,
 			date_completed: values.f_date_completed,
 			date_refunded: values.f_date_refunded,
+			date_payment: values.f_date_payment,
+			date_package: values.f_date_package,
 			customer: {
 				connect: !id ? (values.f_customer ? [{ id: values.f_customer }] : undefined) : undefined,
 			},
@@ -418,7 +428,7 @@ export default function FormEdit(props: any) {
 											)}
 										/>
 									</div>
-									<div className="grid grid-cols-4 gap-15">
+									<div className="grid grid-cols-3 gap-15">
 										<FormField
 											control={form.control}
 											name="f_date_created"
@@ -430,17 +440,7 @@ export default function FormEdit(props: any) {
 												</FormItem>
 											)}
 										/>
-										<FormField
-											control={form.control}
-											name="f_date_production"
-											render={({ field }) => (
-												<FormItem className="flex flex-col">
-													<FormLabel>Date Production</FormLabel>
-													{FieldDate({ field })}
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+
 										<FormField
 											control={form.control}
 											name="f_date_completed"
@@ -452,17 +452,7 @@ export default function FormEdit(props: any) {
 												</FormItem>
 											)}
 										/>
-										<FormField
-											control={form.control}
-											name="f_date_refunded"
-											render={({ field }) => (
-												<FormItem className="flex flex-col">
-													<FormLabel>Date Refunded</FormLabel>
-													{FieldDate({ field })}
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+
 									</div>
 
 									<FormField
@@ -524,6 +514,62 @@ export default function FormEdit(props: any) {
 														render={({ field }) => (
 															<FormItem className="flex flex-col">
 																<FormLabel>Date Delivered</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+												</div>
+											)}
+											{item?.value === 'payment' && (
+												<div className="grid grid-cols-3 gap-15">
+													<FormField
+														control={form.control}
+														name="f_date_payment"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Payment</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+													<FormField
+														control={form.control}
+														name="f_date_refunded"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Refunded</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+												</div>
+											)}
+											{item?.value === 'product' && (
+												<div className="grid grid-cols-3 gap-15">
+													<FormField
+														control={form.control}
+														name="f_date_production"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Production</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+												</div>
+											)}
+											{item?.value === 'package' && (
+												<div className="grid grid-cols-3 gap-15">
+													<FormField
+														control={form.control}
+														name="f_date_package"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Package</FormLabel>
 																{FieldDate({ field })}
 																<FormMessage />
 															</FormItem>

@@ -247,6 +247,8 @@ export const getAllOrders = async (query: any) => {
 				date_failed: true,
 				date_closed: true,
 				date_approved: true,
+				date_payment: true,
+				date_package: true,
 				data: true,
 			},
 
