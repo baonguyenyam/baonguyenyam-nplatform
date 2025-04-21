@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { appState } from "@/lib/appConst";
-import { enumOrderStatus, enumPublished } from "@/lib/enum";
+import { enumOrderStatus, enumOrderType, enumPublished } from "@/lib/enum";
 import { autoOderDate } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
@@ -301,11 +301,17 @@ export default function FormEdit(props: any) {
 									value="basic">
 									Basic Info
 								</TabsTrigger>
-								<TabsTrigger
-									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
-									value="shipping">
-									Shipping
-								</TabsTrigger>
+								{enumOrderType.map((item: any, index: any) => {
+									return (
+										<TabsTrigger
+											key={index}
+											className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
+											value={item.value}>
+											{item.label}
+										</TabsTrigger>
+									);
+								})}
+
 								<TabsTrigger
 									className="relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-gray-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:after:bg-primary rounded-md overflow-hidden"
 									value="user_product">
@@ -489,49 +495,57 @@ export default function FormEdit(props: any) {
 										)}
 									/>
 
-									<div className="flex items-center gap-4"></div>
 								</TabsContent>
 
-								<TabsContent
-									value="shipping"
-									className="space-y-15">
-									<div className="grid grid-cols-3 gap-15">
-										<FormField
-											control={form.control}
-											name="f_date_shipped"
-											render={({ field }) => (
-												<FormItem className="flex flex-col">
-													<FormLabel>Date Shipping</FormLabel>
-													{FieldDate({ field })}
-													<FormMessage />
-												</FormItem>
+
+								{enumOrderType.map((item: any, index: any) => {
+									return (
+										<TabsContent
+											key={index}
+											value={item.value}
+											className="space-y-15">
+											{/* Shipping Only */}
+											{item?.value === 'shipping' && (
+												<div className="grid grid-cols-3 gap-15">
+													<FormField
+														control={form.control}
+														name="f_date_shipped"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Shipping</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+													<FormField
+														control={form.control}
+														name="f_date_delivered"
+														render={({ field }) => (
+															<FormItem className="flex flex-col">
+																<FormLabel>Date Delivered</FormLabel>
+																{FieldDate({ field })}
+																<FormMessage />
+															</FormItem>
+														)}
+													/>
+												</div>
 											)}
-										/>
-										<FormField
-											control={form.control}
-											name="f_date_delivered"
-											render={({ field }) => (
-												<FormItem className="flex flex-col">
-													<FormLabel>Date Delivered</FormLabel>
-													{FieldDate({ field })}
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-									</div>
-									<OrderAttributeMain
-										data={data}
-										permission={true}
-										tab={isTab}
-										orderPermission={orderPermission}
-									/>
-									<OrderAttributeGroup
-										data={data}
-										permission={true}
-										tab={isTab}
-										orderPermission={orderPermission}
-									/>
-								</TabsContent>
+											<OrderAttributeMain
+												data={data}
+												permission={true}
+												tab={isTab}
+												orderPermission={orderPermission}
+											/>
+											<OrderAttributeGroup
+												data={data}
+												permission={true}
+												tab={isTab}
+												orderPermission={orderPermission}
+											/>
+										</TabsContent>
+									)
+								})}
 
 								<TabsContent
 									value="user_product"
