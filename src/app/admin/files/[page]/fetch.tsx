@@ -178,11 +178,6 @@ export default function Fetch(props: any) {
 			// This might be complex if the file is already in Supabase storage
 			// Consider if removal should only happen before upload or trigger a delete action
 			console.log("Remove file:", file.name);
-			// Show ant-upload ant-upload-btn
-			const uploadBtn = document.querySelector(".ant-upload-drag");
-			if (uploadBtn) {
-				(uploadBtn as HTMLElement).style.display = "block"; // Show the upload button
-			}
 			// Default behavior removes from list; add delete logic if needed
 			// await actions.deleteRecord(file.uid); // Example: Requires mapping uid to your record ID
 		},
