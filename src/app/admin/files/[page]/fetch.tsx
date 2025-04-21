@@ -280,6 +280,7 @@ export default function Fetch(props: any) {
 							if (event === "edit") {
 								setDrawerState({ isOpen: true, data });
 							}
+							fetchData(); // Refetch data after delete
 							// Delete is handled by the button in the drawer now
 						}}
 						columns={[
