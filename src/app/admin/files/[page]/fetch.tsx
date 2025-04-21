@@ -202,7 +202,7 @@ export default function Fetch(props: any) {
 				variant="outline"
 				size="icon"
 				onClick={handleDrawerClose}
-				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400">
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200">
 				<X className="h-5 w-5" />
 			</Button>
 		</div>

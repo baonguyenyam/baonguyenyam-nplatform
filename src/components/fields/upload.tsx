@@ -121,24 +121,27 @@ export function FieldUpload(props: any) {
 			)}
 			<FormControl>
 				<div className="flex flex-col gap-4 w-full">
+					{/* --- Upload Dragger --- */}
+					{/* --- Updated Upload Dragger --- */}
+					{/* --- Upload Dragger --- */}
 					{/* --- Updated Upload Dragger --- */}
 					<div className="overflow-auto pb-2" id="upload">
 						<Upload.Dragger {...uploadProps} style={{ maxHeight: "150px" }}>
 							{isUploading ? (
 								// --- Show loading indicator when uploading ---
 								<div className="flex flex-col items-center justify-center h-full py-4">
-									<Loader2 className="mx-auto h-12 w-12 text-gray-400 animate-spin" />
-									<p className="ant-upload-text mt-2">Uploading...</p>
-									<p className="ant-upload-hint">Please wait.</p>
+									<Loader2 className="mx-auto h-12 w-12 text-gray-400 animate-spin dark:text-gray-200!" />
+									<p className="ant-upload-text mt-2 text-gray-400 dark:text-gray-200!">Uploading...</p>
+									<p className="ant-upload-hint text-gray-400 dark:text-gray-200!">Please wait.</p>
 								</div>
 							) : (
 								// --- Show default content when not uploading ---
 								<>
 									<p className="ant-upload-drag-icon">
-										<Inbox className="mx-auto h-12 w-12 text-gray-400" />
+										<Inbox className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-200!" />
 									</p>
-									<p className="ant-upload-text">Click or drag file to this area to upload</p>
-									<p className="ant-upload-hint">Support for single or bulk upload.</p>
+									<p className="ant-upload-text text-gray-400 dark:text-gray-200!">Click or drag file to this area to upload</p>
+									<p className="ant-upload-hint text-gray-400 dark:text-gray-200!">Support for single or bulk upload.</p>
 								</>
 							)}
 						</Upload.Dragger>
