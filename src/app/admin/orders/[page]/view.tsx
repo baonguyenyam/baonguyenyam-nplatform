@@ -1,9 +1,7 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import AppLoading from "@/components/AppLoading";
-import { ImageList } from "@/components/fields/imagelist";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
-import { checkAllObjectEmpty, convertStringToJson, dateFormat, removeUnderscoreAndDash } from "@/lib/utils";
 
 import AttributeDetail from "./view/attribute_detail";
 import AttributeMisc from "./view/attribute_misc";

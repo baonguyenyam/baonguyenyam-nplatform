@@ -168,7 +168,7 @@ export default function FormEdit(props: any) {
 				}),
 			},
 			files: {
-				connect: imgs ? imgs.map((item: any) => ({ id: item?.data[0]?.id })) : undefined,
+				connect: imgs ? imgs.map((item: any) => ({ id: item?.id })) : undefined,
 			},
 			data: JSON.stringify(attrs),
 		};
@@ -206,6 +206,7 @@ export default function FormEdit(props: any) {
 		const res = await actions.getRecord(id);
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
+			setImgs(res?.data?.files || []);
 			form.reset({
 				f_title: res?.data?.title || "",
 				f_content: res?.data?.content || "",
@@ -332,16 +333,12 @@ export default function FormEdit(props: any) {
 									<FormLabel>Upload Image</FormLabel>
 									{FieldUpload({
 										field,
-										data,
+										data: imgs,
 										accept: appState.ACCEPTED_IMG_FILE_TYPES,
 										onChange: (e: any) => {
 											field.onChange(e[0]?.data[0]?.url);
 											setThumbnail(e[0]?.data[0]?.url);
-											setImgs((prev: any) => [...prev, e[0]]);
-											setData((prev: any) => ({
-												...prev,
-												files: [...prev?.files, ...e[0]?.data],
-											}));
+											setImgs((prev: any) => [...prev, e[0]?.data[0]]);
 										},
 									})}
 								</FormItem>
@@ -357,7 +354,7 @@ export default function FormEdit(props: any) {
 								className="mt-4">
 								{ImageList({
 									role,
-									data: data,
+									data: imgs,
 									thumbnail,
 									setThumbnail,
 									fetchData,

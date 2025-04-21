@@ -188,7 +188,7 @@ export default function AttributeDetail(props: any) {
 				<h2 className="text-lg font-bold mb-5">Images</h2>
 				{ImageList({
 					role,
-					data: data,
+					data: data?.files,
 					thumbnail,
 					setThumbnail,
 					fetchData,

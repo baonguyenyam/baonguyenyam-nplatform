@@ -34,7 +34,7 @@ export function FieldUpload(props: any) {
 		fileList: uploadDialogState.fileList,
 		// Accept file types
 		accept: accept?.join(","),
-		showUploadList: defaultValues.preview ? true : false,
+		showUploadList: preview ? true : false,
 		// Use customRequest to handle the upload via your utility
 		customRequest: async ({ file, onSuccess, onError }) => {
 			try {
@@ -83,7 +83,7 @@ export function FieldUpload(props: any) {
 
 	return (
 		<div className="flex gap-4">
-			{(preview || !defaultValues.multiple) && (
+			{thumbnail && (
 				<div id="previewimg">
 					<AppImage
 						src={data?.image ? data?.image : thumbnail}

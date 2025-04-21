@@ -233,7 +233,7 @@ export default function FormEdit() {
 													{FieldUpload({
 														field,
 														data,
-														thumbnail,
+														thumbnail: true,
 														multiple: false,
 														preview: false,
 														accept: appState.ACCEPTED_IMG_FILE_TYPES,

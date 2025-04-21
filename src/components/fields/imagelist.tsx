@@ -17,13 +17,13 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 
 	return (
 		<>
-			{data && data.files && data.files.length > 0 ? (
+			{data && data.length > 0 ? (
 				<div className="gallery">
 					<LightGallery
 						speed={500}
 						plugins={[lgZoom]}
 						elementClassNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-						{data.files.map((item: any) => (
+						{data.map((item: any) => (
 							<Link
 								key={item.id}
 								href={item.url}
