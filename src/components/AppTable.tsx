@@ -357,9 +357,9 @@ export default function AppTable(props: any) {
 									<TableRow
 										key={headerGroup.id}
 										className="h-8 dark:border-gray-600">
-										{headerGroup.headers.map((header) => (
+										{headerGroup.headers.map((header, index) => (
 											<TableHead
-												key={header.id}
+												key={index}
 												className={cn("px-2 first:w-7 last:w-15 last:text-right bg-gray-50 dark:bg-gray-800 dark:text-gray-200", (header.column.columnDef.meta as any)?.className)}>
 												{header.isPlaceholder ? null : (
 													<div
@@ -387,9 +387,9 @@ export default function AppTable(props: any) {
 								<TableRow
 									key={row.id}
 									className={cn("h-8 hover:bg-muted dark:hover:bg-gray-800 dark:border-gray-800", row.getIsSelected() && "bg-muted dark:bg-gray-800 dark:border-gray-900")}>
-									{row.getVisibleCells().map((cell) => (
+									{row.getVisibleCells().map((cell, index) => (
 										<TableCell
-											key={cell.id}
+											key={index}
 											className={cn("px-2 first:w-7 last:w-15 last:text-right", (cell.column.columnDef.meta as any)?.className)}>
 											<div className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
 										</TableCell>
