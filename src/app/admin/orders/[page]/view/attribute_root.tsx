@@ -52,7 +52,7 @@ export default function AttributeRoot(props: any) {
 	useEffect(() => {
 		if (data?.data_main) {
 			try {
-				const parsedData = JSON.parse(data.data_main);
+				const parsedData = JSON.parse(data?.data_main);
 				// Check if it's the new grouped structure or the old flat structure
 				if (Array.isArray(parsedData) && parsedData.length > 0 && parsedData[0]?.attributes !== undefined) {
 					// New grouped structure

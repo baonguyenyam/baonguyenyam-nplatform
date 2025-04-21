@@ -56,6 +56,7 @@ export default function View() {
 
 						return {
 							id: child.id,
+							title: child.title,
 							permission: enumOrderType.map((type) => {
 								// Find the specific permission type (e.g., 'view', 'edit')
 								const existingTypePermission = existingChildPermission?.permission?.find((perm: any) => perm.key === type.value);

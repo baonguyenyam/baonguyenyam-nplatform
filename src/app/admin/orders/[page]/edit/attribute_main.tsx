@@ -61,7 +61,7 @@ export default function OrderAttributeMain(props: any) {
 		let initialAttributes: AttributeInstance[] = [];
 		if (data?.data_main) {
 			try {
-				const parsedData = JSON.parse(data.data_main);
+				const parsedData = JSON.parse(data?.data_main);
 				if (Array.isArray(parsedData)) {
 					// Check if it's the old group structure
 					if (parsedData.length > 0 && parsedData[0]?.attributes !== undefined && Array.isArray(parsedData[0].attributes)) {
@@ -85,7 +85,7 @@ export default function OrderAttributeMain(props: any) {
 		}
 		setAttributes(initialAttributes);
 		setSavedAttributes(initialAttributes); // Initialize saved state
-	}, [data.data_main]); // Re-run only when the input data changes
+	}, [data?.data_main]); // Re-run only when the input data changes
 
 	// --- Derived State ---
 
@@ -162,7 +162,7 @@ export default function OrderAttributeMain(props: any) {
 	// --- State Update Handlers (using Immer for immutability) ---
 
 	const handleSelectAttribute = (attributeDefinition: any) => {
-		if (permission) return; // Don't allow changes if read-only
+		// Don't allow changes if read-only
 
 		const newAttributeInstance: AttributeInstance = {
 			title: attributeDefinition.title,
@@ -190,7 +190,7 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleAddAttributeRow = (attributeId: string) => {
-		if (permission) return;
+
 
 		const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeId);
 		if (!attributeDefinition || !attributeDefinition.children) {
@@ -220,7 +220,7 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDuplicateAttributeRow = (attributeId: string, rowIndex: number) => {
-		if (permission) return;
+
 
 		// Calculate next state
 		const nextAttributes = produce(attributes, (draft) => {
@@ -239,7 +239,7 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDeleteAttributeRow = (attributeId: string, rowIndex: number) => {
-		if (permission) return;
+
 		if (!confirm("Are you sure you want to remove this row?")) return;
 
 		// Calculate next state
@@ -257,7 +257,7 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
-		if (permission) return;
+
 		const attributeToDelete = attributes.find((a) => a.id === attributeId);
 		if (!confirm(`Are you sure you want to remove the entire "${attributeToDelete?.title}" attribute section?`)) return;
 
@@ -276,8 +276,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleUpdateFieldValue = (attributeId: string, rowIndex: number, fieldIndex: number, newValue: any) => {
-		if (permission) return;
-
 		// Calculate next state
 		const nextAttributes = produce(attributes, (draft) => {
 			const attribute = draft.find((attr) => attr.id === attributeId);
@@ -293,8 +291,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleUpdateCheckboxValue = (attributeId: string, rowIndex: number, fieldIndex: number, selectedMetaItem: any, add: boolean) => {
-		if (permission) return;
-
 		let showToast = false; // Flag to prevent saving if toast is shown
 
 		// Calculate next state
