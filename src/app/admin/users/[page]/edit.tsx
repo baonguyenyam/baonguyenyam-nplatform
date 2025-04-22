@@ -10,6 +10,7 @@ import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { enumPermission, enumPublished, enumUserPermission } from "@/lib/enum";
@@ -115,7 +116,7 @@ export default function FormEdit(props: any) {
 			country: values.f_country,
 			zip: values.f_zip,
 			data: JSON.stringify(attrs),
-			permissions: JSON.stringify(values.f_permissions),
+			permissions: values.f_permissions,
 		};
 		if (data) {
 			const update = await actions.updateRecord(id, _body);
@@ -419,32 +420,69 @@ export default function FormEdit(props: any) {
 								<FormField
 									control={form.control}
 									name="f_permissions"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Permission</FormLabel>
-											{/* {FieldSelect({
-												field,
-												data: enumUserPermission.map((item: any) => ({
-													id: item.value,
-													name: item.label,
-												})),
-											})} */}
-											{/* <FormControl> */}
-											{enumUserPermission.map((item: any) => {
-												return (
-													<Input
-														key={item.id}
-														type="checkbox"
-														{...field}
-														defaultChecked={field.value === item.value}
-													/>
-												)
-											})}
-											{/* </FormControl> */}
-
-											<FormMessage />
-										</FormItem>
-									)}
+									render={({ field }) => {
+										const permissions = JSON.parse(field?.value || "[]") ?? [];
+										return (
+											<FormItem>
+												<FormLabel>Permission</FormLabel>
+												<div className="flex flex-col gap-4">
+													{enumUserPermission.map((item: any, index: any) => {
+														return (
+															<Fragment key={index}>
+																<div className="flex flex-col">
+																	<div className="item flex items-center gap-1">
+																		<Switch
+																			id={item.value}
+																			checked={permissions.includes(item.value)}
+																			onCheckedChange={(checked) => {
+																				if (checked) {
+																					permissions.push(item.value);
+																					field.onChange(JSON.stringify(permissions));
+																				} else {
+																					const _permissions = permissions.filter((i: any) => i !== item.value);
+																					field.onChange(JSON.stringify(_permissions));
+																				}
+																			}}
+																		/>
+																		<label htmlFor={item.value}>{item.label}</label>
+																	</div>
+																	{item.children && (
+																		<div className="ml-9 mt-2">
+																			<div className="flex items-center flex-wrap gap-3">
+																				{item.children?.map((child: any, index: any) => {
+																					return (
+																						<Fragment key={index}>
+																							<div className="item flex items-center gap-1">
+																								<Switch
+																									id={child.value}
+																									checked={permissions.includes(item.value + '_' + child.value)}
+																									onCheckedChange={(checked) => {
+																										if (checked) {
+																											permissions.push(item.value + '_' + child.value);
+																											field.onChange(JSON.stringify(permissions));
+																										} else {
+																											const _permissions = permissions.filter((i: any) => i !== item.value + '_' + child.value);
+																											field.onChange(JSON.stringify(_permissions));
+																										}
+																									}}
+																								/>
+																								<label htmlFor={child.value}>{item.label} {child.label}</label>
+																							</div>
+																						</Fragment>
+																					);
+																				})}
+																			</div>
+																		</div>
+																	)}
+																</div>
+															</Fragment>
+														)
+													})}
+												</div>
+												<FormMessage />
+											</FormItem>
+										);
+									}}
 								/>
 							</>
 						)}
@@ -474,8 +512,9 @@ export default function FormEdit(props: any) {
 							</Button>
 						</div>
 					</form>
-				</Form>
-			)}
+				</Form >
+			)
+			}
 		</>
 	);
 }

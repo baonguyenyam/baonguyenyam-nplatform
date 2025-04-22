@@ -201,10 +201,22 @@ export const enumUserPermission = [
 		label: "Orders",
 		value: "orders",
 		children: [
-			enumOrderType.map((item) => ({
-				label: item.label,
-				value: item.value,
-			})),
+			{
+				label: "Shipping",
+				value: "shipping",
+			},
+			{
+				label: "Payment",
+				value: "payment",
+			},
+			{
+				label: "Product",
+				value: "product",
+			},
+			{
+				label: "Package",
+				value: "package",
+			},
 			{
 				label: "General",
 				value: "general",
@@ -262,11 +274,7 @@ export const enumUserPermission = [
 			{
 				label: "Meta",
 				value: "meta",
-			},
-			{
-				label: "Mapping",
-				value: "mapping",
-			},
+			}
 		],
 	},
 ]
