@@ -3,9 +3,9 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { meta } from "@/lib/appConst";
+import { permissionsCheck, rolesCheck } from "@/lib/utils";
 
 import Fetch from "./[page]/fetch";
-import { permissionsCheck, rolesCheck } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	...meta({
