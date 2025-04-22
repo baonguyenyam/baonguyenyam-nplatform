@@ -200,4 +200,20 @@ export const formatBytes = (bytes: number) => {
 	if (bytes === 0) return "0 Byte";
 	const i = parseInt(String(Math.floor(Math.log(bytes) / Math.log(1024))));
 	return `${Math.round(bytes / Math.pow(1024, i))} ${sizes[i]}`;
-}
+};
+
+export const rolesCheck = (role: any, acceptRole: string[]) => {
+	if (role && acceptRole.includes(role)) {
+		return true;
+	}
+	return false;
+};
+
+export const permissionsCheck = (permissions: any, permission: string) => {
+	const checkPermissions = JSON.parse(typeof permissions === "string" ? permissions : JSON.stringify(permissions || []));
+
+	if (checkPermissions && checkPermissions.includes(permission)) {
+		return true;
+	}
+	return false;
+};

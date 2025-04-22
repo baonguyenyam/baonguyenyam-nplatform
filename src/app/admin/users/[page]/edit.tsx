@@ -455,18 +455,20 @@ export default function FormEdit(props: any) {
 																							<div className="item flex items-center gap-1">
 																								<Switch
 																									id={child.value}
-																									checked={permissions.includes(item.value + '_' + child.value)}
+																									checked={permissions.includes(item.value + "_" + child.value)}
 																									onCheckedChange={(checked) => {
 																										if (checked) {
-																											permissions.push(item.value + '_' + child.value);
+																											permissions.push(item.value + "_" + child.value);
 																											field.onChange(JSON.stringify(permissions));
 																										} else {
-																											const _permissions = permissions.filter((i: any) => i !== item.value + '_' + child.value);
+																											const _permissions = permissions.filter((i: any) => i !== item.value + "_" + child.value);
 																											field.onChange(JSON.stringify(_permissions));
 																										}
 																									}}
 																								/>
-																								<label htmlFor={child.value}>{item.label} {child.label}</label>
+																								<label htmlFor={child.value}>
+																									{item.label} {child.label}
+																								</label>
 																							</div>
 																						</Fragment>
 																					);
@@ -476,7 +478,7 @@ export default function FormEdit(props: any) {
 																	)}
 																</div>
 															</Fragment>
-														)
+														);
 													})}
 												</div>
 												<FormMessage />
@@ -512,9 +514,8 @@ export default function FormEdit(props: any) {
 							</Button>
 						</div>
 					</form>
-				</Form >
-			)
-			}
+				</Form>
+			)}
 		</>
 	);
 }

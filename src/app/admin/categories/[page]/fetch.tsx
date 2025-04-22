@@ -181,7 +181,8 @@ export default function Fetch(props: any) {
 					page={page}
 					pageSize={pageSize}
 					// Update onChange handler to use setDrawerState
-					onChange={(event: string, data: Category) => { // Use Category type
+					onChange={(event: string, data: Category) => {
+						// Use Category type
 						if (event === "edit") {
 							setDrawerState({ mode: "edit", data });
 						}
@@ -195,7 +196,8 @@ export default function Fetch(props: any) {
 						{
 							header: "Title",
 							accessor: "title",
-							custom: (row: Category) => { // Use Category type
+							custom: (row: Category) => {
+								// Use Category type
 								return (
 									<>
 										<div className="flex items-center space-x-1">
@@ -224,7 +226,8 @@ export default function Fetch(props: any) {
 						{
 							header: "Type",
 							accessor: "type",
-							custom: (row: Category) => { // Use Category type
+							custom: (row: Category) => {
+								// Use Category type
 								const typeInfo = enumType.find((item: any) => item.value === row.type);
 								return <span className={`text-sm`}>{typeInfo?.label || row.type || "-"}</span>; // Display label or value
 							},
@@ -232,7 +235,8 @@ export default function Fetch(props: any) {
 						{
 							header: "Edit",
 							accessor: "edit", // Keep accessor if needed for table internals
-							custom: (row: Category) => { // Use Category type
+							custom: (row: Category) => {
+								// Use Category type
 								return (
 									<Button
 										variant="outline" // Use standard variants
@@ -250,7 +254,7 @@ export default function Fetch(props: any) {
 						{ value: "title", label: "Order by Title" },
 						{ value: "type", label: "Order by Type" },
 					]}
-					filter={enumType.map(item => ({ value: item.value, label: item.label }))} // Ensure filter uses value/label format
+					filter={enumType.map((item) => ({ value: item.value, label: item.label }))} // Ensure filter uses value/label format
 				/>
 			)}
 			{/* Single Drawer Component */}

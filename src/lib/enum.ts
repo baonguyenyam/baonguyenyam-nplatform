@@ -237,7 +237,7 @@ export const enumUserPermission = [
 				label: "Advanced",
 				value: "advanced",
 			},
-		]
+		],
 	},
 	{
 		label: "Products",
@@ -274,7 +274,7 @@ export const enumUserPermission = [
 			{
 				label: "Meta",
 				value: "meta",
-			}
+			},
 		],
 	},
-]
+];

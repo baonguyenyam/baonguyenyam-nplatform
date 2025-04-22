@@ -182,7 +182,9 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 								control={form.control}
 								name="f_published"
 								render={({ field }) => (
-									<FormItem className="w-32"> {/* Adjust width as needed */}
+									<FormItem className="w-32">
+										{" "}
+										{/* Adjust width as needed */}
 										{FieldSelect({
 											field,
 											placeholder: "Status", // Add placeholder

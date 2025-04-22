@@ -325,7 +325,6 @@ export default function FormEdit(props: any) {
 							)}
 						/>
 
-
 						<Tabs defaultValue="file">
 							<TabsList className="w-full">
 								<TabsTrigger value="file">Files</TabsTrigger>

@@ -241,8 +241,12 @@ export default function Fetch(props: any) {
 						<DialogHeader>
 							<DialogTitle>Upload {title}</DialogTitle>
 						</DialogHeader>
-						<div className="overflow-auto py-2" id="upload">
-							<Upload.Dragger {...uploadProps} style={{ maxHeight: "150px" }}>
+						<div
+							className="overflow-auto py-2"
+							id="upload">
+							<Upload.Dragger
+								{...uploadProps}
+								style={{ maxHeight: "150px" }}>
 								<p className="ant-upload-drag-icon">
 									<Inbox className="mx-auto h-12 w-12 text-gray-400" />
 								</p>
@@ -256,133 +260,136 @@ export default function Fetch(props: any) {
 						</DialogFooter> */}
 					</DialogContent>
 				</Dialog>
-			</div >
+			</div>
 
-			{loading && <AppLoading />
-			}
-			{
-				!loading && (
-					<AppTable
-						actions={actions}
-						// Use optional chaining and provide default empty array/zero count
-						data={db?.data || []}
-						count={db?.count || 0}
-						url={`/admin/files`} // Correct URL
-						page={page}
-						pageSize={pageSize}
-						// Update onChange handler to use setDrawerState for editing
-						onChange={(event: string, data: FileData) => { // Use FileData type
-							if (event === "edit") {
-								setDrawerState({ isOpen: true, data });
-							}
-							fetchData(); // Refetch data after delete
-							// Delete is handled by the button in the drawer now
-						}}
-						columns={[
-							{
-								header: "Image",
-								accessor: "url", // Sort/filter by URL if needed
-								className: "w-20",
-								custom: (row: FileData) => { // Use FileData type
-									return (
-										<AppImage
-											src={row.url}
-											width={60} // Adjust size
-											height={40} // Adjust size
-											alt={row.alt || row.name} // Use alt text if available
-											className="h-10 w-auto max-w-[60px] rounded object-cover border border-gray-200"
-										/>
-									);
-								},
+			{loading && <AppLoading />}
+			{!loading && (
+				<AppTable
+					actions={actions}
+					// Use optional chaining and provide default empty array/zero count
+					data={db?.data || []}
+					count={db?.count || 0}
+					url={`/admin/files`} // Correct URL
+					page={page}
+					pageSize={pageSize}
+					// Update onChange handler to use setDrawerState for editing
+					onChange={(event: string, data: FileData) => {
+						// Use FileData type
+						if (event === "edit") {
+							setDrawerState({ isOpen: true, data });
+						}
+						fetchData(); // Refetch data after delete
+						// Delete is handled by the button in the drawer now
+					}}
+					columns={[
+						{
+							header: "Image",
+							accessor: "url", // Sort/filter by URL if needed
+							className: "w-20",
+							custom: (row: FileData) => {
+								// Use FileData type
+								return (
+									<AppImage
+										src={row.url}
+										width={60} // Adjust size
+										height={40} // Adjust size
+										alt={row.alt || row.name} // Use alt text if available
+										className="h-10 w-auto max-w-[60px] rounded object-cover border border-gray-200"
+									/>
+								);
 							},
-							{
-								header: "Name",
-								accessor: "name",
-								custom: (row: FileData) => { // Use FileData type
-									return (
-										<>
-											<div className="flex items-center space-x-1">
-												{row.published ? (
-													<span className="text-green-800 font-semibold">
-														<CircleCheck className="w-4 h-4" />
-													</span>
-												) : (
-													<span className="text-red-800 font-semibold">
-														<X className="w-4 h-4" />
-													</span>
-												)}
-												{/* Use text-sm for consistency */}
-												<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-[200px]">{row.name}</span>
-											</div>
-											<div className="text-gray-500 text-xs">{dateFormat(row?.createdAt || "")}</div>
-										</>
-									);
-								},
-							},
-							{
-								header: "URL",
-								accessor: "url",
-								custom: (row: FileData) => { // Use FileData type
-									return (
-										<div className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
-											<Input
-												value={row.url}
-												className="h-7 px-2 py-1 text-xs" // Smaller input
-												readOnly
-												onClick={(e) => {
-													navigator.clipboard.writeText(row.url);
-													toast.info("URL copied to clipboard");
-													e.currentTarget.select(); // Select text on click
-												}}
-											/>
+						},
+						{
+							header: "Name",
+							accessor: "name",
+							custom: (row: FileData) => {
+								// Use FileData type
+								return (
+									<>
+										<div className="flex items-center space-x-1">
+											{row.published ? (
+												<span className="text-green-800 font-semibold">
+													<CircleCheck className="w-4 h-4" />
+												</span>
+											) : (
+												<span className="text-red-800 font-semibold">
+													<X className="w-4 h-4" />
+												</span>
+											)}
+											{/* Use text-sm for consistency */}
+											<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-[200px]">{row.name}</span>
 										</div>
-									);
-								},
+										<div className="text-gray-500 text-xs">{dateFormat(row?.createdAt || "")}</div>
+									</>
+								);
 							},
-							{
-								header: "Size",
-								accessor: "size",
-								custom: (row: FileData) => { // Use FileData type
-									return <span className="text-sm">{formatBytes(row.size)}</span>; // Use utility
-								},
+						},
+						{
+							header: "URL",
+							accessor: "url",
+							custom: (row: FileData) => {
+								// Use FileData type
+								return (
+									<div className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
+										<Input
+											value={row.url}
+											className="h-7 px-2 py-1 text-xs" // Smaller input
+											readOnly
+											onClick={(e) => {
+												navigator.clipboard.writeText(row.url);
+												toast.info("URL copied to clipboard");
+												e.currentTarget.select(); // Select text on click
+											}}
+										/>
+									</div>
+								);
 							},
-							{
-								header: "Extension",
-								accessor: "ext",
-								custom: (row: FileData) => <span className="text-sm">{row.ext}</span>,
+						},
+						{
+							header: "Size",
+							accessor: "size",
+							custom: (row: FileData) => {
+								// Use FileData type
+								return <span className="text-sm">{formatBytes(row.size)}</span>; // Use utility
 							},
-							{
-								header: "User",
-								accessor: "user.name", // Access nested property for sorting/filtering
-								custom: (row: FileData) => <span className="text-sm">{row.user?.name || "-"}</span>,
+						},
+						{
+							header: "Extension",
+							accessor: "ext",
+							custom: (row: FileData) => <span className="text-sm">{row.ext}</span>,
+						},
+						{
+							header: "User",
+							accessor: "user.name", // Access nested property for sorting/filtering
+							custom: (row: FileData) => <span className="text-sm">{row.user?.name || "-"}</span>,
+						},
+						{
+							header: "Edit",
+							accessor: "edit", // Keep accessor if needed for table internals
+							custom: (row: FileData) => {
+								// Use FileData type
+								return (
+									<Button
+										variant="outline" // Use standard variants
+										size="icon"
+										className="h-7 w-7 border-gray-400 text-black hover:bg-gray-200" // Simplified styling
+										onClick={() => setDrawerState({ isOpen: true, data: row })}>
+										<Pencil className="h-4 w-4" /> {/* Consistent icon size */}
+									</Button>
+								);
 							},
-							{
-								header: "Edit",
-								accessor: "edit", // Keep accessor if needed for table internals
-								custom: (row: FileData) => { // Use FileData type
-									return (
-										<Button
-											variant="outline" // Use standard variants
-											size="icon"
-											className="h-7 w-7 border-gray-400 text-black hover:bg-gray-200" // Simplified styling
-											onClick={() => setDrawerState({ isOpen: true, data: row })}>
-											<Pencil className="h-4 w-4" /> {/* Consistent icon size */}
-										</Button>
-									);
-								},
-							},
-						]}
-						order={[
-							{ value: "createdAt", label: "Order by Date" },
-							{ value: "name", label: "Order by Name" },
-							{ value: "size", label: "Order by Size" },
-							{ value: "ext", label: "Order by Extension" },
-							{ value: "user.name", label: "Order by User" },
-						]}
+						},
+					]}
+					order={[
+						{ value: "createdAt", label: "Order by Date" },
+						{ value: "name", label: "Order by Name" },
+						{ value: "size", label: "Order by Size" },
+						{ value: "ext", label: "Order by Extension" },
+						{ value: "user.name", label: "Order by User" },
+					]}
 					// filter={...} // Add filters if needed (e.g., by extension, user)
-					/>
-				)
-			}
+				/>
+			)}
 			{/* Single Drawer Component for Editing */}
 			<Drawer
 				title={`Edit ${title}`}

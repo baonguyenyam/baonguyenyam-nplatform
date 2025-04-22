@@ -181,7 +181,8 @@ export default function Fetch(props: any) {
 					page={page}
 					pageSize={pageSize}
 					// Update onChange handler to use setDrawerState
-					onChange={(event: string, data: Vendor) => { // Use Vendor type
+					onChange={(event: string, data: Vendor) => {
+						// Use Vendor type
 						if (event === "edit") {
 							setDrawerState({ mode: "edit", data });
 						}
@@ -195,7 +196,8 @@ export default function Fetch(props: any) {
 						{
 							header: "Name",
 							accessor: "name",
-							custom: (row: Vendor) => { // Use Vendor type
+							custom: (row: Vendor) => {
+								// Use Vendor type
 								return (
 									<>
 										<div className="flex items-center space-x-1">
@@ -219,9 +221,12 @@ export default function Fetch(props: any) {
 						{
 							header: "Email/Phone",
 							accessor: "email", // Primary accessor for sorting/filtering if needed
-							custom: (row: Vendor) => { // Use Vendor type
+							custom: (row: Vendor) => {
+								// Use Vendor type
 								return (
-									<div className="flex flex-col text-sm"> {/* Use text-sm */}
+									<div className="flex flex-col text-sm">
+										{" "}
+										{/* Use text-sm */}
 										<span>{row?.email || "-"}</span> {/* Handle undefined */}
 										<span>{row?.phone || "-"}</span> {/* Handle undefined */}
 									</div>
@@ -231,11 +236,14 @@ export default function Fetch(props: any) {
 						{
 							header: "Address",
 							accessor: "address", // Primary accessor
-							custom: (row: Vendor) => { // Use Vendor type
+							custom: (row: Vendor) => {
+								// Use Vendor type
 								// Combine address parts safely
 								const addressParts = [row?.address, row?.city, row?.state, row?.country].filter(Boolean);
 								return (
-									<div className="space-x-1 text-sm"> {/* Use text-sm */}
+									<div className="space-x-1 text-sm">
+										{" "}
+										{/* Use text-sm */}
 										<span>{addressParts.length > 0 ? addressParts.join(", ") : "-"}</span>
 									</div>
 								);
@@ -244,7 +252,8 @@ export default function Fetch(props: any) {
 						{
 							header: "Edit",
 							accessor: "edit", // Keep accessor if needed for table internals
-							custom: (row: Vendor) => { // Use Vendor type
+							custom: (row: Vendor) => {
+								// Use Vendor type
 								return (
 									<Button
 										variant="outline" // Use standard variants

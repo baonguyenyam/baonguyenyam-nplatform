@@ -190,8 +190,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleAddAttributeRow = (attributeId: string) => {
-
-
 		const attributeDefinition = availableAttributeDefinitions.find((att: any) => att.id === attributeId);
 		if (!attributeDefinition || !attributeDefinition.children) {
 			toast.error("Attribute definition not found or has no fields.");
@@ -220,8 +218,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDuplicateAttributeRow = (attributeId: string, rowIndex: number) => {
-
-
 		// Calculate next state
 		const nextAttributes = produce(attributes, (draft) => {
 			const attribute = draft.find((attr) => attr.id === attributeId);
@@ -239,7 +235,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDeleteAttributeRow = (attributeId: string, rowIndex: number) => {
-
 		if (!confirm("Are you sure you want to remove this row?")) return;
 
 		// Calculate next state
@@ -257,7 +252,6 @@ export default function OrderAttributeMain(props: any) {
 	};
 
 	const handleDeleteAttributeInstance = (attributeId: string) => {
-
 		const attributeToDelete = attributes.find((a) => a.id === attributeId);
 		if (!confirm(`Are you sure you want to remove the entire "${attributeToDelete?.title}" attribute section?`)) return;
 
@@ -475,7 +469,7 @@ export default function OrderAttributeMain(props: any) {
 																			}}
 																			type={fieldType === "number" ? "number" : "text"}
 																			disabled={!orderPermissionItem} // Disable if permission is not granted
-																		// placeholder={field.title}
+																			// placeholder={field.title}
 																		/>
 																	)}
 																	{fieldType === "date" && (
@@ -488,7 +482,7 @@ export default function OrderAttributeMain(props: any) {
 																			}}
 																			type="date"
 																			disabled={!orderPermissionItem} // Disable if permission is not granted
-																		// placeholder={field.title}
+																			// placeholder={field.title}
 																		/>
 																	)}
 																	{fieldType === "toggle" && (

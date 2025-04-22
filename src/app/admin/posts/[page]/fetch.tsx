@@ -252,8 +252,7 @@ export default function Fetch(props: any) {
 				onClose={handleDrawerClose}
 				destroyOnClose={true} // Keep this if form state needs resetting
 				maskClosable={false}
-				extra={renderDrawerExtra()}
-			>
+				extra={renderDrawerExtra()}>
 				{renderDrawerContent()}
 			</Drawer>
 		</>

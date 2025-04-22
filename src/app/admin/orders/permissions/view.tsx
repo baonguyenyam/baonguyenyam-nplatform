@@ -121,48 +121,62 @@ export default function View() {
 		return (
 			<div className="w-full overflow-auto">
 				{items && items.length > 0 ? (
-					items.map((item) => ( // Use the items passed to the function (which is permissionsState)
-						<div
-							key={item.id}
-							className="mb-4 text-sm gap-4">
-							<div className="mb-4">
-								<h3 className="text-xl font-semibold mb-2 flex items-center gap-2 border-b pb-2 mb-5">
-									<span>{item.title}</span>
-								</h3>
-								<div className="flex flex-row items-center gap-10 flex-wrap"> {/* Added flex-wrap */}
-									{item.children.map((child) => (
-										<div
-											key={child.id}
-											className="mb-5"> {/* Added margin-bottom */}
-											<div className="flex items-center gap-2 uppercase text-xs font-semibold"> {/* Made title bold */}
-												{child?.title}
+					items.map(
+						(
+							item, // Use the items passed to the function (which is permissionsState)
+						) => (
+							<div
+								key={item.id}
+								className="mb-4 text-sm gap-4">
+								<div className="mb-4">
+									<h3 className="text-xl font-semibold mb-2 flex items-center gap-2 border-b pb-2 mb-5">
+										<span>{item.title}</span>
+									</h3>
+									<div className="flex flex-row items-center gap-10 flex-wrap">
+										{" "}
+										{/* Added flex-wrap */}
+										{item.children.map((child) => (
+											<div
+												key={child.id}
+												className="mb-5">
+												{" "}
+												{/* Added margin-bottom */}
+												<div className="flex items-center gap-2 uppercase text-xs font-semibold">
+													{" "}
+													{/* Made title bold */}
+													{child?.title}
+												</div>
+												<div className="mt-2 flex flex-col space-y-2">
+													{" "}
+													{/* Increased space */}
+													{enumOrderType.map((type) => (
+														<div
+															className="flex items-center gap-2" // Keep items aligned
+															key={type.value}>
+															<Switch
+																id={`${item.id}-${child.id}-${type.value}`} // More specific ID
+																checked={getCheckedState(item.id, child.id, type.value)}
+																onCheckedChange={(checked) => {
+																	handlePermissionChange(item.id, child.id, type.value, checked);
+																}}
+															/>
+															<label
+																htmlFor={`${item.id}-${child.id}-${type.value}`}
+																className="text-xs cursor-pointer">
+																{" "}
+																{/* Added cursor-pointer */}
+																{type.label}
+															</label>
+														</div>
+													))}
+												</div>
 											</div>
-											<div className="mt-2 flex flex-col space-y-2"> {/* Increased space */}
-												{enumOrderType.map((type) => (
-													<div
-														className="flex items-center gap-2" // Keep items aligned
-														key={type.value}>
-														<Switch
-															id={`${item.id}-${child.id}-${type.value}`} // More specific ID
-															checked={getCheckedState(item.id, child.id, type.value)}
-															onCheckedChange={(checked) => {
-																handlePermissionChange(item.id, child.id, type.value, checked);
-															}}
-														/>
-														<label
-															htmlFor={`${item.id}-${child.id}-${type.value}`}
-															className="text-xs cursor-pointer"> {/* Added cursor-pointer */}
-															{type.label}
-														</label>
-													</div>
-												))}
-											</div>
-										</div>
-									))}
+										))}
+									</div>
 								</div>
 							</div>
-						</div>
-					))
+						),
+					)
 				) : (
 					<p>No attributes found for user.</p>
 				)}
@@ -220,7 +234,9 @@ export default function View() {
 				<div className="flex flex-col my-10">
 					{/* Pass the local state to the template function */}
 					{template(permissionsState)}
-					<div className="flex mt-6"> {/* Added margin-top */}
+					<div className="flex mt-6">
+						{" "}
+						{/* Added margin-top */}
 						<Button
 							className="px-4 py-2 inline-flex"
 							onClick={handleSaveChanges} // Use the new save handler

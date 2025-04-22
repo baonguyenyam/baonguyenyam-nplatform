@@ -452,7 +452,6 @@ export default function FormEdit(props: any) {
 												</FormItem>
 											)}
 										/>
-
 									</div>
 
 									<FormField
@@ -484,9 +483,7 @@ export default function FormEdit(props: any) {
 											</FormItem>
 										)}
 									/>
-
 								</TabsContent>
-
 
 								{enumOrderType.map((item: any, index: any) => {
 									return (
@@ -495,7 +492,7 @@ export default function FormEdit(props: any) {
 											value={item.value}
 											className="space-y-15">
 											{/* Shipping Only */}
-											{item?.value === 'shipping' && (
+											{item?.value === "shipping" && (
 												<div className="grid grid-cols-3 gap-15">
 													<FormField
 														control={form.control}
@@ -521,7 +518,7 @@ export default function FormEdit(props: any) {
 													/>
 												</div>
 											)}
-											{item?.value === 'payment' && (
+											{item?.value === "payment" && (
 												<div className="grid grid-cols-3 gap-15">
 													<FormField
 														control={form.control}
@@ -547,7 +544,7 @@ export default function FormEdit(props: any) {
 													/>
 												</div>
 											)}
-											{item?.value === 'product' && (
+											{item?.value === "product" && (
 												<div className="grid grid-cols-3 gap-15">
 													<FormField
 														control={form.control}
@@ -562,7 +559,7 @@ export default function FormEdit(props: any) {
 													/>
 												</div>
 											)}
-											{item?.value === 'package' && (
+											{item?.value === "package" && (
 												<div className="grid grid-cols-3 gap-15">
 													<FormField
 														control={form.control}
@@ -590,7 +587,7 @@ export default function FormEdit(props: any) {
 												orderPermission={orderPermission}
 											/>
 										</TabsContent>
-									)
+									);
 								})}
 
 								<TabsContent

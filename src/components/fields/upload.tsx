@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // Import React
 import type { UploadFile, UploadProps } from "antd";
-import { Spin,Upload } from "antd"; // Import Spin for loading indicator
+import { Spin, Upload } from "antd"; // Import Spin for loading indicator
 import { Inbox, Loader2 } from "lucide-react"; // Using Loader2 for a spinner icon
 import { toast } from "sonner";
 
@@ -35,10 +35,12 @@ export function FieldUpload(props: any) {
 		// Accept file types
 		accept: accept?.join(","),
 		// Keep showUploadList configuration as is or adjust as needed
-		showUploadList: preview ? {
-			showRemoveIcon: false,
-			showDownloadIcon: false,
-		} : false,
+		showUploadList: preview
+			? {
+					showRemoveIcon: false,
+					showDownloadIcon: false,
+				}
+			: false,
 		// Use customRequest to handle the upload via your utility
 		customRequest: async ({ file, onSuccess, onError }) => {
 			// --- Set uploading state to true when starting ---
@@ -86,14 +88,14 @@ export function FieldUpload(props: any) {
 			setUploadDialogState((prev) => ({ ...prev, fileList: info.fileList }));
 
 			// --- Update isUploading state based on the status of files in the list ---
-			const currentlyUploading = info.fileList.some(f => f.status === 'uploading');
+			const currentlyUploading = info.fileList.some((f) => f.status === "uploading");
 			setIsUploading(currentlyUploading);
 
 			// --- Handle final status messages (optional) ---
-			if (info.file.status === 'done') {
+			if (info.file.status === "done") {
 				// You could add a success toast here if not done in customRequest
 				// toast.success(`${info.file.name} file uploaded successfully`);
-			} else if (info.file.status === 'error') {
+			} else if (info.file.status === "error") {
 				// Error toast is already handled in customRequest's catch block
 				// toast.error(`${info.file.name} file upload failed.`);
 			}
@@ -103,7 +105,6 @@ export function FieldUpload(props: any) {
 			// Add delete logic here if needed when removing from the list
 		},
 	};
-
 
 	return (
 		<div className="flex gap-4">
@@ -125,8 +126,12 @@ export function FieldUpload(props: any) {
 					{/* --- Updated Upload Dragger --- */}
 					{/* --- Upload Dragger --- */}
 					{/* --- Updated Upload Dragger --- */}
-					<div className="overflow-auto pb-2" id="upload">
-						<Upload.Dragger {...uploadProps} style={{ maxHeight: "150px" }}>
+					<div
+						className="overflow-auto pb-2"
+						id="upload">
+						<Upload.Dragger
+							{...uploadProps}
+							style={{ maxHeight: "150px" }}>
 							{isUploading ? (
 								// --- Show loading indicator when uploading ---
 								<div className="flex flex-col items-center justify-center h-full py-4">
@@ -151,8 +156,8 @@ export function FieldUpload(props: any) {
 						id="previewimgList"
 						className="grid grid-cols-3 lg:grid-cols-5 gap-10"></div>
 				</div>
-			</FormControl >
+			</FormControl>
 			<FormMessage />
-		</div >
+		</div>
 	);
 }

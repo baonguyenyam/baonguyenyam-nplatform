@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 export default async function Index() {
 	const session = await auth();
-	const acceptRole = ["ADMIN", "MODERATOR"];
+
+	const acceptRole = ["ADMIN"];
 	const checkRole = session?.user?.role;
 
 	if (checkRole && !acceptRole.includes(checkRole)) {
