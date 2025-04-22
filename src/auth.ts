@@ -32,6 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 						name: user.name!,
 						emailVerified: new Date(),
 						role: "USER",
+						permissions: "[]",
 						avatar: user.image ? user.image : null,
 					});
 					// sendEmail
@@ -85,6 +86,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				token.id = existingUser.id;
 				token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 				token.role = existingUser.role;
+				token.permissions = existingUser.permissions;
 			}
 			return token;
 		},
@@ -94,6 +96,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				session.user.role = token.role as UserRole;
 				session.user.id = token.id as string;
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+				session.user.permissions = token.permissions as string[];
 			}
 			return session;
 		},
