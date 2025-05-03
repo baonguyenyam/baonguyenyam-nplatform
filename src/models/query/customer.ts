@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 // Get Customer by Email
 export const getCustomerByEmail = async (email: string) => {
 	try {
-		const customer = await db.customer.findFirst({
+		const customer = await db.customer.findUnique({
 			where: {
 				email,
 			},
