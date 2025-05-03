@@ -23,7 +23,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
-				return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+				return redirect(`${SIGNIN_ERROR_URL}?error=${error?.type}`);
 			}
 			throw error;
 		}
@@ -37,7 +37,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
-				return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+				return redirect(`${SIGNIN_ERROR_URL}?error=${error?.type}`);
 			}
 			throw error;
 		}
@@ -58,7 +58,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
-				return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+				return redirect(`${SIGNIN_ERROR_URL}?error=${error?.type}`);
 			}
 			throw error;
 		}
