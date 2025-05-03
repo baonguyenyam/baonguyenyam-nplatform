@@ -17,7 +17,7 @@ export function Form({ className, ...props }: React.ComponentPropsWithoutRef<"di
 			});
 		} catch (error) {
 			if (error instanceof AuthError) {
-				return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+				return redirect(`${SIGNIN_ERROR_URL}?error=${error}`);
 			}
 			throw error;
 		}
