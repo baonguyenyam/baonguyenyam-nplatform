@@ -27,7 +27,7 @@ export default function SignOutPage() {
 			});
 		} catch (error) {
 			if (error instanceof AuthError) {
-				return redirect(`${SIGNIN_ERROR_URL}?error=${error}`);
+				return redirect(`${SIGNIN_ERROR_URL}?error=WebAuthnVerificationError`);
 			}
 			throw error;
 		}
