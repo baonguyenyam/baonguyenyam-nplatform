@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { enumType } from "@/lib/enum"; // Keep enumType
 import initSupabase from "@/lib/supabase";
 import { dateFormat, pageSkip } from "@/lib/utils";
-import { useAppSelector } from "@/store"; // Keep useAppSelector for pageSize
+import { useAppDispatch, useAppSelector } from "@/store";
+import { deleteCategory, setCategory } from "@/store/categoriesSlice"; // Adjust import based on your store structure
 
 import * as actions from "./actions";
 import FormEdit from "./edit";
@@ -41,6 +42,7 @@ interface DrawerState {
 export default function Fetch(props: any) {
 	const type = "category"; // Define type for consistency if needed
 	const { title, page, breadcrumb } = props;
+	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	// Use a structured state for the drawer
 	const [drawerState, setDrawerState] = useState<DrawerState>({ mode: null, data: null });
 	// Use the FetchResponse interface for db state
@@ -70,10 +72,14 @@ export default function Fetch(props: any) {
 		// setLoading(true); // Optional: uncomment if you want loading indicator on manual refetch
 		try {
 			// Fetch paginated data for the table
+			const all = await actions.getAll({ min: true, published: true });
 			const res = await actions.getAll(query);
 			// Ensure both data and count are checked
 			if (res?.data && typeof res?.count === "number") {
 				setDb({ data: res.data, count: res.count });
+			}
+			if (all?.data) {
+				dispatch(setCategory(all?.data)); // Uncomment if you need to set all categories in Redux
 			}
 			// Note: Removed the separate 'all' fetch and Redux dispatch for categories
 			// to align with the customer pattern. Data consistency relies on refetch/Supabase.
@@ -82,13 +88,14 @@ export default function Fetch(props: any) {
 		} finally {
 			setLoading(false);
 		}
-	}, [query]);
+	}, [dispatch, query]);
 
 	const deteteRecord = async (id: string) => {
 		// Use window.confirm for consistency
 		if (window.confirm("Are you sure you want to delete this record?")) {
 			const res = await actions.deleteRecord(id);
 			if (res?.success === "success") {
+				dispatch(deleteCategory(id)); // Dispatch delete action
 				fetchData(); // Refetch data after successful delete
 				// Close drawer if the deleted item was being edited
 				if (drawerState.mode === "edit" && drawerState.data?.id === id) {
