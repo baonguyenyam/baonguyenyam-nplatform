@@ -100,7 +100,7 @@ model Setting {
 model Customer {
   id            String    @id @default(cuid())
   name          String?
-  email         String?
+  email         String?  @unique
   emailVerified DateTime?
   phone         String?
   first_name    String?
