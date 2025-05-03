@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 // Get Customer by Email
 export const getCustomerByEmail = async (email: string) => {
 	try {
+		// Email can not unique because it can be used by multiple customers, vendors... So we not using findUnique we are using findFirst
 		const customer = await db.customer.findFirst({
 			where: {
 				email,

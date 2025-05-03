@@ -100,7 +100,7 @@ model Setting {
 model Customer {
   id            String    @id @default(cuid())
   name          String?
-  email         String?
+  email         String?  // Email can not unique because it can be used by multiple customers, vendors...
   emailVerified DateTime?
   phone         String?
   first_name    String?
