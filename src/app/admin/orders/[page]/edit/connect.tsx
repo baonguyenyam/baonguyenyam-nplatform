@@ -56,7 +56,7 @@ export function ConnectUser({ form, field, data, users, id, key, model, onChange
 				className="flex items-center whitespace-nowrap flex-wrap space-y-3"
 				id={"customerList" + key}>
 				{id &&
-					key &&
+					key && data &&
 					data[key]?.length > 0 &&
 					data[key]?.map((item: any) => {
 						return (
