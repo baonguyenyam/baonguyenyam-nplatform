@@ -65,7 +65,7 @@ export default function View() {
 						</div>
 					))
 				) : (
-					<p>No attributes found for user.</p>
+					<p>No attributes found for this mapping.</p>
 				)}
 			</>
 		);
