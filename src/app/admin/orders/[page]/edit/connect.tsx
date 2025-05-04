@@ -15,7 +15,7 @@ export function ConnectUser({ form, field, data, users, id, key, model, onChange
 				(customer as HTMLElement).style.display = "none";
 			}
 		}
-		const res = await actions.disconnectUser(data.id, item.id, model, key);
+		const res = await actions.disconnectUser(data?.id, item?.id, model, key);
 		if (res.success !== "success") {
 			toast.error(res.message);
 			return;
@@ -42,7 +42,7 @@ export function ConnectUser({ form, field, data, users, id, key, model, onChange
 			customerList.prepend(newItem);
 		}
 
-		const res = await actions.connectUser(data.id, item.id, model, key);
+		const res = await actions.connectUser(data?.id, item?.id, model, key);
 		if (res.success !== "success") {
 			toast.error(res.message);
 			return;
