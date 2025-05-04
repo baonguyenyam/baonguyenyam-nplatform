@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -7,10 +7,15 @@ import { z } from "zod";
 import AppLoading from "@/components/AppLoading";
 import { FieldInput } from "@/components/fields/input";
 import { FieldSelect } from "@/components/fields/select"; // For 'published' status
+import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole"; // Keep if role affects fields
 import { enumPublished } from "@/lib/enum"; // Use for published status
+import { stringToKeyValue } from "@/lib/utils";
+import { useAppSelector } from "@/store";
 
 import * as actions from "./actions";
 
@@ -32,24 +37,8 @@ interface CustomerData {
 	published?: boolean; // Use boolean for internal logic, string for API compatibil
 	// Add other relevant fields
 	type: string; // Customer type
+	data?: string; // JSON string for attributes
 }
-
-// --- Zod Schema ---
-// Define the validation schema for the vendor form
-const FormSchema = z.object({
-	f_email: z.string().email({ message: "Invalid email address." }).optional().or(z.literal("")), // Allow empty string
-	f_phone: z.string().optional(),
-	f_address: z.string().optional(),
-	f_city: z.string().optional(),
-	f_state: z.string().optional(),
-	f_country: z.string().optional(),
-	// Use enum for published status for consistency
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
-	f_firstname: z.string().optional(),
-	f_lastname: z.string().optional(),
-	f_zip: z.string().optional(),
-	f_company: z.string().optional(),
-});
 
 // --- Component Props ---
 interface FormEditProps {
@@ -59,10 +48,46 @@ interface FormEditProps {
 }
 
 export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
+	// --- Zod Schema ---
+	// Define the validation schema for the vendor form
+	let FormSchema = z.object({
+		f_email: z.string().email({ message: "Invalid email address." }).optional().or(z.literal("")), // Allow empty string
+		f_phone: z.string().optional(),
+		f_address: z.string().optional(),
+		f_city: z.string().optional(),
+		f_state: z.string().optional(),
+		f_country: z.string().optional(),
+		// Use enum for published status for consistency
+		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
+		f_firstname: z.string().optional(),
+		f_lastname: z.string().optional(),
+		f_zip: z.string().optional(),
+		f_company: z.string().optional(),
+	});
 	const type = "customer"; // Customer type
 	const [loading, setLoading] = useState(!!id); // Start loading only if editing
 	const [data, setData] = useState<CustomerData | null>(initialData || null); // Store fetched data if needed elsewhere
 	const role = useCurrentRole(); // Get user role if needed for conditional rendering
+
+	// Load the attribute data from the store
+	const attributeData = useAppSelector((state) => state?.attributeState.data);
+	const atts = useMemo(() => {
+		if (attributeData) {
+			return attributeData.filter((item: any) => item.mapto === "customer");
+		}
+		return [];
+	}, [attributeData]);
+
+	// Dynamically add fields to the schema based on the attribute data
+	atts?.forEach((item: any) => {
+		item?.children?.forEach((child: any) => {
+			const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
+			const fieldSchema = z.string().optional();
+			FormSchema = FormSchema.extend({
+				[fieldName]: fieldSchema,
+			}) as unknown as typeof FormSchema;
+		});
+	});
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -107,6 +132,28 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 					f_zip: vendorData.zip || "",
 					f_company: vendorData.company || "",
 				});
+				// Parse the data attribute
+				const _attribute = res?.data?.data ? JSON.parse(res?.data?.data) : null;
+				// Set the attribute data to the form
+				// Loop through the attribute data and set the values to the form
+				atts?.forEach((item: any) => {
+					const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}`;
+					const fieldValue = item?.children?.map((child: any) => {
+						const childFieldName = `${fieldName}_${child.id}`;
+						if (child?.type === "select") {
+							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
+							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						}
+						if (child?.type === "checkbox") {
+							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value || "[]";
+							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						}
+						if (child?.type === "text") {
+							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
+							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						}
+					});
+				});
 			} else {
 				toast.error("Failed to load vendor data.");
 				setData(null); // Reset data on failure
@@ -117,7 +164,7 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 		} finally {
 			setLoading(false);
 		}
-	}, [id, form]);
+	}, [id, form, atts]);
 
 	// Fetch data on mount if in edit mode
 	useEffect(() => {
@@ -126,6 +173,20 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 
 	// Form submission handler
 	async function onSubmit(values: z.infer<typeof FormSchema>) {
+		const attrs = atts.map((item: any) => {
+			const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}`;
+			const fieldValue = item?.children?.map((child: any) => {
+				const childFieldName = `${fieldName}_${child.id}`;
+				return {
+					id: child.id,
+					value: values[childFieldName as keyof typeof values],
+				};
+			});
+			return {
+				id: item.id,
+				data: fieldValue,
+			};
+		});
 		const body: Partial<CustomerData> = {
 			name: values.f_firstname + " " + values.f_lastname,
 			email: values.f_email || undefined, // Send undefined if empty
@@ -139,6 +200,7 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 			last_name: values.f_lastname || undefined,
 			zip: values.f_zip || undefined,
 			company: values.f_company || undefined,
+			data: JSON.stringify(attrs),
 			type: type,
 		};
 
@@ -288,6 +350,68 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 								)}
 							/>
 						</div>
+
+						{atts?.length > 0 && (
+							<Tabs
+								defaultValue={atts?.[0]?.id}
+								className="mb-10">
+								<TabsList className="mt-5 mb-2">
+									{atts?.map((item: any) => (
+										<TabsTrigger
+											key={item.id}
+											value={item.id}>
+											{item.title}
+										</TabsTrigger>
+									))}
+								</TabsList>
+								<div className="grow text-start">
+									{atts?.map((item: any) => (
+										<TabsContent
+											key={item.id}
+											value={item.id}
+											className="space-y-15">
+											<div className="grid grid-cols-3 gap-5">
+												{item?.children?.map((child: any) => {
+													const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
+													return (
+														<Fragment key={child.id}>
+															<FormField
+																control={form.control}
+																name={fieldName as keyof z.infer<typeof FormSchema>}
+																render={({ field }) => (
+																	<FormItem>
+																		<FormLabel>{child.title}</FormLabel>
+																		{child?.type === "text" && (
+																			<FormControl>
+																				<Input {...field} />
+																			</FormControl>
+																		)}
+																		{(child?.type === "select" || child?.type === "checkbox") && (
+																			<>
+																				{FieldSelectAttribute({
+																					mode: id ? "edit" : "create",
+																					field,
+																					form,
+																					type: child?.type,
+																					key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																					id: child.id,
+																				})}
+																			</>
+																		)}
+																		<FormMessage />
+																	</FormItem>
+																)}
+															/>
+														</Fragment>
+													);
+												})}
+											</div>
+										</TabsContent>
+									))}
+								</div>
+							</Tabs>
+						)}
+
 
 						{/* Bottom Bar for Actions */}
 						<div className="fixed bottom-0 right-0 w-full md:w-[calc(800px-1rem)] border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700 flex items-center justify-between z-10">

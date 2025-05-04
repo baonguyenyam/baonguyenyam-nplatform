@@ -325,25 +325,6 @@ export default function FormEdit(props: any) {
 							)}
 						/>
 
-						<FormField
-							control={form.control}
-							name="f_file"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Upload Image</FormLabel>
-									{FieldUpload({
-										field,
-										data: imgs,
-										accept: appState.ACCEPTED_IMG_FILE_TYPES,
-										onChange: (e: any) => {
-											field.onChange(e[0]?.data[0]?.url);
-											setThumbnail(e[0]?.data[0]?.url);
-											setImgs((prev: any) => [...prev, e[0]?.data[0]]);
-										},
-									})}
-								</FormItem>
-							)}
-						/>
 						<Tabs defaultValue="file">
 							<TabsList className="w-full">
 								<TabsTrigger value="file">Files</TabsTrigger>
@@ -362,6 +343,27 @@ export default function FormEdit(props: any) {
 										changeFeature(e);
 									},
 								})}
+								<div className="mt-3">
+									<FormField
+										control={form.control}
+										name="f_file"
+										render={({ field }) => (
+											<FormItem>
+												{FieldUpload({
+													field,
+													data: imgs,
+													preview: false,
+													accept: appState.ACCEPTED_IMG_FILE_TYPES,
+													onChange: (e: any) => {
+														field.onChange(e[0]?.data[0]?.url);
+														setThumbnail(e[0]?.data[0]?.url);
+														setImgs((prev: any) => [...prev, e[0]?.data[0]]);
+													},
+												})}
+											</FormItem>
+										)}
+									/>
+								</div>
 							</TabsContent>
 							<TabsContent
 								value="seo"

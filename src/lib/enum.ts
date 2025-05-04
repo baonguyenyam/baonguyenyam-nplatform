@@ -140,6 +140,14 @@ export const enumAttribute = [
 		label: "Post",
 		value: "post",
 	},
+	{
+		label: "Customer",
+		value: "customer",
+	},
+	{
+		label: "Product",
+		value: "product",
+	},
 ];
 
 export const enumFieldType = [
