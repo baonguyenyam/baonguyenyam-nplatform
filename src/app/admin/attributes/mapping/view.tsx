@@ -15,9 +15,6 @@ export default function View() {
 	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const [loading, setLoading] = useState(true);
 	const attrs = useAppSelector((state) => state.attributeState.data);
-	const att_users = useMemo(() => attrs?.filter((item: any) => item.mapto === "user"), [attrs]);
-	const att_orders = useMemo(() => attrs?.filter((item: any) => item.mapto === "order"), [attrs]);
-	const att_posts = useMemo(() => attrs?.filter((item: any) => item.mapto === "post"), [attrs]);
 
 	const fetchData = useCallback(async () => {
 		const all = await actions.getAll({ min: true, published: true });
