@@ -11,7 +11,7 @@
     "reset": "prisma migrate reset --force --skip-seed",
     "migrate": "prisma migrate dev --name init",
     "update": "prisma migrate status --schema=./prisma/schema.prisma",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "prisma generate && next build",
     "seed": "npx prisma db seed -- --environment development"
   },
   "prisma": {
