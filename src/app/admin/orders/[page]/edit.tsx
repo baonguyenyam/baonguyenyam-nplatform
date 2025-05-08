@@ -410,7 +410,7 @@ export default function FormEdit(props: any) {
 														key: "customer",
 														model: "customer",
 														onChange: async (e: any) => {
-															const res = await customer_actions.getAll({ s: e });
+															const res = await customer_actions.getAll({ s: e, type: "customer" });
 															if (res.success === "success" && res.data) {
 																const customers = res?.data?.map((item: any) => {
 																	return {
@@ -741,7 +741,7 @@ export default function FormEdit(props: any) {
 														key: "vendor",
 														model: "vendor",
 														onChange: async (e: any) => {
-															const res = await vendor_actions.getAll({ s: e });
+															const res = await vendor_actions.getAll({ s: e, type: "vendor" });
 															if (res.success === "success" && res.data) {
 																const _vendors = res?.data?.map((item: any) => {
 																	return {
