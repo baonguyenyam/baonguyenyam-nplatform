@@ -92,6 +92,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 											id="email"
 											name="email"
 											type="email"
+											defaultValue={"demo@demo.com"}
 											placeholder="Enter your email"
 											className="w-full"
 											required
@@ -102,6 +103,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 											id="password"
 											name="password"
 											type="password"
+											defaultValue={"demo"}
 											placeholder="Enter your password"
 											className="w-full"
 											required

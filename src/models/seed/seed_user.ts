@@ -15,13 +15,32 @@ export const UserSeed = async () => {
 	if (!user) {
 		await prisma.user.create({
 			data: {
+				email: "demo@demo.com",
+				name: `Demo`,
+				phone: "600 000 0000",
+				first_name: "User",
+				emailVerified: new Date(),
+				last_name: "Pham",
+				address: "123 Main St",
+				city: "Fort Worth",
+				state: "TX",
+				zip: "76119",
+				country: "United States",
+				avatar: "https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
+				role: "ADMIN",
+				published: true,
+				password,
+			},
+		});
+		await prisma.user.create({
+			data: {
 				email: "baonguyenyam@gmail.com",
 				name: `Nguyen Pham`,
-				phone: "682 203 1334",
+				phone: "600 000 0000",
 				first_name: "Nguyen",
 				emailVerified: new Date(),
 				last_name: "Pham",
-				address: "2900 Questa St",
+				address: "123 Main St",
 				city: "Fort Worth",
 				state: "TX",
 				zip: "76119",
