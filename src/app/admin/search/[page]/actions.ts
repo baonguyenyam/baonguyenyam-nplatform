@@ -40,7 +40,8 @@ export async function getAll(params: {
 		{ tableName: "Post", nameColumn: "title", contentColumn: "content", contentType: "type" },
 		{ tableName: "User", nameColumn: "name", contentColumn: "email" },
 		{ tableName: "Order", nameColumn: "title", contentColumn: "content" },
-		{ tableName: "Attribute", nameColumn: "title", contentColumn: "content" },
+		// { tableName: "Attribute", nameColumn: "title", contentColumn: "content" },
+		// { tableName: "AttributeMeta", nameColumn: "key", contentColumn: "value" },
 		{ tableName: "Category", nameColumn: "title", contentColumn: "content", contentType: "type" },
 		{ tableName: "Customer", nameColumn: "name", contentColumn: "email", contentType: "type" },
 		{ tableName: "File", nameColumn: "name", contentColumn: "data" },
@@ -48,6 +49,8 @@ export async function getAll(params: {
 	];
 
 	// --- Build UNION ALL parts ---
+	// INNER JOIN ${table.contentType ? table.contentType : table.contentColumn} ON ${table.contentType ? table.contentType : table.contentColumn} = ${table.nameColumn},
+	// ${table.contentType ? table.contentType : table.contentColumn} AS search_type,
 	const unionParts = tablesToSearch
 		.map(
 			(table) => `
