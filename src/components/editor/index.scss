@@ -13,7 +13,6 @@
 		overflow: hidden;
 		color: #000;
 		position: relative;
-		line-height: 20px;
 		font-weight: 400;
 		text-align: left;
 	}
@@ -141,7 +140,7 @@
 		box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
 	}
 
-	.test-recorder-button + .test-recorder-button {
+	.test-recorder-button+.test-recorder-button {
 		margin-left: 4px;
 	}
 
@@ -1099,6 +1098,7 @@
 	}
 
 	@keyframes octocat-wave {
+
 		0%,
 		100% {
 			transform: rotate(0);
