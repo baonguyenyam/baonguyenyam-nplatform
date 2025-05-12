@@ -30,6 +30,21 @@
       "@/email/*": [
         "./emails/*"
       ],
+      "@/core": [
+        "./src/components/pagebuilder/packages/core"
+      ],
+      "@/core/*": [
+        "./src/components/pagebuilder/packages/core/*"
+      ],
+      "@measured/puck": [
+        "./src/components/pagebuilder/packages/core"
+      ],
+      "@/plugin-heading-analyzer": [
+        "./src/components/pagebuilder/packages/plugin-heading-analyzer"
+      ],
+      "@/plugin-heading-analyzer/*": [
+        "./src/components/pagebuilder/packages/plugin-heading-analyzer/*"
+      ]
     }
   },
   "include": [

@@ -213,7 +213,7 @@ export default function FormEdit(props: any) {
 				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
 				f_categories: res?.data?.categories?.map((item: any) => item.id) || [],
 				f_seo_keywords: res?.data?.meta?.find((item: any) => item.key === "seo_keywords")?.value || "",
-				f_slug: res?.data?.slug || "", // <--- Line 208
+				f_slug: res?.data?.slug || "",
 			});
 			// Parse the data attribute
 			const _attribute = res?.data?.data ? JSON.parse(res?.data?.data) : null;

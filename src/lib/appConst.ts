@@ -1,4 +1,4 @@
-import { BookOpen, FerrisWheel, File, Home, HomeIcon, Image, LayoutDashboard, Lock, Map, Package, Settings, ShoppingCart, Store, User, Users } from "lucide-react";
+import { BookOpen, FerrisWheel, File, Home, HomeIcon, Image, LayoutDashboard, Lock, Map, Package, PanelsTopLeft, Settings, ShoppingCart, Store, User, Users } from "lucide-react";
 
 // title: String
 // url: String
@@ -48,6 +48,12 @@ export const MenuItems = [
 		title: "Files",
 		url: "/admin/files",
 		icon: Image,
+		role: ["ADMIN", "MODERATOR"],
+	},
+	{
+		title: "Pages",
+		url: "/admin/pages",
+		icon: PanelsTopLeft,
 		role: ["ADMIN", "MODERATOR"],
 	},
 	{
