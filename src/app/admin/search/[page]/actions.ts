@@ -37,7 +37,7 @@ export async function getAll(params: {
 	// Ensure 'id' and the search column ('title', 'name', etc.) exist in each table
 	// Use aliases to create consistent 'search_name' and 'type' columns
 	const tablesToSearch = [
-		{ tableName: "Post", nameColumn: "title", contentColumn: "content" },
+		{ tableName: "Post", nameColumn: "title", contentColumn: "content", contentType: "type" },
 		{ tableName: "User", nameColumn: "name", contentColumn: "email" },
 		{ tableName: "Order", nameColumn: "title", contentColumn: "content" },
 		{ tableName: "Attribute", nameColumn: "title", contentColumn: "content" },
@@ -55,9 +55,10 @@ export async function getAll(params: {
             id::text,
 			${table.nameColumn} AS search_name,
 			${table.contentColumn} AS search_content,
-            '${table.tableName}' AS type
+			${table.contentType ? table.contentType : table.contentColumn} AS search_type,
+			'${table.tableName}' AS type
         FROM "${table.tableName}"
-    `,
+			`,
 		)
 		.join(" UNION ALL ");
 
@@ -70,21 +71,21 @@ export async function getAll(params: {
 		// --- Construct the Data Query ---
 		// Use Prisma.sql template tag for better formatting and potential future composition
 		const dataQuery = Prisma.sql`
-            SELECT id, search_name, search_content, type
-            FROM (${Prisma.raw(unionParts)}) AS combined_results
-            -- Apply WHERE clause again on the combined set (optional if already filtered above, but safe)
-            WHERE search_name ILIKE ${searchTerm} OR search_content ILIKE ${searchTerm}
-            ORDER BY search_name ASC -- Example ordering: by name, then ID
+            SELECT id, search_name, search_content, type, search_type
+            FROM(${Prisma.raw(unionParts)}) AS combined_results
+            --Apply WHERE clause again on the combined set(optional if already filtered above, but safe)
+            WHERE search_name ILIKE ${searchTerm} OR search_content ILIKE ${searchTerm} 
+            ORDER BY search_name ASC-- Example ordering: by name, then ID
             LIMIT ${take} OFFSET ${skip}
-        `;
+	`;
 
 		// --- Construct the Count Query ---
 		const countQuery = Prisma.sql`
             SELECT COUNT(*)
-            FROM (${Prisma.raw(unionParts)}) AS combined_results
-            -- Apply WHERE clause again on the combined set for accurate count
+	FROM(${Prisma.raw(unionParts)}) AS combined_results
+	--Apply WHERE clause again on the combined set for accurate count
             WHERE search_name ILIKE ${searchTerm} OR search_content ILIKE ${searchTerm}
-        `;
+	`;
 
 		// --- Execute Queries ---
 		const [searchResults, countResult] = await Promise.all([db.$queryRaw<SearchResultItem[]>(dataQuery), db.$queryRaw<CountResult[]>(countQuery)]);

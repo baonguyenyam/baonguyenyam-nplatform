@@ -47,6 +47,8 @@ export default function Fetch(props: any) {
 		let type = item.type.toLowerCase();
 		if (type === "category") {
 			type = "categorie";
+		} else if (type === "post") {
+			type = item.search_type;
 		}
 
 		return (
@@ -59,8 +61,17 @@ export default function Fetch(props: any) {
 					{item.search_name}{" "}
 					<Badge
 						variant="outline"
-						className="dark:bg-gray-600">
-						{item.type}
+						className="dark:bg-gray-600 uppercase">
+						{item.type.toLowerCase() !== "post" && (
+							<>
+								{item.type}
+							</>
+						)}
+						{item.type.toLowerCase() === "post" && (
+							<>
+								{item.search_type}
+							</>
+						)}
 					</Badge>
 				</div>
 				<p className="text-sm text-muted-foreground">{item.search_content}</p>
