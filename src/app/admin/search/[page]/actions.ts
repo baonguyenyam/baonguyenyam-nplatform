@@ -41,8 +41,8 @@ export async function getAll(params: {
 		{ tableName: "User", nameColumn: "name", contentColumn: "email" },
 		{ tableName: "Order", nameColumn: "title", contentColumn: "content" },
 		{ tableName: "Attribute", nameColumn: "title", contentColumn: "content" },
-		{ tableName: "Category", nameColumn: "title", contentColumn: "content" },
-		{ tableName: "Customer", nameColumn: "name", contentColumn: "email" },
+		{ tableName: "Category", nameColumn: "title", contentColumn: "content", contentType: "type" },
+		{ tableName: "Customer", nameColumn: "name", contentColumn: "email", contentType: "type" },
 		{ tableName: "File", nameColumn: "name", contentColumn: "data" },
 		// Add other tables here, e.g., { tableName: "Order", nameColumn: "orderNumber" }
 	];
