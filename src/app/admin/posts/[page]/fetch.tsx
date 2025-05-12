@@ -57,6 +57,7 @@ export default function Fetch(props: any) {
 			orderBy: search.get("orderBy") || "id",
 			filterBy: search.get("filterBy") || "",
 			cat: search.get("cat") || "",
+			type: type,
 		}),
 		[pageSize, page, search],
 	);
