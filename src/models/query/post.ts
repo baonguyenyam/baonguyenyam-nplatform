@@ -109,6 +109,7 @@ export const getAllPosts = async (query: any) => {
 				title: true,
 				image: true,
 				published: true,
+				data: true,
 				user: {
 					select: {
 						id: true,
