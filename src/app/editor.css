@@ -6,8 +6,8 @@
 	tab-size: 1;
 	outline: 0;
 
-	>* {
-		margin-bottom: 10px
+	> * {
+		margin-bottom: 10px;
 	}
 
 	.PlaygroundEditorTheme__ltr {
@@ -33,7 +33,6 @@
 		border-left-style: solid;
 		padding-left: 16px;
 	}
-
 
 	.PlaygroundEditorTheme__h6 {
 		font-size: 18px;
@@ -64,7 +63,6 @@
 		font-size: 28px;
 		font-weight: 700;
 	}
-
 
 	.PlaygroundEditorTheme__indent {
 		--lexical-indent-base-value: 40px;

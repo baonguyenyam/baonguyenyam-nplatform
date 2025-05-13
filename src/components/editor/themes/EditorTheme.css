@@ -30,7 +30,6 @@
 	padding-left: 16px;
 }
 
-
 .PlaygroundEditorTheme__h6 {
 	font-size: 18px;
 	font-weight: 500;
@@ -60,7 +59,6 @@
 	font-size: 28px;
 	font-weight: 700;
 }
-
 
 .PlaygroundEditorTheme__indent {
 	--lexical-indent-base-value: 40px;

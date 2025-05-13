@@ -412,7 +412,6 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 							</Tabs>
 						)}
 
-
 						{/* Bottom Bar for Actions */}
 						<div className="fixed bottom-0 right-0 w-full md:w-[calc(800px-1rem)] border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700 flex items-center justify-between z-10">
 							{/* Published Status (Optional, based on role) */}

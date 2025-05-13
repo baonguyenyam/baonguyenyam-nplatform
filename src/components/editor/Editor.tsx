@@ -136,7 +136,6 @@ export function Editor(props: any) {
 					<ToolbarPlugin />
 					<div className="editor-container tree-view">
 						<HtmlDefaultValuePlugin htmlValue={props.defaultValue} />
-
 						<ClearEditorPlugin />
 						<LexicalAutoLinkPlugin />
 						<InlineImagePlugin />
@@ -179,7 +178,10 @@ export function Editor(props: any) {
 							<>
 								<FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
 								<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-								<TableCellActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge={true} />
+								<TableCellActionMenuPlugin
+									anchorElem={floatingAnchorElem}
+									cellMerge={true}
+								/>
 								<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
 								<FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
 							</>

@@ -62,21 +62,9 @@ export default function Fetch(props: any) {
 					<Badge
 						variant="outline"
 						className="dark:bg-gray-600 uppercase">
-						{(item.type.toLowerCase() !== "post" && item.type.toLowerCase() !== "customer") && (
-							<>
-								{item.type}
-							</>
-						)}
-						{item.type.toLowerCase() === "post" && (
-							<>
-								{item.search_type}
-							</>
-						)}
-						{item.type.toLowerCase() === "customer" && (
-							<>
-								{item.search_type}
-							</>
-						)}
+						{item.type.toLowerCase() !== "post" && item.type.toLowerCase() !== "customer" && <>{item.type}</>}
+						{item.type.toLowerCase() === "post" && <>{item.search_type}</>}
+						{item.type.toLowerCase() === "customer" && <>{item.search_type}</>}
 					</Badge>
 				</div>
 				<p className="text-sm text-muted-foreground">{item.search_content}</p>

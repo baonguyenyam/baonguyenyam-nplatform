@@ -8,7 +8,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { $createCodeNode, $isCodeNode, CODE_LANGUAGE_FRIENDLY_NAME_MAP, CODE_LANGUAGE_MAP, getLanguageFriendlyName } from "@lexical/code";
-import { $generateHtmlFromNodes } from '@lexical/html';
+import { $generateHtmlFromNodes } from "@lexical/html";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { $isListNode, INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListNode, REMOVE_LIST_COMMAND } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -269,13 +269,10 @@ function FontDropDown({ editor, value, style, disabled = false }: any): React.JS
 				}
 			});
 		},
-		[editor, style]
+		[editor, style],
 	);
 
-	const buttonAriaLabel =
-		style === "font-family"
-			? "Formatting options for font family"
-			: "Formatting options for font size";
+	const buttonAriaLabel = style === "font-family" ? "Formatting options for font family" : "Formatting options for font size";
 
 	return (
 		<DropDown
@@ -283,22 +280,18 @@ function FontDropDown({ editor, value, style, disabled = false }: any): React.JS
 			buttonClassName={"toolbar-item " + style}
 			buttonLabel={value}
 			buttonIconClassName={style === "font-family" ? "icon block-type font-family" : ""}
-			buttonAriaLabel={buttonAriaLabel}
-		>
+			buttonAriaLabel={buttonAriaLabel}>
 			{(style === "font-family" ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(([option, text]) => (
 				<DropDownItem
-					className={`item ${dropDownActiveClass(value === option)} ${style === "font-size" ? "fontsize-item" : ""
-						}`}
+					className={`item ${dropDownActiveClass(value === option)} ${style === "font-size" ? "fontsize-item" : ""}`}
 					onClick={() => handleClick(option)}
-					key={option}
-				>
+					key={option}>
 					<span className="text">{text}</span>
 				</DropDownItem>
 			))}
 		</DropDown>
 	);
 }
-
 
 export default function ToolbarPlugin(): React.JSX.Element {
 	const [editor] = useLexicalComposerContext();
@@ -337,9 +330,9 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				anchorNode.getKey() === "root"
 					? anchorNode
 					: $findMatchingParent(anchorNode, (e) => {
-						const parent = e.getParent();
-						return parent !== null && $isRootOrShadowRoot(parent);
-					});
+							const parent = e.getParent();
+							return parent !== null && $isRootOrShadowRoot(parent);
+						});
 
 			if (element === null) {
 				element = anchorNode.getTopLevelElementOrThrow();
@@ -468,10 +461,10 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				(payload, editor) => {
 					const htmlString = $generateHtmlFromNodes(editor, null);
 					console.log("HTML_STRING", htmlString);
-					return false
+					return false;
 				},
 				COMMAND_PRIORITY_CRITICAL,
-			)
+			),
 		);
 	}, [$updateToolbar, activeEditor, editor]);
 
@@ -484,26 +477,25 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						$patchStyleText(selection, styles);
 					}
 				},
-				skipHistoryStack ? { tag: "historic" } : {}
+				skipHistoryStack ? { tag: "historic" } : {},
 			);
 		},
-		[activeEditor]
+		[activeEditor],
 	);
 
 	const onFontColorSelect = useCallback(
 		(value: any, skipHistoryStack: any) => {
 			applyStyleText({ color: value }, skipHistoryStack);
 		},
-		[applyStyleText]
+		[applyStyleText],
 	);
 
 	const onBgColorSelect = useCallback(
 		(value: any, skipHistoryStack: any) => {
 			applyStyleText({ "background-color": value }, skipHistoryStack);
 		},
-		[applyStyleText]
+		[applyStyleText],
 	);
-
 
 	const clearFormatting = useCallback(() => {
 		activeEditor.update(() => {
@@ -827,8 +819,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 							}}
 							className={"item " + dropDownActiveClass(isHighlight)}
 							title="Highlight"
-							aria-label="Format text with a highlight"
-						>
+							aria-label="Format text with a highlight">
 							<i className="icon highlight" />
 							<span className="text">Highlight</span>
 						</DropDownItem>

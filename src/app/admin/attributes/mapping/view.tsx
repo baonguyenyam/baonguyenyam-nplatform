@@ -81,11 +81,11 @@ export default function View() {
 			{!loading && (
 				<div className="mt-5">
 					{enumAttribute.map((item) => (
-						<div key={item.value} className="mb-4">
+						<div
+							key={item.value}
+							className="mb-4">
 							<h2 className="text-2xl font-semibold mb-4">{item.label}</h2>
-							<div className="grid grid-cols-2 xl:grid-cols-3 border border-gray-300 rounded-lg p-10 mb-10">
-								{template(attrs?.filter((attr: any) => attr.mapto === item.value))}
-							</div>
+							<div className="grid grid-cols-2 xl:grid-cols-3 border border-gray-300 rounded-lg p-10 mb-10">{template(attrs?.filter((attr: any) => attr.mapto === item.value))}</div>
 						</div>
 					))}
 				</div>

@@ -50,8 +50,8 @@ export const conf: UserConfig = {
 		other: {
 			title: "Other",
 			components: [
-				// "Card", 
-				"Logos"
+				// "Card",
+				"Logos",
 			],
 		},
 		template: {
