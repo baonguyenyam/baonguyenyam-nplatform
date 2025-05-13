@@ -176,20 +176,23 @@ export function Editor(props: any) {
 			<button
 				type="button"
 				onClick={isSourceView ? switchToEditorView : switchToSourceView}
-				style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 100, padding: '6px 12px', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer' }}
+				style={{
+					borderRadius: "5px",
+					cursor: "pointer",
+					padding: "2px 7px",
+					backgroundColor: "#eaeaea",
+					color: "#333",
+				}}
 				className="dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
 			>
-				{isSourceView ? "View Editor" : "View Source"}
+				{isSourceView ? "Visual Editor" : "HTML Code"}
 			</button>
 		);
 	};
 
 	return (
-		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700">
+		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700 relative pb-8">
 			<LexicalComposer initialConfig={initialConfig}>
-				<div style={{ position: 'relative' }}> {/* Container for button positioning */}
-					<ViewSourceTogglePlugin />
-				</div>
 
 				{isSourceView && (
 					<textarea
@@ -198,9 +201,9 @@ export function Editor(props: any) {
 							const newHtml = e.target.value;
 							setSourceHtml(newHtml);
 							// For live updates to parent from textarea (optional):
-							// if (onChange) {
-							//  onChange(newHtml);
-							// }
+							if (onChange) {
+								onChange(newHtml);
+							}
 						}}
 						style={{ width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical" }}
 						placeholder="Edit HTML source..."
@@ -269,6 +272,25 @@ export function Editor(props: any) {
 					</div>
 
 				)}
+
+				<div style={{
+					position: 'absolute',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'end',
+					bottom: '0',
+					right: '0',
+					width: '100%',
+					zIndex: 100,
+					height: '38px',
+					padding: '0 5px',
+					backgroundColor: '#fcfcfc',
+					borderTop: '1px solid #eaeaea',
+					borderRadius: '0 0 10px 10px',
+				}}>
+					<ViewSourceTogglePlugin />
+				</div>
+
 
 			</LexicalComposer>
 		</div>
