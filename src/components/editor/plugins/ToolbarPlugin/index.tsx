@@ -310,7 +310,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 	const [fontFamily, setFontFamily] = useState("Arial");
 	const [fontColor, setFontColor] = useState("black");
 	const [bgColor, setBgColor] = useState("");
-	const [fontSize, setFontSize] = useState("16px");
+	const [fontSize, setFontSize] = useState("16");
 
 	const [isLink, setIsLink] = useState(false);
 	const [isBold, setIsBold] = useState(false);
@@ -620,7 +620,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						editor={editor}
 					/>
 					<FontSize
-						selectionFontSize={fontSize.slice(0, -2)}
+						selectionFontSize={fontSize.slice(0, -2) || "16"}
 						editor={editor}
 						disabled={!isEditable}
 					/>

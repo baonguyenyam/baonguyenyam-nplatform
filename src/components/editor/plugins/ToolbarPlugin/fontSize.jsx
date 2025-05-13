@@ -18,6 +18,7 @@ export function parseAllowedFontSize(input) {
 }
 
 export default function FontSize({ selectionFontSize, disabled, editor }) {
+
   const [inputValue, setInputValue] = React.useState(selectionFontSize);
   const [inputChangeFlag, setInputChangeFlag] = React.useState(false);
 
