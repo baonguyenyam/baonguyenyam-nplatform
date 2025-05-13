@@ -28,6 +28,7 @@ import DragDropPaste from "./plugins/DragDropPastePlugin";
 import DraggableBlockPlugin from "./plugins/DraggableBlockPlugin";
 import FloatingLinkEditorPlugin from "./plugins/FloatingLinkEditorPlugin";
 import FloatingTextFormatToolbarPlugin from "./plugins/FloatingTextFormatToolbarPlugin";
+import HtmlDefaultValuePlugin from "./plugins/HtmlDefaultValuePlugin";
 import InlineImagePlugin from "./plugins/InlineImagePlugin";
 import KeywordsPlugin from "./plugins/KeywordsPlugin";
 import LinkPlugin from "./plugins/LinkPlugin";
@@ -134,6 +135,8 @@ export function Editor(props: any) {
 				<div className="editor-shell">
 					<ToolbarPlugin />
 					<div className="editor-container tree-view">
+						<HtmlDefaultValuePlugin htmlValue={props.defaultValue} />
+
 						<ClearEditorPlugin />
 						<LexicalAutoLinkPlugin />
 						<InlineImagePlugin />
@@ -158,8 +161,8 @@ export function Editor(props: any) {
 						<ComponentPickerPlugin />
 						<DragDropPaste />
 						<ListPlugin />
-						{/* <HashtagPlugin /> */}
-						{/* <KeywordsPlugin /> */}
+						<HashtagPlugin />
+						<KeywordsPlugin />
 						<CodeHighlightPlugin />
 						<TableCellResizer />
 						<TabFocusPlugin />

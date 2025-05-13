@@ -26,32 +26,28 @@ import { KeywordNode } from "./KeywordNode";
 import { TweetNode } from "./TweetNode";
 import { YouTubeNode } from "./YouTubeNode";
 
-// const Nodes: Array<Klass<LexicalNode>> = [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode, TableNode, TableCellNode, TableRowNode, CodeHighlightNode, AutoLinkNode, LinkNode, OverflowNode, InlineImageNode, EmojiNode, HorizontalRuleNode, TweetNode, YouTubeNode, MarkNode];
-
-// export default Nodes;
-
-
-const NodeList = [
+const Nodes: Array<Klass<LexicalNode>> = [
 	HeadingNode,
 	ListNode,
 	ListItemNode,
 	QuoteNode,
 	CodeNode,
 	TableNode,
+	TableCellNode,
 	TableRowNode,
-	HashtagNode,
 	CodeHighlightNode,
 	AutoLinkNode,
 	LinkNode,
 	OverflowNode,
-	HorizontalRuleNode,
-	MarkNode,
-	KeywordNode,
-	CustomTableCellNode,
 	InlineImageNode,
 	EmojiNode,
+	HorizontalRuleNode,
 	TweetNode,
 	YouTubeNode,
+	MarkNode,
+	KeywordNode,
+	HashtagNode,
+	CustomTableCellNode as any,
 	{
 		replace: TableCellNode,
 		with: (node: any) => {
@@ -65,7 +61,7 @@ const NodeList = [
 		},
 		withKlass: CustomTableCellNode,
 	},
-	CustomTextNode,
+	CustomTextNode as any,
 	{
 		replace: TextNode,
 		with: (node: any) => {
@@ -75,4 +71,4 @@ const NodeList = [
 	},
 ];
 
-export default NodeList;
+export default Nodes;
