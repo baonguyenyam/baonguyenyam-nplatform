@@ -23,7 +23,7 @@ export type HistorySlice<D = any> = {
 
 const EMPTY_HISTORY_INDEX = 0;
 
-function debounce(func: Function, timeout = 300) {
+function debounce<T extends (...args: any[]) => void>(func: T, timeout = 300) {
   let timer: NodeJS.Timeout;
 
   return (...args: any) => {
@@ -171,7 +171,7 @@ export function useRegisterHistorySlice(
           initialAppState,
         },
       }),
-    [histories, index, initialAppState]
+    [appStore, histories, index, initialAppState]
   );
 
   const back = () => {

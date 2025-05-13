@@ -92,7 +92,7 @@ export type ExternalField<Props extends { [key: string]: any } = { [key: string]
 	initialFilters?: Record<string, any>;
 };
 
-export type CustomField<Props extends any = {}> = BaseField & {
+export type CustomField<Props = {}> = BaseField & {
 	type: "custom";
 	render: (props: { field: CustomField<Props>; name: string; id: string; value: Props; onChange: (value: Props) => void; readOnly?: boolean }) => ReactElement;
 };
@@ -103,7 +103,7 @@ export type SlotField = BaseField & {
 	disallow?: string[];
 };
 
-export type Field<Props extends any = any> = TextField | NumberField | TextareaField | SelectField | RadioField | ArrayField<Props extends { [key: string]: any } ? Props : any> | ObjectField<Props extends { [key: string]: any } ? Props : any> | ExternalField<Props extends { [key: string]: any } ? Props : any> | ExternalFieldWithAdaptor<Props extends { [key: string]: any } ? Props : any> | CustomField<Props> | SlotField;
+export type Field<Props = any> = TextField | NumberField | TextareaField | SelectField | RadioField | ArrayField<Props extends { [key: string]: any } ? Props : any> | ObjectField<Props extends { [key: string]: any } ? Props : any> | ExternalField<Props extends { [key: string]: any } ? Props : any> | ExternalFieldWithAdaptor<Props extends { [key: string]: any } ? Props : any> | CustomField<Props> | SlotField;
 
 export type Fields<ComponentProps extends DefaultComponentProps = DefaultComponentProps> = {
 	[PropName in keyof Omit<ComponentProps, "editMode">]: Field<ComponentProps[PropName]>;

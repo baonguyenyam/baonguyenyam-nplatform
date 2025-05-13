@@ -8,7 +8,6 @@ import { $createParagraphNode, $getSelection, $isRangeSelection, $isTextNode } f
 
 import { DEFAULT_FONT_SIZE, MAX_ALLOWED_FONT_SIZE, MIN_ALLOWED_FONT_SIZE } from "../../provider/ToolbarProvider";
 
- 
 export let UpdateFontSizeType;
 (function (UpdateFontSizeType) {
 	UpdateFontSizeType[(UpdateFontSizeType["increment"] = 1)] = "increment";

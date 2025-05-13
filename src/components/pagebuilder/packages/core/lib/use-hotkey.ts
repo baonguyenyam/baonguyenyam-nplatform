@@ -49,7 +49,7 @@ const useHotkeyStore = create<{
 	hold: (key: string) => void;
 	release: (key: string) => void;
 	reset: (held?: KeyMapStrict) => void;
-	triggers: Record<string, { combo: KeyMapStrict; cb: Function }>;
+	triggers: Record<string, { combo: KeyMapStrict; cb: () => void }>;
 }>()(
 	subscribeWithSelector((set) => ({
 		held: {},
@@ -110,7 +110,7 @@ export const useMonitorHotkeys = () => {
 	useEffect(() => monitorHotkeys(document), []);
 };
 
-export const useHotkey = (combo: KeyMapStrict, cb: Function) => {
+export const useHotkey = (combo: KeyMapStrict, cb: () => void) => {
 	useEffect(
 		() =>
 			useHotkeyStore.setState((s) => ({

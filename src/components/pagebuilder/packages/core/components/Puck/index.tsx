@@ -435,7 +435,9 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 												<Button
 													onClick={() => {
 														const data = appStore.getState().state.data;
-														onPublish && onPublish(data as G["UserData"]);
+														if (onPublish) {
+															onPublish(data as G["UserData"]);
+														}
 													}}
 													icon={<Globe size="14px" />}>
 													Publish
@@ -497,7 +499,9 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 															<Button
 																onClick={() => {
 																	const data = appStore.getState().state.data as G["UserData"];
-																	onPublish && onPublish(data);
+																	if (onPublish) {
+																		onPublish(data);
+																	}
 																}}
 																icon={<Globe size="14px" />}>
 																Publish

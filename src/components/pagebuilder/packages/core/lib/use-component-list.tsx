@@ -12,9 +12,7 @@ export const useComponentList = () => {
 		if (Object.keys(uiComponentList).length > 0) {
 			const matchedComponents: string[] = [];
 
-			let _componentList: ReactNode[];
-
-			_componentList = Object.entries(uiComponentList).map(([categoryKey, category]) => {
+			const _componentList: ReactNode[] = Object.entries(uiComponentList).map(([categoryKey, category]) => {
 				if (category.visible === false || !category.components) {
 					return null;
 				}

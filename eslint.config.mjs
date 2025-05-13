@@ -18,12 +18,14 @@ export default defineConfig([{
     plugins: {
         "simple-import-sort": simpleImportSort,
     },
-    ignores: [
+   ignores: [
         "**/node_modules",
         "**/out",
         "**/christmas",
         "**/.next",
         "**/docs",
+        "src/components/editor/**",
+        "src/components/pagebuilder/**",
     ],
     rules: {
         "simple-import-sort/imports": ["error", {
