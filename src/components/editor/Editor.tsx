@@ -4,15 +4,18 @@ import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { TRANSFORMERS } from "@lexical/markdown";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
+import { ClickableLinkPlugin } from "@lexical/react/LexicalClickableLinkPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
+import { HashtagPlugin } from "@lexical/react/LexicalHashtagPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { HorizontalRulePlugin } from "@lexical/react/LexicalHorizontalRulePlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
 
@@ -26,11 +29,14 @@ import DraggableBlockPlugin from "./plugins/DraggableBlockPlugin";
 import FloatingLinkEditorPlugin from "./plugins/FloatingLinkEditorPlugin";
 import FloatingTextFormatToolbarPlugin from "./plugins/FloatingTextFormatToolbarPlugin";
 import InlineImagePlugin from "./plugins/InlineImagePlugin";
+import KeywordsPlugin from "./plugins/KeywordsPlugin";
 import LinkPlugin from "./plugins/LinkPlugin";
+import TabFocusPlugin from "./plugins/TabFocusPlugin";
 import TableCellActionMenuPlugin from "./plugins/TableActionMenuPlugin";
 import TableCellResizer from "./plugins/TableCellResizer";
 import TableHoverActionsPlugin from "./plugins/TableHoverActionsPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
+import { useSharedHistoryContext } from "./provider/SharedHistoryProvider";
 import EditorTheme from "./themes/EditorTheme";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
@@ -94,6 +100,8 @@ export function Editor(props: any) {
 		nodes: [...Nodes],
 		showTreeView: true,
 	};
+	const sharedHistoryContext = useSharedHistoryContext() as { historyState: any } | null;
+	const historyState = sharedHistoryContext?.historyState || null;
 
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
@@ -145,20 +153,25 @@ export function Editor(props: any) {
 						/>
 						<InitializeFromHtmlPlugin htmlString={value} />
 						<OnChangePlugin onChange={handleOnChange} />
-						<HistoryPlugin />
+						<HistoryPlugin externalHistoryState={historyState} />
 						<AutoFocusPlugin />
 						<ComponentPickerPlugin />
 						<DragDropPaste />
 						<ListPlugin />
+						{/* <HashtagPlugin /> */}
+						{/* <KeywordsPlugin /> */}
 						<CodeHighlightPlugin />
 						<TableCellResizer />
+						<TabFocusPlugin />
 						<ContextMenuPlugin />
+						<TabIndentationPlugin maxIndent={7} />
 						<TablePlugin
 							hasCellMerge={true}
 							hasCellBackgroundColor={true}
 						/>
 						<HorizontalRulePlugin />
 						<LinkPlugin />
+						<ClickableLinkPlugin />
 						{floatingAnchorElem && !isSmallWidthViewPort && (
 							<>
 								<FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
