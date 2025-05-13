@@ -18,6 +18,8 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
@@ -172,43 +174,76 @@ export function Editor(props: any) {
 			setIsSourceView(false);
 		};
 
+
+
 		return (
-			<button
-				type="button"
-				onClick={isSourceView ? switchToEditorView : switchToSourceView}
-				style={{
-					borderRadius: "5px",
-					cursor: "pointer",
-					padding: "2px 7px",
-				}}
-				className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-			>
-				{isSourceView ? "Visual Editor" : "HTML Code"}
-			</button>
+			<>
+				<button
+					type="button"
+					onClick={isSourceView ? switchToEditorView : switchToSourceView}
+					style={{
+						borderRadius: "5px",
+						cursor: "pointer",
+						padding: "2px 7px",
+					}}
+					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+				>
+					{isSourceView ? "Visual Editor" : "HTML Code"}
+				</button>
+
+			</>
 		);
 	};
+
+	const formatHTMLToBeauty = () => {
+		const formattedHtml = sourceHtml
+			.replace(/></g, ">\n<")
+			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)\/>/g, "<$1$2></$1>")
+			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)>/g, "<$1$2>\n")
+			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)>\n/g, "<$1$2>");
+		setSourceHtml(formattedHtml);
+		if (onChange) {
+			onChange(formattedHtml);
+		}
+	};
+
+	useEffect(() => {
+		if (isSourceView) {
+			formatHTMLToBeauty();
+		}
+	}, [isSourceView]);
 
 	return (
 		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700 relative pb-8">
 			<LexicalComposer initialConfig={initialConfig}>
 
 				{isSourceView && (
-					<textarea
-						value={sourceHtml}
-						onChange={(e) => {
-							const newHtml = e.target.value;
-							setSourceHtml(newHtml);
-							if (onChange) {
-								onChange(newHtml);
-							}
-						}}
-						style={{
-							borderRadius: '10px 10px 0 0',
-							width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical"
-						}}
-						placeholder="Edit HTML source..."
-						className="dark:bg-gray-800 dark:text-gray-200"
-					/>
+					<div className="source-code-view">
+						<textarea
+							value={sourceHtml}
+							onChange={(e) => {
+								const newHtml = e.target.value;
+								setSourceHtml(newHtml);
+								if (onChange) {
+									onChange(newHtml);
+								}
+							}}
+							style={{
+								borderRadius: '10px 10px 0 0',
+								width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical"
+							}}
+							placeholder="Edit HTML source..."
+							className="dark:bg-gray-800 dark:text-gray-200"
+						/>
+						{/* <SyntaxHighlighter
+							language="html"
+							wrapLines={false}
+							showLineNumbers={true}
+							style={github}
+						>
+							{sourceHtml}
+						</SyntaxHighlighter> */}
+					</div>
 				)}
 
 				{!isSourceView && (
