@@ -15,7 +15,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
 import { INSERT_HORIZONTAL_RULE_COMMAND } from "@lexical/react/LexicalHorizontalRuleNode";
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode, $isQuoteNode, HeadingTagType } from "@lexical/rich-text";
-import { $isParentElementRTL, $setBlocksType } from "@lexical/selection";
+import { $getSelectionStyleValueForProperty, $isParentElementRTL, $patchStyleText, $setBlocksType } from "@lexical/selection";
 import { $isTableNode } from "@lexical/table";
 import { $findMatchingParent, $getNearestBlockElementAncestorOrThrow, $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import type { LexicalEditor, NodeKey } from "lexical";
@@ -23,11 +23,14 @@ import { $createParagraphNode, $getNodeByKey, $getSelection, $isRangeSelection, 
 
 import useModal from "../../hooks/useModal";
 import DropDown, { DropDownItem } from "../../ui/DropDown";
+import DropdownColorPicker from "../../ui/DropdownColorPicker";
 import { IS_APPLE } from "../../utils/environment";
 import { getSelectedNode } from "../../utils/getSelectedNode";
 import { sanitizeUrl } from "../../utils/url";
 import { InsertInlineImageDialog } from "../InlineImagePlugin";
 import { InsertTableDialog } from "../TablePlugin";
+
+import FontSize from "./fontSize";
 
 const TOGGLE_SOURCE_CODE_COMMAND = createCommand();
 
@@ -45,6 +48,29 @@ const blockTypeToBlockName = {
 	paragraph: "Normal",
 	quote: "Quote",
 };
+
+const FONT_FAMILY_OPTIONS = [
+	["Arial", "Arial"],
+	["Courier New", "Courier New"],
+	["Georgia", "Georgia"],
+	["Times New Roman", "Times New Roman"],
+	["Trebuchet MS", "Trebuchet MS"],
+	["Verdana", "Verdana"],
+];
+
+const FONT_SIZE_OPTIONS = [
+	["10px", "10px"],
+	["11px", "11px"],
+	["12px", "12px"],
+	["13px", "13px"],
+	["14px", "14px"],
+	["15px", "15px"],
+	["16px", "16px"],
+	["17px", "17px"],
+	["18px", "18px"],
+	["19px", "19px"],
+	["20px", "20px"],
+];
 
 const rootTypeToRootName = {
 	root: "Root",
@@ -176,6 +202,24 @@ function BlockFormatDropDown({ editor, blockType, rootType, disabled = false }: 
 				<span className="text">Heading 3</span>
 			</DropDownItem>
 			<DropDownItem
+				className={"item " + dropDownActiveClass(blockType === "h4")}
+				onClick={() => formatHeading("h4")}>
+				<i className="icon h4" />
+				<span className="text">Heading 4</span>
+			</DropDownItem>
+			<DropDownItem
+				className={"item " + dropDownActiveClass(blockType === "h5")}
+				onClick={() => formatHeading("h5")}>
+				<i className="icon h5" />
+				<span className="text">Heading 5</span>
+			</DropDownItem>
+			<DropDownItem
+				className={"item " + dropDownActiveClass(blockType === "h6")}
+				onClick={() => formatHeading("h6")}>
+				<i className="icon h6" />
+				<span className="text">Heading 6</span>
+			</DropDownItem>
+			<DropDownItem
 				className={"item " + dropDownActiveClass(blockType === "bullet")}
 				onClick={formatBulletList}>
 				<i className="icon bullet-list" />
@@ -213,6 +257,49 @@ function Divider(): React.JSX.Element {
 	return <div className="divider" />;
 }
 
+function FontDropDown({ editor, value, style, disabled = false }: any): React.JSX.Element {
+	const handleClick = useCallback(
+		(option: any) => {
+			editor.update(() => {
+				const selection = $getSelection();
+				if (selection !== null) {
+					$patchStyleText(selection, {
+						[style]: option,
+					});
+				}
+			});
+		},
+		[editor, style]
+	);
+
+	const buttonAriaLabel =
+		style === "font-family"
+			? "Formatting options for font family"
+			: "Formatting options for font size";
+
+	return (
+		<DropDown
+			disabled={disabled}
+			buttonClassName={"toolbar-item " + style}
+			buttonLabel={value}
+			buttonIconClassName={style === "font-family" ? "icon block-type font-family" : ""}
+			buttonAriaLabel={buttonAriaLabel}
+		>
+			{(style === "font-family" ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(([option, text]) => (
+				<DropDownItem
+					className={`item ${dropDownActiveClass(value === option)} ${style === "font-size" ? "fontsize-item" : ""
+						}`}
+					onClick={() => handleClick(option)}
+					key={option}
+				>
+					<span className="text">{text}</span>
+				</DropDownItem>
+			))}
+		</DropDown>
+	);
+}
+
+
 export default function ToolbarPlugin(): React.JSX.Element {
 	const [editor] = useLexicalComposerContext();
 	const [activeEditor, setActiveEditor] = useState(editor);
@@ -220,6 +307,10 @@ export default function ToolbarPlugin(): React.JSX.Element {
 	const [rootType, setRootType] = useState<keyof typeof rootTypeToRootName>("root");
 	const [selectedElementKey, setSelectedElementKey] = useState<NodeKey | null>(null);
 	const [isSourceCodeVisible, setIsSourceCodeVisible] = useState(false);
+	const [fontFamily, setFontFamily] = useState("Arial");
+	const [fontColor, setFontColor] = useState("black");
+	const [bgColor, setBgColor] = useState("");
+	const [fontSize, setFontSize] = useState("16px");
 
 	const [isLink, setIsLink] = useState(false);
 	const [isBold, setIsBold] = useState(false);
@@ -279,6 +370,30 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				setRootType("table");
 			} else {
 				setRootType("root");
+			}
+
+			// Update font family
+			const fontFamilyValue = $getSelectionStyleValueForProperty(selection, "font-family");
+			if (fontFamilyValue !== null) {
+				setFontFamily(fontFamilyValue);
+			}
+
+			// Update fontColor
+			const fontColorValue = $getSelectionStyleValueForProperty(selection, "color");
+			if (fontColorValue !== null) {
+				setFontColor(fontColorValue);
+			}
+
+			// Update bgColor
+			const bgColorValue = $getSelectionStyleValueForProperty(selection, "background-color");
+			if (bgColorValue !== null) {
+				setBgColor(bgColorValue);
+			}
+
+			// Update fontSize
+			const fontSizeValue = $getSelectionStyleValueForProperty(selection, "font-size");
+			if (fontSizeValue !== null) {
+				setFontSize(fontSizeValue);
 			}
 
 			if (elementDOM !== null) {
@@ -351,6 +466,36 @@ export default function ToolbarPlugin(): React.JSX.Element {
 			)
 		);
 	}, [$updateToolbar, activeEditor, editor]);
+
+	const applyStyleText = useCallback(
+		(styles: any, skipHistoryStack: any) => {
+			activeEditor.update(
+				() => {
+					const selection = $getSelection();
+					if (selection !== null) {
+						$patchStyleText(selection, styles);
+					}
+				},
+				skipHistoryStack ? { tag: "historic" } : {}
+			);
+		},
+		[activeEditor]
+	);
+
+	const onFontColorSelect = useCallback(
+		(value: any, skipHistoryStack: any) => {
+			applyStyleText({ color: value }, skipHistoryStack);
+		},
+		[applyStyleText]
+	);
+
+	const onBgColorSelect = useCallback(
+		(value: any, skipHistoryStack: any) => {
+			applyStyleText({ "background-color": value }, skipHistoryStack);
+		},
+		[applyStyleText]
+	);
+
 
 	const clearFormatting = useCallback(() => {
 		activeEditor.update(() => {
@@ -450,7 +595,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				aria-label="Redo">
 				<i className="format redo" />
 			</button>
-			<button
+			{/* <button
 				disabled={!isEditable}
 				onClick={toggleSourceCode}
 				title="Toggle Source Code"
@@ -458,7 +603,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				className="toolbar-item spaced"
 				aria-label="Toggle source code">
 				<i className="format redo" />
-			</button>
+			</button> */}
 			<Divider />
 			{blockType in blockTypeToBlockName && activeEditor === editor && (
 				<>
@@ -467,6 +612,17 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						blockType={blockType}
 						rootType={rootType}
 						editor={editor}
+					/>
+					<FontDropDown
+						disabled={!isEditable}
+						style={"font-family"}
+						value={fontFamily}
+						editor={editor}
+					/>
+					<FontSize
+						selectionFontSize={fontSize.slice(0, -2)}
+						editor={editor}
+						disabled={!isEditable}
 					/>
 					<Divider />
 					<DropDown
@@ -580,6 +736,27 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						aria-label={`Format text to underlined. Shortcut: ${IS_APPLE ? "⌘U" : "Ctrl+U"}`}>
 						<i className="format underline" />
 					</button>
+
+					<DropdownColorPicker
+						disabled={!isEditable}
+						buttonClassName="toolbar-item color-picker"
+						buttonAriaLabel="Formatting text color"
+						buttonIconClassName="icon font-color"
+						color={fontColor}
+						onChange={(color) => onFontColorSelect(color, false)}
+						title="text color"
+					/>
+
+					<DropdownColorPicker
+						disabled={!isEditable}
+						buttonClassName="toolbar-item color-picker"
+						buttonAriaLabel="Formatting background color"
+						buttonIconClassName="icon bg-color"
+						color={bgColor}
+						onChange={(color) => onBgColorSelect(color, false)}
+						title="background color"
+					/>
+
 					<button
 						disabled={!isEditable}
 						onClick={() => {
