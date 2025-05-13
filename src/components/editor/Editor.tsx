@@ -19,10 +19,17 @@ import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
+import ComponentPickerPlugin from "./plugins/ComponentPickerPlugin";
+import ContextMenuPlugin from "./plugins/ContextMenuPlugin";
 import DragDropPaste from "./plugins/DragDropPastePlugin";
+import DraggableBlockPlugin from "./plugins/DraggableBlockPlugin";
 import FloatingLinkEditorPlugin from "./plugins/FloatingLinkEditorPlugin";
+import FloatingTextFormatToolbarPlugin from "./plugins/FloatingTextFormatToolbarPlugin";
 import InlineImagePlugin from "./plugins/InlineImagePlugin";
 import LinkPlugin from "./plugins/LinkPlugin";
+import TableCellActionMenuPlugin from "./plugins/TableActionMenuPlugin";
+import TableCellResizer from "./plugins/TableCellResizer";
+import TableHoverActionsPlugin from "./plugins/TableHoverActionsPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import EditorTheme from "./themes/EditorTheme";
 import ContentEditable from "./ui/ContentEditable";
@@ -31,7 +38,7 @@ import Nodes from "./nodes";
 
 import "./index.scss";
 
-function MyCustomAutoFocusPlugin() {
+function AutoFocusPlugin() {
 	const [editor] = useLexicalComposerContext();
 
 	useEffect(() => {
@@ -139,17 +146,28 @@ export function Editor(props: any) {
 						<InitializeFromHtmlPlugin htmlString={value} />
 						<OnChangePlugin onChange={handleOnChange} />
 						<HistoryPlugin />
-						<MyCustomAutoFocusPlugin />
+						<AutoFocusPlugin />
+						<ComponentPickerPlugin />
 						<DragDropPaste />
 						<ListPlugin />
 						<CodeHighlightPlugin />
+						<TableCellResizer />
+						<ContextMenuPlugin />
 						<TablePlugin
 							hasCellMerge={true}
 							hasCellBackgroundColor={true}
 						/>
 						<HorizontalRulePlugin />
 						<LinkPlugin />
-						{floatingAnchorElem && !isSmallWidthViewPort && <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />}
+						{floatingAnchorElem && !isSmallWidthViewPort && (
+							<>
+								<FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
+								<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+								<TableCellActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge={true} />
+								<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
+								<FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
+							</>
+						)}
 						<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
 					</div>
 				</div>

@@ -8,6 +8,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { $createCodeNode, $isCodeNode, CODE_LANGUAGE_FRIENDLY_NAME_MAP, CODE_LANGUAGE_MAP, getLanguageFriendlyName } from "@lexical/code";
+import { $generateHtmlFromNodes } from '@lexical/html';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { $isListNode, INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListNode, REMOVE_LIST_COMMAND } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -18,7 +19,7 @@ import { $isParentElementRTL, $setBlocksType } from "@lexical/selection";
 import { $isTableNode } from "@lexical/table";
 import { $findMatchingParent, $getNearestBlockElementAncestorOrThrow, $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import type { LexicalEditor, NodeKey } from "lexical";
-import { $createParagraphNode, $getNodeByKey, $getSelection, $isRangeSelection, $isRootOrShadowRoot, $isTextNode, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, FORMAT_ELEMENT_COMMAND, FORMAT_TEXT_COMMAND, INDENT_CONTENT_COMMAND, OUTDENT_CONTENT_COMMAND, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from "lexical";
+import { $createParagraphNode, $getNodeByKey, $getSelection, $isRangeSelection, $isRootOrShadowRoot, $isTextNode, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, createCommand, FORMAT_ELEMENT_COMMAND, FORMAT_TEXT_COMMAND, INDENT_CONTENT_COMMAND, OUTDENT_CONTENT_COMMAND, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from "lexical";
 
 import useModal from "../../hooks/useModal";
 import DropDown, { DropDownItem } from "../../ui/DropDown";
@@ -27,6 +28,8 @@ import { getSelectedNode } from "../../utils/getSelectedNode";
 import { sanitizeUrl } from "../../utils/url";
 import { InsertInlineImageDialog } from "../InlineImagePlugin";
 import { InsertTableDialog } from "../TablePlugin";
+
+const TOGGLE_SOURCE_CODE_COMMAND = createCommand();
 
 const blockTypeToBlockName = {
 	bullet: "Bulleted List",
@@ -216,6 +219,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 	const [blockType, setBlockType] = useState<keyof typeof blockTypeToBlockName>("paragraph");
 	const [rootType, setRootType] = useState<keyof typeof rootTypeToRootName>("root");
 	const [selectedElementKey, setSelectedElementKey] = useState<NodeKey | null>(null);
+	const [isSourceCodeVisible, setIsSourceCodeVisible] = useState(false);
 
 	const [isLink, setIsLink] = useState(false);
 	const [isBold, setIsBold] = useState(false);
@@ -240,9 +244,9 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				anchorNode.getKey() === "root"
 					? anchorNode
 					: $findMatchingParent(anchorNode, (e) => {
-							const parent = e.getParent();
-							return parent !== null && $isRootOrShadowRoot(parent);
-						});
+						const parent = e.getParent();
+						return parent !== null && $isRootOrShadowRoot(parent);
+					});
 
 			if (element === null) {
 				element = anchorNode.getTopLevelElementOrThrow();
@@ -336,6 +340,15 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				},
 				COMMAND_PRIORITY_CRITICAL,
 			),
+			activeEditor.registerCommand<boolean>(
+				TOGGLE_SOURCE_CODE_COMMAND,
+				(payload, editor) => {
+					const htmlString = $generateHtmlFromNodes(editor, null);
+					console.log("HTML_STRING", htmlString);
+					return false
+				},
+				COMMAND_PRIORITY_CRITICAL,
+			)
 		);
 	}, [$updateToolbar, activeEditor, editor]);
 
@@ -408,6 +421,11 @@ export default function ToolbarPlugin(): React.JSX.Element {
 		[activeEditor, selectedElementKey],
 	);
 
+	const toggleSourceCode = useCallback(() => {
+		activeEditor.dispatchCommand(TOGGLE_SOURCE_CODE_COMMAND, undefined);
+		setIsSourceCodeVisible((prev) => !prev);
+	}, [activeEditor]);
+
 	return (
 		<div className="toolbar">
 			<button
@@ -430,6 +448,15 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				type="button"
 				className="toolbar-item"
 				aria-label="Redo">
+				<i className="format redo" />
+			</button>
+			<button
+				disabled={!isEditable}
+				onClick={toggleSourceCode}
+				title="Toggle Source Code"
+				type="button"
+				className="toolbar-item spaced"
+				aria-label="Toggle source code">
 				<i className="format redo" />
 			</button>
 			<Divider />

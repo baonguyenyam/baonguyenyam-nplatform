@@ -6161,7 +6161,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debounce@npm:^2.0.0":
+"debounce@npm:^2.0.0, debounce@npm:^2.2.0":
   version: 2.2.0
   resolution: "debounce@npm:2.2.0"
   checksum: 684536fe9a04c9eea46cf02f119f69aa4071813ba25b9b43370e1503ea60b34fd38d694c7145fa2be504f9d40e7e39354cb9ed155c70954a0eefa391aefe271c
@@ -8821,6 +8821,7 @@ eslint-js@eslint/js:
     cmdk: "npm:^1.1.1"
     css-box-model: "npm:^1.2.1"
     date-fns: "npm:^4.1.0"
+    debounce: "npm:^2.2.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.3.2"
     eslint-js: eslint/js

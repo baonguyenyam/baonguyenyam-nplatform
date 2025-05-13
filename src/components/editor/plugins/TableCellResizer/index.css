@@ -1,0 +1,4 @@
+.TableCellResizer__resizer {
+  position: absolute;
+  z-index: calc(var(--layer-multiplier-dropdown) + var(--layer-multiplier));
+}
