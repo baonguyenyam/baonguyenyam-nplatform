@@ -311,6 +311,8 @@ export default function ToolbarPlugin(): React.JSX.Element {
 	const [fontColor, setFontColor] = useState("black");
 	const [bgColor, setBgColor] = useState("");
 	const [fontSize, setFontSize] = useState("16");
+	// isHighlight
+	const [isHighlight, setIsHighlight] = useState(false);
 
 	const [isLink, setIsLink] = useState(false);
 	const [isBold, setIsBold] = useState(false);
@@ -394,6 +396,12 @@ export default function ToolbarPlugin(): React.JSX.Element {
 			const fontSizeValue = $getSelectionStyleValueForProperty(selection, "font-size");
 			if (fontSizeValue !== null) {
 				setFontSize(fontSizeValue);
+			}
+
+			// Update highlight
+			const highlightValue = $getSelectionStyleValueForProperty(selection, "background-color");
+			if (highlightValue !== null) {
+				setIsHighlight(highlightValue !== "transparent");
 			}
 
 			if (elementDOM !== null) {
@@ -812,6 +820,17 @@ export default function ToolbarPlugin(): React.JSX.Element {
 							aria-label="Format text with a superscript">
 							<i className="icon superscript" />
 							<span className="text">Superscript</span>
+						</DropDownItem>
+						<DropDownItem
+							onClick={() => {
+								editor.dispatchCommand(FORMAT_TEXT_COMMAND, "highlight");
+							}}
+							className={"item " + dropDownActiveClass(isHighlight)}
+							title="Highlight"
+							aria-label="Format text with a highlight"
+						>
+							<i className="icon highlight" />
+							<span className="text">Highlight</span>
 						</DropDownItem>
 						<DropDownItem
 							onClick={clearFormatting}

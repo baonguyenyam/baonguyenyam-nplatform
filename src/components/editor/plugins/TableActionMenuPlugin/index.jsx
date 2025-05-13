@@ -614,6 +614,7 @@ function TableActionMenu({
           onClick={() => mergeTableCellsAtSelection()}
           data-test-id="table-merge-cells"
         >
+          <span></span>
           <span className="text">Merge cells</span>
         </button>
       );
@@ -625,6 +626,7 @@ function TableActionMenu({
           onClick={() => unmergeTableCellsAtSelection()}
           data-test-id="table-unmerge-cells"
         >
+          <span></span>
           <span className="text">Unmerge cells</span>
         </button>
       );
