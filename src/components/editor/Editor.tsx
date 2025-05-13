@@ -103,6 +103,10 @@ export function Editor(props: any) {
 	};
 	const sharedHistoryContext = useSharedHistoryContext() as { historyState: any } | null;
 	const historyState = sharedHistoryContext?.historyState || null;
+	const [isSourceView, setIsSourceView] = useState(false);
+	// sourceHtml holds the content for the textarea, initialized from props.value
+	const [sourceHtml, setSourceHtml] = useState<string>(value || "");
+
 
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
@@ -129,66 +133,143 @@ export function Editor(props: any) {
 		}
 	};
 
+	// Component for the toggle button and its logic
+	const ViewSourceTogglePlugin = () => {
+		const [editor] = useLexicalComposerContext();
+
+		const switchToSourceView = () => {
+			editor.getEditorState().read(() => {
+				const html = $generateHtmlFromNodes(editor, null);
+				setSourceHtml(html); // Update local state for textarea
+				// If editor's HTML is different from parent's `value`, notify parent.
+				if (onChange && html !== value) {
+					onChange(html);
+				}
+			});
+			setIsSourceView(true);
+		};
+
+		const switchToEditorView = () => {
+			// `sourceHtml` is the truth from the textarea.
+			// Notify parent of this new HTML content.
+			if (onChange && sourceHtml !== value) {
+				onChange(sourceHtml);
+			}
+			// The ControlledHtmlPlugin will see the updated `value` (if onChange changed it)
+			// and update the editor. However, for immediate effect and robustness:
+			editor.update(() => {
+				try {
+					const parser = new DOMParser();
+					const dom = parser.parseFromString(sourceHtml, "text/html");
+					const nodes = $generateNodesFromDOM(editor, dom);
+					const root = $getRoot();
+					root.clear();
+					$insertNodes(nodes);
+				} catch (error) {
+					console.error("Error updating editor from source HTML:", error);
+				}
+			});
+			setIsSourceView(false);
+		};
+
+		return (
+			<button
+				type="button"
+				onClick={isSourceView ? switchToEditorView : switchToSourceView}
+				style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 100, padding: '6px 12px', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer' }}
+				className="dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+			>
+				{isSourceView ? "View Editor" : "View Source"}
+			</button>
+		);
+	};
+
 	return (
 		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700">
 			<LexicalComposer initialConfig={initialConfig}>
-				<div className="editor-shell">
-					<ToolbarPlugin />
-					<div className="editor-container tree-view">
-						<HtmlDefaultValuePlugin htmlValue={props.defaultValue} />
-						<ClearEditorPlugin />
-						<LexicalAutoLinkPlugin />
-						<InlineImagePlugin />
-						<CheckListPlugin />
-						<RichTextPlugin
-							contentEditable={
-								<div className="editor-scroller">
-									<div
-										className="editor"
-										ref={onRef}>
-										<ContentEditable />
-									</div>
-								</div>
-							}
-							placeholder={placeholder}
-							ErrorBoundary={LexicalErrorBoundary}
-						/>
-						<InitializeFromHtmlPlugin htmlString={value} />
-						<OnChangePlugin onChange={handleOnChange} />
-						<HistoryPlugin externalHistoryState={historyState} />
-						<AutoFocusPlugin />
-						<ComponentPickerPlugin />
-						<DragDropPaste />
-						<ListPlugin />
-						<HashtagPlugin />
-						<KeywordsPlugin />
-						<CodeHighlightPlugin />
-						<TableCellResizer />
-						<TabFocusPlugin />
-						<ContextMenuPlugin />
-						<TabIndentationPlugin maxIndent={7} />
-						<TablePlugin
-							hasCellMerge={true}
-							hasCellBackgroundColor={true}
-						/>
-						<HorizontalRulePlugin />
-						<LinkPlugin />
-						<ClickableLinkPlugin />
-						{floatingAnchorElem && !isSmallWidthViewPort && (
-							<>
-								<FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
-								<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-								<TableCellActionMenuPlugin
-									anchorElem={floatingAnchorElem}
-									cellMerge={true}
-								/>
-								<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
-								<FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
-							</>
-						)}
-						<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-					</div>
+				<div style={{ position: 'relative' }}> {/* Container for button positioning */}
+					<ViewSourceTogglePlugin />
 				</div>
+
+				{isSourceView && (
+					<textarea
+						value={sourceHtml}
+						onChange={(e) => {
+							const newHtml = e.target.value;
+							setSourceHtml(newHtml);
+							// For live updates to parent from textarea (optional):
+							// if (onChange) {
+							//  onChange(newHtml);
+							// }
+						}}
+						style={{ width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical" }}
+						placeholder="Edit HTML source..."
+						className="dark:bg-gray-800 dark:text-gray-200"
+					/>
+				)}
+
+				{!isSourceView && (
+
+					<div className="editor-shell">
+						<ToolbarPlugin />
+						<div className="editor-container tree-view">
+							<HtmlDefaultValuePlugin htmlValue={props.defaultValue} />
+							<ClearEditorPlugin />
+							<LexicalAutoLinkPlugin />
+							<InlineImagePlugin />
+							<CheckListPlugin />
+							<RichTextPlugin
+								contentEditable={
+									<div className="editor-scroller">
+										<div
+											className="editor"
+											ref={onRef}>
+											<ContentEditable />
+										</div>
+									</div>
+								}
+								placeholder={placeholder}
+								ErrorBoundary={LexicalErrorBoundary}
+							/>
+							<InitializeFromHtmlPlugin htmlString={value} />
+							<OnChangePlugin onChange={handleOnChange} />
+							<HistoryPlugin externalHistoryState={historyState} />
+							<AutoFocusPlugin />
+							<ComponentPickerPlugin />
+							<DragDropPaste />
+							<ListPlugin />
+							<HashtagPlugin />
+							<KeywordsPlugin />
+							<CodeHighlightPlugin />
+							<TableCellResizer />
+							<TabFocusPlugin />
+							<ContextMenuPlugin />
+							<TabIndentationPlugin maxIndent={7} />
+							<TablePlugin
+								hasCellMerge={true}
+								hasCellBackgroundColor={true}
+							/>
+							<HorizontalRulePlugin />
+							<LinkPlugin />
+							<ClickableLinkPlugin />
+							{floatingAnchorElem && !isSmallWidthViewPort && (
+								<>
+									<FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
+									<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+									<TableCellActionMenuPlugin
+										anchorElem={floatingAnchorElem}
+										cellMerge={true}
+									/>
+									<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
+									<FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
+								</>
+							)}
+							<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+						</div>
+					</div>
+
+				)}
+
 			</LexicalComposer>
 		</div>
 	);
