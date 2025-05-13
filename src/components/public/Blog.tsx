@@ -41,7 +41,7 @@ export default function Blog(props: any) {
 					</div>
 					<div className="container mx-auto px-5 xl:max-w-[1020px] my-10">
 						<div
-							className="prose prose-invert max-w-none"
+							className="prose prose-invert max-w-none ContentEditable__root"
 							dangerouslySetInnerHTML={{ __html: data?.content }}
 						/>
 						<h3 className="mt-10 mb-2 text-xl leading-tight font-medium">Share:</h3>

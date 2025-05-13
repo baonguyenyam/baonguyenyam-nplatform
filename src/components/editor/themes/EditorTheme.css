@@ -15,7 +15,6 @@
 }
 
 .PlaygroundEditorTheme__paragraph {
-	margin: 0;
 	position: relative;
 }
 
@@ -31,20 +30,37 @@
 	padding-left: 16px;
 }
 
-.PlaygroundEditorTheme__h1 {
-	font-size: 24px;
-	font-weight: bold;
+
+.PlaygroundEditorTheme__h6 {
+	font-size: 18px;
+	font-weight: 500;
 }
 
-.PlaygroundEditorTheme__h2 {
-	font-size: 21px;
-	font-weight: bold;
+.PlaygroundEditorTheme__h5 {
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.PlaygroundEditorTheme__h4 {
+	font-size: 22px;
+	font-weight: 500;
 }
 
 .PlaygroundEditorTheme__h3 {
-	font-size: 18px;
-	font-weight: bold;
+	font-size: 24px;
+	font-weight: 500;
 }
+
+.PlaygroundEditorTheme__h2 {
+	font-size: 26px;
+	font-weight: 600;
+}
+
+.PlaygroundEditorTheme__h1 {
+	font-size: 28px;
+	font-weight: 700;
+}
+
 
 .PlaygroundEditorTheme__indent {
 	--lexical-indent-base-value: 40px;

@@ -687,7 +687,7 @@ function TableActionMenu({
           className="item wide"
         >
           <div className="icon-text-container">
-            <i className="icon vertical-top" />
+            {/* <i className="icon vertical-top" /> */}
             <span className="text">Top Align</span>
           </div>
         </DropDownItem>
@@ -698,7 +698,7 @@ function TableActionMenu({
           className="item wide"
         >
           <div className="icon-text-container">
-            <i className="icon vertical-middle" />
+            {/* <i className="icon vertical-middle" /> */}
             <span className="text">Middle Align</span>
           </div>
         </DropDownItem>
@@ -709,7 +709,7 @@ function TableActionMenu({
           className="item wide"
         >
           <div className="icon-text-container">
-            <i className="icon vertical-bottom" />
+            {/* <i className="icon vertical-bottom" /> */}
             <span className="text">Bottom Align</span>
           </div>
         </DropDownItem>

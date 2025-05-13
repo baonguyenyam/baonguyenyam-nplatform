@@ -82,6 +82,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
 	*,
 	::after,
 	::before,
@@ -294,3 +295,5 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@import "./editor";
