@@ -180,10 +180,8 @@ export function Editor(props: any) {
 					borderRadius: "5px",
 					cursor: "pointer",
 					padding: "2px 7px",
-					backgroundColor: "#eaeaea",
-					color: "#333",
 				}}
-				className="dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+				className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
 			>
 				{isSourceView ? "Visual Editor" : "HTML Code"}
 			</button>
@@ -200,19 +198,20 @@ export function Editor(props: any) {
 						onChange={(e) => {
 							const newHtml = e.target.value;
 							setSourceHtml(newHtml);
-							// For live updates to parent from textarea (optional):
 							if (onChange) {
 								onChange(newHtml);
 							}
 						}}
-						style={{ width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical" }}
+						style={{
+							borderRadius: '10px 10px 0 0',
+							width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical"
+						}}
 						placeholder="Edit HTML source..."
 						className="dark:bg-gray-800 dark:text-gray-200"
 					/>
 				)}
 
 				{!isSourceView && (
-
 					<div className="editor-shell">
 						<ToolbarPlugin />
 						<div className="editor-container tree-view">
@@ -270,7 +269,6 @@ export function Editor(props: any) {
 							<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
 						</div>
 					</div>
-
 				)}
 
 				<div style={{
@@ -284,10 +282,10 @@ export function Editor(props: any) {
 					zIndex: 100,
 					height: '38px',
 					padding: '0 5px',
-					backgroundColor: '#fcfcfc',
-					borderTop: '1px solid #eaeaea',
 					borderRadius: '0 0 10px 10px',
-				}}>
+				}}
+					className="bg-gray-50 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-800"
+				>
 					<ViewSourceTogglePlugin />
 				</div>
 
