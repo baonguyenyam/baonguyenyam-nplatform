@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate --no-engine && next build",
     "lint": "next lint --no-cache",
     "format": "prettier 'src/**/*.{ts,json,tsx,css,js,scss,yaml}' --write && npx eslint ./src --fix",
     "email": "email dev --port 9000",
@@ -11,7 +11,6 @@
     "reset": "prisma migrate reset --force --skip-seed",
     "migrate": "prisma migrate dev --name init",
     "update": "prisma migrate status --schema=./prisma/schema.prisma",
-    "vercel-build": "prisma generate --no-engine && next build",
     "seed": "npx prisma db seed -- --environment development"
   },
   "prisma": {
