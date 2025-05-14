@@ -365,7 +365,9 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							targetZone = targetData.zone;
 							targetIndex = targetData.index;
 
-							const collisionData = (manager.dragOperation.data?.collisionMap as CollisionMap)?.[targetId];
+							// const collisionData = (manager.dragOperation?.data?.collisionMap as CollisionMap)?.[targetId];
+							const collisionData = (manager.dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data?.collisionMap?.[targetId];
+
 
 							const dir = getDeepDir(target.element);
 

@@ -43,7 +43,7 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 	((input) => {
 		const { dragOperation, droppable } = input;
 
-		const { position } = dragOperation;
+		const { position, data } = dragOperation as unknown as { position: typeof dragOperation.position; data: Record<string, any> };
 		const dragShape = dragOperation.shape?.current;
 		const { shape: dropShape } = droppable;
 
@@ -57,14 +57,14 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 
 		const interval = trackMovementInterval(position.current, dragAxis);
 
-		dragOperation.data = {
-			...dragOperation.data,
+		(dragOperation as unknown as { data: Record<string, any> }).data = {
+			...data,
 			direction: interval.direction,
 		};
 
-		const collisionMap = (dragOperation.data.collisionMap || {}) as CollisionMap;
+		const collisionMap = ((dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data.collisionMap || {}) as CollisionMap;
 
-		dragOperation.data.collisionMap = collisionMap;
+		(dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data.collisionMap = collisionMap;
 
 		collisionMap[droppable.id] = {
 			direction: interval.direction,

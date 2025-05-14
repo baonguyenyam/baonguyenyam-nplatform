@@ -38,7 +38,8 @@ export const SortableProvider = ({
 
 				// NB drag operation can come out of sync with collision
 				// Would be better for event itself to contain collision data
-				const collisionData = (manager.dragOperation.data?.collisionMap as CollisionMap)?.[target.id];
+				const collisionData = (manager.dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data?.collisionMap?.[target.id];
+
 
 				if (sourceIndex !== targetIndex && source.id !== target.id) {
 					const collisionPosition = collisionData.direction === "up" ? "before" : "after";
