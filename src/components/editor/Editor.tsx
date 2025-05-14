@@ -226,23 +226,9 @@ export function Editor(props: any) {
 		}
 	};
 
-	const format = () => {
-		var totalLines = cmIns.current?.state.doc.lines || 0;
-		if (cmIns.current) {
-			if (cmIns.current) {
-				const formatted = cmIns.current.state.doc.toString(); // Get the current content
-				const formattedContent = formatHTML(formatted); // Use your existing formatHTML function
-				cmIns.current.dispatch({
-					changes: { from: 0, to: cmIns.current.state.doc.length, insert: formattedContent },
-				});
-			}
-		}
-	};
-
 	useEffect(() => {
 		if (isSourceView) {
 			formatHTMLToBeauty();
-			format();
 		}
 	}, [isSourceView]);
 
