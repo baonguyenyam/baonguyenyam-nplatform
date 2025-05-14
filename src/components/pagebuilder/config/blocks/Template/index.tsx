@@ -132,7 +132,7 @@ export const TemplateInternal: ComponentConfig<TemplateProps> = {
 					await createComponent("Grid", {
 						numColumns: 2,
 						items: [
-							await createComponent("Card", { title: "A card", mode: "card" }),
+							// await createComponent("Card", { title: "A card", mode: "card" }),
 							await createComponent("Flex", {
 								direction: "column",
 								gap: 0,
@@ -151,7 +151,7 @@ export const TemplateInternal: ComponentConfig<TemplateProps> = {
 										size: "16px",
 									}),
 									await createComponent("Button", {
-										variant: "secondary",
+										// variant: "secondary",
 										label: "Learn more",
 									}),
 									await createComponent("Space", {
