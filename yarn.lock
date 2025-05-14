@@ -9299,6 +9299,7 @@ eslint-js@eslint/js:
     react-day-picker: "npm:9.6.7"
     react-dom: "npm:^19"
     react-email: "npm:4.0.13"
+    react-from-json: "npm:^0.8.0"
     react-hook-form: "npm:^7.56.3"
     react-icons: "npm:^5.5.0"
     react-redux: "npm:^9.2.0"
@@ -10355,6 +10356,16 @@ eslint-js@eslint/js:
   peerDependencies:
     react: ">=16.13.1"
   checksum: f977ca61823e43de2381d53dd7aa8b4d79ff6a984c9afdc88dc44f9973b99de7fd382d2f0f91f2688e24bb987c0185bf45d0b004f22afaaab0f990a830253bfb
+  languageName: node
+  linkType: hard
+
+"react-from-json@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "react-from-json@npm:0.8.0"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 65d99f001acf1f642f1f0127e5358e871ae7b6bf140aab17f26717fff8af19b0f0fd8d8ca75d9c32316f8741967bfe95e69cb2894b2ba0f38df153e616b9c66f
   languageName: node
   linkType: hard
 
