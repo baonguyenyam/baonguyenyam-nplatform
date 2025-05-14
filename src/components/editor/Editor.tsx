@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { TRANSFORMERS } from "@lexical/markdown";
@@ -18,8 +18,9 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { html } from '@codemirror/lang-html';
 
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
@@ -108,7 +109,7 @@ export function Editor(props: any) {
 	const [isSourceView, setIsSourceView] = useState(false);
 	// sourceHtml holds the content for the textarea, initialized from props.value
 	const [sourceHtml, setSourceHtml] = useState<string>(value || "");
-
+	const extensions = [html()];
 
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
@@ -180,7 +181,7 @@ export function Editor(props: any) {
 			<>
 				<button
 					type="button"
-					onClick={isSourceView ? switchToEditorView : switchToSourceView}
+					onClick={isSourceView ? () => switchToEditorView() : () => switchToSourceView()}
 					style={{
 						borderRadius: "5px",
 						cursor: "pointer",
@@ -189,21 +190,41 @@ export function Editor(props: any) {
 					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
 				>
 					{isSourceView ? "Visual Editor" : "HTML Code"}
-				</button>
+				</button >
 
 			</>
 		);
 	};
 
+	const formatHTML = (formatHTML: string) => {
+		const tab = '  ';
+		let result = '';
+		let indentLevel = 0;
+
+		formatHTML.split(/>\s*</).forEach(element => {
+			if (element.startsWith('</')) {
+				indentLevel--;
+			}
+			result += tab.repeat(indentLevel) + '<' + element + '>\n';
+			if (element.startsWith('<') && !element.startsWith('</') && !element.endsWith('/>')) {
+				indentLevel++;
+			}
+		});
+
+		result = result.replace(/<</g, '<');
+		result = result.replace(/>>/g, '>');
+
+		return result;
+	};
+
 	const formatHTMLToBeauty = () => {
 		const formattedHtml = sourceHtml
-			.replace(/></g, ">\n<")
-			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)\/>/g, "<$1$2></$1>")
-			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)>/g, "<$1$2>\n")
-			.replace(/<\s*([a-zA-Z0-9]+)([^>]*)>\n/g, "<$1$2>");
-		setSourceHtml(formattedHtml);
+		const r = formatHTML(formattedHtml);
+
+		setSourceHtml(r);
+
 		if (onChange) {
-			onChange(formattedHtml);
+			onChange(r);
 		}
 	};
 
@@ -214,12 +235,12 @@ export function Editor(props: any) {
 	}, [isSourceView]);
 
 	return (
-		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700 relative pb-8">
+		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700 relative pb-9">
 			<LexicalComposer initialConfig={initialConfig}>
 
 				{isSourceView && (
-					<div className="source-code-view">
-						<textarea
+					<div className="source-code-view rounded-tl-[10px] rounded-tr-[10px] overflow-hidden">
+						{/* <textarea
 							value={sourceHtml}
 							onChange={(e) => {
 								const newHtml = e.target.value;
@@ -234,15 +255,31 @@ export function Editor(props: any) {
 							}}
 							placeholder="Edit HTML source..."
 							className="dark:bg-gray-800 dark:text-gray-200"
+						/> */}
+						<CodeMirror
+							value={sourceHtml}
+							theme={vscodeDark}
+							onChange={(value) => {
+								setSourceHtml(value);
+								if (onChange) {
+									onChange(value);
+								}
+							}}
+							style={{
+								borderRadius: '10px 10px 0 0',
+								width: "100%",
+								height: "400px",
+								minHeight: "200px",
+								// fontFamily: "monospace",
+								resize: "vertical",
+								fontSize: "13px",
+							}}
+							placeholder="Edit HTML source..."
+							className="dark:bg-gray-800 dark:text-gray-200 overflow-y-auto"
+							extensions={extensions}
+							maxWidth="100%"
+							indentWithTab={true}
 						/>
-						{/* <SyntaxHighlighter
-							language="html"
-							wrapLines={false}
-							showLineNumbers={true}
-							style={github}
-						>
-							{sourceHtml}
-						</SyntaxHighlighter> */}
 					</div>
 				)}
 
@@ -310,7 +347,7 @@ export function Editor(props: any) {
 					position: 'absolute',
 					display: 'flex',
 					alignItems: 'center',
-					justifyContent: 'end',
+					// justifyContent: 'end',
 					bottom: '0',
 					right: '0',
 					width: '100%',

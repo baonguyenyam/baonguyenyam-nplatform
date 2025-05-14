@@ -180,10 +180,10 @@ function TableHoverActionsContainer({ anchorElem }) {
                 if (resetObserver) {
                   // Reset resize observers
                   tableResizeObserver.disconnect();
-                  for (const tableKey of tableSetRef.current) {
-                    const { tableElement } = $getTableAndElementByKey(tableKey);
-                    tableResizeObserver.observe(tableElement);
-                  }
+                  // for (const tableKey of tableSetRef.current) {
+                  //   const { tableElement } = $getTableAndElementByKey(tableKey) || {};
+                  //   tableResizeObserver.observe(tableElement);
+                  // }
                   setShouldListenMouseMove(tableSetRef.current.size > 0);
                 }
               },
