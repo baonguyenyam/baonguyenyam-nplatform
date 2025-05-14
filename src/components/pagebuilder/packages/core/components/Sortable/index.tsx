@@ -1,10 +1,8 @@
-import { PropsWithChildren, ReactNode, useState } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
-
-import { CollisionMap, createDynamicCollisionDetector } from "../../lib/dnd/collision/dynamic";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import { useSortableSafe } from "../../lib/dnd/dnd-kit/safe";
 import { useSensors } from "../../lib/dnd/use-sensors";
-
+import { CollisionMap, createDynamicCollisionDetector } from "../../lib/dnd/collision/dynamic";
 import "./styles.css";
 
 export const SortableProvider = ({
@@ -33,7 +31,7 @@ export const SortableProvider = ({
 
 				if (!source || !target) return;
 
-				const sourceIndex = source.data.index;
+				let sourceIndex = source.data.index;
 				let targetIndex = target.data.index;
 
 				// NB drag operation can come out of sync with collision
@@ -68,7 +66,7 @@ export const SortableProvider = ({
 	);
 };
 
-export const Sortable = ({ id, index, disabled, children, type = "item" }: { id: string; index: number; disabled?: boolean; children: (props: { status: any; ref: (element: Element | null) => void; handleRef: (element: Element | null) => void }) => ReactNode; type?: string }) => {
+export const Sortable = ({ id, index, disabled, children, type = "item" }: { id: string; index: number; disabled?: boolean; children: (props: { status: "idle" | "dragging" | "dropping"; ref: (element: Element | null) => void; handleRef: (element: Element | null) => void }) => ReactNode; type?: string }) => {
 	const {
 		ref: sortableRef,
 		status,
@@ -82,5 +80,5 @@ export const Sortable = ({ id, index, disabled, children, type = "item" }: { id:
 		collisionDetector: createDynamicCollisionDetector("y"),
 	});
 
-	return children({ status, ref: sortableRef, handleRef });
+	return children({ ref: sortableRef, handleRef, status: status as "idle" | "dragging" | "dropping" });
 };
