@@ -69,7 +69,7 @@ export const SortableProvider = ({
 	);
 };
 
-export const Sortable = ({ id, index, disabled, children, type = "item" }: { id: string; index: number; disabled?: boolean; children: (props: { status: "idle" | "dragging" | "dropping"; ref: (element: Element | null) => void; handleRef: (element: Element | null) => void }) => ReactNode; type?: string }) => {
+export const Sortable = ({ id, index, disabled, children, type = "item" }: { id: string; index: number; disabled?: boolean; children: (props: { status: any; ref: (element: Element | null) => void; handleRef: (element: Element | null) => void }) => ReactNode; type?: string }) => {
 	const {
 		ref: sortableRef,
 		status,
