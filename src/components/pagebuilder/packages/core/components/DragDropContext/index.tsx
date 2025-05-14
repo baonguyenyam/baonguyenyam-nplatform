@@ -1,7 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { DragDropEvents, type DragDropManager as AbstractDragDropManager } from "@dnd-kit/abstract";
-import type { Draggable, Droppable } from "@dnd-kit/dom";
-import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom"; // This DragDropManager is from @dnd-kit/dom
+import { DragDropEvents } from "@dnd-kit/abstract";
+import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useDebouncedCallback } from "use-debounce";
 import { createStore } from "zustand";
@@ -22,13 +21,7 @@ import { DropZoneContext, Preview, ZoneStore, ZoneStoreProvider } from "../DropZ
 
 const DEBUG = false;
 
-// The original DragDropManager from @dnd-kit/dom resolves to AbstractDragDropManager<Draggable (dom), Droppable (dom)>
-// where Draggable and Droppable from dom have complex, recursive default manager types.
-// The error suggests that Draggable (from dom) with its default manager doesn't satisfy a constraint
-// expecting its manager to be effectively AbstractDragDropManager<any, any>.
-// By specifying AbstractDragDropManager<any, any> here, we make the manager type more general,
-// which can help resolve the constraint issue.
-type Events = DragDropEvents<Draggable, Droppable, AbstractDragDropManager<any, any>>;
+type Events = DragDropEvents<any, any, any>;
 type DragCbs = Partial<{ [eventName in keyof Events]: Events[eventName][] }>;
 
 const dragListenerContext = createContext<{
