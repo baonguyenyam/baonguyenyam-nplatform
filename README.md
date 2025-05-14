@@ -5,6 +5,10 @@ nPlatform is a platform that provides a set of tools and services to help develo
 **DEMO: https://n-platform.vercel.app/
 
 ![](./public/preview.png)
+![](./public/preview_1.png)
+![](./public/preview_2.png)
+![](./public/preview_3.png)
+![](./public/preview_4.png)
 
 # Key Features Powering the Platform:
 
