@@ -19,8 +19,10 @@ import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
 import CodeMirror from "@uiw/react-codemirror";
+import { EditorView, keymap } from "@codemirror/view";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import { html } from '@codemirror/lang-html';
+import { html } from "@codemirror/lang-html";
+import { indentWithTab } from "@codemirror/commands";
 
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
@@ -109,7 +111,7 @@ export function Editor(props: any) {
 	const [isSourceView, setIsSourceView] = useState(false);
 	// sourceHtml holds the content for the textarea, initialized from props.value
 	const [sourceHtml, setSourceHtml] = useState<string>(value || "");
-	const extensions = [html()];
+	const cmIns = useRef<EditorView | null>(null);
 
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
@@ -175,8 +177,6 @@ export function Editor(props: any) {
 			setIsSourceView(false);
 		};
 
-
-
 		return (
 			<>
 				<button
@@ -187,38 +187,36 @@ export function Editor(props: any) {
 						cursor: "pointer",
 						padding: "2px 7px",
 					}}
-					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-				>
+					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600">
 					{isSourceView ? "Visual Editor" : "HTML Code"}
-				</button >
-
+				</button>
 			</>
 		);
 	};
 
 	const formatHTML = (formatHTML: string) => {
-		const tab = '  ';
-		let result = '';
+		const tab = "  ";
+		let result = "";
 		let indentLevel = 0;
 
-		formatHTML.split(/>\s*</).forEach(element => {
-			if (element.startsWith('</')) {
+		formatHTML.split(/>\s*</).forEach((element) => {
+			if (element.startsWith("</")) {
 				indentLevel--;
 			}
-			result += tab.repeat(indentLevel) + '<' + element + '>\n';
-			if (element.startsWith('<') && !element.startsWith('</') && !element.endsWith('/>')) {
+			result += tab.repeat(indentLevel) + "<" + element + ">\n";
+			if (element.startsWith("<") && !element.startsWith("</") && !element.endsWith("/>")) {
 				indentLevel++;
 			}
 		});
 
-		result = result.replace(/<</g, '<');
-		result = result.replace(/>>/g, '>');
+		result = result.replace(/<</g, "<");
+		result = result.replace(/>>/g, ">");
 
 		return result;
 	};
 
 	const formatHTMLToBeauty = () => {
-		const formattedHtml = sourceHtml
+		const formattedHtml = sourceHtml;
 		const r = formatHTML(formattedHtml);
 
 		setSourceHtml(r);
@@ -228,34 +226,31 @@ export function Editor(props: any) {
 		}
 	};
 
+	const format = () => {
+		var totalLines = cmIns.current?.state.doc.lines || 0;
+		if (cmIns.current) {
+			if (cmIns.current) {
+				const formatted = cmIns.current.state.doc.toString(); // Get the current content
+				const formattedContent = formatHTML(formatted); // Use your existing formatHTML function
+				cmIns.current.dispatch({
+					changes: { from: 0, to: cmIns.current.state.doc.length, insert: formattedContent },
+				});
+			}
+		}
+	};
+
 	useEffect(() => {
 		if (isSourceView) {
 			formatHTMLToBeauty();
+			format();
 		}
 	}, [isSourceView]);
 
 	return (
 		<div className="app_editor border border-gray-300 rounded-[10px] dark:bg-gray-900 dark:border-gray-700 relative pb-9">
 			<LexicalComposer initialConfig={initialConfig}>
-
 				{isSourceView && (
 					<div className="source-code-view rounded-tl-[10px] rounded-tr-[10px] overflow-hidden">
-						{/* <textarea
-							value={sourceHtml}
-							onChange={(e) => {
-								const newHtml = e.target.value;
-								setSourceHtml(newHtml);
-								if (onChange) {
-									onChange(newHtml);
-								}
-							}}
-							style={{
-								borderRadius: '10px 10px 0 0',
-								width: "100%", height: "400px", minHeight: "200px", border: "none", padding: "10px", boxSizing: "border-box", fontFamily: "monospace", fontSize: "13px", outline: "none", resize: "vertical"
-							}}
-							placeholder="Edit HTML source..."
-							className="dark:bg-gray-800 dark:text-gray-200"
-						/> */}
 						<CodeMirror
 							value={sourceHtml}
 							theme={vscodeDark}
@@ -265,20 +260,24 @@ export function Editor(props: any) {
 									onChange(value);
 								}
 							}}
+							extensions={[html(), vscodeDark, EditorView.lineWrapping, keymap.of([indentWithTab])]}
+							basicSetup={{
+								lineNumbers: true,
+								tabSize: 2,
+								indentOnInput: false,
+							}}
 							style={{
-								borderRadius: '10px 10px 0 0',
+								borderRadius: "10px 10px 0 0",
 								width: "100%",
 								height: "400px",
 								minHeight: "200px",
-								// fontFamily: "monospace",
 								resize: "vertical",
 								fontSize: "13px",
 							}}
+							indentWithTab={true}
 							placeholder="Edit HTML source..."
 							className="dark:bg-gray-800 dark:text-gray-200 overflow-y-auto"
-							extensions={extensions}
 							maxWidth="100%"
-							indentWithTab={true}
 						/>
 					</div>
 				)}
@@ -343,25 +342,23 @@ export function Editor(props: any) {
 					</div>
 				)}
 
-				<div style={{
-					position: 'absolute',
-					display: 'flex',
-					alignItems: 'center',
-					// justifyContent: 'end',
-					bottom: '0',
-					right: '0',
-					width: '100%',
-					zIndex: 100,
-					height: '38px',
-					padding: '0 5px',
-					borderRadius: '0 0 10px 10px',
-				}}
-					className="bg-gray-50 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-800"
-				>
+				<div
+					style={{
+						position: "absolute",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "end",
+						bottom: "0",
+						right: "0",
+						width: "100%",
+						zIndex: 100,
+						height: "38px",
+						padding: "0 5px",
+						borderRadius: "0 0 10px 10px",
+					}}
+					className="bg-gray-50 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-800">
 					<ViewSourceTogglePlugin />
 				</div>
-
-
 			</LexicalComposer>
 		</div>
 	);
