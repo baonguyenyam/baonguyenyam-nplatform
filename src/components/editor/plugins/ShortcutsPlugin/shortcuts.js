@@ -1,4 +1,4 @@
-import { IS_APPLE } from "../../Utils/environment";
+import { IS_APPLE } from "../../utils/environment";
 
 //disable eslint sorting rule for quick reference to shortcuts
 export const SHORTCUTS = Object.freeze({
