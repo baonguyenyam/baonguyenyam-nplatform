@@ -6,12 +6,12 @@
     "format": "prettier 'src/**/*.{ts,json,tsx,css,js,scss,yaml}' --write && npx eslint ./src --fix",
     "email": "email dev --port 9000",
     "start": "next start",
-    "postinstall": "prisma generate",
-    "generate": "prisma generate && prisma format",
+    "postinstall": "prisma generate --no-engine",
+    "generate": "prisma generate --no-engine && prisma format",
     "reset": "prisma migrate reset --force --skip-seed",
     "migrate": "prisma migrate dev --name init",
     "update": "prisma migrate status --schema=./prisma/schema.prisma",
-    "vercel-build": "prisma generate && next build",
+    "vercel-build": "prisma generate --no-engine && next build",
     "seed": "npx prisma db seed -- --environment development"
   },
   "prisma": {
