@@ -1,4 +1,4 @@
-# About this Platform
+# About this Platform 
 
 nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently. 
 
