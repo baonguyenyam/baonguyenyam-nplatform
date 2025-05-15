@@ -387,14 +387,14 @@ export default function Fetch(props: any) {
 						{ value: "ext", label: "Order by Extension" },
 						{ value: "user.name", label: "Order by User" },
 					]}
-					// filter={...} // Add filters if needed (e.g., by extension, user)
+				// filter={...} // Add filters if needed (e.g., by extension, user)
 				/>
 			)}
 			{/* Single Drawer Component for Editing */}
 			<Drawer
 				title={`Edit ${title}`}
 				placement="right"
-				width={800} // Adjust width as needed for file metadata
+				width={1200} // Adjust width as needed for file metadata
 				open={drawerState.isOpen}
 				closable={false} // Use extra for close button
 				onClose={handleDrawerClose}

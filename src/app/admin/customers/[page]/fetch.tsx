@@ -278,7 +278,7 @@ export default function Fetch(props: any) {
 			<Drawer
 				title={`${drawerState.mode === "create" ? "Create" : "Edit"} ${title}`}
 				placement="right"
-				width={800} // Adjust width as needed
+				width={1200} // Adjust width as needed
 				open={drawerState.mode !== null}
 				closable={false} // Use extra for close button
 				onClose={handleDrawerClose}
