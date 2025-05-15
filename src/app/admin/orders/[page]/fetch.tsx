@@ -205,7 +205,7 @@ export default function Fetch(props: any) {
 				}}
 				open={open[0] === "create"}
 				destroyOnClose={true}
-				width={1200}
+				width={1300}
 				maskClosable={false}
 				extra={
 					<Button
