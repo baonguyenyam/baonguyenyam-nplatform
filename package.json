@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate --no-engine && next build",
+    "build": "next build",
     "lint": "next lint --no-cache",
     "format": "prettier 'src/**/*.{ts,json,tsx,css,js,scss,yaml}' --write && npx eslint ./src --fix",
     "email": "email dev --port 9000",
