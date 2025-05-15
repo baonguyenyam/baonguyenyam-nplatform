@@ -55,6 +55,8 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
+    "src/components/editor",
+    "src/components/pagebuilder",
     "node_modules",
     ".next/cache",
     "docs"

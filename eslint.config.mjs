@@ -26,6 +26,8 @@ export default defineConfig([{
         "**/docs",
         "src/components/editor/**",
         "src/components/pagebuilder/**",
+        "**/src/components/editor/**",
+        "**/src/components/pagebuilder/**",
     ],
     rules: {
         "simple-import-sort/imports": ["error", {
