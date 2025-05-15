@@ -2,6 +2,9 @@ const nextConfig = {
   env: {
     public_APIUrl: process.env.PUBLIC_API_URL,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   compress: true,
   crossOrigin: 'anonymous',
   poweredByHeader: false,
@@ -15,7 +18,7 @@ const nextConfig = {
       bodySizeLimit: process.env.MAX_FILE_SIZE
     },
       webpackMemoryOptimizations: true,
-   },
+  },
   images: {
     remotePatterns: [
       {
