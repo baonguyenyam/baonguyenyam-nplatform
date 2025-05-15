@@ -22,24 +22,20 @@ import { useSafeId } from "../../lib/use-safe-id";
 
 const DEBUG = false;
 
-type Events = DragDropEvents<Draggable, Droppable, DragDropManager>;
-type DragCbs = Partial<{ [eventName in keyof Events]: Events[eventName][] }>;
-
 const dragListenerContext = createContext<{
-	dragListeners: DragCbs;
-	setDragListeners?: Dispatch<SetStateAction<DragCbs>>;
+	dragListeners: any;
+	setDragListeners?: Dispatch<SetStateAction<any>>;
 }>({
 	dragListeners: {},
 });
 
-type EventKeys = keyof Events;
 
-export function useDragListener(type: EventKeys, fn: Events[EventKeys], deps: any[] = []) {
+export function useDragListener(type: any, fn: any, deps: any[] = []) {
 	const { setDragListeners } = useContext(dragListenerContext);
 
 	useEffect(() => {
 		if (setDragListeners) {
-			setDragListeners((old) => ({
+			setDragListeners((old: any) => ({
 				...old,
 				[type]: [...(old[type] || []), fn],
 			}));
@@ -234,7 +230,7 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 
 	const sensors = useSensors();
 
-	const [dragListeners, setDragListeners] = useState<DragCbs>({});
+	const [dragListeners, setDragListeners] = useState<any>({});
 
 	const dragMode = useRef<"new" | "existing" | null>(null);
 
@@ -282,7 +278,7 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							if (event.canceled || target?.type === "void") {
 								zoneStore.setState({ previewIndex: {} });
 
-								dragListeners.dragend?.forEach((fn) => {
+								dragListeners.dragend?.forEach((fn: any) => {
 									fn(event, manager);
 								});
 
@@ -327,7 +323,7 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 								});
 							}, 50);
 
-							dragListeners.dragend?.forEach((fn) => {
+							dragListeners.dragend?.forEach((fn: any) => {
 								fn(event, manager);
 							});
 						}, 250);
@@ -435,7 +431,7 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							}
 						}
 
-						dragListeners.dragover?.forEach((fn) => {
+						dragListeners.dragover?.forEach((fn: any) => {
 							fn(event, manager);
 						});
 					}}
@@ -473,7 +469,7 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							}
 						}
 
-						dragListeners.dragstart?.forEach((fn) => {
+						dragListeners.dragstart?.forEach((fn: any) => {
 							fn(event, manager);
 						});
 					}}
