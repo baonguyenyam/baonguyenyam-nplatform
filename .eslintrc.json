@@ -1,0 +1,9 @@
+{
+	"ignorePatterns": [
+		"**/node_modules/**",
+		"dist/**",
+		"public/**",
+		"src/components/editor/**",
+		"src/components/pagebuilder/**"
+	]
+}
