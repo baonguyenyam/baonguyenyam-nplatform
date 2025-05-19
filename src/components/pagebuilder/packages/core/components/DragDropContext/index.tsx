@@ -1,24 +1,24 @@
-import { DragDropProvider } from "@dnd-kit/react";
-import { useAppStore, useAppStoreApi } from "../../store";
 import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
 import { DragDropEvents } from "@dnd-kit/abstract";
-import { DropZoneProvider } from "../DropZone";
 import type { Draggable, Droppable } from "@dnd-kit/dom";
-import { getItem } from "../../lib/data/get-item";
-import { DropZoneContext, Preview, ZoneStore, ZoneStoreProvider } from "../DropZone/context";
-import { createNestedDroppablePlugin } from "../../lib/dnd/NestedDroppablePlugin";
-import { insertComponent } from "../../lib/insert-component";
+import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
+import { DragDropProvider } from "@dnd-kit/react";
 import { useDebouncedCallback } from "use-debounce";
-import { CollisionMap } from "../../lib/dnd/collision/dynamic";
-import { ComponentDndData } from "../DraggableComponent";
-
-import { collisionStore } from "../../lib/dnd/collision/dynamic/store";
-import { generateId } from "../../lib/generate-id";
 import { createStore } from "zustand";
-import { getDeepDir } from "../../lib/get-deep-dir";
+
+import { getItem } from "../../lib/data/get-item";
+import { CollisionMap } from "../../lib/dnd/collision/dynamic";
+import { collisionStore } from "../../lib/dnd/collision/dynamic/store";
+import { createNestedDroppablePlugin } from "../../lib/dnd/NestedDroppablePlugin";
 import { useSensors } from "../../lib/dnd/use-sensors";
+import { generateId } from "../../lib/generate-id";
+import { getDeepDir } from "../../lib/get-deep-dir";
+import { insertComponent } from "../../lib/insert-component";
 import { useSafeId } from "../../lib/use-safe-id";
+import { useAppStore, useAppStoreApi } from "../../store";
+import { ComponentDndData } from "../DraggableComponent";
+import { DropZoneProvider } from "../DropZone";
+import { DropZoneContext, Preview, ZoneStore, ZoneStoreProvider } from "../DropZone/context";
 
 const DEBUG = false;
 
@@ -28,7 +28,6 @@ const dragListenerContext = createContext<{
 }>({
 	dragListeners: {},
 });
-
 
 export function useDragListener(type: any, fn: any, deps: any[] = []) {
 	const { setDragListeners } = useContext(dragListenerContext);
@@ -349,8 +348,8 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 
 						const sourceData = source.data as ComponentDndData;
 
-						let sourceZone = sourceData.zone;
-						let sourceIndex = sourceData.index;
+						const sourceZone = sourceData.zone;
+						const sourceIndex = sourceData.index;
 
 						let targetZone = "";
 						let targetIndex = 0;

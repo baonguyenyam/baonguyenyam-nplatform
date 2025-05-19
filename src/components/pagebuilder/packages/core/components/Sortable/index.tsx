@@ -1,8 +1,10 @@
-import { DragDropProvider } from "@dnd-kit/react";
 import { PropsWithChildren, ReactNode, useState } from "react";
+import { DragDropProvider } from "@dnd-kit/react";
+
+import { CollisionMap, createDynamicCollisionDetector } from "../../lib/dnd/collision/dynamic";
 import { useSortableSafe } from "../../lib/dnd/dnd-kit/safe";
 import { useSensors } from "../../lib/dnd/use-sensors";
-import { CollisionMap, createDynamicCollisionDetector } from "../../lib/dnd/collision/dynamic";
+
 import "./styles.css";
 
 export const SortableProvider = ({
@@ -31,7 +33,7 @@ export const SortableProvider = ({
 
 				if (!source || !target) return;
 
-				let sourceIndex = source.data.index;
+				const sourceIndex = source.data.index;
 				let targetIndex = target.data.index;
 
 				// NB drag operation can come out of sync with collision

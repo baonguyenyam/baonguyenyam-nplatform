@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 import { useEffect } from "react";
+import { indentWithTab } from "@codemirror/commands";
+import { html } from "@codemirror/lang-html";
+import { EditorView, keymap } from "@codemirror/view";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { TRANSFORMERS } from "@lexical/markdown";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
@@ -17,12 +20,9 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
-import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
-import CodeMirror from "@uiw/react-codemirror";
-import { EditorView, keymap } from "@codemirror/view";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import { html } from "@codemirror/lang-html";
-import { indentWithTab } from "@codemirror/commands";
+import CodeMirror from "@uiw/react-codemirror";
+import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
 
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";

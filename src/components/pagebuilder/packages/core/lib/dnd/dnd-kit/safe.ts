@@ -1,6 +1,6 @@
+import { Data } from "@dnd-kit/abstract";
 import { useDraggable, UseDraggableInput, useDroppable, UseDroppableInput } from "@dnd-kit/react";
 import { useSortable, UseSortableInput } from "@dnd-kit/react/sortable";
-import { Data } from "@dnd-kit/abstract";
 
 export function useDroppableSafe<T extends Data>(input: UseDroppableInput<T>): Pick<ReturnType<typeof useDroppable<T>>, "ref"> {
 	if (typeof window === "undefined") {
