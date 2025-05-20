@@ -9,7 +9,10 @@ import styles from "./styles.module.css";
 const getClassName = getClassNameFactory("Grid", styles);
 
 export type GridProps = {
-	numColumns: number;
+	numColumnsMobile: number;
+	numColumnsTablet?: number;
+	numColumnsDesktop?: number;
+	numColumnsWide?: number;
 	gap: number;
 	items: Slot;
 	backgroundColor?: string;
@@ -26,9 +29,27 @@ export type GridProps = {
 
 export const GridInternal: ComponentConfig<GridProps> = {
 	fields: {
-		numColumns: {
+		numColumnsMobile: {
 			type: "number",
 			label: "Number of columns",
+			min: 1,
+			max: 12,
+		},
+		numColumnsTablet: {
+			type: "number",
+			label: "Number of columns (Tablet)",
+			min: 1,
+			max: 12,
+		},
+		numColumnsDesktop: {
+			type: "number",
+			label: "Number of columns (Desktop)",
+			min: 1,
+			max: 12,
+		},
+		numColumnsWide: {
+			type: "number",
+			label: "Number of columns (Wide)",
 			min: 1,
 			max: 12,
 		},
@@ -144,35 +165,57 @@ export const GridInternal: ComponentConfig<GridProps> = {
 		},
 	},
 	defaultProps: {
-		numColumns: 4,
+		numColumnsMobile: 1,
+		numColumnsTablet: 2,
+		numColumnsDesktop: 3,
+		numColumnsWide: 4,
 		gap: 24,
 		items: [],
 	},
-	render: ({ gap, numColumns, items: Items, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat, backgroundAttachment, padding, margin, class: className, maxWidth, puck }) => {
+	render: ({ gap, numColumnsMobile, numColumnsTablet, numColumnsDesktop, numColumnsWide, items: Items, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat, backgroundAttachment, padding, margin, class: className, maxWidth, puck }) => {
+
 		return (
-			<Items
-				disallow={["Hero", "Stats"]}
-				className={getClassName() + (className ? ` ${className}` : "")}
-				style={{
-					gap,
-					gridTemplateColumns: `repeat(${numColumns}, 1fr)`,
-					backgroundColor,
-					backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-					backgroundSize,
-					backgroundPosition,
-					backgroundRepeat,
-					backgroundAttachment,
-					paddingTop: padding?.[0]?.top,
-					paddingRight: padding?.[0]?.right,
-					paddingBottom: padding?.[0]?.bottom,
-					paddingLeft: padding?.[0]?.left,
-					marginTop: margin?.[0]?.top,
-					marginRight: margin?.[0]?.right,
-					marginBottom: margin?.[0]?.bottom,
-					marginLeft: margin?.[0]?.left,
-					maxWidth,
-				}}
-			/>
+			<>
+				<style>{`
+				@media (min-width: 768px) {
+					.${getClassName()} {
+						grid-template-columns: repeat(${numColumnsTablet}, 1fr);
+					}
+				}
+				@media (min-width: 1024px) {
+					.${getClassName()} {
+						grid-template-columns: repeat(${numColumnsDesktop}, 1fr);
+					}
+				}
+				@media (min-width: 1280px) {
+					.${getClassName()} {
+						grid-template-columns: repeat(${numColumnsWide}, 1fr);
+					}
+				}
+			`}</style>
+				<Items
+					disallow={["Hero", "Stats"]}
+					className={getClassName() + (className ? ` ${className}` : "")}
+					style={{
+						gap,
+						backgroundColor,
+						backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+						backgroundSize,
+						backgroundPosition,
+						backgroundRepeat,
+						backgroundAttachment,
+						paddingTop: padding?.[0]?.top,
+						paddingRight: padding?.[0]?.right,
+						paddingBottom: padding?.[0]?.bottom,
+						paddingLeft: padding?.[0]?.left,
+						marginTop: margin?.[0]?.top,
+						marginRight: margin?.[0]?.right,
+						marginBottom: margin?.[0]?.bottom,
+						marginLeft: margin?.[0]?.left,
+						maxWidth
+					}}
+				/>
+			</>
 		);
 	},
 };
