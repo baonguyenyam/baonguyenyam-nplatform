@@ -21,7 +21,6 @@ const nextConfig = {
     cssChunking: true,
 	 	nextScriptWorkers: false,
 		inlineCss: true,
-		forceSwcTransforms: true,
 		reactCompiler: {
 			compilationMode: 'annotation',
 		},
