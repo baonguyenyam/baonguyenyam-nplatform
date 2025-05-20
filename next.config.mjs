@@ -17,7 +17,18 @@ const nextConfig = {
       // Limit file upload size
       bodySizeLimit: process.env.MAX_FILE_SIZE
     },
-      webpackMemoryOptimizations: true,
+    webpackMemoryOptimizations: true,
+    cssChunking: true,
+	 	nextScriptWorkers: false,
+		inlineCss: true,
+		forceSwcTransforms: true,
+		reactCompiler: {
+			compilationMode: 'annotation',
+		},
+		staleTimes: {
+			dynamic: 30,
+			static: 180,
+		},
   },
    typescript: {
     // !! WARN !!
