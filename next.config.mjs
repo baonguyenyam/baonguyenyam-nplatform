@@ -22,9 +22,6 @@ const nextConfig = {
 		cssChunking: true,
 		nextScriptWorkers: false,
 		inlineCss: true,
-		reactCompiler: {
-			compilationMode: "annotation",
-		},
 		staleTimes: {
 			dynamic: 30,
 			static: 180,
