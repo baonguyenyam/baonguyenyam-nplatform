@@ -9,7 +9,6 @@ const nextConfig = {
 	compress: true,
 	crossOrigin: "anonymous",
 	poweredByHeader: false,
-	reactStrictMode: true,
 	sassOptions: {
 		silenceDeprecations: ["legacy-js-api"],
 	},
