@@ -19,7 +19,7 @@ export const Root: RootConfig<RootProps> = {
 			<DropZone
 				className="page_layout"
 				zone="default-zone"
-			// style={{ flexGrow: 1 }}
+				// style={{ flexGrow: 1 }}
 			/>
 		);
 	},

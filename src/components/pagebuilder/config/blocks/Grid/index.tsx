@@ -173,7 +173,6 @@ export const GridInternal: ComponentConfig<GridProps> = {
 		items: [],
 	},
 	render: ({ gap, numColumnsMobile, numColumnsTablet, numColumnsDesktop, numColumnsWide, items: Items, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat, backgroundAttachment, padding, margin, class: className, maxWidth, puck }) => {
-
 		return (
 			<>
 				<style>{`
@@ -212,7 +211,7 @@ export const GridInternal: ComponentConfig<GridProps> = {
 						marginRight: margin?.[0]?.right,
 						marginBottom: margin?.[0]?.bottom,
 						marginLeft: margin?.[0]?.left,
-						maxWidth
+						maxWidth,
 					}}
 				/>
 			</>

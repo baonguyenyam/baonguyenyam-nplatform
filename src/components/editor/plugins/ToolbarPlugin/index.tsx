@@ -343,9 +343,9 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				anchorNode.getKey() === "root"
 					? anchorNode
 					: $findMatchingParent(anchorNode, (e) => {
-						const parent = e.getParent();
-						return parent !== null && $isRootOrShadowRoot(parent);
-					});
+							const parent = e.getParent();
+							return parent !== null && $isRootOrShadowRoot(parent);
+						});
 
 			if (element === null) {
 				element = anchorNode.getTopLevelElementOrThrow();

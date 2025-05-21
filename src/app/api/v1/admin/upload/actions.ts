@@ -50,7 +50,6 @@ export async function upload(upload_dir: string, fileHash: string, fileExtension
 export async function uploadSave(upload_path: string, fileHash: string, fileExtension: string, fileBuffer: Buffer | string, fileName: string, id: string, fileMimeType: string, fileSize: number, upload_dir: string) {
 	await writeFile(path.join(process.cwd(), upload_path || "", "/" + fileHash + "." + fileExtension), fileBuffer);
 
-
 	const fileDataToSave = {
 		name: fileName,
 		hash: fileHash,
