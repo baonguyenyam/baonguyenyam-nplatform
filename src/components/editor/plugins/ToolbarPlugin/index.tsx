@@ -47,6 +47,7 @@ const blockTypeToBlockName = {
 	number: "Numbered List",
 	paragraph: "Normal",
 	quote: "Quote",
+	addcode: "Code",
 };
 
 const FONT_FAMILY_OPTIONS = [
@@ -170,12 +171,18 @@ function BlockFormatDropDown({ editor, blockType, rootType, disabled = false }: 
 		}
 	};
 
+	const formatAddCode = () => {
+		if (blockType !== "addcode") {
+			editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
+		}
+	};
+
 	return (
 		<DropDown
 			disabled={disabled}
 			buttonClassName="toolbar-item block-controls"
 			buttonIconClassName={"icon block-type " + blockType}
-			buttonLabel={blockTypeToBlockName[blockType]}
+			// buttonLabel={blockTypeToBlockName[blockType]}
 			buttonAriaLabel="Formatting options for text style">
 			<DropDownItem
 				className={"item " + dropDownActiveClass(blockType === "paragraph")}
@@ -248,6 +255,12 @@ function BlockFormatDropDown({ editor, blockType, rootType, disabled = false }: 
 				onClick={formatCode}>
 				<i className="icon code" />
 				<span className="text">Code Block</span>
+			</DropDownItem>
+			<DropDownItem
+				className={"item " + dropDownActiveClass(blockType === "addcode")}
+				onClick={formatAddCode}>
+				<i className="icon addcode" />
+				<span className="text">Code</span>
 			</DropDownItem>
 		</DropDown>
 	);
@@ -330,9 +343,9 @@ export default function ToolbarPlugin(): React.JSX.Element {
 				anchorNode.getKey() === "root"
 					? anchorNode
 					: $findMatchingParent(anchorNode, (e) => {
-							const parent = e.getParent();
-							return parent !== null && $isRootOrShadowRoot(parent);
-						});
+						const parent = e.getParent();
+						return parent !== null && $isRootOrShadowRoot(parent);
+					});
 
 			if (element === null) {
 				element = anchorNode.getTopLevelElementOrThrow();
@@ -757,7 +770,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						title="background color"
 					/>
 
-					<button
+					{/* <button
 						disabled={!isEditable}
 						onClick={() => {
 							activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
@@ -767,7 +780,7 @@ export default function ToolbarPlugin(): React.JSX.Element {
 						type="button"
 						aria-label="Insert code block">
 						<i className="format code" />
-					</button>
+					</button> */}
 					<button
 						disabled={!isEditable}
 						onClick={insertLink}

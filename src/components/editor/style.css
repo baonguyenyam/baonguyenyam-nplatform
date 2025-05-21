@@ -412,9 +412,9 @@
 	}
 
 	.toolbar i.chevron-down {
-		margin-top: 3px;
-		width: 16px;
-		height: 16px;
+		margin-top: 0;
+		width: 10px;
+		height: 10px;
 		display: flex;
 		user-select: none;
 	}
@@ -681,6 +681,10 @@ i.redo {
 	background-image: url(./images/icons/code.svg);
 }
 
+.icon.addcode {
+	background-image: url(./images/icons/journal-code.svg);
+}
+
 i.bold {
 	background-image: url(./images/icons/type-bold.svg);
 }
@@ -699,6 +703,10 @@ i.strikethrough {
 
 i.code {
 	background-image: url(./images/icons/code.svg);
+}
+
+i.addcode {
+	background-image: url(./images/icons/journal-code.svg);
 }
 
 i.link {

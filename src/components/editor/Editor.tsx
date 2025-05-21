@@ -257,6 +257,7 @@ export function Editor(props: any) {
 								width: "100%",
 								resize: "vertical",
 								fontSize: "13px",
+								maxHeight: "1000px",
 							}}
 							indentWithTab={true}
 							placeholder="Edit HTML source..."

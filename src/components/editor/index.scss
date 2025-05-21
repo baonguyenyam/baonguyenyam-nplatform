@@ -140,7 +140,7 @@
 		box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
 	}
 
-	.test-recorder-button + .test-recorder-button {
+	.test-recorder-button+.test-recorder-button {
 		margin-left: 4px;
 	}
 
@@ -979,9 +979,9 @@
 	}
 
 	.toolbar i.chevron-down {
-		margin-top: 3px;
-		width: 16px;
-		height: 16px;
+		margin-top: 0;
+		width: 10px;
+		height: 10px;
 		display: flex;
 		user-select: none;
 	}
@@ -1109,6 +1109,7 @@
 	}
 
 	@keyframes octocat-wave {
+
 		0%,
 		100% {
 			transform: rotate(0);
@@ -1378,6 +1379,10 @@ i.code {
 	background-image: url(images/icons/code.svg);
 }
 
+i.addcode {
+	background-image: url(images/icons/journal-code.svg);
+}
+
 i.underline {
 	background-image: url(images/icons/type-underline.svg);
 }
@@ -1609,6 +1614,10 @@ i.prettier-error {
 	background-image: url(images/icons/code.svg);
 }
 
+#block-controls span.block-type.addcode {
+	background-image: url(images/icons/journal-code.svg);
+}
+
 #options-button::after {
 	background-image: url(images/icons/gear.svg);
 }
@@ -1745,4 +1754,8 @@ i.chevron-down {
 
 .icon.code {
 	background-image: url(images/icons/code.svg);
+}
+
+.icon.addcode {
+	background-image: url(images/icons/journal-code.svg);
 }
