@@ -255,8 +255,6 @@ export function Editor(props: any) {
 							style={{
 								borderRadius: "10px 10px 0 0",
 								width: "100%",
-								height: "400px",
-								minHeight: "200px",
 								resize: "vertical",
 								fontSize: "13px",
 							}}

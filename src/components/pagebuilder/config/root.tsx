@@ -1,7 +1,7 @@
 import { DefaultRootProps, DropZone, RootConfig } from "@/core";
 
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
+// import { Footer } from "./components/Footer";
+// import { Header } from "./components/Header";
 
 export type RootProps = DefaultRootProps;
 
@@ -19,7 +19,7 @@ export const Root: RootConfig<RootProps> = {
 			<DropZone
 				className="page_layout"
 				zone="default-zone"
-				// style={{ flexGrow: 1 }}
+			// style={{ flexGrow: 1 }}
 			/>
 		);
 	},
