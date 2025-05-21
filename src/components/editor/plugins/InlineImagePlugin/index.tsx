@@ -85,7 +85,7 @@ export function InsertInlineImageDialog({ activeEditor, onClose }: { activeEdito
 		const file = new Blob([ab], { type: mimeString });
 		const formData = new FormData();
 		formData.append("file", file);
-		const db = await fetch("/api/admin/upload", {
+		const db = await fetch("/api/v1/admin/upload", {
 			method: "POST",
 			body: formData,
 		});

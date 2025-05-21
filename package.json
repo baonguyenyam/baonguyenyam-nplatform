@@ -102,8 +102,8 @@
     "tsx": "^4.19.4",
     "use-debounce": "^10.0.4",
     "uuid": "^11.1.0",
-    "zod": "^3.25.7",
-    "zustand": "^5.0.4"
+    "zod": "^3.25.17",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
