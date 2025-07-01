@@ -454,8 +454,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.11.0
+   * Query Engine version: 9c30299f5a0ea26a96790e13f796dc6094db3173
    */
   export type PrismaVersion = {
     client: string
@@ -2252,13 +2252,13 @@ export namespace Prisma {
    */
 
   export type CategoryCountOutputType = {
-    post: number
-    order: number
+    posts: number
+    orders: number
   }
 
   export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    post?: boolean | CategoryCountOutputTypeCountPostArgs
-    order?: boolean | CategoryCountOutputTypeCountOrderArgs
+    posts?: boolean | CategoryCountOutputTypeCountPostsArgs
+    orders?: boolean | CategoryCountOutputTypeCountOrdersArgs
   }
 
   // Custom InputTypes
@@ -2275,14 +2275,14 @@ export namespace Prisma {
   /**
    * CategoryCountOutputType without action
    */
-  export type CategoryCountOutputTypeCountPostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CategoryCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
   }
 
   /**
    * CategoryCountOutputType without action
    */
-  export type CategoryCountOutputTypeCountOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CategoryCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderWhereInput
   }
 
@@ -2444,6 +2444,8 @@ export namespace Prisma {
     categories: number
     user: number
     user_product: number
+    user_sales: number
+    user_shipping: number
     user_delivery: number
     user_manager: number
     user_quality: number
@@ -2461,6 +2463,8 @@ export namespace Prisma {
     categories?: boolean | OrderCountOutputTypeCountCategoriesArgs
     user?: boolean | OrderCountOutputTypeCountUserArgs
     user_product?: boolean | OrderCountOutputTypeCountUser_productArgs
+    user_sales?: boolean | OrderCountOutputTypeCountUser_salesArgs
+    user_shipping?: boolean | OrderCountOutputTypeCountUser_shippingArgs
     user_delivery?: boolean | OrderCountOutputTypeCountUser_deliveryArgs
     user_manager?: boolean | OrderCountOutputTypeCountUser_managerArgs
     user_quality?: boolean | OrderCountOutputTypeCountUser_qualityArgs
@@ -2515,6 +2519,20 @@ export namespace Prisma {
    * OrderCountOutputType without action
    */
   export type OrderCountOutputTypeCountUser_productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountUser_salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountUser_shippingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
   }
 
@@ -2639,6 +2657,8 @@ export namespace Prisma {
     order_financial: number
     order_technical: number
     order_packaging: number
+    order_sales: number
+    order_shipping: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2654,6 +2674,8 @@ export namespace Prisma {
     order_financial?: boolean | UserCountOutputTypeCountOrder_financialArgs
     order_technical?: boolean | UserCountOutputTypeCountOrder_technicalArgs
     order_packaging?: boolean | UserCountOutputTypeCountOrder_packagingArgs
+    order_sales?: boolean | UserCountOutputTypeCountOrder_salesArgs
+    order_shipping?: boolean | UserCountOutputTypeCountOrder_shippingArgs
   }
 
   // Custom InputTypes
@@ -2748,6 +2770,20 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountOrder_packagingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrder_salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrder_shippingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderWhereInput
   }
 
@@ -3002,8 +3038,8 @@ export namespace Prisma {
     published?: boolean
     status?: boolean
     setorder?: boolean
-    post?: boolean | Category$postArgs<ExtArgs>
-    order?: boolean | Category$orderArgs<ExtArgs>
+    posts?: boolean | Category$postsArgs<ExtArgs>
+    orders?: boolean | Category$ordersArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
@@ -3048,8 +3084,8 @@ export namespace Prisma {
 
   export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "content" | "parent" | "type" | "createdAt" | "published" | "status" | "setorder", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    post?: boolean | Category$postArgs<ExtArgs>
-    order?: boolean | Category$orderArgs<ExtArgs>
+    posts?: boolean | Category$postsArgs<ExtArgs>
+    orders?: boolean | Category$ordersArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3058,8 +3094,8 @@ export namespace Prisma {
   export type $CategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Category"
     objects: {
-      post: Prisma.$PostPayload<ExtArgs>[]
-      order: Prisma.$OrderPayload<ExtArgs>[]
+      posts: Prisma.$PostPayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3466,8 +3502,8 @@ export namespace Prisma {
    */
   export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    post<T extends Category$postArgs<ExtArgs> = {}>(args?: Subset<T, Category$postArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    order<T extends Category$orderArgs<ExtArgs> = {}>(args?: Subset<T, Category$orderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    posts<T extends Category$postsArgs<ExtArgs> = {}>(args?: Subset<T, Category$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends Category$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Category$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3895,9 +3931,9 @@ export namespace Prisma {
   }
 
   /**
-   * Category.post
+   * Category.posts
    */
-  export type Category$postArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Category$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Post
      */
@@ -3919,9 +3955,9 @@ export namespace Prisma {
   }
 
   /**
-   * Category.order
+   * Category.orders
    */
-  export type Category$orderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Category$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Order
      */
@@ -10042,6 +10078,7 @@ export namespace Prisma {
     image: string | null
     published: boolean | null
     data: string | null
+    data_main: string | null
     date_created: Date | null
     date_production: Date | null
     date_paid: Date | null
@@ -10053,6 +10090,8 @@ export namespace Prisma {
     date_failed: Date | null
     date_closed: Date | null
     date_approved: Date | null
+    date_payment: Date | null
+    date_package: Date | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -10066,6 +10105,7 @@ export namespace Prisma {
     image: string | null
     published: boolean | null
     data: string | null
+    data_main: string | null
     date_created: Date | null
     date_production: Date | null
     date_paid: Date | null
@@ -10077,6 +10117,8 @@ export namespace Prisma {
     date_failed: Date | null
     date_closed: Date | null
     date_approved: Date | null
+    date_payment: Date | null
+    date_package: Date | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -10090,6 +10132,7 @@ export namespace Prisma {
     image: number
     published: number
     data: number
+    data_main: number
     date_created: number
     date_production: number
     date_paid: number
@@ -10101,6 +10144,8 @@ export namespace Prisma {
     date_failed: number
     date_closed: number
     date_approved: number
+    date_payment: number
+    date_package: number
     _all: number
   }
 
@@ -10124,6 +10169,7 @@ export namespace Prisma {
     image?: true
     published?: true
     data?: true
+    data_main?: true
     date_created?: true
     date_production?: true
     date_paid?: true
@@ -10135,6 +10181,8 @@ export namespace Prisma {
     date_failed?: true
     date_closed?: true
     date_approved?: true
+    date_payment?: true
+    date_package?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -10148,6 +10196,7 @@ export namespace Prisma {
     image?: true
     published?: true
     data?: true
+    data_main?: true
     date_created?: true
     date_production?: true
     date_paid?: true
@@ -10159,6 +10208,8 @@ export namespace Prisma {
     date_failed?: true
     date_closed?: true
     date_approved?: true
+    date_payment?: true
+    date_package?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -10172,6 +10223,7 @@ export namespace Prisma {
     image?: true
     published?: true
     data?: true
+    data_main?: true
     date_created?: true
     date_production?: true
     date_paid?: true
@@ -10183,6 +10235,8 @@ export namespace Prisma {
     date_failed?: true
     date_closed?: true
     date_approved?: true
+    date_payment?: true
+    date_package?: true
     _all?: true
   }
 
@@ -10283,6 +10337,7 @@ export namespace Prisma {
     image: string | null
     published: boolean
     data: string | null
+    data_main: string | null
     date_created: Date | null
     date_production: Date | null
     date_paid: Date | null
@@ -10294,6 +10349,8 @@ export namespace Prisma {
     date_failed: Date | null
     date_closed: Date | null
     date_approved: Date | null
+    date_payment: Date | null
+    date_package: Date | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -10326,6 +10383,7 @@ export namespace Prisma {
     image?: boolean
     published?: boolean
     data?: boolean
+    data_main?: boolean
     date_created?: boolean
     date_production?: boolean
     date_paid?: boolean
@@ -10337,11 +10395,15 @@ export namespace Prisma {
     date_failed?: boolean
     date_closed?: boolean
     date_approved?: boolean
+    date_payment?: boolean
+    date_package?: boolean
     files?: boolean | Order$filesArgs<ExtArgs>
     meta?: boolean | Order$metaArgs<ExtArgs>
     categories?: boolean | Order$categoriesArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
     user_product?: boolean | Order$user_productArgs<ExtArgs>
+    user_sales?: boolean | Order$user_salesArgs<ExtArgs>
+    user_shipping?: boolean | Order$user_shippingArgs<ExtArgs>
     user_delivery?: boolean | Order$user_deliveryArgs<ExtArgs>
     user_manager?: boolean | Order$user_managerArgs<ExtArgs>
     user_quality?: boolean | Order$user_qualityArgs<ExtArgs>
@@ -10365,6 +10427,7 @@ export namespace Prisma {
     image?: boolean
     published?: boolean
     data?: boolean
+    data_main?: boolean
     date_created?: boolean
     date_production?: boolean
     date_paid?: boolean
@@ -10376,6 +10439,8 @@ export namespace Prisma {
     date_failed?: boolean
     date_closed?: boolean
     date_approved?: boolean
+    date_payment?: boolean
+    date_package?: boolean
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10389,6 +10454,7 @@ export namespace Prisma {
     image?: boolean
     published?: boolean
     data?: boolean
+    data_main?: boolean
     date_created?: boolean
     date_production?: boolean
     date_paid?: boolean
@@ -10400,6 +10466,8 @@ export namespace Prisma {
     date_failed?: boolean
     date_closed?: boolean
     date_approved?: boolean
+    date_payment?: boolean
+    date_package?: boolean
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -10413,6 +10481,7 @@ export namespace Prisma {
     image?: boolean
     published?: boolean
     data?: boolean
+    data_main?: boolean
     date_created?: boolean
     date_production?: boolean
     date_paid?: boolean
@@ -10424,15 +10493,19 @@ export namespace Prisma {
     date_failed?: boolean
     date_closed?: boolean
     date_approved?: boolean
+    date_payment?: boolean
+    date_package?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "total" | "createdAt" | "updatedAt" | "title" | "content" | "image" | "published" | "data" | "date_created" | "date_production" | "date_paid" | "date_shipped" | "date_delivered" | "date_completed" | "date_cancelled" | "date_refunded" | "date_failed" | "date_closed" | "date_approved", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "total" | "createdAt" | "updatedAt" | "title" | "content" | "image" | "published" | "data" | "data_main" | "date_created" | "date_production" | "date_paid" | "date_shipped" | "date_delivered" | "date_completed" | "date_cancelled" | "date_refunded" | "date_failed" | "date_closed" | "date_approved" | "date_payment" | "date_package", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     files?: boolean | Order$filesArgs<ExtArgs>
     meta?: boolean | Order$metaArgs<ExtArgs>
     categories?: boolean | Order$categoriesArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
     user_product?: boolean | Order$user_productArgs<ExtArgs>
+    user_sales?: boolean | Order$user_salesArgs<ExtArgs>
+    user_shipping?: boolean | Order$user_shippingArgs<ExtArgs>
     user_delivery?: boolean | Order$user_deliveryArgs<ExtArgs>
     user_manager?: boolean | Order$user_managerArgs<ExtArgs>
     user_quality?: boolean | Order$user_qualityArgs<ExtArgs>
@@ -10455,6 +10528,8 @@ export namespace Prisma {
       categories: Prisma.$CategoryPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>[]
       user_product: Prisma.$UserPayload<ExtArgs>[]
+      user_sales: Prisma.$UserPayload<ExtArgs>[]
+      user_shipping: Prisma.$UserPayload<ExtArgs>[]
       user_delivery: Prisma.$UserPayload<ExtArgs>[]
       user_manager: Prisma.$UserPayload<ExtArgs>[]
       user_quality: Prisma.$UserPayload<ExtArgs>[]
@@ -10476,6 +10551,7 @@ export namespace Prisma {
       image: string | null
       published: boolean
       data: string | null
+      data_main: string | null
       date_created: Date | null
       date_production: Date | null
       date_paid: Date | null
@@ -10487,6 +10563,8 @@ export namespace Prisma {
       date_failed: Date | null
       date_closed: Date | null
       date_approved: Date | null
+      date_payment: Date | null
+      date_package: Date | null
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -10886,6 +10964,8 @@ export namespace Prisma {
     categories<T extends Order$categoriesArgs<ExtArgs> = {}>(args?: Subset<T, Order$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends Order$userArgs<ExtArgs> = {}>(args?: Subset<T, Order$userArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_product<T extends Order$user_productArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_productArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user_sales<T extends Order$user_salesArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user_shipping<T extends Order$user_shippingArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_shippingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_delivery<T extends Order$user_deliveryArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_deliveryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_manager<T extends Order$user_managerArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_managerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_quality<T extends Order$user_qualityArgs<ExtArgs> = {}>(args?: Subset<T, Order$user_qualityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -10934,6 +11014,7 @@ export namespace Prisma {
     readonly image: FieldRef<"Order", 'String'>
     readonly published: FieldRef<"Order", 'Boolean'>
     readonly data: FieldRef<"Order", 'String'>
+    readonly data_main: FieldRef<"Order", 'String'>
     readonly date_created: FieldRef<"Order", 'DateTime'>
     readonly date_production: FieldRef<"Order", 'DateTime'>
     readonly date_paid: FieldRef<"Order", 'DateTime'>
@@ -10945,6 +11026,8 @@ export namespace Prisma {
     readonly date_failed: FieldRef<"Order", 'DateTime'>
     readonly date_closed: FieldRef<"Order", 'DateTime'>
     readonly date_approved: FieldRef<"Order", 'DateTime'>
+    readonly date_payment: FieldRef<"Order", 'DateTime'>
+    readonly date_package: FieldRef<"Order", 'DateTime'>
   }
     
 
@@ -11432,6 +11515,54 @@ export namespace Prisma {
    * Order.user_product
    */
   export type Order$user_productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Order.user_sales
+   */
+  export type Order$user_salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Order.user_shipping
+   */
+  export type Order$user_shippingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -12807,11 +12938,13 @@ export namespace Prisma {
   export type AttributeAvgAggregateOutputType = {
     id: number | null
     childrenId: number | null
+    order: number | null
   }
 
   export type AttributeSumAggregateOutputType = {
     id: number | null
     childrenId: number | null
+    order: number | null
   }
 
   export type AttributeMinAggregateOutputType = {
@@ -12824,6 +12957,7 @@ export namespace Prisma {
     mapto: string | null
     published: boolean | null
     childrenId: number | null
+    order: number | null
   }
 
   export type AttributeMaxAggregateOutputType = {
@@ -12836,6 +12970,7 @@ export namespace Prisma {
     mapto: string | null
     published: boolean | null
     childrenId: number | null
+    order: number | null
   }
 
   export type AttributeCountAggregateOutputType = {
@@ -12848,6 +12983,7 @@ export namespace Prisma {
     mapto: number
     published: number
     childrenId: number
+    order: number
     _all: number
   }
 
@@ -12855,11 +12991,13 @@ export namespace Prisma {
   export type AttributeAvgAggregateInputType = {
     id?: true
     childrenId?: true
+    order?: true
   }
 
   export type AttributeSumAggregateInputType = {
     id?: true
     childrenId?: true
+    order?: true
   }
 
   export type AttributeMinAggregateInputType = {
@@ -12872,6 +13010,7 @@ export namespace Prisma {
     mapto?: true
     published?: true
     childrenId?: true
+    order?: true
   }
 
   export type AttributeMaxAggregateInputType = {
@@ -12884,6 +13023,7 @@ export namespace Prisma {
     mapto?: true
     published?: true
     childrenId?: true
+    order?: true
   }
 
   export type AttributeCountAggregateInputType = {
@@ -12896,6 +13036,7 @@ export namespace Prisma {
     mapto?: true
     published?: true
     childrenId?: true
+    order?: true
     _all?: true
   }
 
@@ -12995,6 +13136,7 @@ export namespace Prisma {
     mapto: string | null
     published: boolean
     childrenId: number | null
+    order: number | null
     _count: AttributeCountAggregateOutputType | null
     _avg: AttributeAvgAggregateOutputType | null
     _sum: AttributeSumAggregateOutputType | null
@@ -13026,6 +13168,7 @@ export namespace Prisma {
     mapto?: boolean
     published?: boolean
     childrenId?: boolean
+    order?: boolean
     meta?: boolean | Attribute$metaArgs<ExtArgs>
     children?: boolean | Attribute$childrenArgs<ExtArgs>
     parent?: boolean | Attribute$parentArgs<ExtArgs>
@@ -13042,6 +13185,7 @@ export namespace Prisma {
     mapto?: boolean
     published?: boolean
     childrenId?: boolean
+    order?: boolean
     parent?: boolean | Attribute$parentArgs<ExtArgs>
   }, ExtArgs["result"]["attribute"]>
 
@@ -13055,6 +13199,7 @@ export namespace Prisma {
     mapto?: boolean
     published?: boolean
     childrenId?: boolean
+    order?: boolean
     parent?: boolean | Attribute$parentArgs<ExtArgs>
   }, ExtArgs["result"]["attribute"]>
 
@@ -13068,9 +13213,10 @@ export namespace Prisma {
     mapto?: boolean
     published?: boolean
     childrenId?: boolean
+    order?: boolean
   }
 
-  export type AttributeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "content" | "type" | "mapto" | "published" | "childrenId", ExtArgs["result"]["attribute"]>
+  export type AttributeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "content" | "type" | "mapto" | "published" | "childrenId" | "order", ExtArgs["result"]["attribute"]>
   export type AttributeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta?: boolean | Attribute$metaArgs<ExtArgs>
     children?: boolean | Attribute$childrenArgs<ExtArgs>
@@ -13101,6 +13247,7 @@ export namespace Prisma {
       mapto: string | null
       published: boolean
       childrenId: number | null
+      order: number | null
     }, ExtArgs["result"]["attribute"]>
     composites: {}
   }
@@ -13536,6 +13683,7 @@ export namespace Prisma {
     readonly mapto: FieldRef<"Attribute", 'String'>
     readonly published: FieldRef<"Attribute", 'Boolean'>
     readonly childrenId: FieldRef<"Attribute", 'Int'>
+    readonly order: FieldRef<"Attribute", 'Int'>
   }
     
 
@@ -14032,11 +14180,13 @@ export namespace Prisma {
   export type AttributeMetaAvgAggregateOutputType = {
     id: number | null
     attributeId: number | null
+    order: number | null
   }
 
   export type AttributeMetaSumAggregateOutputType = {
     id: number | null
     attributeId: number | null
+    order: number | null
   }
 
   export type AttributeMetaMinAggregateOutputType = {
@@ -14047,6 +14197,7 @@ export namespace Prisma {
     value: string | null
     data: string | null
     attributeId: number | null
+    order: number | null
   }
 
   export type AttributeMetaMaxAggregateOutputType = {
@@ -14057,6 +14208,7 @@ export namespace Prisma {
     value: string | null
     data: string | null
     attributeId: number | null
+    order: number | null
   }
 
   export type AttributeMetaCountAggregateOutputType = {
@@ -14067,6 +14219,7 @@ export namespace Prisma {
     value: number
     data: number
     attributeId: number
+    order: number
     _all: number
   }
 
@@ -14074,11 +14227,13 @@ export namespace Prisma {
   export type AttributeMetaAvgAggregateInputType = {
     id?: true
     attributeId?: true
+    order?: true
   }
 
   export type AttributeMetaSumAggregateInputType = {
     id?: true
     attributeId?: true
+    order?: true
   }
 
   export type AttributeMetaMinAggregateInputType = {
@@ -14089,6 +14244,7 @@ export namespace Prisma {
     value?: true
     data?: true
     attributeId?: true
+    order?: true
   }
 
   export type AttributeMetaMaxAggregateInputType = {
@@ -14099,6 +14255,7 @@ export namespace Prisma {
     value?: true
     data?: true
     attributeId?: true
+    order?: true
   }
 
   export type AttributeMetaCountAggregateInputType = {
@@ -14109,6 +14266,7 @@ export namespace Prisma {
     value?: true
     data?: true
     attributeId?: true
+    order?: true
     _all?: true
   }
 
@@ -14206,6 +14364,7 @@ export namespace Prisma {
     value: string | null
     data: string | null
     attributeId: number
+    order: number | null
     _count: AttributeMetaCountAggregateOutputType | null
     _avg: AttributeMetaAvgAggregateOutputType | null
     _sum: AttributeMetaSumAggregateOutputType | null
@@ -14235,6 +14394,7 @@ export namespace Prisma {
     value?: boolean
     data?: boolean
     attributeId?: boolean
+    order?: boolean
     attribute?: boolean | AttributeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attributeMeta"]>
 
@@ -14246,6 +14406,7 @@ export namespace Prisma {
     value?: boolean
     data?: boolean
     attributeId?: boolean
+    order?: boolean
     attribute?: boolean | AttributeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attributeMeta"]>
 
@@ -14257,6 +14418,7 @@ export namespace Prisma {
     value?: boolean
     data?: boolean
     attributeId?: boolean
+    order?: boolean
     attribute?: boolean | AttributeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attributeMeta"]>
 
@@ -14268,9 +14430,10 @@ export namespace Prisma {
     value?: boolean
     data?: boolean
     attributeId?: boolean
+    order?: boolean
   }
 
-  export type AttributeMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "key" | "value" | "data" | "attributeId", ExtArgs["result"]["attributeMeta"]>
+  export type AttributeMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "key" | "value" | "data" | "attributeId" | "order", ExtArgs["result"]["attributeMeta"]>
   export type AttributeMetaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     attribute?: boolean | AttributeDefaultArgs<ExtArgs>
   }
@@ -14294,6 +14457,7 @@ export namespace Prisma {
       value: string | null
       data: string | null
       attributeId: number
+      order: number | null
     }, ExtArgs["result"]["attributeMeta"]>
     composites: {}
   }
@@ -14725,6 +14889,7 @@ export namespace Prisma {
     readonly value: FieldRef<"AttributeMeta", 'String'>
     readonly data: FieldRef<"AttributeMeta", 'String'>
     readonly attributeId: FieldRef<"AttributeMeta", 'Int'>
+    readonly order: FieldRef<"AttributeMeta", 'Int'>
   }
     
 
@@ -15170,6 +15335,10 @@ export namespace Prisma {
     updatedAt: Date | null
     published: boolean | null
     data: string | null
+    permissions: string | null
+    salt: string | null
+    hash: string | null
+    password: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -15193,6 +15362,10 @@ export namespace Prisma {
     updatedAt: Date | null
     published: boolean | null
     data: string | null
+    permissions: string | null
+    salt: string | null
+    hash: string | null
+    password: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -15216,6 +15389,10 @@ export namespace Prisma {
     updatedAt: number
     published: number
     data: number
+    permissions: number
+    salt: number
+    hash: number
+    password: number
     _all: number
   }
 
@@ -15241,6 +15418,10 @@ export namespace Prisma {
     updatedAt?: true
     published?: true
     data?: true
+    permissions?: true
+    salt?: true
+    hash?: true
+    password?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -15264,6 +15445,10 @@ export namespace Prisma {
     updatedAt?: true
     published?: true
     data?: true
+    permissions?: true
+    salt?: true
+    hash?: true
+    password?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -15287,6 +15472,10 @@ export namespace Prisma {
     updatedAt?: true
     published?: true
     data?: true
+    permissions?: true
+    salt?: true
+    hash?: true
+    password?: true
     _all?: true
   }
 
@@ -15383,6 +15572,10 @@ export namespace Prisma {
     updatedAt: Date | null
     published: boolean
     data: string | null
+    permissions: string | null
+    salt: string | null
+    hash: string | null
+    password: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -15423,6 +15616,10 @@ export namespace Prisma {
     updatedAt?: boolean
     published?: boolean
     data?: boolean
+    permissions?: boolean
+    salt?: boolean
+    hash?: boolean
+    password?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
     files?: boolean | User$filesArgs<ExtArgs>
@@ -15436,6 +15633,8 @@ export namespace Prisma {
     order_financial?: boolean | User$order_financialArgs<ExtArgs>
     order_technical?: boolean | User$order_technicalArgs<ExtArgs>
     order_packaging?: boolean | User$order_packagingArgs<ExtArgs>
+    order_sales?: boolean | User$order_salesArgs<ExtArgs>
+    order_shipping?: boolean | User$order_shippingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -15460,6 +15659,10 @@ export namespace Prisma {
     updatedAt?: boolean
     published?: boolean
     data?: boolean
+    permissions?: boolean
+    salt?: boolean
+    hash?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15483,6 +15686,10 @@ export namespace Prisma {
     updatedAt?: boolean
     published?: boolean
     data?: boolean
+    permissions?: boolean
+    salt?: boolean
+    hash?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -15506,9 +15713,13 @@ export namespace Prisma {
     updatedAt?: boolean
     published?: boolean
     data?: boolean
+    permissions?: boolean
+    salt?: boolean
+    hash?: boolean
+    password?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "first_name" | "last_name" | "image" | "address" | "city" | "state" | "zip" | "country" | "avatar" | "role" | "isTwoFactorEnabled" | "createdAt" | "updatedAt" | "published" | "data", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "first_name" | "last_name" | "image" | "address" | "city" | "state" | "zip" | "country" | "avatar" | "role" | "isTwoFactorEnabled" | "createdAt" | "updatedAt" | "published" | "data" | "permissions" | "salt" | "hash" | "password", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
@@ -15523,6 +15734,8 @@ export namespace Prisma {
     order_financial?: boolean | User$order_financialArgs<ExtArgs>
     order_technical?: boolean | User$order_technicalArgs<ExtArgs>
     order_packaging?: boolean | User$order_packagingArgs<ExtArgs>
+    order_sales?: boolean | User$order_salesArgs<ExtArgs>
+    order_shipping?: boolean | User$order_shippingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -15544,6 +15757,8 @@ export namespace Prisma {
       order_financial: Prisma.$OrderPayload<ExtArgs>[]
       order_technical: Prisma.$OrderPayload<ExtArgs>[]
       order_packaging: Prisma.$OrderPayload<ExtArgs>[]
+      order_sales: Prisma.$OrderPayload<ExtArgs>[]
+      order_shipping: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15566,6 +15781,10 @@ export namespace Prisma {
       updatedAt: Date | null
       published: boolean
       data: string | null
+      permissions: string | null
+      salt: string | null
+      hash: string | null
+      password: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -15973,6 +16192,8 @@ export namespace Prisma {
     order_financial<T extends User$order_financialArgs<ExtArgs> = {}>(args?: Subset<T, User$order_financialArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     order_technical<T extends User$order_technicalArgs<ExtArgs> = {}>(args?: Subset<T, User$order_technicalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     order_packaging<T extends User$order_packagingArgs<ExtArgs> = {}>(args?: Subset<T, User$order_packagingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    order_sales<T extends User$order_salesArgs<ExtArgs> = {}>(args?: Subset<T, User$order_salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    order_shipping<T extends User$order_shippingArgs<ExtArgs> = {}>(args?: Subset<T, User$order_shippingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16022,6 +16243,10 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly published: FieldRef<"User", 'Boolean'>
     readonly data: FieldRef<"User", 'String'>
+    readonly permissions: FieldRef<"User", 'String'>
+    readonly salt: FieldRef<"User", 'String'>
+    readonly hash: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
   }
     
 
@@ -16696,6 +16921,54 @@ export namespace Prisma {
    * User.order_packaging
    */
   export type User$order_packagingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.order_sales
+   */
+  export type User$order_salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.order_shipping
+   */
+  export type User$order_shippingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Order
      */
@@ -22011,6 +22284,7 @@ export namespace Prisma {
     image: 'image',
     published: 'published',
     data: 'data',
+    data_main: 'data_main',
     date_created: 'date_created',
     date_production: 'date_production',
     date_paid: 'date_paid',
@@ -22021,7 +22295,9 @@ export namespace Prisma {
     date_refunded: 'date_refunded',
     date_failed: 'date_failed',
     date_closed: 'date_closed',
-    date_approved: 'date_approved'
+    date_approved: 'date_approved',
+    date_payment: 'date_payment',
+    date_package: 'date_package'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -22048,7 +22324,8 @@ export namespace Prisma {
     type: 'type',
     mapto: 'mapto',
     published: 'published',
-    childrenId: 'childrenId'
+    childrenId: 'childrenId',
+    order: 'order'
   };
 
   export type AttributeScalarFieldEnum = (typeof AttributeScalarFieldEnum)[keyof typeof AttributeScalarFieldEnum]
@@ -22061,7 +22338,8 @@ export namespace Prisma {
     key: 'key',
     value: 'value',
     data: 'data',
-    attributeId: 'attributeId'
+    attributeId: 'attributeId',
+    order: 'order'
   };
 
   export type AttributeMetaScalarFieldEnum = (typeof AttributeMetaScalarFieldEnum)[keyof typeof AttributeMetaScalarFieldEnum]
@@ -22087,7 +22365,11 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     published: 'published',
-    data: 'data'
+    data: 'data',
+    permissions: 'permissions',
+    salt: 'salt',
+    hash: 'hash',
+    password: 'password'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -22256,7 +22538,8 @@ export namespace Prisma {
     title: 'title',
     content: 'content',
     image: 'image',
-    data: 'data'
+    data: 'data',
+    data_main: 'data_main'
   };
 
   export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
@@ -22304,7 +22587,11 @@ export namespace Prisma {
     zip: 'zip',
     country: 'country',
     avatar: 'avatar',
-    data: 'data'
+    data: 'data',
+    permissions: 'permissions',
+    salt: 'salt',
+    hash: 'hash',
+    password: 'password'
   };
 
   export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
@@ -22461,8 +22748,8 @@ export namespace Prisma {
     published?: BoolFilter<"Category"> | boolean
     status?: StringFilter<"Category"> | string
     setorder?: IntFilter<"Category"> | number
-    post?: PostListRelationFilter
-    order?: OrderListRelationFilter
+    posts?: PostListRelationFilter
+    orders?: OrderListRelationFilter
   }
 
   export type CategoryOrderByWithRelationInput = {
@@ -22476,8 +22763,8 @@ export namespace Prisma {
     published?: SortOrder
     status?: SortOrder
     setorder?: SortOrder
-    post?: PostOrderByRelationAggregateInput
-    order?: OrderOrderByRelationAggregateInput
+    posts?: PostOrderByRelationAggregateInput
+    orders?: OrderOrderByRelationAggregateInput
     _relevance?: CategoryOrderByRelevanceInput
   }
 
@@ -22496,8 +22783,8 @@ export namespace Prisma {
     published?: BoolFilter<"Category"> | boolean
     status?: StringFilter<"Category"> | string
     setorder?: IntFilter<"Category"> | number
-    post?: PostListRelationFilter
-    order?: OrderListRelationFilter
+    posts?: PostListRelationFilter
+    orders?: OrderListRelationFilter
   }, "id" | "slug_id">
 
   export type CategoryOrderByWithAggregationInput = {
@@ -22926,11 +23213,11 @@ export namespace Prisma {
 
   export type CustomerWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    email?: string
     AND?: CustomerWhereInput | CustomerWhereInput[]
     OR?: CustomerWhereInput[]
     NOT?: CustomerWhereInput | CustomerWhereInput[]
     name?: StringNullableFilter<"Customer"> | string | null
+    email?: StringNullableFilter<"Customer"> | string | null
     emailVerified?: DateTimeNullableFilter<"Customer"> | Date | string | null
     phone?: StringNullableFilter<"Customer"> | string | null
     first_name?: StringNullableFilter<"Customer"> | string | null
@@ -22951,7 +23238,7 @@ export namespace Prisma {
     files?: FileListRelationFilter
     order_customer?: OrderListRelationFilter
     order_vendor?: OrderListRelationFilter
-  }, "id" | "email" | "id">
+  }, "id" | "id">
 
   export type CustomerOrderByWithAggregationInput = {
     id?: SortOrder
@@ -23019,6 +23306,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"Order"> | string | null
     published?: BoolFilter<"Order"> | boolean
     data?: StringNullableFilter<"Order"> | string | null
+    data_main?: StringNullableFilter<"Order"> | string | null
     date_created?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_production?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_paid?: DateTimeNullableFilter<"Order"> | Date | string | null
@@ -23030,11 +23318,15 @@ export namespace Prisma {
     date_failed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_closed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_approved?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_payment?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_package?: DateTimeNullableFilter<"Order"> | Date | string | null
     files?: FileListRelationFilter
     meta?: OrderMetaListRelationFilter
     categories?: CategoryListRelationFilter
     user?: UserListRelationFilter
     user_product?: UserListRelationFilter
+    user_sales?: UserListRelationFilter
+    user_shipping?: UserListRelationFilter
     user_delivery?: UserListRelationFilter
     user_manager?: UserListRelationFilter
     user_quality?: UserListRelationFilter
@@ -23057,6 +23349,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     published?: SortOrder
     data?: SortOrderInput | SortOrder
+    data_main?: SortOrderInput | SortOrder
     date_created?: SortOrderInput | SortOrder
     date_production?: SortOrderInput | SortOrder
     date_paid?: SortOrderInput | SortOrder
@@ -23068,11 +23361,15 @@ export namespace Prisma {
     date_failed?: SortOrderInput | SortOrder
     date_closed?: SortOrderInput | SortOrder
     date_approved?: SortOrderInput | SortOrder
+    date_payment?: SortOrderInput | SortOrder
+    date_package?: SortOrderInput | SortOrder
     files?: FileOrderByRelationAggregateInput
     meta?: OrderMetaOrderByRelationAggregateInput
     categories?: CategoryOrderByRelationAggregateInput
     user?: UserOrderByRelationAggregateInput
     user_product?: UserOrderByRelationAggregateInput
+    user_sales?: UserOrderByRelationAggregateInput
+    user_shipping?: UserOrderByRelationAggregateInput
     user_delivery?: UserOrderByRelationAggregateInput
     user_manager?: UserOrderByRelationAggregateInput
     user_quality?: UserOrderByRelationAggregateInput
@@ -23099,6 +23396,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"Order"> | string | null
     published?: BoolFilter<"Order"> | boolean
     data?: StringNullableFilter<"Order"> | string | null
+    data_main?: StringNullableFilter<"Order"> | string | null
     date_created?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_production?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_paid?: DateTimeNullableFilter<"Order"> | Date | string | null
@@ -23110,11 +23408,15 @@ export namespace Prisma {
     date_failed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_closed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_approved?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_payment?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_package?: DateTimeNullableFilter<"Order"> | Date | string | null
     files?: FileListRelationFilter
     meta?: OrderMetaListRelationFilter
     categories?: CategoryListRelationFilter
     user?: UserListRelationFilter
     user_product?: UserListRelationFilter
+    user_sales?: UserListRelationFilter
+    user_shipping?: UserListRelationFilter
     user_delivery?: UserListRelationFilter
     user_manager?: UserListRelationFilter
     user_quality?: UserListRelationFilter
@@ -23137,6 +23439,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     published?: SortOrder
     data?: SortOrderInput | SortOrder
+    data_main?: SortOrderInput | SortOrder
     date_created?: SortOrderInput | SortOrder
     date_production?: SortOrderInput | SortOrder
     date_paid?: SortOrderInput | SortOrder
@@ -23148,6 +23451,8 @@ export namespace Prisma {
     date_failed?: SortOrderInput | SortOrder
     date_closed?: SortOrderInput | SortOrder
     date_approved?: SortOrderInput | SortOrder
+    date_payment?: SortOrderInput | SortOrder
+    date_package?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -23169,6 +23474,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"Order"> | string | null
     published?: BoolWithAggregatesFilter<"Order"> | boolean
     data?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    data_main?: StringNullableWithAggregatesFilter<"Order"> | string | null
     date_created?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     date_production?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     date_paid?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
@@ -23180,6 +23486,8 @@ export namespace Prisma {
     date_failed?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     date_closed?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     date_approved?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    date_payment?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    date_package?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   }
 
   export type OrderMetaWhereInput = {
@@ -23258,6 +23566,7 @@ export namespace Prisma {
     mapto?: StringNullableFilter<"Attribute"> | string | null
     published?: BoolFilter<"Attribute"> | boolean
     childrenId?: IntNullableFilter<"Attribute"> | number | null
+    order?: IntNullableFilter<"Attribute"> | number | null
     meta?: AttributeMetaListRelationFilter
     children?: AttributeListRelationFilter
     parent?: XOR<AttributeNullableScalarRelationFilter, AttributeWhereInput> | null
@@ -23273,6 +23582,7 @@ export namespace Prisma {
     mapto?: SortOrderInput | SortOrder
     published?: SortOrder
     childrenId?: SortOrderInput | SortOrder
+    order?: SortOrderInput | SortOrder
     meta?: AttributeMetaOrderByRelationAggregateInput
     children?: AttributeOrderByRelationAggregateInput
     parent?: AttributeOrderByWithRelationInput
@@ -23292,6 +23602,7 @@ export namespace Prisma {
     mapto?: StringNullableFilter<"Attribute"> | string | null
     published?: BoolFilter<"Attribute"> | boolean
     childrenId?: IntNullableFilter<"Attribute"> | number | null
+    order?: IntNullableFilter<"Attribute"> | number | null
     meta?: AttributeMetaListRelationFilter
     children?: AttributeListRelationFilter
     parent?: XOR<AttributeNullableScalarRelationFilter, AttributeWhereInput> | null
@@ -23307,6 +23618,7 @@ export namespace Prisma {
     mapto?: SortOrderInput | SortOrder
     published?: SortOrder
     childrenId?: SortOrderInput | SortOrder
+    order?: SortOrderInput | SortOrder
     _count?: AttributeCountOrderByAggregateInput
     _avg?: AttributeAvgOrderByAggregateInput
     _max?: AttributeMaxOrderByAggregateInput
@@ -23327,6 +23639,7 @@ export namespace Prisma {
     mapto?: StringNullableWithAggregatesFilter<"Attribute"> | string | null
     published?: BoolWithAggregatesFilter<"Attribute"> | boolean
     childrenId?: IntNullableWithAggregatesFilter<"Attribute"> | number | null
+    order?: IntNullableWithAggregatesFilter<"Attribute"> | number | null
   }
 
   export type AttributeMetaWhereInput = {
@@ -23340,6 +23653,7 @@ export namespace Prisma {
     value?: StringNullableFilter<"AttributeMeta"> | string | null
     data?: StringNullableFilter<"AttributeMeta"> | string | null
     attributeId?: IntFilter<"AttributeMeta"> | number
+    order?: IntNullableFilter<"AttributeMeta"> | number | null
     attribute?: XOR<AttributeScalarRelationFilter, AttributeWhereInput>
   }
 
@@ -23351,6 +23665,7 @@ export namespace Prisma {
     value?: SortOrderInput | SortOrder
     data?: SortOrderInput | SortOrder
     attributeId?: SortOrder
+    order?: SortOrderInput | SortOrder
     attribute?: AttributeOrderByWithRelationInput
     _relevance?: AttributeMetaOrderByRelevanceInput
   }
@@ -23366,6 +23681,7 @@ export namespace Prisma {
     value?: StringNullableFilter<"AttributeMeta"> | string | null
     data?: StringNullableFilter<"AttributeMeta"> | string | null
     attributeId?: IntFilter<"AttributeMeta"> | number
+    order?: IntNullableFilter<"AttributeMeta"> | number | null
     attribute?: XOR<AttributeScalarRelationFilter, AttributeWhereInput>
   }, "id" | "id">
 
@@ -23377,6 +23693,7 @@ export namespace Prisma {
     value?: SortOrderInput | SortOrder
     data?: SortOrderInput | SortOrder
     attributeId?: SortOrder
+    order?: SortOrderInput | SortOrder
     _count?: AttributeMetaCountOrderByAggregateInput
     _avg?: AttributeMetaAvgOrderByAggregateInput
     _max?: AttributeMetaMaxOrderByAggregateInput
@@ -23395,6 +23712,7 @@ export namespace Prisma {
     value?: StringNullableWithAggregatesFilter<"AttributeMeta"> | string | null
     data?: StringNullableWithAggregatesFilter<"AttributeMeta"> | string | null
     attributeId?: IntWithAggregatesFilter<"AttributeMeta"> | number
+    order?: IntNullableWithAggregatesFilter<"AttributeMeta"> | number | null
   }
 
   export type UserWhereInput = {
@@ -23421,6 +23739,10 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     published?: BoolFilter<"User"> | boolean
     data?: StringNullableFilter<"User"> | string | null
+    permissions?: StringNullableFilter<"User"> | string | null
+    salt?: StringNullableFilter<"User"> | string | null
+    hash?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     posts?: PostListRelationFilter
     files?: FileListRelationFilter
@@ -23434,6 +23756,8 @@ export namespace Prisma {
     order_financial?: OrderListRelationFilter
     order_technical?: OrderListRelationFilter
     order_packaging?: OrderListRelationFilter
+    order_sales?: OrderListRelationFilter
+    order_shipping?: OrderListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -23457,6 +23781,10 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     published?: SortOrder
     data?: SortOrderInput | SortOrder
+    permissions?: SortOrderInput | SortOrder
+    salt?: SortOrderInput | SortOrder
+    hash?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
     files?: FileOrderByRelationAggregateInput
@@ -23470,6 +23798,8 @@ export namespace Prisma {
     order_financial?: OrderOrderByRelationAggregateInput
     order_technical?: OrderOrderByRelationAggregateInput
     order_packaging?: OrderOrderByRelationAggregateInput
+    order_sales?: OrderOrderByRelationAggregateInput
+    order_shipping?: OrderOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -23497,6 +23827,10 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     published?: BoolFilter<"User"> | boolean
     data?: StringNullableFilter<"User"> | string | null
+    permissions?: StringNullableFilter<"User"> | string | null
+    salt?: StringNullableFilter<"User"> | string | null
+    hash?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     posts?: PostListRelationFilter
     files?: FileListRelationFilter
@@ -23510,6 +23844,8 @@ export namespace Prisma {
     order_financial?: OrderListRelationFilter
     order_technical?: OrderListRelationFilter
     order_packaging?: OrderListRelationFilter
+    order_sales?: OrderListRelationFilter
+    order_shipping?: OrderListRelationFilter
   }, "id" | "email" | "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -23533,6 +23869,10 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     published?: SortOrder
     data?: SortOrderInput | SortOrder
+    permissions?: SortOrderInput | SortOrder
+    salt?: SortOrderInput | SortOrder
+    hash?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -23562,6 +23902,10 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     published?: BoolWithAggregatesFilter<"User"> | boolean
     data?: StringNullableWithAggregatesFilter<"User"> | string | null
+    permissions?: StringNullableWithAggregatesFilter<"User"> | string | null
+    salt?: StringNullableWithAggregatesFilter<"User"> | string | null
+    hash?: StringNullableWithAggregatesFilter<"User"> | string | null
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type AccountWhereInput = {
@@ -23856,8 +24200,8 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    post?: PostCreateNestedManyWithoutCategoriesInput
-    order?: OrderCreateNestedManyWithoutCategoriesInput
+    posts?: PostCreateNestedManyWithoutCategoriesInput
+    orders?: OrderCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUncheckedCreateInput = {
@@ -23871,8 +24215,8 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    post?: PostUncheckedCreateNestedManyWithoutCategoriesInput
-    order?: OrderUncheckedCreateNestedManyWithoutCategoriesInput
+    posts?: PostUncheckedCreateNestedManyWithoutCategoriesInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUpdateInput = {
@@ -23885,8 +24229,8 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    post?: PostUpdateManyWithoutCategoriesNestedInput
-    order?: OrderUpdateManyWithoutCategoriesNestedInput
+    posts?: PostUpdateManyWithoutCategoriesNestedInput
+    orders?: OrderUpdateManyWithoutCategoriesNestedInput
   }
 
   export type CategoryUncheckedUpdateInput = {
@@ -23900,8 +24244,8 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    post?: PostUncheckedUpdateManyWithoutCategoriesNestedInput
-    order?: OrderUncheckedUpdateManyWithoutCategoriesNestedInput
+    posts?: PostUncheckedUpdateManyWithoutCategoriesNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCategoriesNestedInput
   }
 
   export type CategoryCreateManyInput = {
@@ -23955,7 +24299,7 @@ export namespace Prisma {
     data?: string | null
     setorder?: number
     user: UserCreateNestedOneWithoutPostsInput
-    categories?: CategoryCreateNestedManyWithoutPostInput
+    categories?: CategoryCreateNestedManyWithoutPostsInput
     meta?: PostMetaCreateNestedManyWithoutPostInput
     files?: FileCreateNestedManyWithoutPostInput
   }
@@ -23974,7 +24318,7 @@ export namespace Prisma {
     type?: string
     data?: string | null
     setorder?: number
-    categories?: CategoryUncheckedCreateNestedManyWithoutPostInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutPostsInput
     meta?: PostMetaUncheckedCreateNestedManyWithoutPostInput
     files?: FileUncheckedCreateNestedManyWithoutPostInput
   }
@@ -23992,7 +24336,7 @@ export namespace Prisma {
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutPostsNestedInput
-    categories?: CategoryUpdateManyWithoutPostNestedInput
+    categories?: CategoryUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUpdateManyWithoutPostNestedInput
     files?: FileUpdateManyWithoutPostNestedInput
   }
@@ -24011,7 +24355,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
-    categories?: CategoryUncheckedUpdateManyWithoutPostNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUncheckedUpdateManyWithoutPostNestedInput
     files?: FileUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -24478,6 +24822,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -24489,11 +24834,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -24516,6 +24865,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -24527,11 +24877,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -24554,6 +24908,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24565,11 +24920,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -24592,6 +24951,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24603,11 +24963,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -24630,6 +24994,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -24641,6 +25006,8 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -24654,6 +25021,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24665,6 +25033,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -24678,6 +25048,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24689,6 +25060,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderMetaCreateInput = {
@@ -24758,6 +25131,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
     meta?: AttributeMetaCreateNestedManyWithoutAttributeInput
     children?: AttributeCreateNestedManyWithoutParentInput
     parent?: AttributeCreateNestedOneWithoutChildrenInput
@@ -24773,6 +25147,7 @@ export namespace Prisma {
     mapto?: string | null
     published?: boolean
     childrenId?: number | null
+    order?: number | null
     meta?: AttributeMetaUncheckedCreateNestedManyWithoutAttributeInput
     children?: AttributeUncheckedCreateNestedManyWithoutParentInput
   }
@@ -24785,6 +25160,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUpdateManyWithoutAttributeNestedInput
     children?: AttributeUpdateManyWithoutParentNestedInput
     parent?: AttributeUpdateOneWithoutChildrenNestedInput
@@ -24800,6 +25176,7 @@ export namespace Prisma {
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     childrenId?: NullableIntFieldUpdateOperationsInput | number | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUncheckedUpdateManyWithoutAttributeNestedInput
     children?: AttributeUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -24814,6 +25191,7 @@ export namespace Prisma {
     mapto?: string | null
     published?: boolean
     childrenId?: number | null
+    order?: number | null
   }
 
   export type AttributeUpdateManyMutationInput = {
@@ -24824,6 +25202,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeUncheckedUpdateManyInput = {
@@ -24836,6 +25215,7 @@ export namespace Prisma {
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     childrenId?: NullableIntFieldUpdateOperationsInput | number | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeMetaCreateInput = {
@@ -24844,6 +25224,7 @@ export namespace Prisma {
     key?: string | null
     value?: string | null
     data?: string | null
+    order?: number | null
     attribute: AttributeCreateNestedOneWithoutMetaInput
   }
 
@@ -24855,6 +25236,7 @@ export namespace Prisma {
     value?: string | null
     data?: string | null
     attributeId: number
+    order?: number | null
   }
 
   export type AttributeMetaUpdateInput = {
@@ -24863,6 +25245,7 @@ export namespace Prisma {
     key?: NullableStringFieldUpdateOperationsInput | string | null
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     attribute?: AttributeUpdateOneRequiredWithoutMetaNestedInput
   }
 
@@ -24874,6 +25257,7 @@ export namespace Prisma {
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
     attributeId?: IntFieldUpdateOperationsInput | number
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeMetaCreateManyInput = {
@@ -24884,6 +25268,7 @@ export namespace Prisma {
     value?: string | null
     data?: string | null
     attributeId: number
+    order?: number | null
   }
 
   export type AttributeMetaUpdateManyMutationInput = {
@@ -24892,6 +25277,7 @@ export namespace Prisma {
     key?: NullableStringFieldUpdateOperationsInput | string | null
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeMetaUncheckedUpdateManyInput = {
@@ -24902,6 +25288,7 @@ export namespace Prisma {
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
     attributeId?: IntFieldUpdateOperationsInput | number
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserCreateInput = {
@@ -24925,6 +25312,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -24938,6 +25329,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -24961,6 +25354,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -24974,6 +25371,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUpdateInput = {
@@ -24997,6 +25396,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -25010,6 +25413,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -25033,6 +25438,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -25046,6 +25455,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -25069,6 +25480,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -25092,6 +25507,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -25115,6 +25534,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountCreateInput = {
@@ -26048,6 +26471,7 @@ export namespace Prisma {
     image?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    data_main?: SortOrder
     date_created?: SortOrder
     date_production?: SortOrder
     date_paid?: SortOrder
@@ -26059,6 +26483,8 @@ export namespace Prisma {
     date_failed?: SortOrder
     date_closed?: SortOrder
     date_approved?: SortOrder
+    date_payment?: SortOrder
+    date_package?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -26076,6 +26502,7 @@ export namespace Prisma {
     image?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    data_main?: SortOrder
     date_created?: SortOrder
     date_production?: SortOrder
     date_paid?: SortOrder
@@ -26087,6 +26514,8 @@ export namespace Prisma {
     date_failed?: SortOrder
     date_closed?: SortOrder
     date_approved?: SortOrder
+    date_payment?: SortOrder
+    date_package?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -26100,6 +26529,7 @@ export namespace Prisma {
     image?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    data_main?: SortOrder
     date_created?: SortOrder
     date_production?: SortOrder
     date_paid?: SortOrder
@@ -26111,6 +26541,8 @@ export namespace Prisma {
     date_failed?: SortOrder
     date_closed?: SortOrder
     date_approved?: SortOrder
+    date_payment?: SortOrder
+    date_package?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -26220,11 +26652,13 @@ export namespace Prisma {
     mapto?: SortOrder
     published?: SortOrder
     childrenId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeAvgOrderByAggregateInput = {
     id?: SortOrder
     childrenId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMaxOrderByAggregateInput = {
@@ -26237,6 +26671,7 @@ export namespace Prisma {
     mapto?: SortOrder
     published?: SortOrder
     childrenId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMinOrderByAggregateInput = {
@@ -26249,11 +26684,13 @@ export namespace Prisma {
     mapto?: SortOrder
     published?: SortOrder
     childrenId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeSumOrderByAggregateInput = {
     id?: SortOrder
     childrenId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeScalarRelationFilter = {
@@ -26275,11 +26712,13 @@ export namespace Prisma {
     value?: SortOrder
     data?: SortOrder
     attributeId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMetaAvgOrderByAggregateInput = {
     id?: SortOrder
     attributeId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMetaMaxOrderByAggregateInput = {
@@ -26290,6 +26729,7 @@ export namespace Prisma {
     value?: SortOrder
     data?: SortOrder
     attributeId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMetaMinOrderByAggregateInput = {
@@ -26300,11 +26740,13 @@ export namespace Prisma {
     value?: SortOrder
     data?: SortOrder
     attributeId?: SortOrder
+    order?: SortOrder
   }
 
   export type AttributeMetaSumOrderByAggregateInput = {
     id?: SortOrder
     attributeId?: SortOrder
+    order?: SortOrder
   }
 
   export type EnumUserRoleNullableFilter<$PrismaModel = never> = {
@@ -26356,6 +26798,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    permissions?: SortOrder
+    salt?: SortOrder
+    hash?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -26379,6 +26825,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    permissions?: SortOrder
+    salt?: SortOrder
+    hash?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -26402,6 +26852,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     published?: SortOrder
     data?: SortOrder
+    permissions?: SortOrder
+    salt?: SortOrder
+    hash?: SortOrder
+    password?: SortOrder
   }
 
   export type EnumUserRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -26734,9 +27188,9 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type CategoryCreateNestedManyWithoutPostInput = {
-    create?: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput> | CategoryCreateWithoutPostInput[] | CategoryUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutPostInput | CategoryCreateOrConnectWithoutPostInput[]
+  export type CategoryCreateNestedManyWithoutPostsInput = {
+    create?: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput> | CategoryCreateWithoutPostsInput[] | CategoryUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutPostsInput | CategoryCreateOrConnectWithoutPostsInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
@@ -26753,9 +27207,9 @@ export namespace Prisma {
     connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
   }
 
-  export type CategoryUncheckedCreateNestedManyWithoutPostInput = {
-    create?: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput> | CategoryCreateWithoutPostInput[] | CategoryUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutPostInput | CategoryCreateOrConnectWithoutPostInput[]
+  export type CategoryUncheckedCreateNestedManyWithoutPostsInput = {
+    create?: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput> | CategoryCreateWithoutPostsInput[] | CategoryUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutPostsInput | CategoryCreateOrConnectWithoutPostsInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
@@ -26780,16 +27234,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
   }
 
-  export type CategoryUpdateManyWithoutPostNestedInput = {
-    create?: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput> | CategoryCreateWithoutPostInput[] | CategoryUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutPostInput | CategoryCreateOrConnectWithoutPostInput[]
-    upsert?: CategoryUpsertWithWhereUniqueWithoutPostInput | CategoryUpsertWithWhereUniqueWithoutPostInput[]
+  export type CategoryUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput> | CategoryCreateWithoutPostsInput[] | CategoryUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutPostsInput | CategoryCreateOrConnectWithoutPostsInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutPostsInput | CategoryUpsertWithWhereUniqueWithoutPostsInput[]
     set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
-    update?: CategoryUpdateWithWhereUniqueWithoutPostInput | CategoryUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: CategoryUpdateManyWithWhereWithoutPostInput | CategoryUpdateManyWithWhereWithoutPostInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutPostsInput | CategoryUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutPostsInput | CategoryUpdateManyWithWhereWithoutPostsInput[]
     deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
@@ -26820,16 +27274,16 @@ export namespace Prisma {
     deleteMany?: FileScalarWhereInput | FileScalarWhereInput[]
   }
 
-  export type CategoryUncheckedUpdateManyWithoutPostNestedInput = {
-    create?: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput> | CategoryCreateWithoutPostInput[] | CategoryUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutPostInput | CategoryCreateOrConnectWithoutPostInput[]
-    upsert?: CategoryUpsertWithWhereUniqueWithoutPostInput | CategoryUpsertWithWhereUniqueWithoutPostInput[]
+  export type CategoryUncheckedUpdateManyWithoutPostsNestedInput = {
+    create?: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput> | CategoryCreateWithoutPostsInput[] | CategoryUncheckedCreateWithoutPostsInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutPostsInput | CategoryCreateOrConnectWithoutPostsInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutPostsInput | CategoryUpsertWithWhereUniqueWithoutPostsInput[]
     set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
-    update?: CategoryUpdateWithWhereUniqueWithoutPostInput | CategoryUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: CategoryUpdateManyWithWhereWithoutPostInput | CategoryUpdateManyWithWhereWithoutPostInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutPostsInput | CategoryUpdateWithWhereUniqueWithoutPostsInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutPostsInput | CategoryUpdateManyWithWhereWithoutPostsInput[]
     deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
@@ -27131,9 +27585,9 @@ export namespace Prisma {
     connect?: OrderMetaWhereUniqueInput | OrderMetaWhereUniqueInput[]
   }
 
-  export type CategoryCreateNestedManyWithoutOrderInput = {
-    create?: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput> | CategoryCreateWithoutOrderInput[] | CategoryUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutOrderInput | CategoryCreateOrConnectWithoutOrderInput[]
+  export type CategoryCreateNestedManyWithoutOrdersInput = {
+    create?: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput> | CategoryCreateWithoutOrdersInput[] | CategoryUncheckedCreateWithoutOrdersInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutOrdersInput | CategoryCreateOrConnectWithoutOrdersInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
@@ -27146,6 +27600,18 @@ export namespace Prisma {
   export type UserCreateNestedManyWithoutOrder_productsInput = {
     create?: XOR<UserCreateWithoutOrder_productsInput, UserUncheckedCreateWithoutOrder_productsInput> | UserCreateWithoutOrder_productsInput[] | UserUncheckedCreateWithoutOrder_productsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrder_productsInput | UserCreateOrConnectWithoutOrder_productsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutOrder_salesInput = {
+    create?: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput> | UserCreateWithoutOrder_salesInput[] | UserUncheckedCreateWithoutOrder_salesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_salesInput | UserCreateOrConnectWithoutOrder_salesInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutOrder_shippingInput = {
+    create?: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput> | UserCreateWithoutOrder_shippingInput[] | UserUncheckedCreateWithoutOrder_shippingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_shippingInput | UserCreateOrConnectWithoutOrder_shippingInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -27216,9 +27682,9 @@ export namespace Prisma {
     connect?: OrderMetaWhereUniqueInput | OrderMetaWhereUniqueInput[]
   }
 
-  export type CategoryUncheckedCreateNestedManyWithoutOrderInput = {
-    create?: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput> | CategoryCreateWithoutOrderInput[] | CategoryUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutOrderInput | CategoryCreateOrConnectWithoutOrderInput[]
+  export type CategoryUncheckedCreateNestedManyWithoutOrdersInput = {
+    create?: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput> | CategoryCreateWithoutOrdersInput[] | CategoryUncheckedCreateWithoutOrdersInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutOrdersInput | CategoryCreateOrConnectWithoutOrdersInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
@@ -27231,6 +27697,18 @@ export namespace Prisma {
   export type UserUncheckedCreateNestedManyWithoutOrder_productsInput = {
     create?: XOR<UserCreateWithoutOrder_productsInput, UserUncheckedCreateWithoutOrder_productsInput> | UserCreateWithoutOrder_productsInput[] | UserUncheckedCreateWithoutOrder_productsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrder_productsInput | UserCreateOrConnectWithoutOrder_productsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutOrder_salesInput = {
+    create?: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput> | UserCreateWithoutOrder_salesInput[] | UserUncheckedCreateWithoutOrder_salesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_salesInput | UserCreateOrConnectWithoutOrder_salesInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutOrder_shippingInput = {
+    create?: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput> | UserCreateWithoutOrder_shippingInput[] | UserUncheckedCreateWithoutOrder_shippingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_shippingInput | UserCreateOrConnectWithoutOrder_shippingInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -27323,16 +27801,16 @@ export namespace Prisma {
     deleteMany?: OrderMetaScalarWhereInput | OrderMetaScalarWhereInput[]
   }
 
-  export type CategoryUpdateManyWithoutOrderNestedInput = {
-    create?: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput> | CategoryCreateWithoutOrderInput[] | CategoryUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutOrderInput | CategoryCreateOrConnectWithoutOrderInput[]
-    upsert?: CategoryUpsertWithWhereUniqueWithoutOrderInput | CategoryUpsertWithWhereUniqueWithoutOrderInput[]
+  export type CategoryUpdateManyWithoutOrdersNestedInput = {
+    create?: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput> | CategoryCreateWithoutOrdersInput[] | CategoryUncheckedCreateWithoutOrdersInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutOrdersInput | CategoryCreateOrConnectWithoutOrdersInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutOrdersInput | CategoryUpsertWithWhereUniqueWithoutOrdersInput[]
     set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
-    update?: CategoryUpdateWithWhereUniqueWithoutOrderInput | CategoryUpdateWithWhereUniqueWithoutOrderInput[]
-    updateMany?: CategoryUpdateManyWithWhereWithoutOrderInput | CategoryUpdateManyWithWhereWithoutOrderInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutOrdersInput | CategoryUpdateWithWhereUniqueWithoutOrdersInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutOrdersInput | CategoryUpdateManyWithWhereWithoutOrdersInput[]
     deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
@@ -27359,6 +27837,32 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     update?: UserUpdateWithWhereUniqueWithoutOrder_productsInput | UserUpdateWithWhereUniqueWithoutOrder_productsInput[]
     updateMany?: UserUpdateManyWithWhereWithoutOrder_productsInput | UserUpdateManyWithWhereWithoutOrder_productsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutOrder_salesNestedInput = {
+    create?: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput> | UserCreateWithoutOrder_salesInput[] | UserUncheckedCreateWithoutOrder_salesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_salesInput | UserCreateOrConnectWithoutOrder_salesInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrder_salesInput | UserUpsertWithWhereUniqueWithoutOrder_salesInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrder_salesInput | UserUpdateWithWhereUniqueWithoutOrder_salesInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrder_salesInput | UserUpdateManyWithWhereWithoutOrder_salesInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutOrder_shippingNestedInput = {
+    create?: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput> | UserCreateWithoutOrder_shippingInput[] | UserUncheckedCreateWithoutOrder_shippingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_shippingInput | UserCreateOrConnectWithoutOrder_shippingInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrder_shippingInput | UserUpsertWithWhereUniqueWithoutOrder_shippingInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrder_shippingInput | UserUpdateWithWhereUniqueWithoutOrder_shippingInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrder_shippingInput | UserUpdateManyWithWhereWithoutOrder_shippingInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -27506,16 +28010,16 @@ export namespace Prisma {
     deleteMany?: OrderMetaScalarWhereInput | OrderMetaScalarWhereInput[]
   }
 
-  export type CategoryUncheckedUpdateManyWithoutOrderNestedInput = {
-    create?: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput> | CategoryCreateWithoutOrderInput[] | CategoryUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: CategoryCreateOrConnectWithoutOrderInput | CategoryCreateOrConnectWithoutOrderInput[]
-    upsert?: CategoryUpsertWithWhereUniqueWithoutOrderInput | CategoryUpsertWithWhereUniqueWithoutOrderInput[]
+  export type CategoryUncheckedUpdateManyWithoutOrdersNestedInput = {
+    create?: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput> | CategoryCreateWithoutOrdersInput[] | CategoryUncheckedCreateWithoutOrdersInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutOrdersInput | CategoryCreateOrConnectWithoutOrdersInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutOrdersInput | CategoryUpsertWithWhereUniqueWithoutOrdersInput[]
     set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
     connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
-    update?: CategoryUpdateWithWhereUniqueWithoutOrderInput | CategoryUpdateWithWhereUniqueWithoutOrderInput[]
-    updateMany?: CategoryUpdateManyWithWhereWithoutOrderInput | CategoryUpdateManyWithWhereWithoutOrderInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutOrdersInput | CategoryUpdateWithWhereUniqueWithoutOrdersInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutOrdersInput | CategoryUpdateManyWithWhereWithoutOrdersInput[]
     deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
@@ -27542,6 +28046,32 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     update?: UserUpdateWithWhereUniqueWithoutOrder_productsInput | UserUpdateWithWhereUniqueWithoutOrder_productsInput[]
     updateMany?: UserUpdateManyWithWhereWithoutOrder_productsInput | UserUpdateManyWithWhereWithoutOrder_productsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrder_salesNestedInput = {
+    create?: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput> | UserCreateWithoutOrder_salesInput[] | UserUncheckedCreateWithoutOrder_salesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_salesInput | UserCreateOrConnectWithoutOrder_salesInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrder_salesInput | UserUpsertWithWhereUniqueWithoutOrder_salesInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrder_salesInput | UserUpdateWithWhereUniqueWithoutOrder_salesInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrder_salesInput | UserUpdateManyWithWhereWithoutOrder_salesInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrder_shippingNestedInput = {
+    create?: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput> | UserCreateWithoutOrder_shippingInput[] | UserUncheckedCreateWithoutOrder_shippingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrder_shippingInput | UserCreateOrConnectWithoutOrder_shippingInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrder_shippingInput | UserUpsertWithWhereUniqueWithoutOrder_shippingInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrder_shippingInput | UserUpdateWithWhereUniqueWithoutOrder_shippingInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrder_shippingInput | UserUpdateManyWithWhereWithoutOrder_shippingInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -27871,6 +28401,18 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
+  export type OrderCreateNestedManyWithoutUser_salesInput = {
+    create?: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput> | OrderCreateWithoutUser_salesInput[] | OrderUncheckedCreateWithoutUser_salesInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_salesInput | OrderCreateOrConnectWithoutUser_salesInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type OrderCreateNestedManyWithoutUser_shippingInput = {
+    create?: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput> | OrderCreateWithoutUser_shippingInput[] | OrderUncheckedCreateWithoutUser_shippingInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_shippingInput | OrderCreateOrConnectWithoutUser_shippingInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -27949,6 +28491,18 @@ export namespace Prisma {
   export type OrderUncheckedCreateNestedManyWithoutUser_packagingInput = {
     create?: XOR<OrderCreateWithoutUser_packagingInput, OrderUncheckedCreateWithoutUser_packagingInput> | OrderCreateWithoutUser_packagingInput[] | OrderUncheckedCreateWithoutUser_packagingInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutUser_packagingInput | OrderCreateOrConnectWithoutUser_packagingInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutUser_salesInput = {
+    create?: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput> | OrderCreateWithoutUser_salesInput[] | OrderUncheckedCreateWithoutUser_salesInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_salesInput | OrderCreateOrConnectWithoutUser_salesInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutUser_shippingInput = {
+    create?: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput> | OrderCreateWithoutUser_shippingInput[] | OrderUncheckedCreateWithoutUser_shippingInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_shippingInput | OrderCreateOrConnectWithoutUser_shippingInput[]
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
@@ -28125,6 +28679,32 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
+  export type OrderUpdateManyWithoutUser_salesNestedInput = {
+    create?: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput> | OrderCreateWithoutUser_salesInput[] | OrderUncheckedCreateWithoutUser_salesInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_salesInput | OrderCreateOrConnectWithoutUser_salesInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUser_salesInput | OrderUpsertWithWhereUniqueWithoutUser_salesInput[]
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUser_salesInput | OrderUpdateWithWhereUniqueWithoutUser_salesInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUser_salesInput | OrderUpdateManyWithWhereWithoutUser_salesInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type OrderUpdateManyWithoutUser_shippingNestedInput = {
+    create?: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput> | OrderCreateWithoutUser_shippingInput[] | OrderUncheckedCreateWithoutUser_shippingInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_shippingInput | OrderCreateOrConnectWithoutUser_shippingInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUser_shippingInput | OrderUpsertWithWhereUniqueWithoutUser_shippingInput[]
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUser_shippingInput | OrderUpdateWithWhereUniqueWithoutUser_shippingInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUser_shippingInput | OrderUpdateManyWithWhereWithoutUser_shippingInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -28291,6 +28871,32 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
     update?: OrderUpdateWithWhereUniqueWithoutUser_packagingInput | OrderUpdateWithWhereUniqueWithoutUser_packagingInput[]
     updateMany?: OrderUpdateManyWithWhereWithoutUser_packagingInput | OrderUpdateManyWithWhereWithoutUser_packagingInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUser_salesNestedInput = {
+    create?: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput> | OrderCreateWithoutUser_salesInput[] | OrderUncheckedCreateWithoutUser_salesInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_salesInput | OrderCreateOrConnectWithoutUser_salesInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUser_salesInput | OrderUpsertWithWhereUniqueWithoutUser_salesInput[]
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUser_salesInput | OrderUpdateWithWhereUniqueWithoutUser_salesInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUser_salesInput | OrderUpdateManyWithWhereWithoutUser_salesInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUser_shippingNestedInput = {
+    create?: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput> | OrderCreateWithoutUser_shippingInput[] | OrderUncheckedCreateWithoutUser_shippingInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUser_shippingInput | OrderCreateOrConnectWithoutUser_shippingInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUser_shippingInput | OrderUpsertWithWhereUniqueWithoutUser_shippingInput[]
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUser_shippingInput | OrderUpdateWithWhereUniqueWithoutUser_shippingInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUser_shippingInput | OrderUpdateManyWithWhereWithoutUser_shippingInput[]
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
@@ -28615,6 +29221,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -28626,10 +29233,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -28652,6 +29263,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -28663,10 +29275,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -28748,6 +29364,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"Order"> | string | null
     published?: BoolFilter<"Order"> | boolean
     data?: StringNullableFilter<"Order"> | string | null
+    data_main?: StringNullableFilter<"Order"> | string | null
     date_created?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_production?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_paid?: DateTimeNullableFilter<"Order"> | Date | string | null
@@ -28759,6 +29376,8 @@ export namespace Prisma {
     date_failed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_closed?: DateTimeNullableFilter<"Order"> | Date | string | null
     date_approved?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_payment?: DateTimeNullableFilter<"Order"> | Date | string | null
+    date_package?: DateTimeNullableFilter<"Order"> | Date | string | null
   }
 
   export type UserCreateWithoutPostsInput = {
@@ -28782,6 +29401,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationCreateNestedOneWithoutUserInput
@@ -28794,6 +29417,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -28817,6 +29442,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedCreateNestedOneWithoutUserInput
@@ -28829,6 +29458,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -28836,7 +29467,7 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
   }
 
-  export type CategoryCreateWithoutPostInput = {
+  export type CategoryCreateWithoutPostsInput = {
     title: string
     slug?: string
     content?: string | null
@@ -28846,10 +29477,10 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    order?: OrderCreateNestedManyWithoutCategoriesInput
+    orders?: OrderCreateNestedManyWithoutCategoriesInput
   }
 
-  export type CategoryUncheckedCreateWithoutPostInput = {
+  export type CategoryUncheckedCreateWithoutPostsInput = {
     id?: number
     title: string
     slug?: string
@@ -28860,12 +29491,12 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    order?: OrderUncheckedCreateNestedManyWithoutCategoriesInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
-  export type CategoryCreateOrConnectWithoutPostInput = {
+  export type CategoryCreateOrConnectWithoutPostsInput = {
     where: CategoryWhereUniqueInput
-    create: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput>
+    create: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput>
   }
 
   export type PostMetaCreateWithoutPostInput = {
@@ -28965,6 +29596,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUpdateOneWithoutUserNestedInput
@@ -28977,6 +29612,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -29000,6 +29637,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedUpdateOneWithoutUserNestedInput
@@ -29012,22 +29653,24 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
-  export type CategoryUpsertWithWhereUniqueWithoutPostInput = {
+  export type CategoryUpsertWithWhereUniqueWithoutPostsInput = {
     where: CategoryWhereUniqueInput
-    update: XOR<CategoryUpdateWithoutPostInput, CategoryUncheckedUpdateWithoutPostInput>
-    create: XOR<CategoryCreateWithoutPostInput, CategoryUncheckedCreateWithoutPostInput>
+    update: XOR<CategoryUpdateWithoutPostsInput, CategoryUncheckedUpdateWithoutPostsInput>
+    create: XOR<CategoryCreateWithoutPostsInput, CategoryUncheckedCreateWithoutPostsInput>
   }
 
-  export type CategoryUpdateWithWhereUniqueWithoutPostInput = {
+  export type CategoryUpdateWithWhereUniqueWithoutPostsInput = {
     where: CategoryWhereUniqueInput
-    data: XOR<CategoryUpdateWithoutPostInput, CategoryUncheckedUpdateWithoutPostInput>
+    data: XOR<CategoryUpdateWithoutPostsInput, CategoryUncheckedUpdateWithoutPostsInput>
   }
 
-  export type CategoryUpdateManyWithWhereWithoutPostInput = {
+  export type CategoryUpdateManyWithWhereWithoutPostsInput = {
     where: CategoryScalarWhereInput
-    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutPostInput>
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutPostsInput>
   }
 
   export type CategoryScalarWhereInput = {
@@ -29122,7 +29765,7 @@ export namespace Prisma {
     data?: string | null
     setorder?: number
     user: UserCreateNestedOneWithoutPostsInput
-    categories?: CategoryCreateNestedManyWithoutPostInput
+    categories?: CategoryCreateNestedManyWithoutPostsInput
     files?: FileCreateNestedManyWithoutPostInput
   }
 
@@ -29140,7 +29783,7 @@ export namespace Prisma {
     type?: string
     data?: string | null
     setorder?: number
-    categories?: CategoryUncheckedCreateNestedManyWithoutPostInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutPostsInput
     files?: FileUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -29173,7 +29816,7 @@ export namespace Prisma {
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutPostsNestedInput
-    categories?: CategoryUpdateManyWithoutPostNestedInput
+    categories?: CategoryUpdateManyWithoutPostsNestedInput
     files?: FileUpdateManyWithoutPostNestedInput
   }
 
@@ -29191,7 +29834,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
-    categories?: CategoryUncheckedUpdateManyWithoutPostNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutPostsNestedInput
     files?: FileUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -29208,7 +29851,7 @@ export namespace Prisma {
     data?: string | null
     setorder?: number
     user: UserCreateNestedOneWithoutPostsInput
-    categories?: CategoryCreateNestedManyWithoutPostInput
+    categories?: CategoryCreateNestedManyWithoutPostsInput
     meta?: PostMetaCreateNestedManyWithoutPostInput
   }
 
@@ -29226,7 +29869,7 @@ export namespace Prisma {
     type?: string
     data?: string | null
     setorder?: number
-    categories?: CategoryUncheckedCreateNestedManyWithoutPostInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutPostsInput
     meta?: PostMetaUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -29301,6 +29944,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29312,10 +29956,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -29338,6 +29986,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29349,10 +29998,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -29390,6 +30043,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationCreateNestedOneWithoutUserInput
@@ -29402,6 +30059,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutFilesInput = {
@@ -29425,6 +30084,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedCreateNestedOneWithoutUserInput
@@ -29437,6 +30100,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutFilesInput = {
@@ -29550,6 +30215,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUpdateOneWithoutUserNestedInput
@@ -29562,6 +30231,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFilesInput = {
@@ -29585,6 +30256,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedUpdateOneWithoutUserNestedInput
@@ -29597,6 +30272,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type FileCreateWithoutCustomerInput = {
@@ -29650,6 +30327,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29661,11 +30339,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -29687,6 +30369,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29698,11 +30381,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -29729,6 +30416,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29740,11 +30428,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -29766,6 +30458,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -29777,11 +30470,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -29910,7 +30607,7 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CategoryCreateWithoutOrderInput = {
+  export type CategoryCreateWithoutOrdersInput = {
     title: string
     slug?: string
     content?: string | null
@@ -29920,10 +30617,10 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    post?: PostCreateNestedManyWithoutCategoriesInput
+    posts?: PostCreateNestedManyWithoutCategoriesInput
   }
 
-  export type CategoryUncheckedCreateWithoutOrderInput = {
+  export type CategoryUncheckedCreateWithoutOrdersInput = {
     id?: number
     title: string
     slug?: string
@@ -29934,12 +30631,12 @@ export namespace Prisma {
     published?: boolean
     status?: string
     setorder?: number
-    post?: PostUncheckedCreateNestedManyWithoutCategoriesInput
+    posts?: PostUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
-  export type CategoryCreateOrConnectWithoutOrderInput = {
+  export type CategoryCreateOrConnectWithoutOrdersInput = {
     where: CategoryWhereUniqueInput
-    create: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput>
+    create: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput>
   }
 
   export type UserCreateWithoutOrdersInput = {
@@ -29963,6 +30660,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -29975,6 +30676,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -29998,6 +30701,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30010,6 +30717,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -30038,6 +30747,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30050,6 +30763,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_productsInput = {
@@ -30073,6 +30788,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30085,11 +30804,187 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_productsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutOrder_productsInput, UserUncheckedCreateWithoutOrder_productsInput>
+  }
+
+  export type UserCreateWithoutOrder_salesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    phone?: string | null
+    first_name?: string | null
+    last_name?: string | null
+    image?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zip?: string | null
+    country?: string | null
+    avatar?: string | null
+    role?: $Enums.UserRole | null
+    isTwoFactorEnabled?: boolean
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    published?: boolean
+    data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutUserInput
+    files?: FileCreateNestedManyWithoutUserInput
+    twoFactorConfirmation?: TwoFactorConfirmationCreateNestedOneWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    order_products?: OrderCreateNestedManyWithoutUser_productInput
+    order_delivery?: OrderCreateNestedManyWithoutUser_deliveryInput
+    order_manager?: OrderCreateNestedManyWithoutUser_managerInput
+    order_quality?: OrderCreateNestedManyWithoutUser_qualityInput
+    order_designer?: OrderCreateNestedManyWithoutUser_designerInput
+    order_financial?: OrderCreateNestedManyWithoutUser_financialInput
+    order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
+    order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
+  }
+
+  export type UserUncheckedCreateWithoutOrder_salesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    phone?: string | null
+    first_name?: string | null
+    last_name?: string | null
+    image?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zip?: string | null
+    country?: string | null
+    avatar?: string | null
+    role?: $Enums.UserRole | null
+    isTwoFactorEnabled?: boolean
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    published?: boolean
+    data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutUserInput
+    files?: FileUncheckedCreateNestedManyWithoutUserInput
+    twoFactorConfirmation?: TwoFactorConfirmationUncheckedCreateNestedOneWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    order_products?: OrderUncheckedCreateNestedManyWithoutUser_productInput
+    order_delivery?: OrderUncheckedCreateNestedManyWithoutUser_deliveryInput
+    order_manager?: OrderUncheckedCreateNestedManyWithoutUser_managerInput
+    order_quality?: OrderUncheckedCreateNestedManyWithoutUser_qualityInput
+    order_designer?: OrderUncheckedCreateNestedManyWithoutUser_designerInput
+    order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
+    order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
+    order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
+  }
+
+  export type UserCreateOrConnectWithoutOrder_salesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput>
+  }
+
+  export type UserCreateWithoutOrder_shippingInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    phone?: string | null
+    first_name?: string | null
+    last_name?: string | null
+    image?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zip?: string | null
+    country?: string | null
+    avatar?: string | null
+    role?: $Enums.UserRole | null
+    isTwoFactorEnabled?: boolean
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    published?: boolean
+    data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutUserInput
+    files?: FileCreateNestedManyWithoutUserInput
+    twoFactorConfirmation?: TwoFactorConfirmationCreateNestedOneWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    order_products?: OrderCreateNestedManyWithoutUser_productInput
+    order_delivery?: OrderCreateNestedManyWithoutUser_deliveryInput
+    order_manager?: OrderCreateNestedManyWithoutUser_managerInput
+    order_quality?: OrderCreateNestedManyWithoutUser_qualityInput
+    order_designer?: OrderCreateNestedManyWithoutUser_designerInput
+    order_financial?: OrderCreateNestedManyWithoutUser_financialInput
+    order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
+    order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+  }
+
+  export type UserUncheckedCreateWithoutOrder_shippingInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    phone?: string | null
+    first_name?: string | null
+    last_name?: string | null
+    image?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zip?: string | null
+    country?: string | null
+    avatar?: string | null
+    role?: $Enums.UserRole | null
+    isTwoFactorEnabled?: boolean
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    published?: boolean
+    data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutUserInput
+    files?: FileUncheckedCreateNestedManyWithoutUserInput
+    twoFactorConfirmation?: TwoFactorConfirmationUncheckedCreateNestedOneWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    order_products?: OrderUncheckedCreateNestedManyWithoutUser_productInput
+    order_delivery?: OrderUncheckedCreateNestedManyWithoutUser_deliveryInput
+    order_manager?: OrderUncheckedCreateNestedManyWithoutUser_managerInput
+    order_quality?: OrderUncheckedCreateNestedManyWithoutUser_qualityInput
+    order_designer?: OrderUncheckedCreateNestedManyWithoutUser_designerInput
+    order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
+    order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
+    order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+  }
+
+  export type UserCreateOrConnectWithoutOrder_shippingInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput>
   }
 
   export type UserCreateWithoutOrder_deliveryInput = {
@@ -30113,6 +31008,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30125,6 +31024,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_deliveryInput = {
@@ -30148,6 +31049,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30160,6 +31065,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_deliveryInput = {
@@ -30188,6 +31095,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30200,6 +31111,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_managerInput = {
@@ -30223,6 +31136,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30235,6 +31152,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_managerInput = {
@@ -30263,6 +31182,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30275,6 +31198,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_qualityInput = {
@@ -30298,6 +31223,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30310,6 +31239,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_qualityInput = {
@@ -30338,6 +31269,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30350,6 +31285,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_designerInput = {
@@ -30373,6 +31310,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30385,6 +31326,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_designerInput = {
@@ -30413,6 +31356,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30425,6 +31372,8 @@ export namespace Prisma {
     order_designer?: OrderCreateNestedManyWithoutUser_designerInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_financialInput = {
@@ -30448,6 +31397,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30460,6 +31413,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedCreateNestedManyWithoutUser_designerInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_financialInput = {
@@ -30488,6 +31443,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30500,6 +31459,8 @@ export namespace Prisma {
     order_designer?: OrderCreateNestedManyWithoutUser_designerInput
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_technicalInput = {
@@ -30523,6 +31484,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30535,6 +31500,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedCreateNestedManyWithoutUser_designerInput
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_technicalInput = {
@@ -30563,6 +31530,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -30575,6 +31546,8 @@ export namespace Prisma {
     order_designer?: OrderCreateNestedManyWithoutUser_designerInput
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutOrder_packagingInput = {
@@ -30598,6 +31571,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -30610,6 +31587,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedCreateNestedManyWithoutUser_designerInput
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutOrder_packagingInput = {
@@ -30771,20 +31750,20 @@ export namespace Prisma {
     orderId?: StringFilter<"OrderMeta"> | string
   }
 
-  export type CategoryUpsertWithWhereUniqueWithoutOrderInput = {
+  export type CategoryUpsertWithWhereUniqueWithoutOrdersInput = {
     where: CategoryWhereUniqueInput
-    update: XOR<CategoryUpdateWithoutOrderInput, CategoryUncheckedUpdateWithoutOrderInput>
-    create: XOR<CategoryCreateWithoutOrderInput, CategoryUncheckedCreateWithoutOrderInput>
+    update: XOR<CategoryUpdateWithoutOrdersInput, CategoryUncheckedUpdateWithoutOrdersInput>
+    create: XOR<CategoryCreateWithoutOrdersInput, CategoryUncheckedCreateWithoutOrdersInput>
   }
 
-  export type CategoryUpdateWithWhereUniqueWithoutOrderInput = {
+  export type CategoryUpdateWithWhereUniqueWithoutOrdersInput = {
     where: CategoryWhereUniqueInput
-    data: XOR<CategoryUpdateWithoutOrderInput, CategoryUncheckedUpdateWithoutOrderInput>
+    data: XOR<CategoryUpdateWithoutOrdersInput, CategoryUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type CategoryUpdateManyWithWhereWithoutOrderInput = {
+  export type CategoryUpdateManyWithWhereWithoutOrdersInput = {
     where: CategoryScalarWhereInput
-    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutOrderInput>
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutOrdersInput>
   }
 
   export type UserUpsertWithWhereUniqueWithoutOrdersInput = {
@@ -30827,6 +31806,10 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     published?: BoolFilter<"User"> | boolean
     data?: StringNullableFilter<"User"> | string | null
+    permissions?: StringNullableFilter<"User"> | string | null
+    salt?: StringNullableFilter<"User"> | string | null
+    hash?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
   }
 
   export type UserUpsertWithWhereUniqueWithoutOrder_productsInput = {
@@ -30843,6 +31826,38 @@ export namespace Prisma {
   export type UserUpdateManyWithWhereWithoutOrder_productsInput = {
     where: UserScalarWhereInput
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutOrder_productsInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutOrder_salesInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutOrder_salesInput, UserUncheckedUpdateWithoutOrder_salesInput>
+    create: XOR<UserCreateWithoutOrder_salesInput, UserUncheckedCreateWithoutOrder_salesInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutOrder_salesInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutOrder_salesInput, UserUncheckedUpdateWithoutOrder_salesInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutOrder_salesInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutOrder_salesInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutOrder_shippingInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutOrder_shippingInput, UserUncheckedUpdateWithoutOrder_shippingInput>
+    create: XOR<UserCreateWithoutOrder_shippingInput, UserUncheckedCreateWithoutOrder_shippingInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutOrder_shippingInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutOrder_shippingInput, UserUncheckedUpdateWithoutOrder_shippingInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutOrder_shippingInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutOrder_shippingInput>
   }
 
   export type UserUpsertWithWhereUniqueWithoutOrder_deliveryInput = {
@@ -31000,6 +32015,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31011,10 +32027,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -31037,6 +32057,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31048,10 +32069,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -31090,6 +32115,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31101,10 +32127,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -31127,6 +32157,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31138,10 +32169,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -31159,6 +32194,7 @@ export namespace Prisma {
     key?: string | null
     value?: string | null
     data?: string | null
+    order?: number | null
   }
 
   export type AttributeMetaUncheckedCreateWithoutAttributeInput = {
@@ -31168,6 +32204,7 @@ export namespace Prisma {
     key?: string | null
     value?: string | null
     data?: string | null
+    order?: number | null
   }
 
   export type AttributeMetaCreateOrConnectWithoutAttributeInput = {
@@ -31188,6 +32225,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
     meta?: AttributeMetaCreateNestedManyWithoutAttributeInput
     children?: AttributeCreateNestedManyWithoutParentInput
   }
@@ -31201,6 +32239,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
     meta?: AttributeMetaUncheckedCreateNestedManyWithoutAttributeInput
     children?: AttributeUncheckedCreateNestedManyWithoutParentInput
   }
@@ -31223,6 +32262,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
     meta?: AttributeMetaCreateNestedManyWithoutAttributeInput
     parent?: AttributeCreateNestedOneWithoutChildrenInput
   }
@@ -31237,6 +32277,7 @@ export namespace Prisma {
     mapto?: string | null
     published?: boolean
     childrenId?: number | null
+    order?: number | null
     meta?: AttributeMetaUncheckedCreateNestedManyWithoutAttributeInput
   }
 
@@ -31272,6 +32313,7 @@ export namespace Prisma {
     value?: StringNullableFilter<"AttributeMeta"> | string | null
     data?: StringNullableFilter<"AttributeMeta"> | string | null
     attributeId?: IntFilter<"AttributeMeta"> | number
+    order?: IntNullableFilter<"AttributeMeta"> | number | null
   }
 
   export type AttributeUpsertWithWhereUniqueWithoutParentInput = {
@@ -31303,6 +32345,7 @@ export namespace Prisma {
     mapto?: StringNullableFilter<"Attribute"> | string | null
     published?: BoolFilter<"Attribute"> | boolean
     childrenId?: IntNullableFilter<"Attribute"> | number | null
+    order?: IntNullableFilter<"Attribute"> | number | null
   }
 
   export type AttributeUpsertWithoutChildrenInput = {
@@ -31324,6 +32367,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUpdateManyWithoutAttributeNestedInput
     parent?: AttributeUpdateOneWithoutChildrenNestedInput
   }
@@ -31338,6 +32382,7 @@ export namespace Prisma {
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     childrenId?: NullableIntFieldUpdateOperationsInput | number | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUncheckedUpdateManyWithoutAttributeNestedInput
   }
 
@@ -31349,6 +32394,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
     children?: AttributeCreateNestedManyWithoutParentInput
     parent?: AttributeCreateNestedOneWithoutChildrenInput
   }
@@ -31363,6 +32409,7 @@ export namespace Prisma {
     mapto?: string | null
     published?: boolean
     childrenId?: number | null
+    order?: number | null
     children?: AttributeUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -31390,6 +32437,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     children?: AttributeUpdateManyWithoutParentNestedInput
     parent?: AttributeUpdateOneWithoutChildrenNestedInput
   }
@@ -31404,6 +32452,7 @@ export namespace Prisma {
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     childrenId?: NullableIntFieldUpdateOperationsInput | number | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     children?: AttributeUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -31457,7 +32506,7 @@ export namespace Prisma {
     type?: string
     data?: string | null
     setorder?: number
-    categories?: CategoryCreateNestedManyWithoutPostInput
+    categories?: CategoryCreateNestedManyWithoutPostsInput
     meta?: PostMetaCreateNestedManyWithoutPostInput
     files?: FileCreateNestedManyWithoutPostInput
   }
@@ -31475,7 +32524,7 @@ export namespace Prisma {
     type?: string
     data?: string | null
     setorder?: number
-    categories?: CategoryUncheckedCreateNestedManyWithoutPostInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutPostsInput
     meta?: PostMetaUncheckedCreateNestedManyWithoutPostInput
     files?: FileUncheckedCreateNestedManyWithoutPostInput
   }
@@ -31559,6 +32608,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31570,10 +32620,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -31596,6 +32650,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31607,10 +32662,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -31638,6 +32697,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31649,10 +32709,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -31675,6 +32739,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31686,10 +32751,14 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -31717,6 +32786,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31728,11 +32798,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
     user_designer?: UserCreateNestedManyWithoutOrder_designerInput
@@ -31754,6 +32828,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31765,11 +32840,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
     user_designer?: UserUncheckedCreateNestedManyWithoutOrder_designerInput
@@ -31796,6 +32875,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31807,11 +32887,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
     user_designer?: UserCreateNestedManyWithoutOrder_designerInput
@@ -31833,6 +32917,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31844,11 +32929,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
     user_designer?: UserUncheckedCreateNestedManyWithoutOrder_designerInput
@@ -31875,6 +32964,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31886,11 +32976,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_designer?: UserCreateNestedManyWithoutOrder_designerInput
@@ -31912,6 +33006,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31923,11 +33018,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_designer?: UserUncheckedCreateNestedManyWithoutOrder_designerInput
@@ -31954,6 +33053,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -31965,11 +33065,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -31991,6 +33095,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32002,11 +33107,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -32033,6 +33142,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32044,11 +33154,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -32070,6 +33184,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32081,11 +33196,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -32112,6 +33231,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32123,11 +33243,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -32149,6 +33273,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32160,11 +33285,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -32191,6 +33320,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32202,11 +33332,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileCreateNestedManyWithoutOrderInput
     meta?: OrderMetaCreateNestedManyWithoutOrderInput
-    categories?: CategoryCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
     user?: UserCreateNestedManyWithoutOrdersInput
     user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
@@ -32228,6 +33362,7 @@ export namespace Prisma {
     image?: string | null
     published?: boolean
     data?: string | null
+    data_main?: string | null
     date_created?: Date | string | null
     date_production?: Date | string | null
     date_paid?: Date | string | null
@@ -32239,11 +33374,15 @@ export namespace Prisma {
     date_failed?: Date | string | null
     date_closed?: Date | string | null
     date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
     files?: FileUncheckedCreateNestedManyWithoutOrderInput
     meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
-    categories?: CategoryUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
     user?: UserUncheckedCreateNestedManyWithoutOrdersInput
     user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
     user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
     user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
     user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
@@ -32257,6 +33396,184 @@ export namespace Prisma {
   export type OrderCreateOrConnectWithoutUser_packagingInput = {
     where: OrderWhereUniqueInput
     create: XOR<OrderCreateWithoutUser_packagingInput, OrderUncheckedCreateWithoutUser_packagingInput>
+  }
+
+  export type OrderCreateWithoutUser_salesInput = {
+    id?: string
+    status?: string | null
+    total?: number | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    title?: string | null
+    content?: string | null
+    image?: string | null
+    published?: boolean
+    data?: string | null
+    data_main?: string | null
+    date_created?: Date | string | null
+    date_production?: Date | string | null
+    date_paid?: Date | string | null
+    date_shipped?: Date | string | null
+    date_delivered?: Date | string | null
+    date_completed?: Date | string | null
+    date_cancelled?: Date | string | null
+    date_refunded?: Date | string | null
+    date_failed?: Date | string | null
+    date_closed?: Date | string | null
+    date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
+    files?: FileCreateNestedManyWithoutOrderInput
+    meta?: OrderMetaCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
+    user?: UserCreateNestedManyWithoutOrdersInput
+    user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_shipping?: UserCreateNestedManyWithoutOrder_shippingInput
+    user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
+    user_manager?: UserCreateNestedManyWithoutOrder_managerInput
+    user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
+    user_designer?: UserCreateNestedManyWithoutOrder_designerInput
+    user_financial?: UserCreateNestedManyWithoutOrder_financialInput
+    user_technical?: UserCreateNestedManyWithoutOrder_technicalInput
+    user_packaging?: UserCreateNestedManyWithoutOrder_packagingInput
+    vendor?: CustomerCreateNestedManyWithoutOrder_vendorInput
+    customer?: CustomerCreateNestedManyWithoutOrder_customerInput
+  }
+
+  export type OrderUncheckedCreateWithoutUser_salesInput = {
+    id?: string
+    status?: string | null
+    total?: number | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    title?: string | null
+    content?: string | null
+    image?: string | null
+    published?: boolean
+    data?: string | null
+    data_main?: string | null
+    date_created?: Date | string | null
+    date_production?: Date | string | null
+    date_paid?: Date | string | null
+    date_shipped?: Date | string | null
+    date_delivered?: Date | string | null
+    date_completed?: Date | string | null
+    date_cancelled?: Date | string | null
+    date_refunded?: Date | string | null
+    date_failed?: Date | string | null
+    date_closed?: Date | string | null
+    date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
+    files?: FileUncheckedCreateNestedManyWithoutOrderInput
+    meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
+    user?: UserUncheckedCreateNestedManyWithoutOrdersInput
+    user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_shipping?: UserUncheckedCreateNestedManyWithoutOrder_shippingInput
+    user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
+    user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
+    user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
+    user_designer?: UserUncheckedCreateNestedManyWithoutOrder_designerInput
+    user_financial?: UserUncheckedCreateNestedManyWithoutOrder_financialInput
+    user_technical?: UserUncheckedCreateNestedManyWithoutOrder_technicalInput
+    user_packaging?: UserUncheckedCreateNestedManyWithoutOrder_packagingInput
+    vendor?: CustomerUncheckedCreateNestedManyWithoutOrder_vendorInput
+    customer?: CustomerUncheckedCreateNestedManyWithoutOrder_customerInput
+  }
+
+  export type OrderCreateOrConnectWithoutUser_salesInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput>
+  }
+
+  export type OrderCreateWithoutUser_shippingInput = {
+    id?: string
+    status?: string | null
+    total?: number | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    title?: string | null
+    content?: string | null
+    image?: string | null
+    published?: boolean
+    data?: string | null
+    data_main?: string | null
+    date_created?: Date | string | null
+    date_production?: Date | string | null
+    date_paid?: Date | string | null
+    date_shipped?: Date | string | null
+    date_delivered?: Date | string | null
+    date_completed?: Date | string | null
+    date_cancelled?: Date | string | null
+    date_refunded?: Date | string | null
+    date_failed?: Date | string | null
+    date_closed?: Date | string | null
+    date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
+    files?: FileCreateNestedManyWithoutOrderInput
+    meta?: OrderMetaCreateNestedManyWithoutOrderInput
+    categories?: CategoryCreateNestedManyWithoutOrdersInput
+    user?: UserCreateNestedManyWithoutOrdersInput
+    user_product?: UserCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserCreateNestedManyWithoutOrder_salesInput
+    user_delivery?: UserCreateNestedManyWithoutOrder_deliveryInput
+    user_manager?: UserCreateNestedManyWithoutOrder_managerInput
+    user_quality?: UserCreateNestedManyWithoutOrder_qualityInput
+    user_designer?: UserCreateNestedManyWithoutOrder_designerInput
+    user_financial?: UserCreateNestedManyWithoutOrder_financialInput
+    user_technical?: UserCreateNestedManyWithoutOrder_technicalInput
+    user_packaging?: UserCreateNestedManyWithoutOrder_packagingInput
+    vendor?: CustomerCreateNestedManyWithoutOrder_vendorInput
+    customer?: CustomerCreateNestedManyWithoutOrder_customerInput
+  }
+
+  export type OrderUncheckedCreateWithoutUser_shippingInput = {
+    id?: string
+    status?: string | null
+    total?: number | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    title?: string | null
+    content?: string | null
+    image?: string | null
+    published?: boolean
+    data?: string | null
+    data_main?: string | null
+    date_created?: Date | string | null
+    date_production?: Date | string | null
+    date_paid?: Date | string | null
+    date_shipped?: Date | string | null
+    date_delivered?: Date | string | null
+    date_completed?: Date | string | null
+    date_cancelled?: Date | string | null
+    date_refunded?: Date | string | null
+    date_failed?: Date | string | null
+    date_closed?: Date | string | null
+    date_approved?: Date | string | null
+    date_payment?: Date | string | null
+    date_package?: Date | string | null
+    files?: FileUncheckedCreateNestedManyWithoutOrderInput
+    meta?: OrderMetaUncheckedCreateNestedManyWithoutOrderInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutOrdersInput
+    user?: UserUncheckedCreateNestedManyWithoutOrdersInput
+    user_product?: UserUncheckedCreateNestedManyWithoutOrder_productsInput
+    user_sales?: UserUncheckedCreateNestedManyWithoutOrder_salesInput
+    user_delivery?: UserUncheckedCreateNestedManyWithoutOrder_deliveryInput
+    user_manager?: UserUncheckedCreateNestedManyWithoutOrder_managerInput
+    user_quality?: UserUncheckedCreateNestedManyWithoutOrder_qualityInput
+    user_designer?: UserUncheckedCreateNestedManyWithoutOrder_designerInput
+    user_financial?: UserUncheckedCreateNestedManyWithoutOrder_financialInput
+    user_technical?: UserUncheckedCreateNestedManyWithoutOrder_technicalInput
+    user_packaging?: UserUncheckedCreateNestedManyWithoutOrder_packagingInput
+    vendor?: CustomerUncheckedCreateNestedManyWithoutOrder_vendorInput
+    customer?: CustomerUncheckedCreateNestedManyWithoutOrder_customerInput
+  }
+
+  export type OrderCreateOrConnectWithoutUser_shippingInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput>
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -32488,6 +33805,38 @@ export namespace Prisma {
     data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUser_packagingInput>
   }
 
+  export type OrderUpsertWithWhereUniqueWithoutUser_salesInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutUser_salesInput, OrderUncheckedUpdateWithoutUser_salesInput>
+    create: XOR<OrderCreateWithoutUser_salesInput, OrderUncheckedCreateWithoutUser_salesInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutUser_salesInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutUser_salesInput, OrderUncheckedUpdateWithoutUser_salesInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutUser_salesInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUser_salesInput>
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutUser_shippingInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutUser_shippingInput, OrderUncheckedUpdateWithoutUser_shippingInput>
+    create: XOR<OrderCreateWithoutUser_shippingInput, OrderUncheckedCreateWithoutUser_shippingInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutUser_shippingInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutUser_shippingInput, OrderUncheckedUpdateWithoutUser_shippingInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutUser_shippingInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUser_shippingInput>
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -32509,6 +33858,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationCreateNestedOneWithoutUserInput
@@ -32521,6 +33874,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -32544,6 +33899,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedCreateNestedOneWithoutUserInput
@@ -32556,6 +33915,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -32595,6 +33956,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUpdateOneWithoutUserNestedInput
@@ -32607,6 +33972,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -32630,6 +33997,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
     twoFactorConfirmation?: TwoFactorConfirmationUncheckedUpdateOneWithoutUserNestedInput
@@ -32642,6 +34013,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserCreateWithoutTwoFactorConfirmationInput = {
@@ -32665,6 +34038,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutUserInput
     files?: FileCreateNestedManyWithoutUserInput
@@ -32677,6 +34054,8 @@ export namespace Prisma {
     order_financial?: OrderCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserUncheckedCreateWithoutTwoFactorConfirmationInput = {
@@ -32700,6 +34079,10 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     published?: boolean
     data?: string | null
+    permissions?: string | null
+    salt?: string | null
+    hash?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     files?: FileUncheckedCreateNestedManyWithoutUserInput
@@ -32712,6 +34095,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedCreateNestedManyWithoutUser_financialInput
     order_technical?: OrderUncheckedCreateNestedManyWithoutUser_technicalInput
     order_packaging?: OrderUncheckedCreateNestedManyWithoutUser_packagingInput
+    order_sales?: OrderUncheckedCreateNestedManyWithoutUser_salesInput
+    order_shipping?: OrderUncheckedCreateNestedManyWithoutUser_shippingInput
   }
 
   export type UserCreateOrConnectWithoutTwoFactorConfirmationInput = {
@@ -32751,6 +34136,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -32763,6 +34152,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTwoFactorConfirmationInput = {
@@ -32786,6 +34177,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -32798,6 +34193,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type PostUpdateWithoutCategoriesInput = {
@@ -32862,6 +34259,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -32873,10 +34271,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -32899,6 +34301,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -32910,10 +34313,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -32936,6 +34343,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -32947,6 +34355,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PostMetaCreateManyPostInput = {
@@ -32957,7 +34367,7 @@ export namespace Prisma {
     value?: string | null
   }
 
-  export type CategoryUpdateWithoutPostInput = {
+  export type CategoryUpdateWithoutPostsInput = {
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32967,10 +34377,10 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    order?: OrderUpdateManyWithoutCategoriesNestedInput
+    orders?: OrderUpdateManyWithoutCategoriesNestedInput
   }
 
-  export type CategoryUncheckedUpdateWithoutPostInput = {
+  export type CategoryUncheckedUpdateWithoutPostsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -32981,10 +34391,10 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    order?: OrderUncheckedUpdateManyWithoutCategoriesNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCategoriesNestedInput
   }
 
-  export type CategoryUncheckedUpdateManyWithoutPostInput = {
+  export type CategoryUncheckedUpdateManyWithoutPostsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -33084,7 +34494,7 @@ export namespace Prisma {
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutPostsNestedInput
-    categories?: CategoryUpdateManyWithoutPostNestedInput
+    categories?: CategoryUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUpdateManyWithoutPostNestedInput
   }
 
@@ -33102,7 +34512,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
-    categories?: CategoryUncheckedUpdateManyWithoutPostNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -33206,6 +34616,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33217,10 +34628,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -33243,6 +34658,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33254,10 +34670,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -33280,6 +34700,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33291,6 +34712,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type FileUpdateWithoutCustomerInput = {
@@ -33355,6 +34778,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33366,11 +34790,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -33392,6 +34820,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33403,11 +34832,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -33429,6 +34862,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33440,6 +34874,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutVendorInput = {
@@ -33453,6 +34889,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33464,11 +34901,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -33490,6 +34931,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33501,11 +34943,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -33527,6 +34973,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33538,6 +34985,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderMetaCreateManyOrderInput = {
@@ -33622,7 +35071,7 @@ export namespace Prisma {
     value?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type CategoryUpdateWithoutOrderInput = {
+  export type CategoryUpdateWithoutOrdersInput = {
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33632,10 +35081,10 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    post?: PostUpdateManyWithoutCategoriesNestedInput
+    posts?: PostUpdateManyWithoutCategoriesNestedInput
   }
 
-  export type CategoryUncheckedUpdateWithoutOrderInput = {
+  export type CategoryUncheckedUpdateWithoutOrdersInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -33646,10 +35095,10 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     setorder?: IntFieldUpdateOperationsInput | number
-    post?: PostUncheckedUpdateManyWithoutCategoriesNestedInput
+    posts?: PostUncheckedUpdateManyWithoutCategoriesNestedInput
   }
 
-  export type CategoryUncheckedUpdateManyWithoutOrderInput = {
+  export type CategoryUncheckedUpdateManyWithoutOrdersInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -33683,6 +35132,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -33695,6 +35148,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -33718,6 +35173,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -33730,6 +35189,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrdersInput = {
@@ -33753,6 +35214,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_productsInput = {
@@ -33776,6 +35241,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -33788,6 +35257,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_productsInput = {
@@ -33811,6 +35282,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -33823,6 +35298,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_productsInput = {
@@ -33846,6 +35323,228 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutOrder_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutUserNestedInput
+    files?: FileUpdateManyWithoutUserNestedInput
+    twoFactorConfirmation?: TwoFactorConfirmationUpdateOneWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    order_products?: OrderUpdateManyWithoutUser_productNestedInput
+    order_delivery?: OrderUpdateManyWithoutUser_deliveryNestedInput
+    order_manager?: OrderUpdateManyWithoutUser_managerNestedInput
+    order_quality?: OrderUpdateManyWithoutUser_qualityNestedInput
+    order_designer?: OrderUpdateManyWithoutUser_designerNestedInput
+    order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
+    order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
+    order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrder_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutUserNestedInput
+    files?: FileUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorConfirmation?: TwoFactorConfirmationUncheckedUpdateOneWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    order_products?: OrderUncheckedUpdateManyWithoutUser_productNestedInput
+    order_delivery?: OrderUncheckedUpdateManyWithoutUser_deliveryNestedInput
+    order_manager?: OrderUncheckedUpdateManyWithoutUser_managerNestedInput
+    order_quality?: OrderUncheckedUpdateManyWithoutUser_qualityNestedInput
+    order_designer?: OrderUncheckedUpdateManyWithoutUser_designerNestedInput
+    order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
+    order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
+    order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrder_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutOrder_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutUserNestedInput
+    files?: FileUpdateManyWithoutUserNestedInput
+    twoFactorConfirmation?: TwoFactorConfirmationUpdateOneWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    order_products?: OrderUpdateManyWithoutUser_productNestedInput
+    order_delivery?: OrderUpdateManyWithoutUser_deliveryNestedInput
+    order_manager?: OrderUpdateManyWithoutUser_managerNestedInput
+    order_quality?: OrderUpdateManyWithoutUser_qualityNestedInput
+    order_designer?: OrderUpdateManyWithoutUser_designerNestedInput
+    order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
+    order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
+    order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrder_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutUserNestedInput
+    files?: FileUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorConfirmation?: TwoFactorConfirmationUncheckedUpdateOneWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    order_products?: OrderUncheckedUpdateManyWithoutUser_productNestedInput
+    order_delivery?: OrderUncheckedUpdateManyWithoutUser_deliveryNestedInput
+    order_manager?: OrderUncheckedUpdateManyWithoutUser_managerNestedInput
+    order_quality?: OrderUncheckedUpdateManyWithoutUser_qualityNestedInput
+    order_designer?: OrderUncheckedUpdateManyWithoutUser_designerNestedInput
+    order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
+    order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
+    order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrder_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zip?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_deliveryInput = {
@@ -33869,6 +35568,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -33881,6 +35584,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_deliveryInput = {
@@ -33904,6 +35609,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -33916,6 +35625,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_deliveryInput = {
@@ -33939,6 +35650,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_managerInput = {
@@ -33962,6 +35677,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -33974,6 +35693,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_managerInput = {
@@ -33997,6 +35718,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34009,6 +35734,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_managerInput = {
@@ -34032,6 +35759,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_qualityInput = {
@@ -34055,6 +35786,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -34067,6 +35802,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_qualityInput = {
@@ -34090,6 +35827,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34102,6 +35843,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_qualityInput = {
@@ -34125,6 +35868,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_designerInput = {
@@ -34148,6 +35895,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -34160,6 +35911,8 @@ export namespace Prisma {
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_designerInput = {
@@ -34183,6 +35936,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34195,6 +35952,8 @@ export namespace Prisma {
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_designerInput = {
@@ -34218,6 +35977,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_financialInput = {
@@ -34241,6 +36004,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -34253,6 +36020,8 @@ export namespace Prisma {
     order_designer?: OrderUpdateManyWithoutUser_designerNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_financialInput = {
@@ -34276,6 +36045,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34288,6 +36061,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedUpdateManyWithoutUser_designerNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_financialInput = {
@@ -34311,6 +36086,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_technicalInput = {
@@ -34334,6 +36113,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -34346,6 +36129,8 @@ export namespace Prisma {
     order_designer?: OrderUpdateManyWithoutUser_designerNestedInput
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_packaging?: OrderUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_technicalInput = {
@@ -34369,6 +36154,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34381,6 +36170,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedUpdateManyWithoutUser_designerNestedInput
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_packaging?: OrderUncheckedUpdateManyWithoutUser_packagingNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_technicalInput = {
@@ -34404,6 +36195,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutOrder_packagingInput = {
@@ -34427,6 +36222,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutUserNestedInput
     files?: FileUpdateManyWithoutUserNestedInput
@@ -34439,6 +36238,8 @@ export namespace Prisma {
     order_designer?: OrderUpdateManyWithoutUser_designerNestedInput
     order_financial?: OrderUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUpdateManyWithoutUser_technicalNestedInput
+    order_sales?: OrderUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrder_packagingInput = {
@@ -34462,6 +36263,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     files?: FileUncheckedUpdateManyWithoutUserNestedInput
@@ -34474,6 +36279,8 @@ export namespace Prisma {
     order_designer?: OrderUncheckedUpdateManyWithoutUser_designerNestedInput
     order_financial?: OrderUncheckedUpdateManyWithoutUser_financialNestedInput
     order_technical?: OrderUncheckedUpdateManyWithoutUser_technicalNestedInput
+    order_sales?: OrderUncheckedUpdateManyWithoutUser_salesNestedInput
+    order_shipping?: OrderUncheckedUpdateManyWithoutUser_shippingNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrder_packagingInput = {
@@ -34497,6 +36304,10 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    permissions?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    hash?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CustomerUpdateWithoutOrder_vendorInput = {
@@ -34652,6 +36463,7 @@ export namespace Prisma {
     key?: string | null
     value?: string | null
     data?: string | null
+    order?: number | null
   }
 
   export type AttributeCreateManyParentInput = {
@@ -34663,6 +36475,7 @@ export namespace Prisma {
     type?: string | null
     mapto?: string | null
     published?: boolean
+    order?: number | null
   }
 
   export type AttributeMetaUpdateWithoutAttributeInput = {
@@ -34671,6 +36484,7 @@ export namespace Prisma {
     key?: NullableStringFieldUpdateOperationsInput | string | null
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeMetaUncheckedUpdateWithoutAttributeInput = {
@@ -34680,6 +36494,7 @@ export namespace Prisma {
     key?: NullableStringFieldUpdateOperationsInput | string | null
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeMetaUncheckedUpdateManyWithoutAttributeInput = {
@@ -34689,6 +36504,7 @@ export namespace Prisma {
     key?: NullableStringFieldUpdateOperationsInput | string | null
     value?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AttributeUpdateWithoutParentInput = {
@@ -34699,6 +36515,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUpdateManyWithoutAttributeNestedInput
     children?: AttributeUpdateManyWithoutParentNestedInput
   }
@@ -34712,6 +36529,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     meta?: AttributeMetaUncheckedUpdateManyWithoutAttributeNestedInput
     children?: AttributeUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -34725,6 +36543,7 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
     mapto?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    order?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AccountCreateManyUserInput = {
@@ -34825,7 +36644,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
-    categories?: CategoryUpdateManyWithoutPostNestedInput
+    categories?: CategoryUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUpdateManyWithoutPostNestedInput
     files?: FileUpdateManyWithoutPostNestedInput
   }
@@ -34843,7 +36662,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     data?: NullableStringFieldUpdateOperationsInput | string | null
     setorder?: IntFieldUpdateOperationsInput | number
-    categories?: CategoryUncheckedUpdateManyWithoutPostNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutPostsNestedInput
     meta?: PostMetaUncheckedUpdateManyWithoutPostNestedInput
     files?: FileUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -34924,6 +36743,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34935,10 +36755,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -34961,6 +36785,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34972,10 +36797,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -34998,6 +36827,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35009,6 +36839,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_productInput = {
@@ -35022,6 +36854,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35033,10 +36866,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -35059,6 +36896,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35070,10 +36908,14 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -35096,6 +36938,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35107,6 +36950,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_deliveryInput = {
@@ -35120,6 +36965,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35131,11 +36977,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
     user_designer?: UserUpdateManyWithoutOrder_designerNestedInput
@@ -35157,6 +37007,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35168,11 +37019,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
     user_designer?: UserUncheckedUpdateManyWithoutOrder_designerNestedInput
@@ -35194,6 +37049,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35205,6 +37061,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_managerInput = {
@@ -35218,6 +37076,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35229,11 +37088,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
     user_designer?: UserUpdateManyWithoutOrder_designerNestedInput
@@ -35255,6 +37118,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35266,11 +37130,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
     user_designer?: UserUncheckedUpdateManyWithoutOrder_designerNestedInput
@@ -35292,6 +37160,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35303,6 +37172,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_qualityInput = {
@@ -35316,6 +37187,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35327,11 +37199,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_designer?: UserUpdateManyWithoutOrder_designerNestedInput
@@ -35353,6 +37229,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35364,11 +37241,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_designer?: UserUncheckedUpdateManyWithoutOrder_designerNestedInput
@@ -35390,6 +37271,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35401,6 +37283,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_designerInput = {
@@ -35414,6 +37298,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35425,11 +37310,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -35451,6 +37340,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35462,11 +37352,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -35488,6 +37382,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35499,6 +37394,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_financialInput = {
@@ -35512,6 +37409,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35523,11 +37421,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -35549,6 +37451,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35560,11 +37463,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -35586,6 +37493,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35597,6 +37505,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_technicalInput = {
@@ -35610,6 +37520,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35621,11 +37532,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -35647,6 +37562,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35658,11 +37574,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -35684,6 +37604,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35695,6 +37616,8 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OrderUpdateWithoutUser_packagingInput = {
@@ -35708,6 +37631,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35719,11 +37643,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
     user?: UserUpdateManyWithoutOrdersNestedInput
     user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
@@ -35745,6 +37673,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35756,11 +37685,15 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     files?: FileUncheckedUpdateManyWithoutOrderNestedInput
     meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
     user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
     user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
     user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
     user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
     user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
@@ -35782,6 +37715,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
     date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35793,6 +37727,230 @@ export namespace Prisma {
     date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type OrderUpdateWithoutUser_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    files?: FileUpdateManyWithoutOrderNestedInput
+    meta?: OrderMetaUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
+    user?: UserUpdateManyWithoutOrdersNestedInput
+    user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_shipping?: UserUpdateManyWithoutOrder_shippingNestedInput
+    user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
+    user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
+    user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
+    user_designer?: UserUpdateManyWithoutOrder_designerNestedInput
+    user_financial?: UserUpdateManyWithoutOrder_financialNestedInput
+    user_technical?: UserUpdateManyWithoutOrder_technicalNestedInput
+    user_packaging?: UserUpdateManyWithoutOrder_packagingNestedInput
+    vendor?: CustomerUpdateManyWithoutOrder_vendorNestedInput
+    customer?: CustomerUpdateManyWithoutOrder_customerNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutUser_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    files?: FileUncheckedUpdateManyWithoutOrderNestedInput
+    meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
+    user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
+    user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_shipping?: UserUncheckedUpdateManyWithoutOrder_shippingNestedInput
+    user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
+    user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
+    user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
+    user_designer?: UserUncheckedUpdateManyWithoutOrder_designerNestedInput
+    user_financial?: UserUncheckedUpdateManyWithoutOrder_financialNestedInput
+    user_technical?: UserUncheckedUpdateManyWithoutOrder_technicalNestedInput
+    user_packaging?: UserUncheckedUpdateManyWithoutOrder_packagingNestedInput
+    vendor?: CustomerUncheckedUpdateManyWithoutOrder_vendorNestedInput
+    customer?: CustomerUncheckedUpdateManyWithoutOrder_customerNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUser_salesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type OrderUpdateWithoutUser_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    files?: FileUpdateManyWithoutOrderNestedInput
+    meta?: OrderMetaUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUpdateManyWithoutOrdersNestedInput
+    user?: UserUpdateManyWithoutOrdersNestedInput
+    user_product?: UserUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUpdateManyWithoutOrder_salesNestedInput
+    user_delivery?: UserUpdateManyWithoutOrder_deliveryNestedInput
+    user_manager?: UserUpdateManyWithoutOrder_managerNestedInput
+    user_quality?: UserUpdateManyWithoutOrder_qualityNestedInput
+    user_designer?: UserUpdateManyWithoutOrder_designerNestedInput
+    user_financial?: UserUpdateManyWithoutOrder_financialNestedInput
+    user_technical?: UserUpdateManyWithoutOrder_technicalNestedInput
+    user_packaging?: UserUpdateManyWithoutOrder_packagingNestedInput
+    vendor?: CustomerUpdateManyWithoutOrder_vendorNestedInput
+    customer?: CustomerUpdateManyWithoutOrder_customerNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutUser_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    files?: FileUncheckedUpdateManyWithoutOrderNestedInput
+    meta?: OrderMetaUncheckedUpdateManyWithoutOrderNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutOrdersNestedInput
+    user?: UserUncheckedUpdateManyWithoutOrdersNestedInput
+    user_product?: UserUncheckedUpdateManyWithoutOrder_productsNestedInput
+    user_sales?: UserUncheckedUpdateManyWithoutOrder_salesNestedInput
+    user_delivery?: UserUncheckedUpdateManyWithoutOrder_deliveryNestedInput
+    user_manager?: UserUncheckedUpdateManyWithoutOrder_managerNestedInput
+    user_quality?: UserUncheckedUpdateManyWithoutOrder_qualityNestedInput
+    user_designer?: UserUncheckedUpdateManyWithoutOrder_designerNestedInput
+    user_financial?: UserUncheckedUpdateManyWithoutOrder_financialNestedInput
+    user_technical?: UserUncheckedUpdateManyWithoutOrder_technicalNestedInput
+    user_packaging?: UserUncheckedUpdateManyWithoutOrder_packagingNestedInput
+    vendor?: CustomerUncheckedUpdateManyWithoutOrder_vendorNestedInput
+    customer?: CustomerUncheckedUpdateManyWithoutOrder_customerNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUser_shippingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    data?: NullableStringFieldUpdateOperationsInput | string | null
+    data_main?: NullableStringFieldUpdateOperationsInput | string | null
+    date_created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_production?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_paid?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_shipped?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_completed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_cancelled?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_refunded?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_failed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_closed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_approved?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_payment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_package?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

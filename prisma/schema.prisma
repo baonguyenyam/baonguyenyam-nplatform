@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "prisma/generated/client"
+  // output          = "prisma/generated/client"
   previewFeatures = ["fullTextSearchPostgres"]
 }
 
@@ -25,6 +25,13 @@ model Category {
   orders    Order[]
 
   @@unique([slug, id])
+  @@index([published])
+  @@index([parent])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([slug])
+  @@index([title])
 }
 
 model Post {
@@ -49,6 +56,12 @@ model Post {
 
   @@unique([slug, id])
   @@index([userId])
+  @@index([published])
+  @@index([createdAt])
+  @@index([status])
+  @@index([type])
+  @@index([slug])
+  @@index([title])
 }
 
 model PostMeta {
@@ -124,6 +137,12 @@ model Customer {
   order_vendor   Order[] @relation("OrderVendor")
 
   @@unique([id])
+  @@index([email])
+  @@index([type])
+  @@index([published])
+  @@index([createdAt])
+  @@index([name])
+  @@index([company])
 }
 
 model Order {
@@ -173,6 +192,13 @@ model Order {
   customer Customer[] @relation("OrderCustomer")
 
   @@unique([id])
+  @@index([status])
+  @@index([published])
+  @@index([createdAt])
+  @@index([total])
+  @@index([date_created])
+  @@index([date_paid])
+  @@index([date_completed])
 }
 
 model OrderMeta {
@@ -273,6 +299,11 @@ model User {
   order_shipping  Order[] @relation("OrderUserShipping")
 
   @@unique([id])
+  @@index([email])
+  @@index([role])
+  @@index([published])
+  @@index([createdAt])
+  @@index([name])
 }
 
 model Account {

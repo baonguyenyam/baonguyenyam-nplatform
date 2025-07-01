@@ -1,30 +1,19 @@
 import { db } from "@/lib/db";
+import { cachedGetUserByEmail, cachedGetUserById, clearCache } from "@/lib/db-cache";
 
-// Get User by Email
+// Get User by Email - use cached version for auth
 export const getUserByEmail = async (email: string) => {
 	try {
-		const user = await db.user.findUnique({
-			where: {
-				email,
-			},
-		});
-
-		return user;
+		return await cachedGetUserByEmail(email);
 	} catch (error) {
 		return null;
 	}
 };
 
-// Get User by ID
+// Get User by ID - use cached version
 export const getUserById = async (id: string) => {
 	try {
-		const user = await db.user.findUnique({
-			where: {
-				id,
-			},
-		});
-
-		return user;
+		return await cachedGetUserById(id);
 	} catch (error) {
 		return null;
 	}
@@ -36,25 +25,29 @@ export const createUser = async (data: any) => {
 		const user = await db.user.create({
 			data,
 		});
+		// Clear user cache when creating new user
+		clearCache('user');
 		return user;
 	} catch (error) {
 		return null;
 	}
 };
 
-// get all users
+// Optimized get all users with better indexing
 export const getAllUsers = async (query: any) => {
 	const { take, skip, s, orderBy, filterBy, byCat, published } = query;
 	try {
 		const users = await db.user.findMany({
-			take: take ? take : undefined,
-			skip: skip ? skip : undefined,
+			take: take ? take : 20, // Default limit
+			skip: skip ? skip : 0,
 			where: {
-				// emailVerified: {
-				// 	not: null,
-				// },
-				published: published ? published : undefined,
-				OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+				published: published !== undefined ? published : undefined,
+				...(s && {
+					OR: [
+						{ email: { contains: s, mode: "insensitive" } }, 
+						{ name: { contains: s, mode: "insensitive" } }
+					],
+				}),
 			},
 			select: {
 				id: true,
@@ -69,7 +62,6 @@ export const getAllUsers = async (query: any) => {
 				published: true,
 				permissions: true,
 			},
-
 			orderBy: orderBy ? { [orderBy]: "desc" } : { createdAt: "desc" },
 		});
 		return users;
@@ -78,17 +70,19 @@ export const getAllUsers = async (query: any) => {
 	}
 };
 
-// get all users count
+// Optimized count query
 export const getUsersCount = async (query: any) => {
-	const { s, byCat, filterBy, published } = query;
+	const { s, published } = query;
 	try {
 		const count = await db.user.count({
 			where: {
-				// emailVerified: {
-				// 	not: null,
-				// },
-				published: published ? published : undefined,
-				OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+				published: published !== undefined ? published : undefined,
+				...(s && {
+					OR: [
+						{ email: { contains: s, mode: "insensitive" } }, 
+						{ name: { contains: s, mode: "insensitive" } }
+					],
+				}),
 			},
 		});
 		return count;
@@ -105,6 +99,8 @@ export const deleteUser = async (id: string) => {
 				id,
 			},
 		});
+		// Clear user cache when deleting user
+		clearCache('user');
 		return user;
 	} catch (error) {
 		return null;
@@ -120,6 +116,11 @@ export const updateUser = async (id: string, data: any) => {
 			},
 			data,
 		});
+		// Clear specific user cache
+		clearCache(`user-by-id:${id}`);
+		if (data.email) {
+			clearCache(`user-by-email:${data.email}`);
+		}
 		return user;
 	} catch (error) {
 		return null;
@@ -136,6 +137,8 @@ export const deleteMulti = async (ids: string[]) => {
 				},
 			},
 		});
+		// Clear user cache when bulk deleting
+		clearCache('user');
 		return users;
 	} catch (error) {
 		return null;
@@ -153,6 +156,8 @@ export const updateMulti = async (ids: string[], data: any) => {
 			},
 			data,
 		});
+		// Clear user cache when bulk updating
+		clearCache('user');
 		return users;
 	} catch (error) {
 		return null;
@@ -161,7 +166,6 @@ export const updateMulti = async (ids: string[], data: any) => {
 
 // signIn
 export const signIn = async (email: string) => {
-	// This function simply wraps getUserByEmail, which is fine.
-	// It will return the user object with the password hash or null.
+	// Use cached version for better performance
 	return getUserByEmail(email);
 };

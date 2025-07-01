@@ -1,26 +1,29 @@
+import { notFoundError, successResponse } from "@/lib/api-helpers";
+import { cachedGetPostBySlug } from "@/lib/db-cache";
 import models from "@/models";
 
-// Get Post
+// Get Post by slug - optimized with caching
 export async function GET(req: Request) {
-	const params = req.url.split("/").pop();
+	try {
+		const params = req.url.split("/").pop();
 
-	if (params) {
-		const db = await models.Post.getPostBySlug(params);
-		if (db) {
-			return new Response(
-				JSON.stringify({
-					message: "Post fetched successfully",
-					data: db,
-					success: "success",
-				}),
-				{
-					status: 200,
-					headers: {
-						"content-type": "application/json",
-					},
-				},
-			);
+		if (!params) {
+			return notFoundError('Post');
 		}
+
+		// Use cached version for better performance
+		const db = await cachedGetPostBySlug(params);
+		
+		if (!db) {
+			return notFoundError('Post');
+		}
+
+		return successResponse(
+			db,
+			'Post fetched successfully'
+		);
+
+	} catch (error) {
+		return notFoundError('Post');
 	}
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
 }

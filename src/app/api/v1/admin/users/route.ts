@@ -1,44 +1,51 @@
 import { auth } from "@/auth";
+import { authError, createPagination,parsePaginationParams, parseQueryParams, successResponse } from "@/lib/api-helpers";
 import models from "@/models";
 
 // get all users
 export async function GET(req: Request) {
 	const session = await auth();
 	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
+		return authError();
 	}
-	const { id, role } = session?.user || {};
-	// QUERY PARAMS
-	const query = {
-		s: new URL(req.url).searchParams.get("s") || "",
-		skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
-		take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
-		orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
-		filterBy: new URL(req.url).searchParams.get("filterBy") || "",
-		byCat: new URL(req.url).searchParams.get("cat") || "all",
-	};
 
-	const count = await models.User.getUsersCount(query);
-	const db = await models.User.getAllUsers(query);
+	try {
+		const url = new URL(req.url);
+		const searchParams = url.searchParams;
+		
+		// Parse pagination and query parameters
+		const pagination = parsePaginationParams(searchParams);
+		const queryParams = parseQueryParams(searchParams);
 
-	if (session) {
-		return new Response(
-			JSON.stringify({
-				message: "Data fetched successfully",
-				data: db,
-				count: count,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
+		// Combine parameters
+		const query = {
+			...queryParams,
+			...pagination,
+		};
+
+		// Fetch data and count in parallel for better performance
+		const [db, count] = await Promise.all([
+			models.User.getAllUsers(query),
+			models.User.getUsersCount(query),
+		]);
+
+		if (!db) {
+			throw new Error('Failed to fetch users');
+		}
+
+		// Create pagination info
+		const paginationInfo = createPagination(count || 0, pagination.page, pagination.limit);
+
+		return successResponse(
+			db,
+			'Users fetched successfully',
+			count,
+			paginationInfo
 		);
-	}
 
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
+	} catch (error) {
+		return successResponse(null, 'Error fetching users', 0);
+	}
 }
 
 // Create User
