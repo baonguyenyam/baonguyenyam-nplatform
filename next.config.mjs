@@ -58,10 +58,41 @@ const nextConfig = {
 							reuseExistingChunk: true,
 							chunks: 'all',
 						},
+						// Split large libraries
+						react: {
+							test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+							name: 'react',
+							chunks: 'all',
+							priority: 20,
+						},
+						antd: {
+							test: /[\\/]node_modules[\\/]antd[\\/]/,
+							name: 'antd',
+							chunks: 'all',
+							priority: 15,
+						},
+						pagebuilder: {
+							test: /[\\/]src[\\/]components[\\/]pagebuilder[\\/]/,
+							name: 'pagebuilder',
+							chunks: 'all',
+							priority: 12,
+						},
 					},
 				},
+				// Enable more aggressive optimizations
+				usedExports: true,
+				sideEffects: false,
 			};
+
+			// Minimize CSS
+			config.optimization.minimizer = config.optimization.minimizer || [];
 		}
+
+		// Resolve alias for better imports
+		config.resolve.alias = {
+			...config.resolve.alias,
+			'@': '/Users/nguyenpham/Source Code/nPlatform/src',
+		};
 
 		return config;
 	},
