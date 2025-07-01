@@ -5,33 +5,33 @@ import { useCallback, useRef } from 'react';
  * Helps prevent unnecessary re-renders in child components
  */
 export function useMemoizedCallback<T extends (...args: any[]) => any>(
-  callback: T
+	callback: T
 ): T {
-  const callbackRef = useRef<T>(callback);
-  callbackRef.current = callback;
+	const callbackRef = useRef<T>(callback);
+	callbackRef.current = callback;
 
-  return useCallback((...args: Parameters<T>) => callbackRef.current(...args), []) as T;
+	return useCallback((...args: Parameters<T>) => callbackRef.current(...args), []) as T;
 }
 
 /**
  * Debounce hook for preventing excessive API calls
  */
 export function useDebouncedCallback<T extends (...args: any[]) => any>(
-  callback: T,
-  delay: number
+	callback: T,
+	delay: number
 ): T {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  return useCallback(
-    ((...args: Parameters<T>) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+	return useCallback(
+		((...args: Parameters<T>) => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
 
-      timeoutRef.current = setTimeout(() => {
-        callback(...args);
-      }, delay);
-    }) as T,
-    [callback, delay]
-  );
+			timeoutRef.current = setTimeout(() => {
+				callback(...args);
+			}, delay);
+		}) as T,
+		[callback, delay]
+	);
 }

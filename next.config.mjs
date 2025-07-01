@@ -35,66 +35,18 @@ const nextConfig = {
 			"lucide-react",
 		],
 	},
-	// Add webpack optimization
-	webpack: (config, { dev, isServer }) => {
-		// Production optimizations
-		if (!dev) {
-			config.optimization = {
-				...config.optimization,
-				splitChunks: {
-					...config.optimization.splitChunks,
-					cacheGroups: {
-						...config.optimization.splitChunks.cacheGroups,
-						vendor: {
-							test: /[\\/]node_modules[\\/]/,
-							name: 'vendors',
-							chunks: 'all',
-							priority: 10,
-						},
-						common: {
-							name: 'common',
-							minChunks: 2,
-							priority: 5,
-							reuseExistingChunk: true,
-							chunks: 'all',
-						},
-						// Split large libraries
-						react: {
-							test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-							name: 'react',
-							chunks: 'all',
-							priority: 20,
-						},
-						antd: {
-							test: /[\\/]node_modules[\\/]antd[\\/]/,
-							name: 'antd',
-							chunks: 'all',
-							priority: 15,
-						},
-						pagebuilder: {
-							test: /[\\/]src[\\/]components[\\/]pagebuilder[\\/]/,
-							name: 'pagebuilder',
-							chunks: 'all',
-							priority: 12,
-						},
-					},
-				},
-				// Enable more aggressive optimizations
-				usedExports: true,
-				sideEffects: false,
-			};
-
-			// Minimize CSS
-			config.optimization.minimizer = config.optimization.minimizer || [];
-		}
-
-		// Resolve alias for better imports
-		config.resolve.alias = {
-			...config.resolve.alias,
-			'@': '/Users/nguyenpham/Source Code/nPlatform/src',
-		};
-
-		return config;
+	// Turbopack configuration (stable)
+	turbopack: {
+		rules: {
+			// Enable faster CSS processing
+			'*.{css,scss,sass}': {
+				loaders: ['@parcel/transformer-sass', '@parcel/transformer-css'],
+				as: 'css',
+			},
+		},
+		resolveAlias: {
+			'@': './src',
+		},
 	},
 	typescript: {
 		// !! WARN !!

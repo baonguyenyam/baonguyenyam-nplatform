@@ -106,7 +106,7 @@ export function parseQueryParams(searchParams: URLSearchParams) {
     filterBy: searchParams.get('filterBy') || '',
     byCat: searchParams.get('cat') || 'all',
     type: searchParams.get('type') || null,
-    published: searchParams.get('published') ? 
+    published: searchParams.get('published') ?
       searchParams.get('published') === 'true' : undefined,
     min: searchParams.get('min') === 'true',
   };
@@ -185,7 +185,7 @@ export function streamingResponse<T>(
   const stream = new ReadableStream({
     async start(controller) {
       controller.enqueue(new TextEncoder().encode(`{"success":true,"message":"${message}","data":[`));
-      
+
       let first = true;
       for await (const item of dataGenerator) {
         if (!first) {
@@ -194,7 +194,7 @@ export function streamingResponse<T>(
         controller.enqueue(new TextEncoder().encode(JSON.stringify(item)));
         first = false;
       }
-      
+
       controller.enqueue(new TextEncoder().encode(']}'));
       controller.close();
     },
@@ -213,10 +213,10 @@ export function parseAdvancedQueryParams(searchParams: URLSearchParams) {
   const page = Math.max(1, parseInt(searchParams.get('page') ?? '1'));
   const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') ?? '20')), 100);
   const skip = (page - 1) * limit;
-  
+
   const orderBy = searchParams.get('orderBy') || 'createdAt';
   const orderDirection = searchParams.get('order') === 'asc' ? 'asc' : 'desc';
-  
+
   // Parse filters
   const filters: Record<string, any> = {};
   for (const [key, value] of searchParams.entries()) {
@@ -238,7 +238,7 @@ export function parseAdvancedQueryParams(searchParams: URLSearchParams) {
     search: searchParams.get('s') || '',
     orderBy: { [orderBy]: orderDirection },
     filters,
-    published: searchParams.get('published') ? 
+    published: searchParams.get('published') ?
       searchParams.get('published') === 'true' : undefined,
     min: searchParams.get('min') === 'true',
   };

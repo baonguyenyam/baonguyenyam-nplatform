@@ -9,6 +9,7 @@ interface AppImageProps {
 	src: string;
 	alt?: string;
 	className?: string;
+	title?: string;
 	width: number;
 	height: number;
 	id?: string;
@@ -23,6 +24,7 @@ function AppImage({
 	className = "",
 	width,
 	height,
+	title = "",
 	id,
 	priority = false,
 	loading = "lazy",
@@ -51,7 +53,7 @@ function AppImage({
 		if (src && src !== appState.placeholder && src !== imgSrc) {
 			setIsLoading(true);
 			setHasError(false);
-			
+
 			// Use Image constructor for better performance than fetch
 			const img = new window.Image();
 			img.onload = () => {
@@ -80,9 +82,9 @@ function AppImage({
 				id={id}
 				src={imgSrc}
 				alt={alt}
-				className={`object-cover transition-opacity duration-300 ${
-					isLoading ? 'opacity-0' : 'opacity-100'
-				} ${hasError ? 'opacity-50' : ''}`}
+				title={title}
+				className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'
+					} ${hasError ? 'opacity-50' : ''}`}
 				width={width}
 				height={height}
 				priority={priority}
