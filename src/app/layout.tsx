@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@/auth";
@@ -11,12 +11,12 @@ import StoreProvider from "./StoreProvider";
 
 import "./globals.css";
 
-const inter = Inter({
-	subsets: ["latin"],
-	variable: "--font-inter",
-	display: "swap",
-	fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-});
+// const inter = Inter({
+// 	subsets: ["latin"],
+// 	variable: "--font-inter",
+// 	display: "swap",
+// 	fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+// });
 
 export const metadata: Metadata = {
 	title: {
@@ -38,12 +38,8 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
 			<html
 				lang="en"
 				suppressHydrationWarning={true}>
-				<head>
-					<link rel="preconnect" href="https://fonts.googleapis.com" />
-					<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-				</head>
 				<body
-					className={`${inter.className}`}
+					// className={`${inter.className}`}
 					suppressHydrationWarning={true}>
 					<ThemeProvider
 						attribute="class"

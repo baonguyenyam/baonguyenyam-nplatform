@@ -34,13 +34,6 @@ const nextConfig = {
 			"@radix-ui/react-dialog",
 			"lucide-react",
 		],
-		// Font optimization
-		fontLoaders: [
-			{
-				loader: "next/font/google",
-				options: { subsets: ["latin"] },
-			},
-		],
 	},
 	typescript: {
 		// !! WARN !!
