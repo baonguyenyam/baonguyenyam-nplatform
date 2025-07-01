@@ -11,7 +11,12 @@ import StoreProvider from "./StoreProvider";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+	subsets: ["latin"],
+	variable: "--font-inter",
+	display: "swap",
+	fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
 	title: {
@@ -19,6 +24,11 @@ export const metadata: Metadata = {
 		default: appState.appName,
 	},
 	description: appState.appDescription,
+	// Preconnect to Google Fonts to improve font loading
+	other: {
+		"preconnect": "https://fonts.googleapis.com",
+		"preconnect-crossorigin": "https://fonts.gstatic.com",
+	},
 };
 
 export default async function RootLayout({ children }: React.PropsWithChildren) {
@@ -28,6 +38,10 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
 			<html
 				lang="en"
 				suppressHydrationWarning={true}>
+				<head>
+					<link rel="preconnect" href="https://fonts.googleapis.com" />
+					<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				</head>
 				<body
 					className={`${inter.className}`}
 					suppressHydrationWarning={true}>

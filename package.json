@@ -39,6 +39,8 @@
     "@lexical/list": "^0.32.1",
     "@lexical/react": "^0.32.1",
     "@measured/puck": "^0.19.1",
+    "@parcel/transformer-css": "^2.15.4",
+    "@parcel/transformer-sass": "^2.15.4",
     "@prisma/client": "^6.11.0",
     "@prisma/extension-accelerate": "^2.0.1",
     "@radix-ui/react-alert-dialog": "^1.1.14",

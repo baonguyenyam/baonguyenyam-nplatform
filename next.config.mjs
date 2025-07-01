@@ -34,19 +34,13 @@ const nextConfig = {
 			"@radix-ui/react-dialog",
 			"lucide-react",
 		],
-	},
-	// Turbopack configuration (stable)
-	turbopack: {
-		rules: {
-			// Enable faster CSS processing
-			'*.{css,scss,sass}': {
-				loaders: ['@parcel/transformer-sass', '@parcel/transformer-css'],
-				as: 'css',
+		// Font optimization
+		fontLoaders: [
+			{
+				loader: "next/font/google",
+				options: { subsets: ["latin"] },
 			},
-		},
-		resolveAlias: {
-			'@': './src',
-		},
+		],
 	},
 	typescript: {
 		// !! WARN !!
