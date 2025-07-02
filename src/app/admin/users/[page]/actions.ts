@@ -5,7 +5,7 @@ import { render } from "@react-email/render";
 import { auth } from "@/auth";
 import WelcomeEmail from "@/email/WelcomeEmail";
 import MailService from "@/lib/email";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS,RESOURCES } from "@/lib/permissions";
+import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
 import models from "@/models";
 
 export async function getAll(query: any) {
@@ -98,12 +98,6 @@ export async function createRecord(data: any) {
 		return {
 			success: "error",
 			message: "Error creating user",
-		};
-	}
-}
-		return {
-			success: "error",
-			message: "Error creating category",
 		};
 	}
 }
