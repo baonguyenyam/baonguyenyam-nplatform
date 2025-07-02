@@ -23,9 +23,16 @@ if [ ! -d ".next/standalone/public" ]; then
     cp -r public .next/standalone/
 fi
 
+# Copy environment file
+if [ -f ".env" ]; then
+    echo "📁 Copying environment file..."
+    cp .env .next/standalone/
+fi
+
 # Set default environment variables if not set
 export PORT=${PORT:-3000}
-export HOSTNAME=${HOSTNAME:-0.0.0.0}
+export HOSTNAME=${HOSTNAME:-localhost}
+export NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
 
 echo "🌐 Starting server on http://${HOSTNAME}:${PORT}"
 echo "📋 Environment:"
@@ -36,10 +43,12 @@ echo ""
 echo "🔧 Make sure you have set the required environment variables:"
 echo "   - DATABASE_URL"
 echo "   - NEXTAUTH_SECRET"
-echo "   - NEXTAUTH_URL"
+echo "   - NEXTAUTH_URL (set to: ${NEXTAUTH_URL})"
+echo "   - PUBLIC_SITE_URL"
+echo "   - PUBLIC_API_URL"
 echo "   - And other required variables..."
 echo ""
 
-# Start the standalone server
+# Start the standalone server with proper hostname binding
 cd .next/standalone
-node server.js
+HOSTNAME=${HOSTNAME} PORT=${PORT} node server.js

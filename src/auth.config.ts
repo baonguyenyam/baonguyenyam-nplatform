@@ -20,6 +20,7 @@ const FormSchema = z.object({
 });
 
 export default {
+	trustHost: true, // This allows NextAuth to trust all hosts
 	providers: [
 		GitHub({
 			clientId: process.env.GITHUB_CLIENT_ID,
