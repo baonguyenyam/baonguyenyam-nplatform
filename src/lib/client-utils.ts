@@ -80,12 +80,12 @@ export const randomOrderString = () => {
 // Check string is text or color hex or URL
 export const checkStringIsTextOrColorHexOrURL = (str: string) => {
 	if (!str) return "text";
-	
+
 	// Check if it's a hex color
 	if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(str)) {
 		return "color";
 	}
-	
+
 	// Check if it's a URL
 	try {
 		new URL(str);
