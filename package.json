@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --turbopack",
     "lint": "next lint --no-cache",
     "format": "prettier 'src/**/*.{ts,json,tsx,css,js,scss,yaml}' --write && npx eslint ./src --fix",
     "email": "email dev --port 9000",
@@ -14,10 +14,10 @@
     "seed": "npx prisma db seed -- --environment development",
     "optimize": "./scripts/optimize-performance.sh",
     "optimize:advanced": "./scripts/advanced-optimize.sh",
-    "analyze": "cross-env ANALYZE=true next build",
+    "analyze": "cross-env ANALYZE=true next build --turbopack",
     "check-types": "tsc --noEmit",
     "perf:monitor": "node scripts/monitor-performance.js",
-    "bundle:analyze": "npx @next/bundle-analyzer"
+    "bundle:analyze": "ANALYZE=true next build --turbopack"
   },
   "prisma": {
     "seed": "tsx src/models/seed/index.ts"

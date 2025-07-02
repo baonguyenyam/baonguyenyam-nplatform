@@ -19,7 +19,7 @@ export default async function Index() {
 	if (!session?.user) {
 		redirect("/authentication/login");
 	}
-	await PermissionChecker.check("posts", "read");
+	await PermissionChecker.check("posts", "admin");
 
 	const breadcrumb = [
 		{
