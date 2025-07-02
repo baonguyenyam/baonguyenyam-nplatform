@@ -26,7 +26,7 @@ const nextConfig = {
 			static: 180,
 		},
 		// Enable partial prerendering for better performance
-		ppr: "incremental",
+		// ppr: "incremental",
 		// Enable optimized package imports
 		optimizePackageImports: [
 			"@radix-ui/react-icons",
