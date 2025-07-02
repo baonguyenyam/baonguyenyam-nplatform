@@ -59,13 +59,13 @@ function AppImage({
 
 			const tryLoadImage = () => {
 				const img = new window.Image();
-				
+
 				img.onload = () => {
 					setImgSrc(src);
 					setIsLoading(false);
 					setHasError(false);
 				};
-				
+
 				img.onerror = () => {
 					retryCount++;
 					if (retryCount < maxRetries) {

@@ -214,12 +214,12 @@ export async function streamingSuccessResponse<T>(
   message: string = 'Success'
 ): Promise<Response> {
   const encoder = new TextEncoder();
-  
+
   const stream = new ReadableStream({
     async start(controller) {
       try {
         controller.enqueue(encoder.encode(`{"success":true,"message":"${message}","data":[`));
-        
+
         let isFirst = true;
         for await (const batch of dataStream) {
           for (const item of batch) {
@@ -230,7 +230,7 @@ export async function streamingSuccessResponse<T>(
             isFirst = false;
           }
         }
-        
+
         controller.enqueue(encoder.encode('],"streaming":true}'));
         controller.close();
       } catch (error) {
@@ -296,22 +296,22 @@ export async function batchProcessResponse<T>(
 ): Promise<Response> {
   const results = [];
   const batches = [];
-  
+
   for (let i = 0; i < items.length; i += batchSize) {
     batches.push(items.slice(i, i + batchSize));
   }
-  
+
   // Process batches in parallel (but limit concurrency)
   const concurrencyLimit = 3;
   for (let i = 0; i < batches.length; i += concurrencyLimit) {
     const batchPromises = batches
       .slice(i, i + concurrencyLimit)
       .map(batch => processor(batch));
-    
+
     const batchResults = await Promise.all(batchPromises);
     results.push(...batchResults);
   }
-  
+
   return optimizedSuccessResponse(
     results,
     message,

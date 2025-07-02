@@ -4,7 +4,7 @@ import { Redis } from 'ioredis';
 class AdvancedCacheManager {
 	private redis: Redis | null = null;
 	private memoryCache = new Map<string, { data: any; timestamp: number; ttl: number }>();
-	
+
 	constructor() {
 		if (process.env.REDIS_URL && process.env.NODE_ENV === 'production') {
 			this.redis = new Redis(process.env.REDIS_URL, {
@@ -24,13 +24,13 @@ class AdvancedCacheManager {
 					return JSON.parse(cached);
 				}
 			}
-			
+
 			// Fallback to memory cache
 			const memoryCached = this.memoryCache.get(key);
 			if (memoryCached && this.isCacheValid(memoryCached)) {
 				return memoryCached.data;
 			}
-			
+
 			return null;
 		} catch (error) {
 			console.error('Cache get error:', error);
@@ -41,12 +41,12 @@ class AdvancedCacheManager {
 	async set<T>(key: string, data: T, ttlSeconds: number = 300): Promise<void> {
 		try {
 			const serialized = JSON.stringify(data);
-			
+
 			// Set in Redis if available
 			if (this.redis) {
 				await this.redis.setex(key, ttlSeconds, serialized);
 			}
-			
+
 			// Always set in memory cache as fallback
 			this.memoryCache.set(key, {
 				data,
@@ -67,7 +67,7 @@ class AdvancedCacheManager {
 					await this.redis.del(...keys);
 				}
 			}
-			
+
 			// Memory cache pattern deletion
 			for (const [key] of this.memoryCache) {
 				if (key.includes(pattern)) {
@@ -108,7 +108,7 @@ export const getCachedOrFetch = async <T>(
 	if (cached !== null) {
 		return cached;
 	}
-	
+
 	const data = await fetcher();
 	await advancedCache.set(key, data, ttlSeconds);
 	return data;

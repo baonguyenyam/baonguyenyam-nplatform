@@ -18,12 +18,12 @@ const prismaClientSingleton = () => {
 					const start = Date.now();
 					const result = await query(args);
 					const duration = Date.now() - start;
-					
+
 					// Log slow queries in development
 					if (process.env.NODE_ENV === 'development' && duration > 1000) {
 						console.warn(`Slow query detected: ${model}.${operation} took ${duration}ms`);
 					}
-					
+
 					return result;
 				},
 			},
