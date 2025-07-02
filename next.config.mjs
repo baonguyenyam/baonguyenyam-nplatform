@@ -35,7 +35,7 @@ const nextConfig = {
 			"lucide-react",
 		],
 		// Reduce bundle size by limiting API routes
-		bundlePagesRouterDependencies: true,
+		// bundlePagesRouterDependencies: true,
 	},
 	// Mark server-only packages
 	serverExternalPackages: [
