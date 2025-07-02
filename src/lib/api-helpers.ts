@@ -208,7 +208,118 @@ export function streamingResponse<T>(
   });
 }
 
-// Optimized query parameter parsing with validation
+// Enhanced response with streaming for large datasets
+export async function streamingSuccessResponse<T>(
+  dataStream: AsyncGenerator<T[], void, unknown>,
+  message: string = 'Success'
+): Promise<Response> {
+  const encoder = new TextEncoder();
+  
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        controller.enqueue(encoder.encode(`{"success":true,"message":"${message}","data":[`));
+        
+        let isFirst = true;
+        for await (const batch of dataStream) {
+          for (const item of batch) {
+            if (!isFirst) {
+              controller.enqueue(encoder.encode(','));
+            }
+            controller.enqueue(encoder.encode(JSON.stringify(item)));
+            isFirst = false;
+          }
+        }
+        
+        controller.enqueue(encoder.encode('],"streaming":true}'));
+        controller.close();
+      } catch (error) {
+        controller.error(error);
+      }
+    },
+  });
+
+  return new Response(stream, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Transfer-Encoding': 'chunked',
+      'Cache-Control': 'no-cache',
+    },
+  });
+}
+
+// Response with better compression hints
+export function optimizedSuccessResponse<T>(
+  data: T,
+  message: string = 'Success',
+  count?: number,
+  pagination?: any,
+  cacheSeconds: number = 300
+): Response {
+  const response: ApiResponse<T> = {
+    success: true,
+    message,
+    data,
+  };
+
+  if (count !== undefined) {
+    response.count = count;
+  }
+
+  if (pagination) {
+    response.pagination = pagination;
+  }
+
+  const jsonString = JSON.stringify(response);
+  const etag = `"${Buffer.from(jsonString).toString('base64').slice(0, 16)}"`;
+
+  return new Response(jsonString, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': `public, s-maxage=${cacheSeconds}, stale-while-revalidate=600`,
+      'ETag': etag,
+      'Vary': 'Accept-Encoding',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Encoding': 'gzip', // Hint for compression
+    },
+  });
+}
+
+// Enhanced batch processing for large operations
+export async function batchProcessResponse<T>(
+  items: T[],
+  processor: (batch: T[]) => Promise<any>,
+  batchSize: number = 50,
+  message: string = 'Batch processing completed'
+): Promise<Response> {
+  const results = [];
+  const batches = [];
+  
+  for (let i = 0; i < items.length; i += batchSize) {
+    batches.push(items.slice(i, i + batchSize));
+  }
+  
+  // Process batches in parallel (but limit concurrency)
+  const concurrencyLimit = 3;
+  for (let i = 0; i < batches.length; i += concurrencyLimit) {
+    const batchPromises = batches
+      .slice(i, i + concurrencyLimit)
+      .map(batch => processor(batch));
+    
+    const batchResults = await Promise.all(batchPromises);
+    results.push(...batchResults);
+  }
+  
+  return optimizedSuccessResponse(
+    results,
+    message,
+    results.length
+  );
+}
+
+// Parse advanced query parameters with validation
 export function parseAdvancedQueryParams(searchParams: URLSearchParams) {
   const page = Math.max(1, parseInt(searchParams.get('page') ?? '1'));
   const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') ?? '20')), 100);
