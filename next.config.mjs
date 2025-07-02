@@ -1,4 +1,5 @@
 const nextConfig = {
+	output: 'standalone',
 	env: {
 		public_APIUrl: process.env.PUBLIC_API_URL,
 	},
