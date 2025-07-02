@@ -8,6 +8,7 @@ import { persistReducer } from "redux-persist";
 
 import appSlice from "./appSlice";
 import attributeSlice from "./attributeSlice";
+import authSlice from "./authSlice";
 import breadcrumbSlice from "./breadcrumbSlice";
 import categoriesSlice from "./categoriesSlice";
 import storage from "./storage";
@@ -32,6 +33,13 @@ const breadcrumbPersistConfig = {
 	storage,
 };
 
+const authPersistConfig = {
+	key: "authState",
+	storage,
+	// Chỉ persist một số field cần thiết
+	whitelist: ["isLoggedIn", "user"],
+};
+
 const persistedAppReducer = persistReducer(appPersistConfig, appSlice);
 const persistedAttributeReducer = persistReducer(
 	attributePersistConfig,
@@ -45,11 +53,14 @@ const breadcrumbReducer = persistReducer(
 	breadcrumbPersistConfig,
 	breadcrumbSlice,
 );
+const persistedAuthReducer = persistReducer(authPersistConfig, authSlice);
+
 const persistedReducer = combineReducers({
 	appState: persistedAppReducer,
 	attributeState: persistedAttributeReducer,
 	categoriesState: categoriesReducer,
 	breadcrumbState: breadcrumbReducer,
+	authState: persistedAuthReducer,
 });
 const store = configureStore({
 	reducer: persistedReducer,

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@/auth";
+import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { appState } from "@/lib/appConst";
@@ -37,7 +38,9 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<StoreProvider>{children}</StoreProvider>
+						<StoreProvider>
+							<AuthProvider>{children}</AuthProvider>
+						</StoreProvider>
 					</ThemeProvider>
 					<Toaster richColors />
 				</body>
