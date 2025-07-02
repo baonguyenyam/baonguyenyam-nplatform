@@ -19,8 +19,11 @@ async function GET_Handler(req: NextRequest) {
 	};
 
 	try {
-		const count = await models.Attribute.getAttributesCount(query);
-		const db = await models.Attribute.getAllAttributes(query);
+		// Fetch count and data in parallel for better performance
+		const [count, db] = await Promise.all([
+			models.Attribute.getAttributesCount(query),
+			models.Attribute.getAllAttributes(query),
+		]);
 
 		return NextResponse.json({
 			message: "Data fetched successfully",
