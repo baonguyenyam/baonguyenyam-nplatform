@@ -83,8 +83,7 @@ function AppImage({
 				src={imgSrc}
 				alt={alt}
 				title={title}
-				className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'
-					} ${hasError ? 'opacity-50' : ''}`}
+				className={`object-cover transition-opacity duration-300 h-full rounded ${hasError ? 'opacity-50' : ''}`}
 				width={width}
 				height={height}
 				priority={priority}
