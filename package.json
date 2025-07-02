@@ -2,6 +2,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "build:netlify": "NETLIFY=true next build && npm run postbuild:netlify",
+    "postbuild:netlify": "./cmd/build-netlify.sh",
     "build:standalone": "./cmd/build-standalone.sh",
     "start:standalone": "./cmd/start-standalone.sh",
     "lint": "next lint --no-cache",
@@ -138,7 +140,8 @@
     "prisma": "6.11.0",
     "tailwindcss": "^4.1.11",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@netlify/plugin-nextjs": "^5.0.0"
   },
   "author": {
     "name": "Nguyen Pham",
