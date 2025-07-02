@@ -35,12 +35,41 @@ const nextConfig = {
 			"lucide-react",
 		],
 	},
+	// Mark server-only packages
+	serverExternalPackages: [
+		'@prisma/client',
+		'@prisma/extension-accelerate',
+		'nodemailer',
+		'bcrypt',
+	],
 	typescript: {
 		// !! WARN !!
 		// Dangerously allow production builds to successfully complete even if
 		// your project has type errors.
 		// !! WARN !!
 		ignoreBuildErrors: true,
+	},
+	// Ensure Prisma runs server-side only
+	webpack: (config, { isServer }) => {
+		if (!isServer) {
+			// Prevent Prisma from being bundled on client-side
+			config.resolve.fallback = {
+				...config.resolve.fallback,
+				fs: false,
+				net: false,
+				tls: false,
+				crypto: false,
+			};
+			
+			// Exclude Prisma from client bundle
+			config.resolve.alias = {
+				...config.resolve.alias,
+				'@prisma/client': false,
+				'@prisma/extension-accelerate': false,
+			};
+		}
+
+		return config;
 	},
 	images: {
 		formats: ['image/webp', 'image/avif'],

@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
-import NextAuth from "next-auth";
 
-import authConfig from "@/auth.config";
-import { checkAdminRoutePermission } from "@/lib/admin-route-protection";
+import { auth } from "@/auth-middleware";
+import { checkAdminRoutePermission, getUnauthorizedRedirectUrl } from "@/lib/admin-route-protection-middleware";
 import { checkRateLimit, getRateLimitHeaders } from "@/lib/rate-limiter";
 import { secureSearchString } from "@/lib/utils";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, pathAuthPrefix, publicApp, publicRoutes } from "@/routes";
-
-const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
 	const response = NextResponse.next();
 
 	// Rate limiting for API routes
 	if (req.nextUrl.pathname.startsWith("/api/")) {
-		const identifier = req.ip || req.headers.get("x-forwarded-for") || "anonymous";
+		const identifier = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "anonymous";
 		const isAuthenticated = !!req.auth;
 		const userRole = req.auth?.user?.role;
 
@@ -78,12 +75,12 @@ export default auth(async (req) => {
 
 	// Enhanced admin route protection with permissions
 	if (nextUrl.pathname.startsWith("/admin") && nextUrl.pathname !== "/admin" && nextUrl.pathname !== "/admin/deny") {
-		const permissionCheck = await checkAdminRoutePermission(req);
+		const userRole = req.auth?.user?.role;
+		const isAllowed = checkAdminRoutePermission(nextUrl.pathname, userRole);
 
-		if (!permissionCheck.allowed) {
-			if (permissionCheck.redirectTo) {
-				return NextResponse.redirect(new URL(permissionCheck.redirectTo, nextUrl));
-			}
+		if (!isAllowed) {
+			const redirectUrl = getUnauthorizedRedirectUrl(nextUrl.pathname);
+			return NextResponse.redirect(new URL(redirectUrl, nextUrl));
 		}
 	}
 
