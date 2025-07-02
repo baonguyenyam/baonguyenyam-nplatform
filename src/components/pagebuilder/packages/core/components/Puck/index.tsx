@@ -1,34 +1,35 @@
 import {
-	Context,
-	createContext,
-	PropsWithChildren,
-	ReactElement,
-	ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
-import {
 	ChevronDown,
 	ChevronUp,
 	Globe,
 	PanelLeft,
 	PanelRight,
 } from "lucide-react";
+import {
+	type Context,
+	createContext,
+	type PropsWithChildren,
+	type ReactElement,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 
 import { walkTree } from "../../lib/data/walk-tree";
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { getFrame } from "../../lib/get-frame";
 import { monitorHotkeys, useMonitorHotkeys } from "../../lib/use-hotkey";
+import { useInjectGlobalCss } from "../../lib/use-inject-css";
 import { useLoadedOverrides } from "../../lib/use-loaded-overrides";
 import { usePreviewModeHotkeys } from "../../lib/use-preview-mode-hotkeys";
 import {
 	UsePuckStoreContext,
 	useRegisterUsePuckStore,
 } from "../../lib/use-puck";
-import { PuckAction } from "../../reducer";
+import type { PuckAction } from "../../reducer";
 import {
 	appStoreContext,
 	createAppStore,
@@ -50,9 +51,9 @@ import type {
 	Plugin,
 	UiState,
 	UserGenerics,
+	Viewports,
 } from "../../types";
-import { Viewports } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
+import type { PrivateAppState } from "../../types/Internal";
 import { Button } from "../Button";
 import { DefaultOverride } from "../DefaultOverride";
 import { DragDropContext } from "../DragDropContext";
@@ -61,14 +62,11 @@ import { IconButton } from "../IconButton/IconButton";
 import { MenuBar } from "../MenuBar";
 import { SidebarSection } from "../SidebarSection";
 import { defaultViewports } from "../ViewportControls/default-viewports";
-
 import { Canvas } from "./components/Canvas";
 import { Components } from "./components/Components";
 import { Fields } from "./components/Fields";
 import { Outline } from "./components/Outline";
 import { Preview } from "./components/Preview";
-
-import { useInjectGlobalCss } from "../../lib/use-inject-css";
 import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("Puck", styles);

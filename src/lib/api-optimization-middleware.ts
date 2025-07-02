@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 // API Response Optimization Middleware
 export class APIOptimizationMiddleware {
@@ -154,7 +154,11 @@ export class APIOptimizationMiddleware {
 		const path = new URL(request.url).pathname;
 
 		// Check rate limiting
-		const rateLimit = await this.checkRateLimit(request, identifier, userRole);
+		const rateLimit = await APIOptimizationMiddleware.checkRateLimit(
+			request,
+			identifier,
+			userRole,
+		);
 		if (!rateLimit.allowed) {
 			return new NextResponse("Rate limit exceeded", {
 				status: 429,
@@ -168,29 +172,31 @@ export class APIOptimizationMiddleware {
 		});
 
 		// Add performance headers
-		this.addPerformanceHeaders(response);
+		APIOptimizationMiddleware.addPerformanceHeaders(response);
 
 		// Add caching headers
-		this.addCachingHeaders(response, path, isAuthenticated);
+		APIOptimizationMiddleware.addCachingHeaders(
+			response,
+			path,
+			isAuthenticated,
+		);
 
 		// Handle conditional requests
-		const conditionalResponse = this.handleConditionalRequest(
-			request,
-			response,
-		);
+		const conditionalResponse =
+			APIOptimizationMiddleware.handleConditionalRequest(request, response);
 		if (conditionalResponse) {
 			return conditionalResponse;
 		}
 
 		// Add compression headers
 		const contentLength = response.headers.get("content-length");
-		this.addCompressionHeaders(
+		APIOptimizationMiddleware.addCompressionHeaders(
 			response,
 			contentLength ? parseInt(contentLength) : undefined,
 		);
 
 		// Monitor performance
-		this.monitorPerformance(request, response, startTime);
+		APIOptimizationMiddleware.monitorPerformance(request, response, startTime);
 
 		return response;
 	}

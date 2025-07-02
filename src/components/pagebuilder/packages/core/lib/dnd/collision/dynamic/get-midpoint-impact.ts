@@ -1,6 +1,6 @@
-import { Shape } from "@dnd-kit/geometry";
+import type { Shape } from "@dnd-kit/geometry";
 
-import { Direction } from "../../../../types";
+import type { Direction } from "../../../../types";
 
 /**
  * Determine whether or not the leading edge of the dragShape (the edge that is on

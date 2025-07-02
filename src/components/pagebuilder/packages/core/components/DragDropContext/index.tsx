@@ -1,8 +1,16 @@
+import { DragDropEvents } from "@dnd-kit/abstract";
+import type { Draggable, Droppable } from "@dnd-kit/dom";
+import {
+	AutoScroller,
+	type DragDropManager,
+	defaultPreset,
+} from "@dnd-kit/dom";
+import { DragDropProvider } from "@dnd-kit/react";
 import {
 	createContext,
-	Dispatch,
-	ReactNode,
-	SetStateAction,
+	type Dispatch,
+	type ReactNode,
+	type SetStateAction,
 	useCallback,
 	useContext,
 	useEffect,
@@ -10,15 +18,11 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { DragDropEvents } from "@dnd-kit/abstract";
-import type { Draggable, Droppable } from "@dnd-kit/dom";
-import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
-import { DragDropProvider } from "@dnd-kit/react";
 import { useDebouncedCallback } from "use-debounce";
 import { createStore } from "zustand";
 
 import { getItem } from "../../lib/data/get-item";
-import { CollisionMap } from "../../lib/dnd/collision/dynamic";
+import type { CollisionMap } from "../../lib/dnd/collision/dynamic";
 import { collisionStore } from "../../lib/dnd/collision/dynamic/store";
 import { createNestedDroppablePlugin } from "../../lib/dnd/NestedDroppablePlugin";
 import { useSensors } from "../../lib/dnd/use-sensors";
@@ -27,12 +31,12 @@ import { getDeepDir } from "../../lib/get-deep-dir";
 import { insertComponent } from "../../lib/insert-component";
 import { useSafeId } from "../../lib/use-safe-id";
 import { useAppStore, useAppStoreApi } from "../../store";
-import { ComponentDndData } from "../DraggableComponent";
+import type { ComponentDndData } from "../DraggableComponent";
 import { DropZoneProvider } from "../DropZone";
 import {
-	DropZoneContext,
-	Preview,
-	ZoneStore,
+	type DropZoneContext,
+	type Preview,
+	type ZoneStore,
 	ZoneStoreProvider,
 } from "../DropZone/context";
 

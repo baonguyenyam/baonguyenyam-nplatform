@@ -1,4 +1,4 @@
-import { Viewports } from "../../types";
+import type { Viewports } from "../../types";
 
 export const defaultViewports: Required<Viewports> = [
 	{ width: 360, height: "auto", icon: "Smartphone", label: "Small" },

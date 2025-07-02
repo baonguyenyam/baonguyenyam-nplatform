@@ -1,11 +1,11 @@
-import { Data } from "@dnd-kit/abstract";
+import type { Data } from "@dnd-kit/abstract";
 import {
+	type UseDraggableInput,
+	type UseDroppableInput,
 	useDraggable,
-	UseDraggableInput,
 	useDroppable,
-	UseDroppableInput,
 } from "@dnd-kit/react";
-import { useSortable, UseSortableInput } from "@dnd-kit/react/sortable";
+import { type UseSortableInput, useSortable } from "@dnd-kit/react/sortable";
 
 export function useDroppableSafe<T extends Data>(
 	input: UseDroppableInput<T>,

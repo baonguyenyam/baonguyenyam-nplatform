@@ -1,8 +1,8 @@
-import { PropsWithChildren, ReactNode, useState } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
+import { type PropsWithChildren, type ReactNode, useState } from "react";
 
 import {
-	CollisionMap,
+	type CollisionMap,
 	createDynamicCollisionDetector,
 } from "../../lib/dnd/collision/dynamic";
 import { useSortableSafe } from "../../lib/dnd/dnd-kit/safe";

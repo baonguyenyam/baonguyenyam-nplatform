@@ -1,13 +1,13 @@
-import { ReactNode, useCallback, useMemo } from "react";
-import { StoreApi } from "zustand";
+import { type ReactNode, useCallback, useMemo } from "react";
+import type { StoreApi } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
 import { getClassNameFactory } from "../../../../lib";
-import { ItemSelector } from "../../../../lib/data/get-item";
+import type { ItemSelector } from "../../../../lib/data/get-item";
 import { rootDroppableId } from "../../../../lib/root-droppable-id";
-import { AppStore, useAppStore, useAppStoreApi } from "../../../../store";
+import { type AppStore, useAppStore, useAppStoreApi } from "../../../../store";
 import { useRegisterFieldsSlice } from "../../../../store/slices/fields";
-import { UiState } from "../../../../types";
+import type { UiState } from "../../../../types";
 import { AutoFieldPrivate } from "../../../AutoField";
 import { Loader } from "../../../Loader";
 

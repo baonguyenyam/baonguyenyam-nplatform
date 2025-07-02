@@ -17,8 +17,8 @@ import {
 	formatHeading,
 	formatNumberedList,
 	formatParagraph,
-	updateFontSize,
 	UpdateFontSizeType,
+	updateFontSize,
 } from "../ToolbarPlugin/utils";
 import {
 	isCapitalize,

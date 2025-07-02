@@ -6,8 +6,6 @@
  *
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { $isCodeHighlightNode } from "@lexical/code";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -18,9 +16,11 @@ import {
 	$isTextNode,
 	COMMAND_PRIORITY_LOW,
 	FORMAT_TEXT_COMMAND,
-	LexicalEditor,
+	type LexicalEditor,
 	SELECTION_CHANGE_COMMAND,
 } from "lexical";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { getDOMRangeRect } from "../../utils/getDOMRangeRect";
 import { getSelectedNode } from "../../utils/getSelectedNode";
@@ -81,8 +81,8 @@ function TextFormatFloatingToolbar({
 				(e.buttons === 1 || e.buttons === 3)
 			) {
 				const distanceMoved = Math.sqrt(
-					Math.pow(e.clientX - initialPositionRef.current.x, 2) +
-						Math.pow(e.clientY - initialPositionRef.current.y, 2),
+					(e.clientX - initialPositionRef.current.x) ** 2 +
+						(e.clientY - initialPositionRef.current.y) ** 2,
 				);
 
 				if (distanceMoved > movementThreshold) {

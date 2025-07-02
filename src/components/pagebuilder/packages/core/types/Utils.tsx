@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import { Config } from "./Config";
-import { ComponentData, Data } from "./Data";
-import { PrivateAppState } from "./Internal";
-import { PuckContext } from "./Props";
+import type { Config } from "./Config";
+import type { ComponentData, Data } from "./Data";
+import type { PrivateAppState } from "./Internal";
+import type { PuckContext } from "./Props";
 
 export type WithId<Props> = Props & {
 	id: string;

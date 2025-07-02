@@ -1,7 +1,7 @@
 import { Hash, Type } from "lucide-react";
 
 import getClassNameFactory from "../../../../lib/get-class-name-factory";
-import { FieldPropsInternal } from "../..";
+import type { FieldPropsInternal } from "../..";
 
 import styles from "../../styles.module.css";
 

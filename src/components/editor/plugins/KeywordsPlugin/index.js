@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useLexicalTextEntity } from "@lexical/react/useLexicalTextEntity";
+import { useCallback, useEffect } from "react";
 
 import { $createKeywordNode, KeywordNode } from "../../nodes/KeywordNode";
 

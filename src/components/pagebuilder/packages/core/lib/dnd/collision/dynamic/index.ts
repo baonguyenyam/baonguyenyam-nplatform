@@ -1,13 +1,13 @@
 import {
-	Collision,
-	CollisionDetector,
+	type Collision,
+	type CollisionDetector,
 	CollisionPriority,
 	CollisionType,
-	UniqueIdentifier,
+	type UniqueIdentifier,
 } from "@dnd-kit/abstract";
 import { closestCorners } from "@dnd-kit/collision";
 
-import { Direction, DragAxis } from "../../../../types";
+import type { Direction, DragAxis } from "../../../../types";
 import { collisionDebug } from "../collision-debug";
 import { directionalCollision } from "../directional";
 

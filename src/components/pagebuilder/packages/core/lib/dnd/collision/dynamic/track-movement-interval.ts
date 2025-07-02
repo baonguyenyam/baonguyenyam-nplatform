@@ -1,6 +1,6 @@
 import { Point } from "@dnd-kit/geometry";
 
-import { Direction, DragAxis } from "../../../../types";
+import type { Direction, DragAxis } from "../../../../types";
 
 import { getDirection } from "./get-direction";
 

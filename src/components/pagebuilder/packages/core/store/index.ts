@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { create, StoreApi, useStore } from "zustand";
+import { create, type StoreApi, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 import { defaultViewports } from "../components/ViewportControls/default-viewports";
@@ -8,8 +8,8 @@ import { toRoot } from "../lib/data/to-root";
 import { walkTree } from "../lib/data/walk-tree";
 import { generateId } from "../lib/generate-id";
 import { resolveComponentData } from "../lib/resolve-component-data";
-import { createReducer, PuckAction } from "../reducer";
-import {
+import { createReducer, type PuckAction } from "../reducer";
+import type {
 	AppState,
 	ComponentConfig,
 	ComponentData,
@@ -23,9 +23,9 @@ import {
 	RootDataWithProps,
 	UiState,
 	UserGenerics,
+	Viewports,
 } from "../types";
-import { Viewports } from "../types";
-import { PrivateAppState } from "../types/Internal";
+import type { PrivateAppState } from "../types/Internal";
 
 import { createFieldsSlice, type FieldsSlice } from "./slices/fields";
 import { createHistorySlice, type HistorySlice } from "./slices/history";

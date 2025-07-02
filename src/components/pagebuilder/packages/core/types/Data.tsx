@@ -1,5 +1,5 @@
-import { DefaultComponentProps, DefaultRootFieldProps } from "./Props";
-import { AsFieldProps, WithId } from "./Utils";
+import type { DefaultComponentProps, DefaultRootFieldProps } from "./Props";
+import type { AsFieldProps, WithId } from "./Utils";
 
 export type BaseData<
 	Props extends { [key: string]: any } = { [key: string]: any },

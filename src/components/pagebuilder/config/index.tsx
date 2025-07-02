@@ -1,17 +1,17 @@
-import { Config, Data } from "@/core";
+import type { Config, Data } from "@/core";
 
-import { Button, ButtonProps } from "./blocks/Button";
+import { Button, type ButtonProps } from "./blocks/Button";
 // import { Card, CardProps } from "./blocks/Card";
-import { Flex, FlexProps } from "./blocks/Flex";
-import { Grid, GridProps } from "./blocks/Grid";
-import { Heading, HeadingProps } from "./blocks/Heading";
-import { HTML, HTMLProps } from "./blocks/HTML";
-import { Logos, LogosProps } from "./blocks/Logos";
-import { Section, SectionProps } from "./blocks/Section";
-import { Space, SpaceProps } from "./blocks/Space";
-import { Template, TemplateProps } from "./blocks/Template";
-import { Text, TextProps } from "./blocks/Text";
-import Root, { RootProps } from "./root";
+import { Flex, type FlexProps } from "./blocks/Flex";
+import { Grid, type GridProps } from "./blocks/Grid";
+import { Heading, type HeadingProps } from "./blocks/Heading";
+import { HTML, type HTMLProps } from "./blocks/HTML";
+import { Logos, type LogosProps } from "./blocks/Logos";
+import { Section, type SectionProps } from "./blocks/Section";
+import { Space, type SpaceProps } from "./blocks/Space";
+import { Template, type TemplateProps } from "./blocks/Template";
+import { Text, type TextProps } from "./blocks/Text";
+import Root, { type RootProps } from "./root";
 
 export type { RootProps } from "./root";
 

@@ -3,10 +3,10 @@ import { getItem } from "../../lib/data/get-item";
 import { insert } from "../../lib/data/insert";
 import { walkTree } from "../../lib/data/walk-tree";
 import { generateId } from "../../lib/generate-id";
-import { AppStore } from "../../store";
-import { Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { DuplicateAction } from "../actions";
+import type { AppStore } from "../../store";
+import type { Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { DuplicateAction } from "../actions";
 
 export function duplicateAction<UserData extends Data>(
 	state: PrivateAppState<UserData>,

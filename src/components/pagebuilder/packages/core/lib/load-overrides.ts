@@ -1,4 +1,4 @@
-import { Overrides, Plugin } from "../types";
+import type { Overrides, Plugin } from "../types";
 
 export const loadOverrides = ({
 	overrides,

@@ -1,7 +1,7 @@
 import { MoreVertical } from "lucide-react";
 
 import getClassNameFactory from "../../../../lib/get-class-name-factory";
-import { AutoFieldPrivate, FieldPropsInternal } from "../..";
+import { AutoFieldPrivate, type FieldPropsInternal } from "../..";
 import { NestedFieldProvider, useNestedFieldContext } from "../../context";
 
 import styles from "./styles.module.css";

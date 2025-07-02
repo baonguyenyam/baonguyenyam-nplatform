@@ -89,7 +89,7 @@ export default function ContextMenuPlugin() {
 			}),
 			new ContextMenuOption(`Paste`, {
 				onSelect: (_node) => {
-					navigator.clipboard.read().then(async function (...args) {
+					navigator.clipboard.read().then(async (...args) => {
 						const data = new DataTransfer();
 
 						const items = await navigator.clipboard.read();
@@ -119,7 +119,7 @@ export default function ContextMenuPlugin() {
 			}),
 			new ContextMenuOption(`Paste as Plain Text`, {
 				onSelect: (_node) => {
-					navigator.clipboard.read().then(async function (...args) {
+					navigator.clipboard.read().then(async (...args) => {
 						const permission = await navigator.permissions.query({
 							// @ts-expect-error These types are incorrect.
 							name: "clipboard-read",

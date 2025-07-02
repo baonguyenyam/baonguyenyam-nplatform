@@ -1,7 +1,7 @@
-import React from "react";
 import { Hash } from "lucide-react";
+import React from "react";
 
-import { ComponentConfig } from "@/core/types";
+import type { ComponentConfig } from "@/core/types";
 
 export type ButtonProps = {
 	label: string;

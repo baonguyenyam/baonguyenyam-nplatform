@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import type { ReactNode } from "react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { useAppStore } from "../../store";

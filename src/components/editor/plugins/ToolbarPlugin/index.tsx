@@ -6,7 +6,6 @@
  *
  */
 
-import { useCallback, useEffect, useState } from "react";
 import {
 	$createCodeNode,
 	$isCodeNode,
@@ -32,7 +31,7 @@ import {
 	$createQuoteNode,
 	$isHeadingNode,
 	$isQuoteNode,
-	HeadingTagType,
+	type HeadingTagType,
 } from "@lexical/rich-text";
 import {
 	$getSelectionStyleValueForProperty,
@@ -67,6 +66,7 @@ import {
 	SELECTION_CHANGE_COMMAND,
 	UNDO_COMMAND,
 } from "lexical";
+import { useCallback, useEffect, useState } from "react";
 
 import useModal from "../../hooks/useModal";
 import DropDown, { DropDownItem } from "../../ui/DropDown";

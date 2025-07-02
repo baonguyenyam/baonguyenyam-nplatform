@@ -6,26 +6,26 @@
  *
  */
 
-import {
-	createContext,
-	JSX,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { INSERT_TABLE_COMMAND } from "@lexical/table";
 import {
 	$insertNodes,
 	COMMAND_PRIORITY_EDITOR,
 	createCommand,
-	EditorThemeClasses,
-	Klass,
-	LexicalCommand,
-	LexicalEditor,
-	LexicalNode,
+	type EditorThemeClasses,
+	type Klass,
+	type LexicalCommand,
+	type LexicalEditor,
+	type LexicalNode,
 } from "lexical";
+import {
+	createContext,
+	type JSX,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 
 import {
 	$createTableNodeWithDimensions,

@@ -1,4 +1,10 @@
-import { ReactElement, ReactNode, Ref, useMemo, useState } from "react";
+import {
+	type ReactElement,
+	type ReactNode,
+	type Ref,
+	useMemo,
+	useState,
+} from "react";
 
 import { useDraggableSafe, useDroppableSafe } from "../../lib/dnd/dnd-kit/safe";
 import { generateId } from "../../lib/generate-id";

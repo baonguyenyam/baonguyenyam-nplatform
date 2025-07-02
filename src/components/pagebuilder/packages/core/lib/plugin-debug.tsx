@@ -3,7 +3,7 @@ import { LogsIcon } from "lucide-react";
 
 import { ActionBar } from "../components/ActionBar";
 import { IconButton } from "../components/IconButton";
-import { Plugin } from "../types";
+import type { Plugin } from "../types";
 
 import { createUsePuck } from "./use-puck";
 

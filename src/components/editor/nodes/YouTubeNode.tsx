@@ -6,11 +6,10 @@
  *
  */
 
-import * as React from "react";
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
 import {
 	DecoratorBlockNode,
-	SerializedDecoratorBlockNode,
+	type SerializedDecoratorBlockNode,
 } from "@lexical/react/LexicalDecoratorBlockNode";
 import type {
 	DOMConversionMap,
@@ -23,6 +22,7 @@ import type {
 	NodeKey,
 	Spread,
 } from "lexical";
+import type * as React from "react";
 
 type YouTubeComponentProps = Readonly<{
 	className: Readonly<{

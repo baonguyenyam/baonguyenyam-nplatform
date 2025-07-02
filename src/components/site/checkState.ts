@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { appState } from "@/lib/appConst";
-import { useAppSelector } from "@/store";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { SET_APP_STATE } from "@/store/appSlice";
 
 import * as actions from "./actions";

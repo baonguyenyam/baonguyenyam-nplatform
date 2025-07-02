@@ -2,8 +2,8 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 
 import { makeStatePublic } from "../../../lib/data/make-state-public";
 import { walkTree } from "../../../lib/data/walk-tree";
-import { ComponentData, Config } from "../../../types";
-import { PrivateAppState } from "../../../types/Internal";
+import type { ComponentData, Config } from "../../../types";
+import type { PrivateAppState } from "../../../types/Internal";
 import { createAppStore, defaultAppState } from "../..";
 import { useRegisterFieldsSlice } from "../fields";
 

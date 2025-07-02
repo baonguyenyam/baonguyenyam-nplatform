@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { createStore, StoreApi, useStore } from "zustand";
+import { createStore, type StoreApi, useStore } from "zustand";
 
-import { AppStore, useAppStoreApi } from "../store";
-import { HistorySlice } from "../store/slices/history";
-import {
+import type { AppStore, useAppStoreApi } from "../store";
+import type { HistorySlice } from "../store/slices/history";
+import type {
 	GetPermissions,
 	RefreshPermissions,
 } from "../store/slices/permissions";
-import { AppState, ComponentData, Config, UserGenerics } from "../types";
+import type { AppState, ComponentData, Config, UserGenerics } from "../types";
 
-import { getItem, ItemSelector } from "./data/get-item";
+import { getItem, type ItemSelector } from "./data/get-item";
 import { makeStatePublic } from "./data/make-state-public";
 
 type WithGet<T> = T & { get: () => T };

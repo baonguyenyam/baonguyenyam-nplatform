@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 import { setupZone } from "../../lib/data/setup-zone";
 import {
@@ -7,7 +7,7 @@ import {
 	rootZone,
 } from "../../lib/root-droppable-id";
 import { useSlots } from "../../lib/use-slots";
-import { Config, Data, Metadata, UserGenerics } from "../../types";
+import type { Config, Data, Metadata, UserGenerics } from "../../types";
 import { SlotRenderPure } from "../SlotRender";
 
 type DropZoneRenderProps = {

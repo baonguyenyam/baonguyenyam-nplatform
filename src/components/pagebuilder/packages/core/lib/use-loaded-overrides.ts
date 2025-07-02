@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { Overrides, Plugin } from "../types";
+import type { Overrides, Plugin } from "../types";
 
 import { loadOverrides } from "./load-overrides";
 

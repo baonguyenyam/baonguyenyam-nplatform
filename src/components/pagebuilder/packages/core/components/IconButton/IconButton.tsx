@@ -1,4 +1,4 @@
-import { ReactNode, SyntheticEvent, useState } from "react";
+import { type ReactNode, type SyntheticEvent, useState } from "react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { Loader } from "../Loader";

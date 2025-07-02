@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Metadata } from "@/core/types";
+import type { Metadata } from "@/core/types";
 
 export const useMetadata = () => {
 	const [metadata, setMetadata] = useState<Metadata>({});

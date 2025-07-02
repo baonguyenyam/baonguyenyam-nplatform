@@ -1,4 +1,4 @@
-import { DefaultRootProps, DropZone, RootConfig } from "@/core";
+import { type DefaultRootProps, DropZone, type RootConfig } from "@/core";
 
 // import { Footer } from "./components/Footer";
 // import { Header } from "./components/Header";

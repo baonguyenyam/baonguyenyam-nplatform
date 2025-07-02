@@ -8,9 +8,9 @@ import {
 } from "../../provider/ToolbarProvider";
 import { SHORTCUTS } from "../ShortcutsPlugin/shortcuts";
 import {
+	UpdateFontSizeType,
 	updateFontSize,
 	updateFontSizeInSelection,
-	UpdateFontSizeType,
 } from "./utils";
 
 export function parseAllowedFontSize(input) {

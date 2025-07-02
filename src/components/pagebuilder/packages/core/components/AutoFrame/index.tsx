@@ -1,13 +1,13 @@
+import hash from "object-hash";
 import {
 	createContext,
-	ReactNode,
-	RefObject,
+	type ReactNode,
+	type RefObject,
 	useContext,
 	useEffect,
 	useState,
 } from "react";
 import { createPortal } from "react-dom";
-import hash from "object-hash";
 
 const styleSelector = 'style, link[rel="stylesheet"]';
 

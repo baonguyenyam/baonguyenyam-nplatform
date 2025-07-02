@@ -3,8 +3,7 @@
 import { useCallback, useEffect } from "react";
 
 import { useCurrentRole } from "@/hooks/useCurrentRole";
-import { useAppSelector } from "@/store";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { setAttribute } from "@/store/attributeSlice";
 import { setCategory } from "@/store/categoriesSlice";
 

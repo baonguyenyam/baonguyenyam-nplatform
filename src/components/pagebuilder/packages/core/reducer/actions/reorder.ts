@@ -1,7 +1,7 @@
-import { AppStore } from "../../store";
-import { Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { ReorderAction } from "../actions";
+import type { AppStore } from "../../store";
+import type { Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { ReorderAction } from "../actions";
 
 import { moveAction } from "./move";
 

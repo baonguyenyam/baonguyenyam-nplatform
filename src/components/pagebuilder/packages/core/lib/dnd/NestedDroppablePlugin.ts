@@ -1,13 +1,12 @@
 import { Plugin } from "@dnd-kit/abstract";
-import type { Droppable } from "@dnd-kit/dom";
-import { DragDropManager } from "@dnd-kit/dom";
+import type { DragDropManager, Droppable } from "@dnd-kit/dom";
 import { effects } from "@dnd-kit/state";
 
-import { ComponentDndData } from "../../components/DraggableComponent";
-import { DropZoneDndData } from "../../components/DropZone";
+import type { ComponentDndData } from "../../components/DraggableComponent";
+import type { DropZoneDndData } from "../../components/DropZone";
 import {
 	BubbledPointerEvent,
-	BubbledPointerEventType,
+	type BubbledPointerEventType,
 } from "../bubble-pointer-event";
 import { getFrame } from "../get-frame";
 import { GlobalPosition } from "../global-position";

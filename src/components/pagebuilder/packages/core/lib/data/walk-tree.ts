@@ -1,11 +1,11 @@
-import {
+import type {
 	ComponentData,
 	Config,
 	Content,
 	Data,
 	RootDataWithProps,
 } from "../../types";
-import {
+import type {
 	NodeIndex,
 	PrivateAppState,
 	ZoneIndex,

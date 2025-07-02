@@ -6,7 +6,6 @@
  *
  */
 
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -34,6 +33,7 @@ import {
 	KEY_ESCAPE_COMMAND,
 	SELECTION_CHANGE_COMMAND,
 } from "lexical";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 import useModal from "../hooks/useModal";
 import FloatingLinkEditorPlugin from "../plugins/FloatingLinkEditorPlugin/index";
@@ -47,7 +47,7 @@ import Select from "../ui/Select";
 import TextInput from "../ui/TextInput";
 
 import type { Position } from "./InlineImageNode";
-import { $isInlineImageNode, InlineImageNode } from "./InlineImageNode";
+import { $isInlineImageNode, type InlineImageNode } from "./InlineImageNode";
 
 import "./InlineImageNode.css";
 

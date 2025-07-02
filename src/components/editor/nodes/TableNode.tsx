@@ -6,8 +6,6 @@
  *
  */
 
-import * as React from "react";
-import { Suspense } from "react";
 import type {
 	DOMConversionMap,
 	DOMConversionOutput,
@@ -20,6 +18,8 @@ import type {
 	Spread,
 } from "lexical";
 import { DecoratorNode } from "lexical";
+import * as React from "react";
+import { Suspense } from "react";
 
 export type Cell = {
 	colSpan: number;

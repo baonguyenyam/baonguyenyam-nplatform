@@ -1,4 +1,5 @@
-import React, { memo, useMemo } from "react";
+import type React from "react";
+import { memo, useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { CircleCheck, Pencil, X } from "lucide-react";
 

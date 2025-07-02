@@ -1,7 +1,7 @@
-import { RefObject, useCallback, useEffect, useState } from "react";
+import { type RefObject, useCallback, useEffect, useState } from "react";
 
 import { useAppStore } from "../../../store";
-import { DragAxis } from "../../../types";
+import type { DragAxis } from "../../../types";
 
 const GRID_DRAG_AXIS: DragAxis = "dynamic";
 const FLEX_ROW_DRAG_AXIS: DragAxis = "x";

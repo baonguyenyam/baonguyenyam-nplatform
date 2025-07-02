@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import { generateId } from "../../lib/generate-id";
 import { useHotkey } from "../../lib/use-hotkey";
-import { AppState, History } from "../../types";
-import { AppStore, useAppStoreApi } from "../";
+import type { AppState, History } from "../../types";
+import type { AppStore, useAppStoreApi } from "../";
 
 export type HistorySlice<D = any> = {
 	index: number;

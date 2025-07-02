@@ -1,7 +1,7 @@
-import { ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 
-import { DropZoneProps } from "../components/DropZone/types";
-import {
+import type { DropZoneProps } from "../components/DropZone/types";
+import type {
 	ComponentConfig,
 	ComponentData,
 	Content,

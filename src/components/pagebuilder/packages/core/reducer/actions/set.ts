@@ -1,8 +1,8 @@
 import { walkTree } from "../../lib/data/walk-tree";
-import { AppStore } from "../../store";
-import { Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { SetAction } from "../actions";
+import type { AppStore } from "../../store";
+import type { Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { SetAction } from "../actions";
 
 export const setAction = <UserData extends Data>(
 	state: PrivateAppState<UserData>,

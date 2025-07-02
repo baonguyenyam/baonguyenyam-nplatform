@@ -5,7 +5,7 @@ import { AutoField, Button, createUsePuck, FieldLabel } from "@/core";
 import { getClassNameFactory } from "@/core/lib";
 import { mapSlotsAsync } from "@/core/lib/data/map-slots";
 import { generateId } from "@/core/lib/generate-id";
-import { ComponentConfig, ComponentData, Slot } from "@/core/types";
+import type { ComponentConfig, ComponentData, Slot } from "@/core/types";
 
 import { componentKey, type Props } from "../../index";
 

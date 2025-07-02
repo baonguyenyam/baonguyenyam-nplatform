@@ -1,7 +1,7 @@
 import { setupZone } from "../../lib/data/setup-zone";
-import { Content, Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { RegisterZoneAction, UnregisterZoneAction } from "..";
+import type { Content, Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { RegisterZoneAction, UnregisterZoneAction } from "..";
 
 // Restore unregistered zones when re-registering in same session
 export const zoneCache: Record<string, Content> = {};

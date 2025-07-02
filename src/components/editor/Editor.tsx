@@ -1,5 +1,3 @@
-import { useRef, useState } from "react";
-import { useEffect } from "react";
 import { indentWithTab } from "@codemirror/commands";
 import { html } from "@codemirror/lang-html";
 import { EditorView, keymap } from "@codemirror/view";
@@ -25,11 +23,13 @@ import CodeMirror from "@uiw/react-codemirror";
 import {
 	$getRoot,
 	$insertNodes,
-	EditorState,
-	LexicalEditor as LexicalEditorType,
+	type EditorState,
+	type LexicalEditor as LexicalEditorType,
 } from "lexical";
+import { useEffect, useRef, useState } from "react";
 
 import useMediaQuery from "./hooks/useMediaQuery";
+import Nodes from "./nodes";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import ComponentPickerPlugin from "./plugins/ComponentPickerPlugin";
@@ -51,7 +51,6 @@ import { useSharedHistoryContext } from "./provider/SharedHistoryProvider";
 import EditorTheme from "./themes/EditorTheme";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
-import Nodes from "./nodes";
 
 import "./index.scss";
 

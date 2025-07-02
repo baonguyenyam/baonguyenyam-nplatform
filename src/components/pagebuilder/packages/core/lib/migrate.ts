@@ -1,5 +1,5 @@
 import { defaultAppState } from "../store";
-import { ComponentData, Config, Data } from "../types";
+import type { ComponentData, Config, Data } from "../types";
 
 import { walkTree } from "./data/walk-tree";
 

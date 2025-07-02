@@ -1,13 +1,18 @@
 import type { JSX, ReactNode } from "react";
 
-import { DropZoneProps } from "../components/DropZone/types";
+import type { DropZoneProps } from "../components/DropZone/types";
 
-import { Permissions, Slot } from "./API";
-import { AppState } from "./AppState";
-import { ComponentData, Metadata, RootData } from "./Data";
-import { Fields } from "./Fields";
-import { DefaultComponentProps } from "./Props";
-import { AsFieldProps, WithChildren, WithId, WithPuckProps } from "./Utils";
+import type { Permissions, Slot } from "./API";
+import type { AppState } from "./AppState";
+import type { ComponentData, Metadata, RootData } from "./Data";
+import type { Fields } from "./Fields";
+import type { DefaultComponentProps } from "./Props";
+import type {
+	AsFieldProps,
+	WithChildren,
+	WithId,
+	WithPuckProps,
+} from "./Utils";
 
 export type PuckComponent<Props> = (
 	props: WithId<WithPuckProps<Props>>,

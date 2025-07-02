@@ -1,5 +1,5 @@
-import { AppState } from "./AppState";
-import { ComponentData, Data } from "./Data";
+import type { AppState } from "./AppState";
+import type { ComponentData, Data } from "./Data";
 
 export type ZoneType = "root" | "dropzone" | "slot";
 

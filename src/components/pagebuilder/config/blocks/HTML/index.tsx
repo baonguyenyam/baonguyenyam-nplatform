@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ComponentConfig } from "@/core/types";
+import type { ComponentConfig } from "@/core/types";
 
 export type HTMLProps = {
 	value: string;

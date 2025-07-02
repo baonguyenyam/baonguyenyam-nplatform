@@ -25,7 +25,7 @@ import {
 } from "../../provider/ToolbarProvider";
 
 export let UpdateFontSizeType;
-(function (UpdateFontSizeType) {
+((UpdateFontSizeType) => {
 	UpdateFontSizeType[(UpdateFontSizeType["increment"] = 1)] = "increment";
 	UpdateFontSizeType[(UpdateFontSizeType["decrement"] = 2)] = "decrement";
 })(UpdateFontSizeType || (UpdateFontSizeType = {}));

@@ -1,5 +1,5 @@
-import { useMemo, useRef } from "react";
 import debounce from "debounce";
+import { useMemo, useRef } from "react";
 
 export default function useDebounce<T extends (...args: any[]) => void>(
 	fn: T,

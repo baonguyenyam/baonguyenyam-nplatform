@@ -1,4 +1,4 @@
-import { Point } from "@dnd-kit/geometry";
+import type { Point } from "@dnd-kit/geometry";
 
 const DEBUG = false;
 

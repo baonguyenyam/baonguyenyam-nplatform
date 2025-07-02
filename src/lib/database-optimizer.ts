@@ -163,8 +163,8 @@ export class DatabaseOptimizer {
 				lastError = error as Error;
 
 				// Only retry on connection errors
-				if (attempt < maxRetries && this.isRetryableError(error)) {
-					await this.delay(attempt * 1000); // Exponential backoff
+				if (attempt < maxRetries && DatabaseOptimizer.isRetryableError(error)) {
+					await DatabaseOptimizer.delay(attempt * 1000); // Exponential backoff
 					continue;
 				}
 

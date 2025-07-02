@@ -1,15 +1,15 @@
 import { useState } from "react";
 import {
-	ColumnDef,
-	ColumnFiltersState,
+	type ColumnDef,
+	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	SortingState,
+	type SortingState,
 	useReactTable,
-	VisibilityState,
+	type VisibilityState,
 } from "@tanstack/react-table";
 import {
 	ArrowUpDown,

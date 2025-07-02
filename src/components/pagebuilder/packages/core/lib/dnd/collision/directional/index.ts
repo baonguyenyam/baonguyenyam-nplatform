@@ -1,5 +1,9 @@
-import { CollisionType, DragOperation, Droppable } from "@dnd-kit/abstract";
-import { Point } from "@dnd-kit/geometry";
+import {
+	CollisionType,
+	type DragOperation,
+	type Droppable,
+} from "@dnd-kit/abstract";
+import type { Point } from "@dnd-kit/geometry";
 
 import { collisionDebug } from "../collision-debug";
 
@@ -22,13 +26,12 @@ export const directionalCollision = (
 	const dropCenter = dropShape.center;
 
 	const distanceToPrevious = Math.sqrt(
-		Math.pow(dropCenter.x - previous.x, 2) +
-			Math.pow(dropCenter.y - previous.y, 2),
+		(dropCenter.x - previous.x) ** 2 + (dropCenter.y - previous.y) ** 2,
 	);
 
 	const distanceToCurrent = Math.sqrt(
-		Math.pow(dropCenter.x - position.current.x, 2) +
-			Math.pow(dropCenter.y - position.current.y, 2),
+		(dropCenter.x - position.current.x) ** 2 +
+			(dropCenter.y - position.current.y) ** 2,
 	);
 
 	distanceChange =

@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { cache } from "react";
+import { cache, useCallback, useEffect, useMemo, useState } from "react";
 
 import AppLoading from "@/components/AppLoading";
 import BlogLayout from "@/components/public/BlogLayout";

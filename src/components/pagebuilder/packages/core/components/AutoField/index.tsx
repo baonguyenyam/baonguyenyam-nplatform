@@ -1,21 +1,18 @@
+import { Lock } from "lucide-react";
 import {
-	ReactElement,
-	ReactNode,
+	type ReactElement,
+	type ReactNode,
 	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
 	useState,
 } from "react";
-import { Lock } from "lucide-react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { useSafeId } from "../../lib/use-safe-id";
 import { useAppStore } from "../../store";
-import { Field, FieldProps } from "../../types";
-import { UiState } from "../../types";
-
-import { ObjectField } from "./fields/ObjectField";
+import type { Field, FieldProps, UiState } from "../../types";
 import { NestedFieldContext } from "./context";
 import {
 	ArrayField,
@@ -25,6 +22,7 @@ import {
 	SelectField,
 	TextareaField,
 } from "./fields";
+import { ObjectField } from "./fields/ObjectField";
 
 import styles from "./styles.module.css";
 

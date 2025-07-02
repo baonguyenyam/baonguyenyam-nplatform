@@ -36,11 +36,10 @@ import {
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import invariant from "../../utils/invariant";
-
 import useModal from "../../hooks/useModal";
 import ColorPicker from "../../ui/ColorPicker";
 import DropDown, { DropDownItem } from "../../ui/DropDown";
+import invariant from "../../utils/invariant";
 
 function computeSelectionCount(selection) {
 	const selectionShape = selection.getShape();
@@ -1003,7 +1002,7 @@ function TableCellActionMenuContainer({ anchorElem, cellMerge }) {
 	useEffect(() => {
 		// We call the $moveMenu callback every time the selection changes,
 		// once up front, and once after each mouseUp
-		let timeoutId = undefined;
+		let timeoutId;
 		const callback = () => {
 			timeoutId = undefined;
 			editor.getEditorState().read($moveMenu);

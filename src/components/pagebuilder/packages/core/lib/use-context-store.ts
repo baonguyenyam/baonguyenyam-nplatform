@@ -1,5 +1,5 @@
-import { Context, useContext } from "react";
-import { StoreApi, useStore } from "zustand";
+import { type Context, useContext } from "react";
+import { type StoreApi, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
 type ExtractState<S> = S extends {

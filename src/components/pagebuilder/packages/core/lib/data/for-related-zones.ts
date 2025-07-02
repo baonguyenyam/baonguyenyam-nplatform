@@ -1,4 +1,4 @@
-import { Content, Data } from "../../types";
+import type { Content, Data } from "../../types";
 import { getZoneId } from "../get-zone-id";
 
 export function forRelatedZones<UserData extends Data>(

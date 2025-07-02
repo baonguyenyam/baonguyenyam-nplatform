@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useAppStore, useAppStoreApi } from "../store";
 
-import { ItemSelector } from "./data/get-item";
+import type { ItemSelector } from "./data/get-item";
 
 export type Breadcrumb = {
 	label: string;

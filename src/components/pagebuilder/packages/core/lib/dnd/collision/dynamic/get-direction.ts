@@ -1,6 +1,6 @@
-import { Point } from "@dnd-kit/geometry";
+import type { Point } from "@dnd-kit/geometry";
 
-import { Direction, DragAxis } from "../../../../types";
+import type { Direction, DragAxis } from "../../../../types";
 
 export const getDirection = (dragAxis: DragAxis, delta: Point): Direction => {
 	if (dragAxis === "dynamic") {

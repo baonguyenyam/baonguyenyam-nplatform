@@ -1,18 +1,18 @@
+import { getBox } from "css-box-model";
 import {
-	ReactNode,
+	type ReactNode,
 	useCallback,
 	useEffect,
 	useMemo,
 	useRef,
 	useState,
 } from "react";
-import { getBox } from "css-box-model";
 import { useShallow } from "zustand/react/shallow";
 
 import { getClassNameFactory } from "../../../../lib";
 import { getZoomConfig } from "../../../../lib/get-zoom-config";
 import { useAppStore } from "../../../../store";
-import { UiState } from "../../../../types";
+import type { UiState } from "../../../../types";
 import { Loader } from "../../../Loader";
 import { ViewportControls } from "../../../ViewportControls";
 import { Preview } from "../Preview";

@@ -3,10 +3,10 @@ import { getItem } from "../../lib/data/get-item";
 import { insert } from "../../lib/data/insert";
 import { remove } from "../../lib/data/remove";
 import { walkTree } from "../../lib/data/walk-tree";
-import { AppStore } from "../../store";
-import { Content, Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { MoveAction } from "../actions";
+import type { AppStore } from "../../store";
+import type { Content, Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { MoveAction } from "../actions";
 
 // Restore unregistered zones when re-registering in same session
 export const zoneCache: Record<string, Content> = {};

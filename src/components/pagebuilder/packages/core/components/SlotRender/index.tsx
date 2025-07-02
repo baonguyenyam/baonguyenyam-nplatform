@@ -2,9 +2,9 @@ import { forwardRef } from "react";
 
 import { useSlots } from "../../lib/use-slots";
 import { useAppStore } from "../../store";
-import { ComponentData, Config, Metadata, Slot } from "../../types";
+import type { ComponentData, Config, Metadata, Slot } from "../../types";
 import { DropZoneRenderPure } from "../DropZone";
-import { DropZoneProps } from "../DropZone/types";
+import type { DropZoneProps } from "../DropZone/types";
 
 type SlotRenderProps = DropZoneProps & {
 	content: Slot;

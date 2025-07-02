@@ -1,4 +1,8 @@
-import { Data, DefaultComponentProps, DefaultRootFieldProps } from "../types";
+import type {
+	Data,
+	DefaultComponentProps,
+	DefaultRootFieldProps,
+} from "../types";
 
 import { defaultData } from "./data/default-data";
 

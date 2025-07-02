@@ -1,12 +1,12 @@
-import { ReactElement, useEffect, useState } from "react";
 import { createUsePuck } from "@measured/puck";
+import { type ReactElement, useEffect, useState } from "react";
 
 import { OutlineList } from "@/core/components/OutlineList";
 import { SidebarSection } from "@/core/components/SidebarSection";
 import { getClassNameFactory } from "@/core/lib";
 import { getFrame } from "@/core/lib/get-frame";
 import { scrollIntoView } from "@/core/lib/scroll-into-view";
-import { Plugin } from "@/core/types";
+import type { Plugin } from "@/core/types";
 
 import styles from "./HeadingAnalyzer.module.css";
 

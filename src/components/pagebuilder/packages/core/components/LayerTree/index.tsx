@@ -1,15 +1,15 @@
-import { useCallback, useContext } from "react";
 import { ChevronDown, Layers, LayoutGrid, Type } from "lucide-react";
+import { useCallback, useContext } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-import { ItemSelector } from "../../lib/data/get-item";
+import type { ItemSelector } from "../../lib/data/get-item";
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { getFrame } from "../../lib/get-frame";
 import { onScrollEnd } from "../../lib/on-scroll-end";
 import { rootDroppableId } from "../../lib/root-droppable-id";
 import { scrollIntoView } from "../../lib/scroll-into-view";
 import { useAppStore } from "../../store";
-import { ComponentConfig } from "../../types";
+import type { ComponentConfig } from "../../types";
 import { dropZoneContext } from "../DropZone/context";
 
 import styles from "./styles.module.css";

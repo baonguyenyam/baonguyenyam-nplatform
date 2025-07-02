@@ -1,6 +1,6 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
-import { Content, DragAxis } from "../../types";
+import { Content, type DragAxis } from "../../types";
 
 export type DropZoneProps = {
 	zone: string;

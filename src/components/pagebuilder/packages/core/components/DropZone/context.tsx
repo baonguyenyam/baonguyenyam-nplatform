@@ -1,13 +1,13 @@
+import type { Draggable } from "@dnd-kit/dom";
 import {
 	createContext,
-	PropsWithChildren,
-	ReactNode,
+	type PropsWithChildren,
+	type ReactNode,
 	useCallback,
 	useMemo,
 	useState,
 } from "react";
-import type { Draggable } from "@dnd-kit/dom";
-import { createStore, StoreApi } from "zustand";
+import { createStore, type StoreApi } from "zustand";
 
 import { useAppStore } from "../../store";
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { isElement } from "@dnd-kit/dom/utilities";
+import { useState } from "react";
 
-import { ActivationConstraints, PointerSensor } from "./PointerSensor";
+import { type ActivationConstraints, PointerSensor } from "./PointerSensor";
 
 export const useSensors = (
 	{

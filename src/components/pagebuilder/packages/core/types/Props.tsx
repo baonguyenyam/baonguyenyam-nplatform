@@ -1,7 +1,7 @@
-import { DropZoneProps } from "../components/DropZone/types";
+import type { DropZoneProps } from "../components/DropZone/types";
 
-import { Metadata } from "./Data";
-import { WithChildren, WithPuckProps } from "./Utils";
+import type { Metadata } from "./Data";
+import type { WithChildren, WithPuckProps } from "./Utils";
 
 export type PuckContext = {
 	renderDropZone: React.FC<DropZoneProps>;

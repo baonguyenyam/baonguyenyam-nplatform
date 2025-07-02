@@ -1,4 +1,4 @@
-import { ComponentData } from "../../types";
+import type { ComponentData } from "../../types";
 
 import { isSlot } from "./is-slot";
 

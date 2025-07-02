@@ -1,7 +1,7 @@
-import { ItemSelector } from "../lib/data/get-item";
+import type { ItemSelector } from "../lib/data/get-item";
 
-import { Viewport } from "./API";
-import { Data } from "./Data";
+import type { Viewport } from "./API";
+import type { Data } from "./Data";
 
 export type ItemWithId = {
 	_arrayId: string;

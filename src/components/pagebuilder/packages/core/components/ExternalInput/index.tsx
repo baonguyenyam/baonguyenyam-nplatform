@@ -1,3 +1,4 @@
+import { Link, Search, SlidersHorizontal, Unlock } from "lucide-react";
 import {
 	isValidElement,
 	useCallback,
@@ -5,10 +6,9 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { Link, Search, SlidersHorizontal, Unlock } from "lucide-react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
-import { ExternalField } from "../../types";
+import type { ExternalField } from "../../types";
 import { AutoFieldPrivate } from "../AutoField";
 import { Button } from "../Button";
 import { Heading } from "../Heading";

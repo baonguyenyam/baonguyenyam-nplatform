@@ -1,7 +1,7 @@
-import React from "react";
 import { Hash } from "lucide-react";
+import React from "react";
 
-import { ComponentConfig } from "@/core";
+import type { ComponentConfig } from "@/core";
 import type { HeadingProps as _HeadingProps } from "@/core/components/Heading";
 import { Heading as _Heading } from "@/core/components/Heading";
 

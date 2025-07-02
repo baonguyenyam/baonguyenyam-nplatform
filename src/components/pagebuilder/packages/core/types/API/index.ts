@@ -1,8 +1,8 @@
-import { PuckAction } from "../../reducer";
+import type { PuckAction } from "../../reducer";
 
-import { AppState } from "./../AppState";
-import { Content, Data } from "./../Data";
-import { Overrides } from "./Overrides";
+import type { AppState } from "./../AppState";
+import type { Content, Data } from "./../Data";
+import type { Overrides } from "./Overrides";
 
 export type Permissions = {
 	drag: boolean;

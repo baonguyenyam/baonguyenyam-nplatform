@@ -1,12 +1,12 @@
-import { useEffect } from "react";
 import { Link } from "lucide-react";
+import { useEffect } from "react";
 
 import type {
 	ExternalField as ExternalFieldType,
 	ExternalFieldWithAdaptor,
 } from "../../../../types";
 import { ExternalInput } from "../../../ExternalInput";
-import { FieldPropsInternal } from "../..";
+import type { FieldPropsInternal } from "../..";
 
 export const ExternalField = ({
 	field,

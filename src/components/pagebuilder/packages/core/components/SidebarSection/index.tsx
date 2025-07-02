@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
+import type { ReactNode } from "react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
 import { useBreadcrumbs } from "../../lib/use-breadcrumbs";

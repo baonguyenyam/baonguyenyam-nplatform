@@ -1,8 +1,8 @@
-import React from "react";
 import { Hash } from "lucide-react";
+import React from "react";
 
 import { getClassNameFactory } from "@/core/lib";
-import { ComponentConfig, Slot } from "@/core/types";
+import type { ComponentConfig, Slot } from "@/core/types";
 
 import styles from "./styles.module.css";
 

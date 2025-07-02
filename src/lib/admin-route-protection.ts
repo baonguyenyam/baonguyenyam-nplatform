@@ -3,16 +3,16 @@
  * Middleware tự động để bảo vệ các admin routes với permission chi tiết
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 import {
 	ACTIONS,
 	createPermissionChecker,
 	PERMISSION_LEVELS,
-	PermissionLevel,
+	type PermissionLevel,
 	RESOURCES,
-	UserPermissionContext,
+	type UserPermissionContext,
 } from "@/lib/permissions";
 
 // Mapping các admin routes với permission requirements

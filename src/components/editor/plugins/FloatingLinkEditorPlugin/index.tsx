@@ -5,9 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { Dispatch, useCallback, useEffect, useRef, useState } from "react";
-import * as React from "react";
-import { createPortal } from "react-dom";
+
 import {
 	$isAutoLinkNode,
 	$isLinkNode,
@@ -22,11 +20,14 @@ import {
 	COMMAND_PRIORITY_HIGH,
 	COMMAND_PRIORITY_LOW,
 	KEY_ESCAPE_COMMAND,
-	LexicalEditor,
-	NodeSelection,
-	RangeSelection,
+	type LexicalEditor,
+	type NodeSelection,
+	type RangeSelection,
 	SELECTION_CHANGE_COMMAND,
 } from "lexical";
+import type * as React from "react";
+import { type Dispatch, useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { getSelectedNode } from "../../utils/getSelectedNode";
 import { setFloatingElemPositionForLinkEditor } from "../../utils/setFloatingElemPositionForLinkEditor";

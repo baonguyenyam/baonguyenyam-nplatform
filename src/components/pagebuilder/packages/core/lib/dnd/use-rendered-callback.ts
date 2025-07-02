@@ -1,5 +1,5 @@
-import { DependencyList, useCallback } from "react";
 import { useDragDropManager } from "@dnd-kit/react";
+import { type DependencyList, useCallback } from "react";
 
 /**
  * Returns a callback that only triggers when dnd-kit has finished

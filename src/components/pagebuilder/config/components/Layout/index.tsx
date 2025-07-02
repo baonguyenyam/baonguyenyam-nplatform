@@ -1,6 +1,10 @@
-import { CSSProperties, forwardRef, ReactNode } from "react";
+import { type CSSProperties, forwardRef, type ReactNode } from "react";
 
-import { ComponentConfig, DefaultComponentProps, ObjectField } from "@/core";
+import type {
+	ComponentConfig,
+	DefaultComponentProps,
+	ObjectField,
+} from "@/core";
 import { getClassNameFactory } from "@/core/lib";
 
 import { spacingOptions } from "../../options";

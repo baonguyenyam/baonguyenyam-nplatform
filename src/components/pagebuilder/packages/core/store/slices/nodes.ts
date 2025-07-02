@@ -1,4 +1,4 @@
-import { AppStore } from "../";
+import type { AppStore } from "../";
 
 type NodeMethods = {
 	sync: () => void;

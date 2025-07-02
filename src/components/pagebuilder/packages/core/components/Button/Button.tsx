@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { filterDataAttrs } from "../../lib/filter-data-attrs";
 import getClassNameFactory from "../../lib/get-class-name-factory";

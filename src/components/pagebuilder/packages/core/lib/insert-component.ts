@@ -1,6 +1,6 @@
-import { InsertAction } from "../reducer";
+import type { InsertAction } from "../reducer";
 import { insertAction } from "../reducer/actions/insert";
-import { AppStore } from "../store";
+import type { AppStore } from "../store";
 
 import { getItem } from "./data/get-item";
 import { generateId } from "./generate-id";

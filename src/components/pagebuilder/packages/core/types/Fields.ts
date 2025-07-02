@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-import { DefaultComponentProps, Metadata, UiState } from ".";
+import type { DefaultComponentProps, Metadata, UiState } from ".";
 
 type FieldOption = {
 	label: string;

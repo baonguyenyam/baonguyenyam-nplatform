@@ -6,15 +6,15 @@
  *
  */
 
+import * as React from "react";
 import {
-	ReactNode,
+	type ReactNode,
 	useCallback,
 	useEffect,
 	useMemo,
 	useRef,
 	useState,
 } from "react";
-import * as React from "react";
 import { createPortal } from "react-dom";
 
 type DropDownContextType = {

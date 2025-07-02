@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Copy, List, Plus, Trash } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { reorder, replace } from "../../../../lib";
 import getClassNameFactory from "../../../../lib/get-class-name-factory";
 import { useAppStore, useAppStoreApi } from "../../../../store";
-import { ArrayState, ItemWithId } from "../../../../types";
+import type { ArrayState, ItemWithId } from "../../../../types";
 import { DragIcon } from "../../../DragIcon";
 import { IconButton } from "../../../IconButton";
 import { Sortable, SortableProvider } from "../../../Sortable";
-import { AutoFieldPrivate, FieldPropsInternal } from "../..";
+import { AutoFieldPrivate, type FieldPropsInternal } from "../..";
 import { NestedFieldProvider, useNestedFieldContext } from "../../context";
 
 import styles from "./styles.module.css";

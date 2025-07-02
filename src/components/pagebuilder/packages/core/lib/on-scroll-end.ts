@@ -4,9 +4,9 @@ export const onScrollEnd = (
 ) => {
 	let scrollTimeout: NodeJS.Timeout;
 
-	const callback = function () {
+	const callback = () => {
 		clearTimeout(scrollTimeout);
-		scrollTimeout = setTimeout(function () {
+		scrollTimeout = setTimeout(() => {
 			cb();
 
 			frame?.removeEventListener("scroll", callback);

@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
 import dynamicIconImports from "lucide-react/dynamicIconImports";
 import dynamic from "next/dynamic";
+import React, { type ReactElement } from "react";
 
 import { getClassNameFactory } from "@/core/lib";
-import { ComponentConfig } from "@/core/types";
+import type { ComponentConfig } from "@/core/types";
 
 import styles from "./styles.module.css";
 

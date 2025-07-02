@@ -7,8 +7,6 @@
  *
  */
 
-import * as React from "react";
-import { Suspense } from "react";
 import type {
 	DOMConversionMap,
 	DOMConversionOutput,
@@ -22,6 +20,8 @@ import type {
 	Spread,
 } from "lexical";
 import { $applyNodeReplacement, createEditor, DecoratorNode } from "lexical";
+import * as React from "react";
+import { Suspense } from "react";
 
 const InlineImageComponent = React.lazy(
 	// @ts-ignore

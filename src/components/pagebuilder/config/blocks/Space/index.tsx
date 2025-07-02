@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ComponentConfig } from "@/core";
+import type { ComponentConfig } from "@/core";
 import { getClassNameFactory } from "@/core/lib";
 
 import { spacingOptions } from "../../options";

@@ -1,5 +1,5 @@
-import { Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
+import type { Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
 import { rootDroppableId } from "../root-droppable-id";
 
 export type ItemSelector = {

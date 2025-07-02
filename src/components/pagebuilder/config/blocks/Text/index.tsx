@@ -1,7 +1,7 @@
-import React from "react";
 import { ALargeSmall, AlignLeft, Hash } from "lucide-react";
+import React from "react";
 
-import { ComponentConfig } from "@/core";
+import type { ComponentConfig } from "@/core";
 
 export type TextProps = {
 	align: "left" | "center" | "right";

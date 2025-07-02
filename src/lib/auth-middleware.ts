@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 
@@ -6,9 +6,9 @@ import {
 	ACTIONS,
 	createPermissionChecker,
 	PERMISSION_LEVELS,
-	PermissionLevel,
+	type PermissionLevel,
 	RESOURCES,
-	UserPermissionContext,
+	type UserPermissionContext,
 } from "./permissions";
 
 /**
@@ -116,13 +116,8 @@ export async function withAuthorization(
  * HOC cho API routes với authorization
  */
 export function withApiAuthorization(options: AuthorizationOptions = {}) {
-	return function (
-		handler: (req: NextRequest, context: any) => Promise<NextResponse>,
-	) {
-		return async function (
-			req: NextRequest,
-			context: any,
-		): Promise<NextResponse> {
+	return (handler: (req: NextRequest, context: any) => Promise<NextResponse>) =>
+		async (req: NextRequest, context: any): Promise<NextResponse> => {
 			const authResult = await withAuthorization(req, options);
 
 			if (!authResult.authorized) {
@@ -141,7 +136,6 @@ export function withApiAuthorization(options: AuthorizationOptions = {}) {
 
 			return handler(req, context);
 		};
-	};
 }
 
 /**
@@ -294,26 +288,29 @@ async function getResourceOwner(
 		const { db } = await import("@/lib/db");
 
 		switch (resource) {
-			case RESOURCES.POSTS:
+			case RESOURCES.POSTS: {
 				const post = await db.post.findUnique({
 					where: { id: parseInt(resourceId) },
 					select: { userId: true },
 				});
 				return post?.userId || null;
+			}
 
-			case RESOURCES.FILES:
+			case RESOURCES.FILES: {
 				const file = await db.file.findUnique({
 					where: { id: parseInt(resourceId) },
 					select: { userId: true },
 				});
 				return file?.userId || null;
+			}
 
-			case RESOURCES.ORDERS:
+			case RESOURCES.ORDERS: {
 				const order = await db.order.findUnique({
 					where: { id: resourceId },
 					select: { user: { select: { id: true } } },
 				});
 				return order?.user?.[0]?.id || null;
+			}
 
 			default:
 				return null;

@@ -3,8 +3,13 @@ import { useEffect } from "react";
 import { flattenData } from "../../lib/data/flatten-data";
 import { makeStatePublic } from "../../lib/data/make-state-public";
 import { getChanged } from "../../lib/get-changed";
-import { ComponentData, Config, Permissions, UserGenerics } from "../../types";
-import { AppStore, useAppStoreApi } from "../";
+import type {
+	ComponentData,
+	Config,
+	Permissions,
+	UserGenerics,
+} from "../../types";
+import type { AppStore, useAppStoreApi } from "../";
 
 type PermissionsArgs<
 	UserConfig extends Config = Config,

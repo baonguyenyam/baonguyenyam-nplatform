@@ -1,11 +1,11 @@
 import {
-	AppState,
+	type AppState,
 	ComponentData,
-	Config,
-	Data,
-	ExtractPropsFromConfig,
-	ExtractRootPropsFromConfig,
-	Permissions,
+	type Config,
+	type Data,
+	type ExtractPropsFromConfig,
+	type ExtractRootPropsFromConfig,
+	type Permissions,
 } from "../types";
 
 export const resolvePermissions = <

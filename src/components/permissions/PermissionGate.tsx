@@ -8,14 +8,14 @@
 import { useSession } from "next-auth/react";
 
 import {
-	Action,
+	type Action,
 	ACTIONS,
 	createPermissionChecker,
 	PERMISSION_LEVELS,
-	PermissionLevel,
-	Resource,
+	type PermissionLevel,
+	type Resource,
 	RESOURCES,
-	UserPermissionContext,
+	type UserPermissionContext,
 } from "@/lib/permissions";
 
 interface PermissionGateProps {

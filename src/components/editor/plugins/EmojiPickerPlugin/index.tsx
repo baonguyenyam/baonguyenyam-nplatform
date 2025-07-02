@@ -6,13 +6,13 @@
  *
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import * as ReactDOM from "react-dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
 	LexicalTypeaheadMenuPlugin,
 	useBasicTypeaheadTriggerMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import * as ReactDOM from "react-dom";
 
 class TypeaheadOption {
 	key: string;
@@ -21,11 +21,12 @@ class TypeaheadOption {
 		this.key = key;
 	}
 }
+
 import {
 	$createTextNode,
 	$getSelection,
 	$isRangeSelection,
-	TextNode,
+	type TextNode,
 } from "lexical";
 
 class EmojiOption extends TypeaheadOption {

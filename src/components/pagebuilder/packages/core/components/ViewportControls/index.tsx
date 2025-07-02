@@ -1,9 +1,9 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Monitor, Smartphone, Tablet, ZoomIn, ZoomOut } from "lucide-react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import { getClassNameFactory } from "../../lib";
 import { useAppStore } from "../../store";
-import { Viewport } from "../../types";
+import type { Viewport } from "../../types";
 import { IconButton } from "../IconButton";
 
 import styles from "./styles.module.css";

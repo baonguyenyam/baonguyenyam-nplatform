@@ -1,11 +1,10 @@
-import { Reducer } from "react";
+import type { Reducer } from "react";
 
 import { makeStatePublic } from "../lib/data/make-state-public";
-import { AppStore } from "../store";
-import type { OnAction } from "../types";
-import { AppState, Data } from "../types";
-import { PrivateAppState } from "../types/Internal";
-
+import type { AppStore } from "../store";
+import type { AppState, Data, OnAction } from "../types";
+import type { PrivateAppState } from "../types/Internal";
+import type { PuckAction } from "./actions";
 import { duplicateAction } from "./actions/duplicate";
 import { insertAction } from "./actions/insert";
 import { moveAction } from "./actions/move";
@@ -20,7 +19,6 @@ import { replaceRootAction } from "./actions/replace-root";
 import { setAction } from "./actions/set";
 import { setDataAction } from "./actions/set-data";
 import { setUiAction } from "./actions/set-ui";
-import { PuckAction } from "./actions";
 
 export * from "./actions";
 

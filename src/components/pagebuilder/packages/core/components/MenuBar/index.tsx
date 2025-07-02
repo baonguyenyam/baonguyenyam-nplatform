@@ -1,8 +1,8 @@
-import { Dispatch, ReactElement, SetStateAction } from "react";
 import { Redo2Icon, Undo2Icon } from "lucide-react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
-import { PuckAction } from "../../reducer";
+import type { PuckAction } from "../../reducer";
 import { useAppStore } from "../../store";
 import type { Data } from "../../types";
 import { IconButton } from "../IconButton/IconButton";

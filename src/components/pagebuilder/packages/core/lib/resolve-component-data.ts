@@ -1,6 +1,6 @@
 import fdeq from "fast-deep-equal";
 
-import {
+import type {
 	ComponentData,
 	Config,
 	Metadata,

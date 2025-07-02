@@ -1,11 +1,11 @@
-import { RefObject, useCallback, useEffect, useMemo, useRef } from "react";
+import { type RefObject, useCallback, useEffect, useMemo, useRef } from "react";
 
 import { getClassNameFactory } from "../../../../lib";
 import { BubbledPointerEvent } from "../../../../lib/bubble-pointer-event";
 import { rootDroppableId } from "../../../../lib/root-droppable-id";
 import { useSlots } from "../../../../lib/use-slots";
 import { useAppStore } from "../../../../store";
-import { DefaultRootRenderProps } from "../../../../types";
+import type { DefaultRootRenderProps } from "../../../../types";
 import AutoFrame, { autoFrameContext } from "../../../AutoFrame";
 import { DropZoneEditPure, DropZonePure } from "../../../DropZone";
 import { Render } from "../../../Render";

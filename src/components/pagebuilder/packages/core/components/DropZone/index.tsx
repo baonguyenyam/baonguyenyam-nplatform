@@ -1,5 +1,8 @@
+import type { UniqueIdentifier } from "@dnd-kit/abstract";
+import { pointerIntersection } from "@dnd-kit/collision";
+import type { UseDroppableInput } from "@dnd-kit/react";
 import {
-	CSSProperties,
+	type CSSProperties,
 	forwardRef,
 	memo,
 	useCallback,
@@ -8,9 +11,6 @@ import {
 	useMemo,
 	useRef,
 } from "react";
-import { UniqueIdentifier } from "@dnd-kit/abstract";
-import { pointerIntersection } from "@dnd-kit/collision";
-import { UseDroppableInput } from "@dnd-kit/react";
 import { useShallow } from "zustand/react/shallow";
 
 import { getClassNameFactory } from "../../lib";
@@ -25,7 +25,7 @@ import {
 import { useContextStore } from "../../lib/use-context-store";
 import { useSlots } from "../../lib/use-slots";
 import { useAppStore } from "../../store";
-import {
+import type {
 	ComponentData,
 	Config,
 	DragAxis,
@@ -36,20 +36,18 @@ import { DraggableComponent } from "../DraggableComponent";
 import { DrawerItemInner } from "../Drawer";
 import { renderContext } from "../Render";
 import { ContextSlotRender, SlotRenderPure } from "../SlotRender";
-
+import {
+	type DropZoneContext,
+	DropZoneProvider,
+	dropZoneContext,
+	type Preview,
+	ZoneStoreContext,
+} from "./context";
 import { useContentIdsWithPreview } from "./lib/use-content-with-preview";
 import { useDragAxis } from "./lib/use-drag-axis";
 import { useMinEmptyHeight } from "./lib/use-min-empty-height";
-import {
-	DropZoneContext,
-	dropZoneContext,
-	DropZoneProvider,
-	Preview,
-	ZoneStoreContext,
-} from "./context";
-import { DropZoneProps } from "./types";
-
 import styles from "./styles.module.css";
+import type { DropZoneProps } from "./types";
 
 const getClassName = getClassNameFactory("DropZone", styles);
 

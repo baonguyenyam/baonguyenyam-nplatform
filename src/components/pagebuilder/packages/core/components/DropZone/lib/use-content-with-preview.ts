@@ -4,9 +4,8 @@ import { insert } from "../../../lib/data/insert";
 import { useRenderedCallback } from "../../../lib/dnd/use-rendered-callback";
 import { useContextStore } from "../../../lib/use-context-store";
 import { useAppStore } from "../../../store";
+import type { Preview } from "./../context";
 import { ZoneStoreContext } from "../context";
-
-import { Preview } from "./../context";
 
 export const useContentIdsWithPreview = (
 	contentIds: string[],

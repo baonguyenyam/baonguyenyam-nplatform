@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
@@ -23,9 +22,10 @@ import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import {
 	$getRoot,
 	$insertNodes,
-	EditorState,
-	LexicalEditor as LexicalEditorType,
+	type EditorState,
+	type LexicalEditor as LexicalEditorType,
 } from "lexical";
+import { useEffect, useState } from "react";
 
 import AutoLinkPlugin from "@/components/editor/plugins/AutoLinkPlugin";
 import CodeHighlightPlugin from "@/components/editor/plugins/CodeHighlightPlugin";

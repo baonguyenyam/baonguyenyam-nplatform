@@ -2,10 +2,10 @@ import { getIdsForParent } from "../../lib/data/get-ids-for-parent";
 import { insert } from "../../lib/data/insert";
 import { walkTree } from "../../lib/data/walk-tree";
 import { generateId } from "../../lib/generate-id";
-import { AppStore } from "../../store";
-import { Data } from "../../types";
-import { PrivateAppState } from "../../types/Internal";
-import { InsertAction } from "../actions";
+import type { AppStore } from "../../store";
+import type { Data } from "../../types";
+import type { PrivateAppState } from "../../types/Internal";
+import type { InsertAction } from "../actions";
 
 export function insertAction<UserData extends Data>(
 	state: PrivateAppState<UserData>,

@@ -1,8 +1,10 @@
+import type { UniqueIdentifier } from "@dnd-kit/abstract";
+import { Copy, CornerLeftUp, Trash } from "lucide-react";
 import {
-	CSSProperties,
-	ReactNode,
-	Ref,
-	SyntheticEvent,
+	type CSSProperties,
+	type ReactNode,
+	type Ref,
+	type SyntheticEvent,
 	useCallback,
 	useContext,
 	useEffect,
@@ -11,8 +13,6 @@ import {
 	useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { UniqueIdentifier } from "@dnd-kit/abstract";
-import { Copy, CornerLeftUp, Trash } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
 import { getItem } from "../../lib/data/get-item";
@@ -22,10 +22,10 @@ import getClassNameFactory from "../../lib/get-class-name-factory";
 import { getDeepScrollPosition } from "../../lib/get-deep-scroll-position";
 import { useContextStore } from "../../lib/use-context-store";
 import { useAppStore, useAppStoreApi } from "../../store";
-import { DragAxis } from "../../types";
+import type { DragAxis } from "../../types";
 import { ActionBar } from "../ActionBar";
-import { dropZoneContext, DropZoneProvider } from "../DropZone";
-import { DropZoneContext, ZoneStoreContext } from "../DropZone/context";
+import { DropZoneProvider, dropZoneContext } from "../DropZone";
+import { type DropZoneContext, ZoneStoreContext } from "../DropZone/context";
 import { Loader } from "../Loader";
 
 import "./styles.css";
