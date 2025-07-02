@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { PermissionChecker } from "@/lib/admin-route-protection";
 import { meta } from "@/lib/appConst";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
 
 import Fetch from "./[page]/fetch";
 
@@ -20,19 +20,8 @@ export default async function Index() {
 		redirect("/authentication/login");
 	}
 
-	// Create permission checker with enhanced system
-	const userContext = {
-		userId: session.user.id as string,
-		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
-		customPermissions: session.user.permissions ? JSON.parse(typeof session.user.permissions === "string" ? session.user.permissions : JSON.stringify(session.user.permissions || [])) : undefined,
-	};
+	await PermissionChecker.check("files", "read");
 
-	const permissionChecker = createPermissionChecker(userContext);
-
-	// Check if user has permission to read files
-	if (!permissionChecker.hasPermission(RESOURCES.FILES, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
-		redirect("/admin/deny");
-	}
 
 	const breadcrumb = [
 		{
