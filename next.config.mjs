@@ -33,6 +33,8 @@ const nextConfig = {
 			"@radix-ui/react-dialog",
 			"lucide-react",
 		],
+		// Reduce bundle size by limiting API routes
+		bundlePagesRouterDependencies: true,
 	},
 	// Mark server-only packages
 	serverExternalPackages: [
