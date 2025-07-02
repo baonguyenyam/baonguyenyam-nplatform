@@ -6,7 +6,10 @@ import "server-only";
 // Enhanced database connection with better configuration
 const prismaClientSingleton = () => {
 	return new PrismaClient({
-		log: process.env.NODE_ENV === "development" ? ["query", "info", "warn", "error"] : ["error"],
+		log:
+			process.env.NODE_ENV === "development"
+				? ["query", "info", "warn", "error"]
+				: ["error"],
 		datasources: {
 			db: {
 				url: process.env.DATABASE_URL,
@@ -25,7 +28,9 @@ const prismaClientSingleton = () => {
 
 						// Log slow queries in development
 						if (process.env.NODE_ENV === "development" && duration > 1000) {
-							console.warn(`Slow query detected: ${model}.${operation} took ${duration}ms`);
+							console.warn(
+								`Slow query detected: ${model}.${operation} took ${duration}ms`,
+							);
 						}
 
 						return result;
@@ -49,7 +54,8 @@ if (process.env.NODE_ENV !== "production") {
 export const configureConnection = () => {
 	if (process.env.NODE_ENV === "production") {
 		// These would be set in environment variables
-		process.env.DATABASE_CONNECTION_LIMIT = process.env.DATABASE_CONNECTION_LIMIT || "20";
+		process.env.DATABASE_CONNECTION_LIMIT =
+			process.env.DATABASE_CONNECTION_LIMIT || "20";
 		process.env.DATABASE_TIMEOUT = process.env.DATABASE_TIMEOUT || "30000";
 	}
 };

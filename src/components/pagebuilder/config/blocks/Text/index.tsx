@@ -34,7 +34,11 @@ const TextInner: ComponentConfig<TextProps> = {
 			label: "Color",
 		},
 		maxWidth: { type: "text" },
-		class: { type: "text", placeholder: "class", labelIcon: <Hash size={16} /> },
+		class: {
+			type: "text",
+			placeholder: "class",
+			labelIcon: <Hash size={16} />,
+		},
 	},
 	defaultProps: {
 		align: "left",
@@ -53,10 +57,16 @@ const TextInner: ComponentConfig<TextProps> = {
 					fontSize: size,
 					fontWeight: 300,
 					maxWidth,
-					justifyContent: align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start",
+					justifyContent:
+						align === "center"
+							? "center"
+							: align === "right"
+								? "flex-end"
+								: "flex-start",
 					color: color,
 				}}
-				dangerouslySetInnerHTML={{ __html: text || "" }}></span>
+				dangerouslySetInnerHTML={{ __html: text || "" }}
+			></span>
 		);
 	},
 };

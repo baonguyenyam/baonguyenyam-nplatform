@@ -9,7 +9,9 @@ import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("Card", styles);
 
-const icons = Object.keys(dynamicIconImports).reduce<Record<string, ReactElement>>((acc, iconName) => {
+const icons = Object.keys(dynamicIconImports).reduce<
+	Record<string, ReactElement>
+>((acc, iconName) => {
 	const El = dynamic((dynamicIconImports as any)[iconName]);
 
 	return {

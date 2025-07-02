@@ -8,10 +8,5 @@ export default async function Dashboard() {
 		},
 	];
 
-	return (
-		<Fetch
-			title="Dashboard"
-			breadcrumb={breadcrumb}
-		/>
-	);
+	return <Fetch title="Dashboard" breadcrumb={breadcrumb} />;
 }

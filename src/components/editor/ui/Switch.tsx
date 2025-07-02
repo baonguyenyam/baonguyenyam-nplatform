@@ -22,16 +22,15 @@ export default function Switch({
 }>): React.JSX.Element {
 	const buttonId = useMemo(() => "id_" + Math.floor(Math.random() * 10000), []);
 	return (
-		<div
-			className="switch"
-			id={id}>
+		<div className="switch" id={id}>
 			<label htmlFor={buttonId}>{text}</label>
 			<button
 				type="button"
 				role="switch"
 				aria-checked={checked}
 				id={buttonId}
-				onClick={onClick}>
+				onClick={onClick}
+			>
 				<span />
 			</button>
 		</div>

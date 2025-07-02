@@ -1,4 +1,11 @@
-import { createContext, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from "react";
+import {
+	createContext,
+	PropsWithChildren,
+	ReactNode,
+	useCallback,
+	useMemo,
+	useState,
+} from "react";
 import type { Draggable } from "@dnd-kit/dom";
 import { createStore, StoreApi } from "zustand";
 
@@ -50,11 +57,24 @@ export const ZoneStoreContext = createContext<StoreApi<ZoneStore>>(
 	})),
 );
 
-export const ZoneStoreProvider = ({ children, store }: PropsWithChildren<{ store: StoreApi<ZoneStore> }>) => {
-	return <ZoneStoreContext.Provider value={store}>{children}</ZoneStoreContext.Provider>;
+export const ZoneStoreProvider = ({
+	children,
+	store,
+}: PropsWithChildren<{ store: StoreApi<ZoneStore> }>) => {
+	return (
+		<ZoneStoreContext.Provider value={store}>
+			{children}
+		</ZoneStoreContext.Provider>
+	);
 };
 
-export const DropZoneProvider = ({ children, value }: { children: ReactNode; value: DropZoneContext }) => {
+export const DropZoneProvider = ({
+	children,
+	value,
+}: {
+	children: ReactNode;
+	value: DropZoneContext;
+}) => {
 	// Hovering component may match area, but areas must always contain zones
 	const [hoveringComponent, setHoveringComponent] = useState<string | null>();
 
@@ -92,5 +112,13 @@ export const DropZoneProvider = ({ children, value }: { children: ReactNode; val
 		[value, hoveringComponent],
 	);
 
-	return <>{memoValue && <dropZoneContext.Provider value={memoValue}>{children}</dropZoneContext.Provider>}</>;
+	return (
+		<>
+			{memoValue && (
+				<dropZoneContext.Provider value={memoValue}>
+					{children}
+				</dropZoneContext.Provider>
+			)}
+		</>
+	);
 };

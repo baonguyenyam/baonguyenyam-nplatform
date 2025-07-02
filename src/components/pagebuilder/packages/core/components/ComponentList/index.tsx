@@ -26,16 +26,21 @@ const ComponentListItem = ({
 	);
 
 	return (
-		<Drawer.Item
-			label={label}
-			name={name}
-			isDragDisabled={!canInsert}>
+		<Drawer.Item label={label} name={name} isDragDisabled={!canInsert}>
 			{overrides.componentItem}
 		</Drawer.Item>
 	);
 };
 
-const ComponentList = ({ children, title, id }: { id: string; children?: ReactNode; title?: string }) => {
+const ComponentList = ({
+	children,
+	title,
+	id,
+}: {
+	id: string;
+	children?: ReactNode;
+	title?: string;
+}) => {
 	const config = useAppStore((s) => s.config);
 	const setUi = useAppStore((s) => s.setUi);
 	const componentList = useAppStore((s) => s.state.ui.componentList);
@@ -59,9 +64,16 @@ const ComponentList = ({ children, title, id }: { id: string; children?: ReactNo
 							},
 						})
 					}
-					title={expanded ? `Collapse${title ? ` ${title}` : ""}` : `Expand${title ? ` ${title}` : ""}`}>
+					title={
+						expanded
+							? `Collapse${title ? ` ${title}` : ""}`
+							: `Expand${title ? ` ${title}` : ""}`
+					}
+				>
 					<div>{title}</div>
-					<div className={getClassName("titleIcon")}>{expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}</div>
+					<div className={getClassName("titleIcon")}>
+						{expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+					</div>
 				</button>
 			)}
 			<div className={getClassName("content")}>
@@ -71,7 +83,9 @@ const ComponentList = ({ children, title, id }: { id: string; children?: ReactNo
 							return (
 								<ComponentListItem
 									key={componentKey}
-									label={config.components[componentKey]["label"] ?? componentKey}
+									label={
+										config.components[componentKey]["label"] ?? componentKey
+									}
 									name={componentKey}
 								/>
 							);

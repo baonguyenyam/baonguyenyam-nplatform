@@ -17,7 +17,12 @@ type Props = Readonly<{
 	onChange: (files: FileList | null) => void;
 }>;
 
-export default function FileInput({ accept, label, onChange, "data-test-id": dataTestId }: Props): React.JSX.Element {
+export default function FileInput({
+	accept,
+	label,
+	onChange,
+	"data-test-id": dataTestId,
+}: Props): React.JSX.Element {
 	return (
 		<div className="Input__wrapper">
 			<label className="Input__label">{label}</label>

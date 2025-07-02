@@ -101,7 +101,8 @@ export const DEFAULT_ROLE_PERMISSIONS = {
 // Utility types
 export type Action = (typeof ACTIONS)[keyof typeof ACTIONS];
 export type Resource = (typeof RESOURCES)[keyof typeof RESOURCES];
-export type PermissionLevel = (typeof PERMISSION_LEVELS)[keyof typeof PERMISSION_LEVELS];
+export type PermissionLevel =
+	(typeof PERMISSION_LEVELS)[keyof typeof PERMISSION_LEVELS];
 export type UserRole = "ADMIN" | "MODERATOR" | "USER";
 
 // Permission interface
@@ -134,14 +135,20 @@ export class PermissionChecker {
 	/**
 	 * Kiểm tra quyền hạn cơ bản
 	 */
-	hasPermission(resource: Resource, action: Action, targetLevel: PermissionLevel = PERMISSION_LEVELS.READ): boolean {
+	hasPermission(
+		resource: Resource,
+		action: Action,
+		targetLevel: PermissionLevel = PERMISSION_LEVELS.READ,
+	): boolean {
 		// Kiểm tra role permissions mặc định
 		const rolePermissions = DEFAULT_ROLE_PERMISSIONS[this.userContext.role];
 		const userLevel = rolePermissions[resource] || PERMISSION_LEVELS.NONE;
 
 		// Kiểm tra custom permissions
 		if (this.userContext.customPermissions) {
-			const customPermission = this.userContext.customPermissions.find((p) => p.resource === resource && p.action === action);
+			const customPermission = this.userContext.customPermissions.find(
+				(p) => p.resource === resource && p.action === action,
+			);
 			if (customPermission) {
 				return customPermission.level >= targetLevel;
 			}
@@ -160,10 +167,16 @@ export class PermissionChecker {
 	/**
 	 * Kiểm tra quyền đặc biệt (attribute-based)
 	 */
-	hasConditionalPermission(resource: Resource, action: Action, conditions: Record<string, any>): boolean {
+	hasConditionalPermission(
+		resource: Resource,
+		action: Action,
+		conditions: Record<string, any>,
+	): boolean {
 		if (!this.userContext.customPermissions) return false;
 
-		const permission = this.userContext.customPermissions.find((p) => p.resource === resource && p.action === action);
+		const permission = this.userContext.customPermissions.find(
+			(p) => p.resource === resource && p.action === action,
+		);
 
 		if (!permission || !permission.conditions) return false;
 
@@ -183,7 +196,10 @@ export class PermissionChecker {
 		// Merge custom permissions
 		if (this.userContext.customPermissions) {
 			this.userContext.customPermissions.forEach((permission) => {
-				if (permission.level > (result[permission.resource] || PERMISSION_LEVELS.NONE)) {
+				if (
+					permission.level >
+					(result[permission.resource] || PERMISSION_LEVELS.NONE)
+				) {
 					result[permission.resource] = permission.level;
 				}
 			});
@@ -210,11 +226,18 @@ export class PermissionChecker {
 /**
  * Helper functions để sử dụng trong components và API
  */
-export const createPermissionChecker = (userContext: UserPermissionContext): PermissionChecker => {
+export const createPermissionChecker = (
+	userContext: UserPermissionContext,
+): PermissionChecker => {
 	return new PermissionChecker(userContext);
 };
 
-export const checkPermission = (userContext: UserPermissionContext, resource: Resource, action: Action, level: PermissionLevel = PERMISSION_LEVELS.READ): boolean => {
+export const checkPermission = (
+	userContext: UserPermissionContext,
+	resource: Resource,
+	action: Action,
+	level: PermissionLevel = PERMISSION_LEVELS.READ,
+): boolean => {
 	const checker = createPermissionChecker(userContext);
 	return checker.hasPermission(resource, action, level);
 };
@@ -222,8 +245,16 @@ export const checkPermission = (userContext: UserPermissionContext, resource: Re
 /**
  * Decorator cho API routes
  */
-export const requirePermission = (resource: Resource, action: Action, level: PermissionLevel = PERMISSION_LEVELS.READ) => {
-	return (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
+export const requirePermission = (
+	resource: Resource,
+	action: Action,
+	level: PermissionLevel = PERMISSION_LEVELS.READ,
+) => {
+	return (
+		target: any,
+		propertyName: string,
+		descriptor: PropertyDescriptor,
+	) => {
 		const method = descriptor.value;
 		descriptor.value = async function (...args: any[]) {
 			// Giả sử args[0] là request object với user context
@@ -234,7 +265,12 @@ export const requirePermission = (resource: Resource, action: Action, level: Per
 				throw new Error("Unauthorized");
 			}
 
-			const hasPermission = checkPermission(userContext, resource, action, level);
+			const hasPermission = checkPermission(
+				userContext,
+				resource,
+				action,
+				level,
+			);
 			if (!hasPermission) {
 				throw new Error("Insufficient permissions");
 			}

@@ -2,9 +2,20 @@ import { useCallback, useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from "@/components/ui/command";
 import { FormControl } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn, getIdFromAttributeKey } from "@/lib/utils";
 
 import * as actions from "./actions";
@@ -34,30 +45,9 @@ export function FieldSelectAttribute(props: any) {
 		// Select 3
 		if (type === "select" && mode === "edit") {
 			const attID = getIdFromAttributeKey(field.name);
-			await actions.getAttribute(Number(attID), field.value).then((res: any) => {
-				if (res.success === "success") {
-					// data: {
-					// 	"id": Number,
-					// 	"createdAt": Date,
-					// 	"updatedAt": Date,
-					// 	"key": String,
-					// 	"value": String,
-					// 	"data": any,
-					// 	"attributeId": Number,
-					// }
-					if (res.data) {
-						setData([res.data]);
-					}
-				}
-			});
-		}
-		// ["Radio 3","Radio 2"]
-		if (type === "checkbox" && mode === "edit") {
-			const attID = getIdFromAttributeKey(field.name);
-			const arrText = JSON.parse(field.value);
-			const arr: any[] = [];
-			for (let i = 0; i < arrText.length; i++) {
-				await actions.getAttribute(Number(attID), arrText[i]).then((res: any) => {
+			await actions
+				.getAttribute(Number(attID), field.value)
+				.then((res: any) => {
 					if (res.success === "success") {
 						// data: {
 						// 	"id": Number,
@@ -69,17 +59,42 @@ export function FieldSelectAttribute(props: any) {
 						// 	"attributeId": Number,
 						// }
 						if (res.data) {
-							const _item = {
-								id: res?.data?.id,
-								key: res?.data?.key,
-								value: res?.data?.value,
-							};
-							if (res.data) {
-								arr.push(_item);
-							}
+							setData([res.data]);
 						}
 					}
 				});
+		}
+		// ["Radio 3","Radio 2"]
+		if (type === "checkbox" && mode === "edit") {
+			const attID = getIdFromAttributeKey(field.name);
+			const arrText = JSON.parse(field.value);
+			const arr: any[] = [];
+			for (let i = 0; i < arrText.length; i++) {
+				await actions
+					.getAttribute(Number(attID), arrText[i])
+					.then((res: any) => {
+						if (res.success === "success") {
+							// data: {
+							// 	"id": Number,
+							// 	"createdAt": Date,
+							// 	"updatedAt": Date,
+							// 	"key": String,
+							// 	"value": String,
+							// 	"data": any,
+							// 	"attributeId": Number,
+							// }
+							if (res.data) {
+								const _item = {
+									id: res?.data?.id,
+									key: res?.data?.key,
+									value: res?.data?.value,
+								};
+								if (res.data) {
+									arr.push(_item);
+								}
+							}
+						}
+					});
 			}
 			if (arr.length > 0) {
 				const arrText = arr.map((item: any) => item.value);
@@ -94,9 +109,7 @@ export function FieldSelectAttribute(props: any) {
 	}, [fetchData]);
 
 	return (
-		<Popover
-			open={open}
-			onOpenChange={setOpen}>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<FormControl>
 					<Button
@@ -105,8 +118,18 @@ export function FieldSelectAttribute(props: any) {
 						onClick={() => {
 							searchAll("");
 						}}
-						className={cn("justify-between", !field.value && "text-muted-foreground")}>
-						{type === "select" && <>{field.value ? data?.find((item: any) => item.value === field.value)?.key : "Select one"}</>}
+						className={cn(
+							"justify-between",
+							!field.value && "text-muted-foreground",
+						)}
+					>
+						{type === "select" && (
+							<>
+								{field.value
+									? data?.find((item: any) => item.value === field.value)?.key
+									: "Select one"}
+							</>
+						)}
 						{type === "checkbox" && (
 							<>
 								{/* {select && select.length > 0
@@ -139,7 +162,8 @@ export function FieldSelectAttribute(props: any) {
 										setSelect([]);
 										form.setValue(key, JSON.stringify([]));
 										field.onChange(JSON.stringify([]));
-									}}>
+									}}
+								>
 									Clear All
 								</Button>
 							</div>
@@ -149,7 +173,8 @@ export function FieldSelectAttribute(props: any) {
 									select.map((item: any) => (
 										<span
 											key={item}
-											className="px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
+											className="px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+										>
 											{data?.find((i: any) => i.value === item)?.key}
 										</span>
 									))}
@@ -160,7 +185,8 @@ export function FieldSelectAttribute(props: any) {
 			)}
 			<PopoverContent
 				className="p-0 dark:border-gray-700 max-w-[250px]"
-				align="start">
+				align="start"
+			>
 				<Command className="dark:bg-gray-800 dark:border-gray-700 border-0">
 					<CommandInput
 						placeholder="Search..."
@@ -181,7 +207,8 @@ export function FieldSelectAttribute(props: any) {
 												form.setValue(key, item.value);
 												field.onChange(item.value);
 												setOpen(false);
-											}}>
+											}}
+										>
 											<div className="flex items-center">
 												<div
 													className="w-4 h-4 rounded-full mr-2"
@@ -189,7 +216,9 @@ export function FieldSelectAttribute(props: any) {
 												/>
 												{item.key}
 											</div>
-											{field.value === item.value && <Check className="ml-auto h-4 w-4" />}
+											{field.value === item.value && (
+												<Check className="ml-auto h-4 w-4" />
+											)}
 										</CommandItem>
 									))}
 							</CommandGroup>
@@ -203,7 +232,9 @@ export function FieldSelectAttribute(props: any) {
 											value={item.key}
 											className="cursor-pointer"
 											onSelect={() => {
-												const _select = select.filter((i: any) => i !== item.value);
+												const _select = select.filter(
+													(i: any) => i !== item.value,
+												);
 												if (_select.length === select.length) {
 													// add
 													_select.push(item.value);
@@ -212,13 +243,16 @@ export function FieldSelectAttribute(props: any) {
 													field.onChange(JSON.stringify(_select));
 												} else {
 													// remove
-													const _select2 = select.filter((i: any) => i !== item.value);
+													const _select2 = select.filter(
+														(i: any) => i !== item.value,
+													);
 													setSelect(_select2);
 													form.setValue(key, JSON.stringify(_select2));
 													field.onChange(JSON.stringify(_select2));
 												}
 												setOpen(false);
-											}}>
+											}}
+										>
 											<div className="flex items-center">
 												<div
 													className="w-4 h-4 rounded-full mr-2"

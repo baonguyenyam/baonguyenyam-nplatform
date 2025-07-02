@@ -15,14 +15,20 @@ export default function initSupabase({
 	onpostgres?: any;
 	fetchData?: () => void;
 }) {
-	if (process.env.ENABLE_SUPABASE === "true" || process.env.ENABLE_SUPABASE === "1") {
+	if (
+		process.env.ENABLE_SUPABASE === "true" ||
+		process.env.ENABLE_SUPABASE === "1"
+	) {
 		const channelSupabase = supabaseClient
 			.channel(channel)
 			.on(onpostgres, { event, schema, table }, () => {
 				fetchData();
 			})
 			.subscribe();
-		if (process.env.ENABLE_SUPABASE === "true" || process.env.ENABLE_SUPABASE === "1") {
+		if (
+			process.env.ENABLE_SUPABASE === "true" ||
+			process.env.ENABLE_SUPABASE === "1"
+		) {
 			return () => {
 				supabaseClient.removeChannel(channelSupabase);
 			};

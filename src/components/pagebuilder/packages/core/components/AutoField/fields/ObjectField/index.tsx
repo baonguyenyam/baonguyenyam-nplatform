@@ -8,7 +8,17 @@ import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("ObjectField", styles);
 
-export const ObjectField = ({ field, onChange, value, name, label, labelIcon, Label, readOnly, id }: FieldPropsInternal) => {
+export const ObjectField = ({
+	field,
+	onChange,
+	value,
+	name,
+	label,
+	labelIcon,
+	Label,
+	readOnly,
+	id,
+}: FieldPropsInternal) => {
 	const { readOnlyFields, localName = name } = useNestedFieldContext();
 
 	if (field.type !== "object" || !field.objectFields) {
@@ -22,7 +32,8 @@ export const ObjectField = ({ field, onChange, value, name, label, labelIcon, La
 			label={label || name}
 			icon={labelIcon || <MoreVertical size={16} />}
 			el="div"
-			readOnly={readOnly}>
+			readOnly={readOnly}
+		>
 			<div className={getClassName()}>
 				<fieldset className={getClassName("fieldset")}>
 					{Object.keys(field.objectFields!).map((subName) => {
@@ -31,7 +42,9 @@ export const ObjectField = ({ field, onChange, value, name, label, labelIcon, La
 						const subPath = `${name}.${subName}`;
 						const localSubPath = `${localName || name}.${subName}`;
 
-						const subReadOnly = readOnly ? readOnly : readOnlyFields[localSubPath];
+						const subReadOnly = readOnly
+							? readOnly
+							: readOnlyFields[localSubPath];
 
 						const label = subField.label || subName;
 
@@ -40,7 +53,8 @@ export const ObjectField = ({ field, onChange, value, name, label, labelIcon, La
 								key={subPath}
 								name={localName || id}
 								subName={subName}
-								readOnlyFields={readOnlyFields}>
+								readOnlyFields={readOnlyFields}
+							>
 								<AutoFieldPrivate
 									name={subPath}
 									label={subPath}

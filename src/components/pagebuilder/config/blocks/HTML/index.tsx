@@ -22,7 +22,8 @@ export const HTML: ComponentConfig<HTMLProps> = {
 			<>
 				<div
 					dangerouslySetInnerHTML={{ __html: value }}
-					className={className}></div>
+					className={className}
+				></div>
 			</>
 		);
 	},

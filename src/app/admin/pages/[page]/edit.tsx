@@ -13,7 +13,14 @@ import { FieldSelect } from "@/components/fields/select";
 import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { FieldUpload } from "@/components/fields/upload";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
@@ -66,16 +73,27 @@ interface PostData {
 export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
-		f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-		f_slug: z.string().min(10, { message: "Fullname must be at least 10 characters." }),
+		f_title: z
+			.string()
+			.min(2, { message: "Fullname must be at least 2 characters." }),
+		f_slug: z
+			.string()
+			.min(10, { message: "Fullname must be at least 10 characters." }),
 		f_content: z
 			.string()
 			.optional()
 			.transform((e) => (e === "" ? undefined : e)),
-		f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+		f_published: z
+			.enum(
+				enumPublished.map((item: any) => item.value) as [string, ...string[]],
+				{ required_error: "Published is required" },
+			)
+			.optional(),
 		f_categories: z
 			.array(z.number())
-			.refine((data) => data.length > 0 && data[0] !== 0, { message: "Please select at least one category" })
+			.refine((data) => data.length > 0 && data[0] !== 0, {
+				message: "Please select at least one category",
+			})
 			.optional(),
 		f_file: z
 			.any()
@@ -159,7 +177,9 @@ export default function FormEdit(props: any) {
 			title: values.f_title,
 			content: values.f_content,
 			published: values.f_published === "TRUE" ? true : false,
-			slug: !id ? genSlug(values.f_title + " " + randomOrderString(10)) : values.f_slug,
+			slug: !id
+				? genSlug(values.f_title + " " + randomOrderString(10))
+				: values.f_slug,
 			image: !id ? thumbnail : undefined,
 			type: type,
 			categories: {
@@ -181,7 +201,9 @@ export default function FormEdit(props: any) {
 			],
 		};
 
-		const res = data ? await actions.updateRecord(id, _body, _meta) : await actions.createRecord(_body, _meta);
+		const res = data
+			? await actions.updateRecord(id, _body, _meta)
+			: await actions.createRecord(_body, _meta);
 		if (res.success !== "success") {
 			toast.error(res.message);
 			return;
@@ -212,7 +234,9 @@ export default function FormEdit(props: any) {
 				f_content: res?.data?.content || "",
 				f_published: res?.data?.published === true ? "TRUE" : "FALSE",
 				f_categories: res?.data?.categories?.map((item: any) => item.id) || [],
-				f_seo_keywords: res?.data?.meta?.find((item: any) => item.key === "seo_keywords")?.value || "",
+				f_seo_keywords:
+					res?.data?.meta?.find((item: any) => item.key === "seo_keywords")
+						?.value || "",
 				f_slug: res?.data?.slug || "",
 			});
 			// Parse the data attribute
@@ -224,16 +248,32 @@ export default function FormEdit(props: any) {
 				const fieldValue = item?.children?.map((child: any) => {
 					const childFieldName = `${fieldName}_${child.id}`;
 					if (child?.type === "select") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue = (
+							_attribute?.find((c: any) => c.id === item.id) || {}
+						)?.data?.find((v: any) => v.id === child.id)?.value;
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 					if (child?.type === "checkbox") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value || "[]";
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue =
+							(
+								_attribute?.find((c: any) => c.id === item.id) || {}
+							)?.data?.find((v: any) => v.id === child.id)?.value || "[]";
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 					if (child?.type === "text") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue = (
+							_attribute?.find((c: any) => c.id === item.id) || {}
+						)?.data?.find((v: any) => v.id === child.id)?.value;
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 				});
 			});
@@ -260,7 +300,8 @@ export default function FormEdit(props: any) {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-6 pb-15">
+						className="w-full space-y-6 pb-15"
+					>
 						<FormField
 							control={form.control}
 							name="f_title"
@@ -273,7 +314,10 @@ export default function FormEdit(props: any) {
 										onKeyDown: (e: any) => {
 											const str = e.target.value;
 											if (!id) {
-												form.setValue("f_slug", genSlug(str + " " + randomOrderString(10)));
+												form.setValue(
+													"f_slug",
+													genSlug(str + " " + randomOrderString(10)),
+												);
 											}
 										},
 									})}
@@ -319,7 +363,9 @@ export default function FormEdit(props: any) {
 							render={() => (
 								<FormItem>
 									<FormLabel>Categories</FormLabel>
-									<div className="grid grid-cols-2 lg:grid-cols-4 mt-3 gap-4">{FieldCheckbox({ data: categories, form })}</div>
+									<div className="grid grid-cols-2 lg:grid-cols-4 mt-3 gap-4">
+										{FieldCheckbox({ data: categories, form })}
+									</div>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -330,9 +376,7 @@ export default function FormEdit(props: any) {
 								<TabsTrigger value="file">Files</TabsTrigger>
 								<TabsTrigger value="seo">SEO</TabsTrigger>
 							</TabsList>
-							<TabsContent
-								value="file"
-								className="mt-4">
+							<TabsContent value="file" className="mt-4">
 								{ImageList({
 									role,
 									data: imgs,
@@ -365,9 +409,7 @@ export default function FormEdit(props: any) {
 									/>
 								</div>
 							</TabsContent>
-							<TabsContent
-								value="seo"
-								className="mt-4">
+							<TabsContent value="seo" className="mt-4">
 								<FormField
 									control={form.control}
 									name="f_seo_keywords"
@@ -390,14 +432,10 @@ export default function FormEdit(props: any) {
 						</Tabs>
 
 						{atts?.length > 0 && (
-							<Tabs
-								defaultValue={atts?.[0]?.id}
-								className="mb-10">
+							<Tabs defaultValue={atts?.[0]?.id} className="mb-10">
 								<TabsList className="mt-5 mb-2">
 									{atts?.map((item: any) => (
-										<TabsTrigger
-											key={item.id}
-											value={item.id}>
+										<TabsTrigger key={item.id} value={item.id}>
 											{item.title}
 										</TabsTrigger>
 									))}
@@ -407,7 +445,8 @@ export default function FormEdit(props: any) {
 										<TabsContent
 											key={item.id}
 											value={item.id}
-											className="space-y-15">
+											className="space-y-15"
+										>
 											<div className="grid grid-cols-3 gap-5">
 												{item?.children?.map((child: any) => {
 													const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
@@ -415,7 +454,9 @@ export default function FormEdit(props: any) {
 														<Fragment key={child.id}>
 															<FormField
 																control={form.control}
-																name={fieldName as keyof z.infer<typeof FormSchema>}
+																name={
+																	fieldName as keyof z.infer<typeof FormSchema>
+																}
 																render={({ field }) => (
 																	<FormItem>
 																		<FormLabel>{child.title}</FormLabel>
@@ -424,14 +465,19 @@ export default function FormEdit(props: any) {
 																				<Input {...field} />
 																			</FormControl>
 																		)}
-																		{(child?.type === "select" || child?.type === "checkbox") && (
+																		{(child?.type === "select" ||
+																			child?.type === "checkbox") && (
 																			<>
 																				{FieldSelectAttribute({
 																					mode: id ? "edit" : "create",
 																					field,
 																					form,
 																					type: child?.type,
-																					key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																					key:
+																						"f_" +
+																						stringToKeyValue(item.title) +
+																						"_" +
+																						item.id,
 																					id: child.id,
 																				})}
 																			</>
@@ -471,7 +517,10 @@ export default function FormEdit(props: any) {
 							)}
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								Save changes
 							</Button>
 						</div>

@@ -32,14 +32,18 @@ export function usePerformanceMonitor(componentName: string) {
 
 			setMetrics({
 				renderTime,
-				componentSize: document.querySelector(`[data-component="${componentName}"]`)?.children.length || 0,
+				componentSize:
+					document.querySelector(`[data-component="${componentName}"]`)
+						?.children.length || 0,
 				rerenderCount: renderCount.current,
 				memoryUsage,
 			});
 
 			// Log performance in development
 			if (process.env.NODE_ENV === "development" && renderTime > 16) {
-				console.warn(`🐌 Slow render detected in ${componentName}: ${renderTime.toFixed(2)}ms`);
+				console.warn(
+					`🐌 Slow render detected in ${componentName}: ${renderTime.toFixed(2)}ms`,
+				);
 			}
 		};
 	});
@@ -48,7 +52,10 @@ export function usePerformanceMonitor(componentName: string) {
 }
 
 // HOC for performance monitoring
-export function withPerformanceMonitoring<P extends object>(Component: React.ComponentType<P>, componentName: string) {
+export function withPerformanceMonitoring<P extends object>(
+	Component: React.ComponentType<P>,
+	componentName: string,
+) {
 	return function PerformanceMonitoredComponent(props: P) {
 		const metrics = usePerformanceMonitor(componentName);
 
@@ -71,7 +78,9 @@ export function analyzeBundleSize() {
 	if (typeof window === "undefined") return null;
 
 	const scripts = Array.from(document.querySelectorAll("script[src]"));
-	const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+	const stylesheets = Array.from(
+		document.querySelectorAll('link[rel="stylesheet"]'),
+	);
 
 	return {
 		scriptCount: scripts.length,
@@ -107,11 +116,15 @@ export function getPerformanceTips(metrics: PerformanceMetrics): string[] {
 	}
 
 	if (metrics.rerenderCount > 10) {
-		tips.push("High re-render count detected. Check your dependencies and use useMemo/useCallback");
+		tips.push(
+			"High re-render count detected. Check your dependencies and use useMemo/useCallback",
+		);
 	}
 
 	if (metrics.componentSize > 100) {
-		tips.push("Large component detected. Consider splitting into smaller components");
+		tips.push(
+			"Large component detected. Consider splitting into smaller components",
+		);
 	}
 
 	if (metrics.memoryUsage && metrics.memoryUsage > 50 * 1024 * 1024) {
@@ -157,11 +170,13 @@ export function PerformanceDashboard() {
 				zIndex: 9999,
 				fontFamily: "monospace",
 				maxWidth: "300px",
-			}}>
+			}}
+		>
 			<h4>Performance Dashboard</h4>
 			{bundleInfo && (
 				<div>
-					<strong>Bundle:</strong> {bundleInfo.scriptCount} scripts, {bundleInfo.stylesheetCount} styles
+					<strong>Bundle:</strong> {bundleInfo.scriptCount} scripts,{" "}
+					{bundleInfo.stylesheetCount} styles
 				</div>
 			)}
 			{memoryInfo && (
@@ -169,7 +184,9 @@ export function PerformanceDashboard() {
 					<strong>Memory:</strong> {memoryInfo.used}MB / {memoryInfo.total}MB
 				</div>
 			)}
-			<div style={{ fontSize: "10px", marginTop: "5px", opacity: 0.7 }}>Only visible in development</div>
+			<div style={{ fontSize: "10px", marginTop: "5px", opacity: 0.7 }}>
+				Only visible in development
+			</div>
 		</div>
 	);
 }

@@ -1,6 +1,9 @@
 import { ComponentData } from "../types";
 
-export const getChanged = (newItem: Omit<Partial<ComponentData<any>>, "type"> | undefined, oldItem: Omit<Partial<ComponentData<any>>, "type"> | null | undefined) => {
+export const getChanged = (
+	newItem: Omit<Partial<ComponentData<any>>, "type"> | undefined,
+	oldItem: Omit<Partial<ComponentData<any>>, "type"> | null | undefined,
+) => {
 	return newItem
 		? Object.keys(newItem.props || {}).reduce((acc, item) => {
 				const newItemProps = newItem?.props || {};

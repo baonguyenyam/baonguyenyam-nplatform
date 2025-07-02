@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: { data: any } = { data: null }
+const initialState: { data: any } = { data: null };
 
 const categoriesSlice = createSlice({
 	name: "appState",
 	initialState,
 	reducers: {
 		deleteCategory: (state, action) => {
-			const newState = state.data.filter((item: any) => item.id !== action.payload);
+			const newState = state.data.filter(
+				(item: any) => item.id !== action.payload,
+			);
 			return { ...state, data: newState };
 		},
 		addCategory: (state, action) => {
@@ -21,5 +23,6 @@ const categoriesSlice = createSlice({
 	},
 });
 
-export const { setCategory, deleteCategory, addCategory } = categoriesSlice.actions;
+export const { setCategory, deleteCategory, addCategory } =
+	categoriesSlice.actions;
 export default categoriesSlice.reducer;

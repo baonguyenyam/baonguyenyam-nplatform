@@ -3,7 +3,10 @@ import { Redis } from "ioredis";
 // Redis Cache Implementation for Production
 class AdvancedCacheManager {
 	private redis: Redis | null = null;
-	private memoryCache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+	private memoryCache = new Map<
+		string,
+		{ data: any; timestamp: number; ttl: number }
+	>();
 
 	constructor() {
 		if (process.env.REDIS_URL && process.env.NODE_ENV === "production") {
@@ -99,7 +102,11 @@ class AdvancedCacheManager {
 export const advancedCache = new AdvancedCacheManager();
 
 // Enhanced cached functions with Redis support
-export const getCachedOrFetch = async <T>(key: string, fetcher: () => Promise<T>, ttlSeconds: number = 300): Promise<T> => {
+export const getCachedOrFetch = async <T>(
+	key: string,
+	fetcher: () => Promise<T>,
+	ttlSeconds: number = 300,
+): Promise<T> => {
 	const cached = await advancedCache.get<T>(key);
 	if (cached !== null) {
 		return cached;

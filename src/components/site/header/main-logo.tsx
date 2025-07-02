@@ -1,6 +1,13 @@
 "use client";
 
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { appState } from "@/lib/appConst";
 
 export function MainLogo(props: any) {
@@ -9,7 +16,9 @@ export function MainLogo(props: any) {
 		<div className="flex items-center gap-4">
 			<NavigationMenu>
 				<NavigationMenuList className="flex gap-4">
-					<NavigationMenuItem className="font-semibold">{appState.appName}</NavigationMenuItem>
+					<NavigationMenuItem className="font-semibold">
+						{appState.appName}
+					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
 		</div>

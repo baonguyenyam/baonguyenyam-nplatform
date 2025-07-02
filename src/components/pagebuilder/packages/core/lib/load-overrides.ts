@@ -1,6 +1,12 @@
 import { Overrides, Plugin } from "../types";
 
-export const loadOverrides = ({ overrides, plugins }: { overrides?: Partial<Overrides>; plugins?: Plugin[] }) => {
+export const loadOverrides = ({
+	overrides,
+	plugins,
+}: {
+	overrides?: Partial<Overrides>;
+	plugins?: Plugin[];
+}) => {
 	const collected: Partial<Overrides> = { ...overrides };
 
 	plugins?.forEach((plugin) => {

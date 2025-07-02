@@ -8,8 +8,31 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
+	SidebarHeader,
+	SidebarInput,
+	SidebarInset,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { appState, FooterItems, MenuItems } from "@/lib/appConst";
 import { useAppSelector } from "@/store";
@@ -24,7 +47,9 @@ export function AppSidebar() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const role = useCurrentRole();
-	const _state = useAppSelector((state) => state.appState) as { title?: string };
+	const _state = useAppSelector((state) => state.appState) as {
+		title?: string;
+	};
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -32,7 +57,10 @@ export function AppSidebar() {
 		},
 	});
 
-	const checkActiveMenu = (item: { url: string; items?: { url: string }[] }) => {
+	const checkActiveMenu = (item: {
+		url: string;
+		items?: { url: string }[];
+	}) => {
 		if (pathname === item.url) {
 			return true;
 		}
@@ -48,13 +76,16 @@ export function AppSidebar() {
 		<Sidebar
 			variant="sidebar"
 			collapsible="icon"
-			className="flex items-center justify-between bg-gray-100 dark:bg-gray-900 h-screen border-r dark:border-gray-800">
+			className="flex items-center justify-between bg-gray-100 dark:bg-gray-900 h-screen border-r dark:border-gray-800"
+		>
 			<SidebarHeader className="flex items-center justify-between">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton asChild>
 							<Link href="/">
-								<span className="text-base font-semibold">{_state?.title ?? appState?.appName}</span>
+								<span className="text-base font-semibold">
+									{_state?.title ?? appState?.appName}
+								</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
@@ -64,7 +95,8 @@ export function AppSidebar() {
 						<Form {...form}>
 							<form
 								onSubmit={form.handleSubmit(onSubmit)}
-								className="w-full space-y-6">
+								className="w-full space-y-6"
+							>
 								<FormField
 									control={form.control}
 									name="f_s"
@@ -98,10 +130,12 @@ export function AppSidebar() {
 										<SidebarMenuItem>
 											<SidebarMenuButton
 												asChild
-												isActive={checkActiveMenu(item)}>
+												isActive={checkActiveMenu(item)}
+											>
 												<div
 													className="cursor-pointer"
-													onClick={() => router.push(item.url)}>
+													onClick={() => router.push(item.url)}
+												>
 													<item.icon />
 													<span>{item.title}</span>
 												</div>
@@ -113,10 +147,12 @@ export function AppSidebar() {
 															<SidebarMenuSubButton
 																asChild
 																isActive={checkActiveMenu(item)}
-																onClick={() => router.push(item.url)}>
+																onClick={() => router.push(item.url)}
+															>
 																<div
 																	className="cursor-pointer"
-																	onClick={() => router.push(item.url)}>
+																	onClick={() => router.push(item.url)}
+																>
 																	<item.icon />
 																	<span>{item.title}</span>
 																</div>
@@ -144,7 +180,8 @@ export function AppSidebar() {
 										<SidebarMenuButton asChild>
 											<div
 												className="cursor-pointer"
-												onClick={() => router.push(item.url)}>
+												onClick={() => router.push(item.url)}
+											>
 												<item.icon />
 												<span>{item.title}</span>
 											</div>

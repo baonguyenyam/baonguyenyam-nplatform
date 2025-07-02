@@ -1,17 +1,30 @@
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth-middleware";
-import { checkAdminRoutePermission, getUnauthorizedRedirectUrl } from "@/lib/admin-route-protection-middleware";
+import {
+	checkAdminRoutePermission,
+	getUnauthorizedRedirectUrl,
+} from "@/lib/admin-route-protection-middleware";
 import { secureSearchString } from "@/lib/middleware-utils";
 import { checkRateLimit, getRateLimitHeaders } from "@/lib/rate-limiter";
-import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, pathAuthPrefix, publicApp, publicRoutes } from "@/routes";
+import {
+	apiAuthPrefix,
+	authRoutes,
+	DEFAULT_LOGIN_REDIRECT,
+	pathAuthPrefix,
+	publicApp,
+	publicRoutes,
+} from "@/routes";
 
 export default auth(async (req) => {
 	const response = NextResponse.next();
 
 	// Rate limiting for API routes
 	if (req.nextUrl.pathname.startsWith("/api/")) {
-		const identifier = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "anonymous";
+		const identifier =
+			req.headers.get("x-forwarded-for") ||
+			req.headers.get("x-real-ip") ||
+			"anonymous";
 		const isAuthenticated = !!req.auth;
 		const userRole = req.auth?.user?.role;
 
@@ -53,7 +66,8 @@ export default auth(async (req) => {
 	const orderBy = secureSearchString(searchParams?.get("orderBy")) || "";
 	const filterBy = secureSearchString(searchParams?.get("filterBy")) || "";
 	const byCat = secureSearchString(searchParams?.get("cat")) || "";
-	const callbackUrl = secureSearchString(searchParams?.get("callbackUrl")) || "";
+	const callbackUrl =
+		secureSearchString(searchParams?.get("callbackUrl")) || "";
 	const error = secureSearchString(searchParams?.get("error")) || "";
 
 	// Set headers
@@ -74,7 +88,11 @@ export default auth(async (req) => {
 	const isLoggedIn = !!req.auth;
 
 	// Enhanced admin route protection with permissions
-	if (nextUrl.pathname.startsWith("/admin") && nextUrl.pathname !== "/admin" && nextUrl.pathname !== "/admin/deny") {
+	if (
+		nextUrl.pathname.startsWith("/admin") &&
+		nextUrl.pathname !== "/admin" &&
+		nextUrl.pathname !== "/admin/deny"
+	) {
 		const userRole = req.auth?.user?.role;
 		const isAllowed = checkAdminRoutePermission(nextUrl.pathname, userRole);
 
@@ -128,7 +146,12 @@ export default auth(async (req) => {
 		}
 
 		const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-		return NextResponse.redirect(new URL(`/authentication/login?callbackUrl=${encodedCallbackUrl}`, nextUrl));
+		return NextResponse.redirect(
+			new URL(
+				`/authentication/login?callbackUrl=${encodedCallbackUrl}`,
+				nextUrl,
+			),
+		);
 	}
 
 	return response;

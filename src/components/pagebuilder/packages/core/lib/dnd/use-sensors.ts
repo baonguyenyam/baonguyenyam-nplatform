@@ -22,7 +22,11 @@ export const useSensors = (
 			activationConstraints(event, source) {
 				const { pointerType, target } = event;
 
-				if (pointerType === "mouse" && isElement(target) && (source.handle === target || source.handle?.contains(target))) {
+				if (
+					pointerType === "mouse" &&
+					isElement(target) &&
+					(source.handle === target || source.handle?.contains(target))
+				) {
 					return mouse;
 				}
 

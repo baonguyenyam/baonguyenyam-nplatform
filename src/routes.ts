@@ -4,17 +4,14 @@
  * @type {string[]}
  */
 
-// PUBLIC 
-export const publicApp: string[] = [
-	"/",
-	"/(blogs|blog)/:slug",
-];
+// PUBLIC
+export const publicApp: string[] = ["/", "/(blogs|blog)/:slug"];
 
-// ADMIN 
+// ADMIN
 export const publicRoutes: string[] = [
 	"/",
 	"/authentication/logout/success",
-	"/authentication/new-verification"
+	"/authentication/new-verification",
 ];
 
 /**
@@ -26,7 +23,7 @@ export const authRoutes: string[] = [
 	"/authentication/login",
 	"/authentication/register",
 	"/authentication/reset",
-	"/authentication/new-password"
+	"/authentication/new-password",
 ];
 
 /**

@@ -143,7 +143,12 @@ export const getAllOrders = async (query: any) => {
 			skip: skip ? skip : undefined,
 			where: {
 				published: published ? published : undefined,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 			select: {
 				id: true,
@@ -267,7 +272,12 @@ export const getOrdersCount = async (query: any) => {
 		const count = await db.order.count({
 			where: {
 				published: published ? published : undefined,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 		});
 		return count;
@@ -306,7 +316,10 @@ export const updateOrder = async (id: string, data: any) => {
 };
 
 // Disconnect customer from order
-export const disconnectCustomerFromOrder = async (orderId: string, customerId: string) => {
+export const disconnectCustomerFromOrder = async (
+	orderId: string,
+	customerId: string,
+) => {
 	try {
 		const order = await db.order.update({
 			where: {
@@ -327,7 +340,10 @@ export const disconnectCustomerFromOrder = async (orderId: string, customerId: s
 };
 
 // Connect customer to order
-export const connectCustomerToOrder = async (orderId: string, customerId: string) => {
+export const connectCustomerToOrder = async (
+	orderId: string,
+	customerId: string,
+) => {
 	try {
 		const order = await db.order.update({
 			where: {
@@ -348,7 +364,11 @@ export const connectCustomerToOrder = async (orderId: string, customerId: string
 };
 
 // Disconnect user from order
-export const disconnectUserFromOrder = async (orderId: string, userId: string, table?: any) => {
+export const disconnectUserFromOrder = async (
+	orderId: string,
+	userId: string,
+	table?: any,
+) => {
 	try {
 		const order = await db.order.update({
 			where: {
@@ -365,7 +385,11 @@ export const disconnectUserFromOrder = async (orderId: string, userId: string, t
 };
 
 // Connect user to order
-export const connectUserToOrder = async (orderId: string, userId: string, table: any) => {
+export const connectUserToOrder = async (
+	orderId: string,
+	userId: string,
+	table: any,
+) => {
 	try {
 		const order = await db.order.update({
 			where: {

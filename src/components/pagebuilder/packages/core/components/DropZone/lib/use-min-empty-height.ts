@@ -5,13 +5,22 @@ import { useAppStoreApi } from "../../../store";
 
 import { ZoneStoreContext } from "./../context";
 
-export const useMinEmptyHeight = ({ zoneCompound, userMinEmptyHeight, ref }: { zoneCompound: string; userMinEmptyHeight: number; ref: RefObject<HTMLDivElement | null> }) => {
+export const useMinEmptyHeight = ({
+	zoneCompound,
+	userMinEmptyHeight,
+	ref,
+}: {
+	zoneCompound: string;
+	userMinEmptyHeight: number;
+	ref: RefObject<HTMLDivElement | null>;
+}) => {
 	const appStore = useAppStoreApi();
 	const [prevHeight, setPrevHeight] = useState(0);
 	const [isAnimating, setIsAnimating] = useState(false);
 	const { draggedItem, isZone } = useContextStore(ZoneStoreContext, (s) => {
 		return {
-			draggedItem: s.draggedItem?.data.zone === zoneCompound ? s.draggedItem : null,
+			draggedItem:
+				s.draggedItem?.data.zone === zoneCompound ? s.draggedItem : null,
 			isZone: s.draggedItem?.data.zone === zoneCompound,
 		};
 	});

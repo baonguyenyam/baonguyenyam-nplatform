@@ -14,8 +14,26 @@ import { LexicalNestedComposer } from "@lexical/react/LexicalNestedComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
-import type { LexicalEditor, NodeKey, NodeSelection, RangeSelection } from "lexical";
-import { $getNodeByKey, $getSelection, $isNodeSelection, $setSelection, CLICK_COMMAND, COMMAND_PRIORITY_LOW, DRAGSTART_COMMAND, KEY_BACKSPACE_COMMAND, KEY_DELETE_COMMAND, KEY_ENTER_COMMAND, KEY_ESCAPE_COMMAND, SELECTION_CHANGE_COMMAND } from "lexical";
+import type {
+	LexicalEditor,
+	NodeKey,
+	NodeSelection,
+	RangeSelection,
+} from "lexical";
+import {
+	$getNodeByKey,
+	$getSelection,
+	$isNodeSelection,
+	$setSelection,
+	CLICK_COMMAND,
+	COMMAND_PRIORITY_LOW,
+	DRAGSTART_COMMAND,
+	KEY_BACKSPACE_COMMAND,
+	KEY_DELETE_COMMAND,
+	KEY_ENTER_COMMAND,
+	KEY_ESCAPE_COMMAND,
+	SELECTION_CHANGE_COMMAND,
+} from "lexical";
 
 import useModal from "../hooks/useModal";
 import FloatingLinkEditorPlugin from "../plugins/FloatingLinkEditorPlugin/index";
@@ -48,7 +66,23 @@ function useSuspenseImage(src: string) {
 	}
 }
 
-function LazyImage({ altText, className, imageRef, src, width, height, position }: { altText: string; className: string | null; height: "inherit" | number; imageRef: { current: null | HTMLImageElement }; src: string; width: "inherit" | number; position: Position }): React.JSX.Element {
+function LazyImage({
+	altText,
+	className,
+	imageRef,
+	src,
+	width,
+	height,
+	position,
+}: {
+	altText: string;
+	className: string | null;
+	height: "inherit" | number;
+	imageRef: { current: null | HTMLImageElement };
+	src: string;
+	width: "inherit" | number;
+	position: Position;
+}): React.JSX.Element {
 	useSuspenseImage(src);
 	return (
 		<img
@@ -67,9 +101,19 @@ function LazyImage({ altText, className, imageRef, src, width, height, position 
 	);
 }
 
-export function UpdateInlineImageDialog({ activeEditor, nodeKey, onClose }: { activeEditor: LexicalEditor; nodeKey: NodeKey; onClose: () => void }): React.JSX.Element {
+export function UpdateInlineImageDialog({
+	activeEditor,
+	nodeKey,
+	onClose,
+}: {
+	activeEditor: LexicalEditor;
+	nodeKey: NodeKey;
+	onClose: () => void;
+}): React.JSX.Element {
 	const editorState = activeEditor.getEditorState();
-	const node = editorState.read(() => $getNodeByKey(nodeKey) as InlineImageNode);
+	const node = editorState.read(
+		() => $getNodeByKey(nodeKey) as InlineImageNode,
+	);
 	const [altText, setAltText] = useState(node.getAltText());
 	const [showCaption, setShowCaption] = useState(node.getShowCaption());
 	const [position, setPosition] = useState<Position>(node.getPosition());
@@ -110,7 +154,8 @@ export function UpdateInlineImageDialog({ activeEditor, nodeKey, onClose }: { ac
 				label="Position"
 				name="position"
 				id="position-select"
-				onChange={handlePositionChange}>
+				onChange={handlePositionChange}
+			>
 				<option value="full">Full Width</option>
 				<option value="left">Left</option>
 				<option value="right">Right</option>
@@ -129,7 +174,8 @@ export function UpdateInlineImageDialog({ activeEditor, nodeKey, onClose }: { ac
 			<DialogActions>
 				<Button
 					data-test-id="image-modal-file-upload-btn"
-					onClick={() => handleOnConfirm()}>
+					onClick={() => handleOnConfirm()}
+				>
 					Confirm
 				</Button>
 			</DialogActions>
@@ -137,13 +183,34 @@ export function UpdateInlineImageDialog({ activeEditor, nodeKey, onClose }: { ac
 	);
 }
 
-export default function InlineImageComponent({ src, altText, nodeKey, width, height, showCaption, caption, position }: { altText: string; caption: LexicalEditor; height: "inherit" | number; nodeKey: NodeKey; showCaption: boolean; src: string; width: "inherit" | number; position: Position }): React.JSX.Element {
+export default function InlineImageComponent({
+	src,
+	altText,
+	nodeKey,
+	width,
+	height,
+	showCaption,
+	caption,
+	position,
+}: {
+	altText: string;
+	caption: LexicalEditor;
+	height: "inherit" | number;
+	nodeKey: NodeKey;
+	showCaption: boolean;
+	src: string;
+	width: "inherit" | number;
+	position: Position;
+}): React.JSX.Element {
 	const [modal, showModal] = useModal();
 	const imageRef = useRef<null | HTMLImageElement>(null);
 	const buttonRef = useRef<HTMLButtonElement | null>(null);
-	const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
+	const [isSelected, setSelected, clearSelection] =
+		useLexicalNodeSelection(nodeKey);
 	const [editor] = useLexicalComposerContext();
-	const [selection, setSelection] = useState<RangeSelection | NodeSelection | null>(null);
+	const [selection, setSelection] = useState<
+		RangeSelection | NodeSelection | null
+	>(null);
 	const activeEditorRef = useRef<LexicalEditor | null>(null);
 
 	const onDelete = useCallback(
@@ -166,14 +233,21 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
 		(event: KeyboardEvent) => {
 			const latestSelection = $getSelection();
 			const buttonElem = buttonRef.current;
-			if (isSelected && $isNodeSelection(latestSelection) && latestSelection.getNodes().length === 1) {
+			if (
+				isSelected &&
+				$isNodeSelection(latestSelection) &&
+				latestSelection.getNodes().length === 1
+			) {
 				if (showCaption) {
 					// Move focus into nested editor
 					$setSelection(null);
 					event.preventDefault();
 					caption.focus();
 					return true;
-				} else if (buttonElem !== null && buttonElem !== document.activeElement) {
+				} else if (
+					buttonElem !== null &&
+					buttonElem !== document.activeElement
+				) {
 					event.preventDefault();
 					buttonElem.focus();
 					return true;
@@ -186,7 +260,10 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
 
 	const onEscape = useCallback(
 		(event: KeyboardEvent) => {
-			if (activeEditorRef.current === caption || buttonRef.current === event.target) {
+			if (
+				activeEditorRef.current === caption ||
+				buttonRef.current === event.target
+			) {
 				$setSelection(null);
 				editor.update(() => {
 					setSelected(true);
@@ -258,16 +335,37 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
 				},
 				COMMAND_PRIORITY_LOW,
 			),
-			editor.registerCommand(KEY_DELETE_COMMAND, onDelete, COMMAND_PRIORITY_LOW),
-			editor.registerCommand(KEY_BACKSPACE_COMMAND, onDelete, COMMAND_PRIORITY_LOW),
+			editor.registerCommand(
+				KEY_DELETE_COMMAND,
+				onDelete,
+				COMMAND_PRIORITY_LOW,
+			),
+			editor.registerCommand(
+				KEY_BACKSPACE_COMMAND,
+				onDelete,
+				COMMAND_PRIORITY_LOW,
+			),
 			editor.registerCommand(KEY_ENTER_COMMAND, onEnter, COMMAND_PRIORITY_LOW),
-			editor.registerCommand(KEY_ESCAPE_COMMAND, onEscape, COMMAND_PRIORITY_LOW),
+			editor.registerCommand(
+				KEY_ESCAPE_COMMAND,
+				onEscape,
+				COMMAND_PRIORITY_LOW,
+			),
 		);
 		return () => {
 			isMounted = false;
 			unregister();
 		};
-	}, [clearSelection, editor, isSelected, nodeKey, onDelete, onEnter, onEscape, setSelected]);
+	}, [
+		clearSelection,
+		editor,
+		isSelected,
+		nodeKey,
+		onDelete,
+		onEnter,
+		onEscape,
+		setSelected,
+	]);
 
 	const draggable = isSelected && $isNodeSelection(selection);
 	const isFocused = isSelected;
@@ -287,11 +385,16 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
 									onClose={onClose}
 								/>
 							));
-						}}>
+						}}
+					>
 						Edit
 					</button>
 					<LazyImage
-						className={isFocused ? `focused ${$isNodeSelection(selection) ? "draggable" : ""}` : null}
+						className={
+							isFocused
+								? `focused ${$isNodeSelection(selection) ? "draggable" : ""}`
+								: null
+						}
 						src={src}
 						altText={altText}
 						imageRef={imageRef}
@@ -308,8 +411,14 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
 							<FloatingLinkEditorPlugin />
 							<FloatingTextFormatToolbarPlugin />
 							<RichTextPlugin
-								contentEditable={<ContentEditable className="InlineImageNode__contentEditable" />}
-								placeholder={<Placeholder className="InlineImageNode__placeholder">Enter a caption...</Placeholder>}
+								contentEditable={
+									<ContentEditable className="InlineImageNode__contentEditable" />
+								}
+								placeholder={
+									<Placeholder className="InlineImageNode__placeholder">
+										Enter a caption...
+									</Placeholder>
+								}
 								ErrorBoundary={LexicalErrorBoundary}
 							/>
 						</LexicalNestedComposer>

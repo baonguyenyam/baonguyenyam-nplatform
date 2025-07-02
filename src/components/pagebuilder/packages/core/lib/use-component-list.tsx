@@ -12,42 +12,52 @@ export const useComponentList = () => {
 		if (Object.keys(uiComponentList).length > 0) {
 			const matchedComponents: string[] = [];
 
-			const _componentList: ReactNode[] = Object.entries(uiComponentList).map(([categoryKey, category]) => {
-				if (category.visible === false || !category.components) {
-					return null;
-				}
+			const _componentList: ReactNode[] = Object.entries(uiComponentList).map(
+				([categoryKey, category]) => {
+					if (category.visible === false || !category.components) {
+						return null;
+					}
 
-				return (
-					<ComponentList
-						id={categoryKey}
-						key={categoryKey}
-						title={category.title || categoryKey}>
-						{category.components.map((componentName, i) => {
-							matchedComponents.push(componentName as string);
+					return (
+						<ComponentList
+							id={categoryKey}
+							key={categoryKey}
+							title={category.title || categoryKey}
+						>
+							{category.components.map((componentName, i) => {
+								matchedComponents.push(componentName as string);
 
-							const componentConf = config.components[componentName] || {};
+								const componentConf = config.components[componentName] || {};
 
-							return (
-								<ComponentList.Item
-									key={componentName}
-									label={(componentConf["label"] ?? componentName) as string}
-									name={componentName as string}
-									index={i}
-								/>
-							);
-						})}
-					</ComponentList>
-				);
-			});
+								return (
+									<ComponentList.Item
+										key={componentName}
+										label={(componentConf["label"] ?? componentName) as string}
+										name={componentName as string}
+										index={i}
+									/>
+								);
+							})}
+						</ComponentList>
+					);
+				},
+			);
 
-			const remainingComponents = Object.keys(config.components).filter((component) => matchedComponents.indexOf(component) === -1);
+			const remainingComponents = Object.keys(config.components).filter(
+				(component) => matchedComponents.indexOf(component) === -1,
+			);
 
-			if (remainingComponents.length > 0 && !uiComponentList.other?.components && uiComponentList.other?.visible !== false) {
+			if (
+				remainingComponents.length > 0 &&
+				!uiComponentList.other?.components &&
+				uiComponentList.other?.visible !== false
+			) {
 				_componentList.push(
 					<ComponentList
 						id="other"
 						key="other"
-						title={uiComponentList.other?.title || "Other"}>
+						title={uiComponentList.other?.title || "Other"}
+					>
 						{remainingComponents.map((componentName, i) => {
 							const componentConf = config.components[componentName] || {};
 

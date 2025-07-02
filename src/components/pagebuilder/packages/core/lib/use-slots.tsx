@@ -1,9 +1,24 @@
 import { ReactNode, useMemo } from "react";
 
 import { DropZoneProps } from "../components/DropZone/types";
-import { ComponentConfig, ComponentData, Content, DefaultComponentProps, RootConfig } from "../types";
+import {
+	ComponentConfig,
+	ComponentData,
+	Content,
+	DefaultComponentProps,
+	RootConfig,
+} from "../types";
 
-export function useSlots<T extends DefaultComponentProps>(config: ComponentConfig | RootConfig | null | undefined, props: T, renderSlotEdit: (dzProps: DropZoneProps & { content: Content }) => ReactNode, renderSlotRender: (dzProps: DropZoneProps & { content: Content }) => ReactNode = renderSlotEdit, readOnly?: ComponentData["readOnly"], forceReadOnly?: boolean): T {
+export function useSlots<T extends DefaultComponentProps>(
+	config: ComponentConfig | RootConfig | null | undefined,
+	props: T,
+	renderSlotEdit: (dzProps: DropZoneProps & { content: Content }) => ReactNode,
+	renderSlotRender: (
+		dzProps: DropZoneProps & { content: Content },
+	) => ReactNode = renderSlotEdit,
+	readOnly?: ComponentData["readOnly"],
+	forceReadOnly?: boolean,
+): T {
 	const slotProps = useMemo(() => {
 		if (!config?.fields) return props;
 
@@ -17,7 +32,10 @@ export function useSlots<T extends DefaultComponentProps>(config: ComponentConfi
 			if (field?.type === "slot") {
 				const content = props[fieldKey] || [];
 
-				const render = readOnly?.[fieldKey] || forceReadOnly ? renderSlotRender : renderSlotEdit;
+				const render =
+					readOnly?.[fieldKey] || forceReadOnly
+						? renderSlotRender
+						: renderSlotEdit;
 
 				const Slot = (dzProps: DropZoneProps) =>
 					render({

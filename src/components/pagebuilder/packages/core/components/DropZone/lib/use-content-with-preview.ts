@@ -8,22 +8,35 @@ import { ZoneStoreContext } from "../context";
 
 import { Preview } from "./../context";
 
-export const useContentIdsWithPreview = (contentIds: string[], zoneCompound: string): [string[], Preview | undefined] => {
-	const { draggedItemId, preview, previewExists } = useContextStore(ZoneStoreContext, (s) => {
-		return {
-			draggedItemId: s.draggedItem?.id,
-			preview: s.previewIndex[zoneCompound],
-			previewExists: Object.keys(s.previewIndex || {}).length > 0,
-		};
-	});
+export const useContentIdsWithPreview = (
+	contentIds: string[],
+	zoneCompound: string,
+): [string[], Preview | undefined] => {
+	const { draggedItemId, preview, previewExists } = useContextStore(
+		ZoneStoreContext,
+		(s) => {
+			return {
+				draggedItemId: s.draggedItem?.id,
+				preview: s.previewIndex[zoneCompound],
+				previewExists: Object.keys(s.previewIndex || {}).length > 0,
+			};
+		},
+	);
 
 	const isDragging = useAppStore((s) => s.state.ui.isDragging);
 
-	const [contentIdsWithPreview, setContentIdsWithPreview] = useState(contentIds);
-	const [localPreview, setLocalPreview] = useState<Preview | undefined>(preview);
+	const [contentIdsWithPreview, setContentIdsWithPreview] =
+		useState(contentIds);
+	const [localPreview, setLocalPreview] = useState<Preview | undefined>(
+		preview,
+	);
 
 	const updateContent = useRenderedCallback(
-		(contentIds: string[], preview: Preview | undefined, isDragging: boolean) => {
+		(
+			contentIds: string[],
+			preview: Preview | undefined,
+			isDragging: boolean,
+		) => {
 			// Preview is cleared but context hasn't yet caught up
 			// This is necessary because Zustand clears the preview before the dispatcher finishes
 			// Refactor this once all state has moved to Zustand.
@@ -50,7 +63,11 @@ export const useContentIdsWithPreview = (contentIds: string[], zoneCompound: str
 					);
 				}
 			} else {
-				setContentIdsWithPreview(previewExists ? contentIds.filter((id) => id !== draggedItemId) : contentIds);
+				setContentIdsWithPreview(
+					previewExists
+						? contentIds.filter((id) => id !== draggedItemId)
+						: contentIds,
+				);
 			}
 
 			setLocalPreview(preview);

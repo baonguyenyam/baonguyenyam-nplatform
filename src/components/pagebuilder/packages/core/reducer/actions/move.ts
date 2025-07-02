@@ -15,12 +15,22 @@ export const addToZoneCache = (key: string, data: Content) => {
 	zoneCache[key] = data;
 };
 
-export const moveAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: MoveAction, appStore: AppStore): PrivateAppState<UserData> => {
-	if (action.sourceZone === action.destinationZone && action.sourceIndex === action.destinationIndex) {
+export const moveAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: MoveAction,
+	appStore: AppStore,
+): PrivateAppState<UserData> => {
+	if (
+		action.sourceZone === action.destinationZone &&
+		action.sourceIndex === action.destinationIndex
+	) {
 		return state;
 	}
 
-	const item = getItem({ zone: action.sourceZone, index: action.sourceIndex }, state);
+	const item = getItem(
+		{ zone: action.sourceZone, index: action.sourceIndex },
+		state,
+	);
 
 	if (!item) return state;
 
@@ -31,8 +41,15 @@ export const moveAction = <UserData extends Data>(state: PrivateAppState<UserDat
 		state,
 		appStore.config,
 		(content, zoneCompound) => {
-			if (zoneCompound === action.sourceZone && zoneCompound === action.destinationZone) {
-				return insert(remove(content, action.sourceIndex), action.destinationIndex, item);
+			if (
+				zoneCompound === action.sourceZone &&
+				zoneCompound === action.destinationZone
+			) {
+				return insert(
+					remove(content, action.sourceIndex),
+					action.destinationIndex,
+					item,
+				);
 			} else if (zoneCompound === action.sourceZone) {
 				return remove(content, action.sourceIndex);
 			} else if (zoneCompound === action.destinationZone) {
@@ -47,7 +64,14 @@ export const moveAction = <UserData extends Data>(state: PrivateAppState<UserDat
 
 			const childId = childItem.props.id;
 
-			if (sourceZoneParent === childId || destinationZoneParent === childId || item.props.id === childId || idsInSourcePath.indexOf(childId) > -1 || idsInDestinationPath.indexOf(childId) > -1 || path.includes(action.destinationZone)) {
+			if (
+				sourceZoneParent === childId ||
+				destinationZoneParent === childId ||
+				item.props.id === childId ||
+				idsInSourcePath.indexOf(childId) > -1 ||
+				idsInDestinationPath.indexOf(childId) > -1 ||
+				path.includes(action.destinationZone)
+			) {
 				return childItem;
 			}
 

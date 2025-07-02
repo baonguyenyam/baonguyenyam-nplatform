@@ -20,7 +20,12 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
-import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
+import {
+	$getRoot,
+	$insertNodes,
+	EditorState,
+	LexicalEditor as LexicalEditorType,
+} from "lexical";
 
 import AutoLinkPlugin from "@/components/editor/plugins/AutoLinkPlugin";
 import CodeHighlightPlugin from "@/components/editor/plugins/CodeHighlightPlugin";
@@ -40,7 +45,19 @@ const editorConfig = {
 	onError(error: unknown) {
 		throw error;
 	},
-	nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode, CodeHighlightNode, TableNode, TableCellNode, TableRowNode, AutoLinkNode, LinkNode],
+	nodes: [
+		HeadingNode,
+		ListNode,
+		ListItemNode,
+		QuoteNode,
+		CodeNode,
+		CodeHighlightNode,
+		TableNode,
+		TableCellNode,
+		TableRowNode,
+		AutoLinkNode,
+		LinkNode,
+	],
 };
 
 // Helper Plugin to initialize editor state from HTML string
@@ -76,7 +93,8 @@ export function LexicalEditor(props: any): React.JSX.Element | null {
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
 		const isComposing = editor.isComposing();
-		const isUpdating = editorState.read(() => $getRoot().getTextContent()) !== ""; // Basic check if content exists
+		const isUpdating =
+			editorState.read(() => $getRoot().getTextContent()) !== ""; // Basic check if content exists
 
 		if (onChange && !isComposing && isUpdating) {
 			editorState.read(() => {
@@ -103,19 +121,19 @@ export function LexicalEditor(props: any): React.JSX.Element | null {
 			<LexicalComposer
 				initialConfig={{
 					...editorConfig,
-				}}>
+				}}
+			>
 				<div className="editor-container">
 					<ToolbarPlugin />
 					<div className="editor-inner">
 						<RichTextPlugin
 							contentEditable={
-								<ContentEditable
-									className="editor-input"
-									{...restProps}
-								/>
+								<ContentEditable className="editor-input" {...restProps} />
 							}
 							placeholder={<Placeholder />}
-							ErrorBoundary={(props) => <LexicalErrorBoundary.LexicalErrorBoundary {...props} />}
+							ErrorBoundary={(props) => (
+								<LexicalErrorBoundary.LexicalErrorBoundary {...props} />
+							)}
 						/>
 						<InitializeFromHtmlPlugin htmlString={value} />
 						<OnChangePlugin

@@ -2,7 +2,12 @@ import { ComponentData, Config, Content, RootData } from "../../types";
 
 import { createIsSlotConfig, isSlot as _isSlot } from "./is-slot";
 
-export async function mapSlotsAsync<T extends ComponentData | RootData>(item: T, map: (data: Content, propName: string) => Promise<Content>, recursive: boolean = true, isSlot: (type: string, propName: string, propValue: any) => boolean = _isSlot): Promise<T> {
+export async function mapSlotsAsync<T extends ComponentData | RootData>(
+	item: T,
+	map: (data: Content, propName: string) => Promise<Content>,
+	recursive: boolean = true,
+	isSlot: (type: string, propName: string, propValue: any) => boolean = _isSlot,
+): Promise<T> {
 	const props: Record<string, any> = { ...item.props };
 
 	const propKeys = Object.keys(props);
@@ -30,7 +35,11 @@ export async function mapSlotsAsync<T extends ComponentData | RootData>(item: T,
 	return { ...item, props };
 }
 
-export function mapSlotsSync<T extends ComponentData | RootData>(item: T, map: (data: Content, parentId: string, propName: string) => Content, isSlot: (type: string, propName: string, propValue: any) => boolean = _isSlot): T {
+export function mapSlotsSync<T extends ComponentData | RootData>(
+	item: T,
+	map: (data: Content, parentId: string, propName: string) => Content,
+	isSlot: (type: string, propName: string, propValue: any) => boolean = _isSlot,
+): T {
 	const props: Record<string, any> = { ...item.props };
 
 	const propKeys = Object.keys(props);
@@ -59,8 +68,16 @@ type MapSlotOptions = {
 	propName: string;
 };
 
-export function mapSlotsPublic<T extends ComponentData | RootData>(item: T, config: Config, map: (data: Content, options: MapSlotOptions) => Content): T {
+export function mapSlotsPublic<T extends ComponentData | RootData>(
+	item: T,
+	config: Config,
+	map: (data: Content, options: MapSlotOptions) => Content,
+): T {
 	const isSlot = createIsSlotConfig(config);
 
-	return mapSlotsSync(item, (content, parentId, propName) => map(content, { parentId, propName }), isSlot);
+	return mapSlotsSync(
+		item,
+		(content, parentId, propName) => map(content, { parentId, propName }),
+		isSlot,
+	);
 }

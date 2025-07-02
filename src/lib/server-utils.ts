@@ -20,7 +20,8 @@ export async function sendEmail(email: string, name: string, subject?: string) {
 	const mailService = MailService.getInstance();
 	mailService.sendMail("welcomeEmail", {
 		to: email,
-		subject: subject || `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`,
+		subject:
+			subject || `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`,
 		text: emailTemplate || "",
 		html: emailTemplate,
 	});

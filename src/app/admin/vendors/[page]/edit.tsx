@@ -8,7 +8,13 @@ import AppLoading from "@/components/AppLoading";
 import { FieldInput } from "@/components/fields/input";
 import { FieldSelect } from "@/components/fields/select"; // For 'published' status
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { useCurrentRole } from "@/hooks/useCurrentRole"; // Keep if role affects fields
 import { enumPublished } from "@/lib/enum"; // Use for published status
 
@@ -37,14 +43,20 @@ interface VendorData {
 // --- Zod Schema ---
 // Define the validation schema for the vendor form
 const FormSchema = z.object({
-	f_email: z.string().email({ message: "Invalid email address." }).optional().or(z.literal("")), // Allow empty string
+	f_email: z
+		.string()
+		.email({ message: "Invalid email address." })
+		.optional()
+		.or(z.literal("")), // Allow empty string
 	f_phone: z.string().optional(),
 	f_address: z.string().optional(),
 	f_city: z.string().optional(),
 	f_state: z.string().optional(),
 	f_country: z.string().optional(),
 	// Use enum for published status for consistency
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
+	f_published: z
+		.enum(enumPublished.map((item) => item.value) as [string, ...string[]])
+		.optional(),
 	f_firstname: z.string().optional(),
 	f_lastname: z.string().optional(),
 	f_zip: z.string().optional(),
@@ -143,12 +155,19 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 		};
 
 		// Use update or create action based on presence of id
-		const action = id ? actions.updateRecord(id, body) : actions.createRecord(body); // Assuming meta is empty for vendors
+		const action = id
+			? actions.updateRecord(id, body)
+			: actions.createRecord(body); // Assuming meta is empty for vendors
 
 		try {
 			const res = await action;
 			if (res.success === "success") {
-				toast.success(res.message || (id ? "Vendor updated successfully!" : "Vendor created successfully!"));
+				toast.success(
+					res.message ||
+						(id
+							? "Vendor updated successfully!"
+							: "Vendor created successfully!"),
+				);
 				onChange("submit", res.data); // Notify parent component
 			} else {
 				toast.error(res.message || "An error occurred.");
@@ -167,7 +186,8 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 					{/* Use pb-20 or similar to prevent overlap with bottom bar */}
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-4 pb-20">
+						className="w-full space-y-4 pb-20"
+					>
 						{/* Name Field */}
 						<div className="grid grid-cols-2 gap-5">
 							<FormField
@@ -318,7 +338,10 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								{form.formState.isSubmitting ? "Saving..." : "Save Changes"}
 							</Button>
 						</div>

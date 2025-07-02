@@ -3,7 +3,10 @@ import { createStore, StoreApi, useStore } from "zustand";
 
 import { AppStore, useAppStoreApi } from "../store";
 import { HistorySlice } from "../store/slices/history";
-import { GetPermissions, RefreshPermissions } from "../store/slices/permissions";
+import {
+	GetPermissions,
+	RefreshPermissions,
+} from "../store/slices/permissions";
 import { AppState, ComponentData, Config, UserGenerics } from "../types";
 
 import { getItem, ItemSelector } from "./data/get-item";
@@ -11,7 +14,10 @@ import { makeStatePublic } from "./data/make-state-public";
 
 type WithGet<T> = T & { get: () => T };
 
-export type UsePuckData<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>> = {
+export type UsePuckData<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+> = {
 	appState: AppState;
 	config: UserConfig;
 	dispatch: AppStore["dispatch"];
@@ -33,11 +39,17 @@ export type UsePuckData<UserConfig extends Config = Config, G extends UserGeneri
 	};
 };
 
-export type PuckApi<UserConfig extends Config = Config> = UsePuckData<UserConfig>;
+export type PuckApi<UserConfig extends Config = Config> =
+	UsePuckData<UserConfig>;
 
-type UsePuckStore<UserConfig extends Config = Config> = WithGet<PuckApi<UserConfig>>;
+type UsePuckStore<UserConfig extends Config = Config> = WithGet<
+	PuckApi<UserConfig>
+>;
 
-type PickedStore = Pick<AppStore, "config" | "dispatch" | "selectedItem" | "permissions" | "history" | "state">;
+type PickedStore = Pick<
+	AppStore,
+	"config" | "dispatch" | "selectedItem" | "permissions" | "history" | "state"
+>;
 
 export const generateUsePuck = (store: PickedStore): UsePuckStore => {
 	const history: UsePuckStore["history"] = {
@@ -68,7 +80,8 @@ export const generateUsePuck = (store: PickedStore): UsePuckStore => {
 
 			const zoneCompound = `${node.parentId}:${node.zone}`;
 
-			const index = store.state.indexes.zones[zoneCompound].contentIds.indexOf(id);
+			const index =
+				store.state.indexes.zones[zoneCompound].contentIds.indexOf(id);
 
 			return { zone: zoneCompound, index };
 		},
@@ -79,7 +92,9 @@ export const generateUsePuck = (store: PickedStore): UsePuckStore => {
 	return { ...storeData, get };
 };
 
-export const UsePuckStoreContext = createContext<StoreApi<UsePuckStore> | null>(null);
+export const UsePuckStoreContext = createContext<StoreApi<UsePuckStore> | null>(
+	null,
+);
 
 const convertToPickedStore = (store: AppStore): PickedStore => {
 	return {
@@ -95,8 +110,14 @@ const convertToPickedStore = (store: AppStore): PickedStore => {
 /**
  * Mirror changes in appStore to usePuckStore
  */
-export const useRegisterUsePuckStore = (appStore: ReturnType<typeof useAppStoreApi>) => {
-	const [usePuckStore] = useState(() => createStore(() => generateUsePuck(convertToPickedStore(appStore.getState()))));
+export const useRegisterUsePuckStore = (
+	appStore: ReturnType<typeof useAppStoreApi>,
+) => {
+	const [usePuckStore] = useState(() =>
+		createStore(() =>
+			generateUsePuck(convertToPickedStore(appStore.getState())),
+		),
+	);
 
 	useEffect(() => {
 		// Subscribe here isn't doing anything as selection isn't shallow
@@ -121,14 +142,19 @@ export const useRegisterUsePuckStore = (appStore: ReturnType<typeof useAppStoreA
  * @returns a typed usePuck function
  */
 export function createUsePuck<UserConfig extends Config = Config>() {
-	return function usePuck<T = PuckApi<UserConfig>>(selector: (state: UsePuckStore<UserConfig>) => T): T {
+	return function usePuck<T = PuckApi<UserConfig>>(
+		selector: (state: UsePuckStore<UserConfig>) => T,
+	): T {
 		const usePuckApi = useContext(UsePuckStoreContext);
 
 		if (!usePuckApi) {
 			throw new Error("usePuck must be used inside <Puck>.");
 		}
 
-		const result = useStore(usePuckApi as unknown as StoreApi<UsePuckStore<UserConfig>>, selector ?? ((s) => s as T));
+		const result = useStore(
+			usePuckApi as unknown as StoreApi<UsePuckStore<UserConfig>>,
+			selector ?? ((s) => s as T),
+		);
 
 		return result;
 	};
@@ -136,7 +162,9 @@ export function createUsePuck<UserConfig extends Config = Config>() {
 
 export function usePuck<UserConfig extends Config = Config>() {
 	useEffect(() => {
-		console.warn("You're using the `usePuck` method without a selector, which may cause unnecessary re-renders. Replace with `createUsePuck` and provide a selector for improved performance.");
+		console.warn(
+			"You're using the `usePuck` method without a selector, which may cause unnecessary re-renders. Replace with `createUsePuck` and provide a selector for improved performance.",
+		);
 	}, []);
 
 	return createUsePuck<UserConfig>()((s) => s);

@@ -33,23 +33,28 @@ export const Logos: ComponentConfig<LogosProps> = {
 		logos: [
 			{
 				alt: "google",
-				imageUrl: "https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
+				imageUrl:
+					"https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
 			},
 			{
 				alt: "google",
-				imageUrl: "https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
+				imageUrl:
+					"https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
 			},
 			{
 				alt: "google",
-				imageUrl: "https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
+				imageUrl:
+					"https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
 			},
 			{
 				alt: "google",
-				imageUrl: "https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
+				imageUrl:
+					"https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
 			},
 			{
 				alt: "google",
-				imageUrl: "https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
+				imageUrl:
+					"https://logolook.net/wp-content/uploads/2021/06/Google-Logo.png",
 			},
 		],
 	},
@@ -57,14 +62,13 @@ export const Logos: ComponentConfig<LogosProps> = {
 		return (
 			<div className={getClassName("items")}>
 				{logos.map((item, i) => (
-					<div
-						key={i}
-						className={getClassName("item")}>
+					<div key={i} className={getClassName("item")}>
 						<img
 							className={getClassName("image")}
 							alt={item.alt}
 							src={item.imageUrl}
-							height={64}></img>
+							height={64}
+						></img>
 					</div>
 				))}
 			</div>

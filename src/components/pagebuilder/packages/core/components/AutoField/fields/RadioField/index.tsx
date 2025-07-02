@@ -9,8 +9,22 @@ import styles from "../../styles.module.css";
 
 const getClassName = getClassNameFactory("Input", styles);
 
-export const RadioField = ({ field, onChange, readOnly, value, name, id, label, labelIcon, Label }: FieldPropsInternal) => {
-	const flatOptions = useMemo(() => (field.type === "radio" ? field.options.map(({ value }) => value) : []), [field]);
+export const RadioField = ({
+	field,
+	onChange,
+	readOnly,
+	value,
+	name,
+	id,
+	label,
+	labelIcon,
+	Label,
+}: FieldPropsInternal) => {
+	const flatOptions = useMemo(
+		() =>
+			field.type === "radio" ? field.options.map(({ value }) => value) : [],
+		[field],
+	);
 
 	if (field.type !== "radio" || !field.options) {
 		return null;
@@ -21,21 +35,22 @@ export const RadioField = ({ field, onChange, readOnly, value, name, id, label, 
 			icon={labelIcon || <CheckCircle size={16} />}
 			label={label || name}
 			readOnly={readOnly}
-			el="div">
-			<div
-				className={getClassName("radioGroupItems")}
-				id={id}>
+			el="div"
+		>
+			<div className={getClassName("radioGroupItems")} id={id}>
 				{field.options.map((option) => (
 					<label
 						key={option.label + option.value}
-						className={getClassName("radio")}>
+						className={getClassName("radio")}
+					>
 						<input
 							type="radio"
 							className={getClassName("radioInput")}
 							value={option.value as string | number}
 							name={name}
 							onChange={(e) => {
-								const jsonValue = safeJsonParse(e.target.value) ?? e.target.value;
+								const jsonValue =
+									safeJsonParse(e.target.value) ?? e.target.value;
 
 								if (flatOptions.indexOf(jsonValue) > -1) {
 									onChange(jsonValue);
@@ -46,7 +61,9 @@ export const RadioField = ({ field, onChange, readOnly, value, name, id, label, 
 							disabled={readOnly}
 							checked={value === option.value}
 						/>
-						<div className={getClassName("radioInner")}>{option.label || option.value}</div>
+						<div className={getClassName("radioInner")}>
+							{option.label || option.value}
+						</div>
 					</label>
 				))}
 			</div>

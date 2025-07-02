@@ -51,7 +51,13 @@ const Nodes: Array<Klass<LexicalNode>> = [
 	{
 		replace: TableCellNode,
 		with: (node: any) => {
-			return new CustomTableCellNode(node.__headerState, node.__colSpan, node.__width, node.__borderColor, node.__rotation);
+			return new CustomTableCellNode(
+				node.__headerState,
+				node.__colSpan,
+				node.__width,
+				node.__borderColor,
+				node.__rotation,
+			);
 		},
 		withKlass: CustomTableCellNode,
 	},

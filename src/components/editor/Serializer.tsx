@@ -15,14 +15,10 @@ export function Serializer() {
 
 	return (
 		<div className="editor-actions">
-			<button
-				type="button"
-				onClick={handleOnSave}>
+			<button type="button" onClick={handleOnSave}>
 				Save
 			</button>
-			<button
-				type="button"
-				onClick={handleOnClear}>
+			<button type="button" onClick={handleOnClear}>
 				Clear
 			</button>
 		</div>

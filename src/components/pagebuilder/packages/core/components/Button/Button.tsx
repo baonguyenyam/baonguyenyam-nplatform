@@ -8,7 +8,34 @@ import styles from "./Button.module.css";
 
 const getClassName = getClassNameFactory("Button", styles);
 
-export const Button = ({ children, href, onClick, variant = "primary", type, disabled, tabIndex, newTab, fullWidth, icon, size = "medium", loading: loadingProp = false, ...props }: { children: ReactNode; href?: string; onClick?: (e: any) => void | Promise<void>; variant?: "primary" | "secondary"; type?: "button" | "submit" | "reset"; disabled?: boolean; tabIndex?: number; newTab?: boolean; fullWidth?: boolean; icon?: ReactNode; size?: "medium" | "large"; loading?: boolean }) => {
+export const Button = ({
+	children,
+	href,
+	onClick,
+	variant = "primary",
+	type,
+	disabled,
+	tabIndex,
+	newTab,
+	fullWidth,
+	icon,
+	size = "medium",
+	loading: loadingProp = false,
+	...props
+}: {
+	children: ReactNode;
+	href?: string;
+	onClick?: (e: any) => void | Promise<void>;
+	variant?: "primary" | "secondary";
+	type?: "button" | "submit" | "reset";
+	disabled?: boolean;
+	tabIndex?: number;
+	newTab?: boolean;
+	fullWidth?: boolean;
+	icon?: ReactNode;
+	size?: "medium" | "large";
+	loading?: boolean;
+}) => {
 	const [loading, setLoading] = useState(loadingProp);
 
 	useEffect(() => setLoading(loadingProp), [loadingProp]);
@@ -39,7 +66,8 @@ export const Button = ({ children, href, onClick, variant = "primary", type, dis
 			target={newTab ? "_blank" : undefined}
 			rel={newTab ? "noreferrer" : undefined}
 			href={href}
-			{...dataAttrs}>
+			{...dataAttrs}
+		>
 			{icon && <div className={getClassName("icon")}>{icon}</div>}
 			{children}
 			{loading && (

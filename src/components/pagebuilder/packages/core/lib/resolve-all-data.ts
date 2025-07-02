@@ -1,11 +1,29 @@
-import { ComponentData, Config, Content, Data, DefaultComponentProps, DefaultRootFieldProps, Metadata, RootData } from "../types";
+import {
+	ComponentData,
+	Config,
+	Content,
+	Data,
+	DefaultComponentProps,
+	DefaultRootFieldProps,
+	Metadata,
+	RootData,
+} from "../types";
 
 import { defaultData } from "./data/default-data";
 import { mapSlotsAsync } from "./data/map-slots";
 import { toComponent } from "./data/to-component";
 import { resolveComponentData } from "./resolve-component-data";
 
-export async function resolveAllData<Props extends DefaultComponentProps = DefaultComponentProps, RootProps extends Record<string, any> = DefaultRootFieldProps>(data: Partial<Data>, config: Config, metadata: Metadata = {}, onResolveStart?: (item: ComponentData) => void, onResolveEnd?: (item: ComponentData) => void) {
+export async function resolveAllData<
+	Props extends DefaultComponentProps = DefaultComponentProps,
+	RootProps extends Record<string, any> = DefaultRootFieldProps,
+>(
+	data: Partial<Data>,
+	config: Config,
+	metadata: Metadata = {},
+	onResolveStart?: (item: ComponentData) => void,
+	onResolveEnd?: (item: ComponentData) => void,
+) {
 	const defaultedData = defaultData(data);
 
 	const resolveNode = async <T extends ComponentData | RootData>(_node: T) => {
@@ -25,7 +43,11 @@ export async function resolveAllData<Props extends DefaultComponentProps = Defau
 			)
 		).node as T;
 
-		const resolvedDeep = (await mapSlotsAsync(resolved, processContent, false)) as T;
+		const resolvedDeep = (await mapSlotsAsync(
+			resolved,
+			processContent,
+			false,
+		)) as T;
 
 		onResolveEnd?.(toComponent(resolvedDeep));
 

@@ -21,11 +21,7 @@ export default async function Index() {
 
 	return (
 		<DefaultLayout>
-			<Fetch
-				title={metadata.title}
-				breadcrumb={breadcrumb}
-				page={1}
-			/>
+			<Fetch title={metadata.title} breadcrumb={breadcrumb} page={1} />
 		</DefaultLayout>
 	);
 }

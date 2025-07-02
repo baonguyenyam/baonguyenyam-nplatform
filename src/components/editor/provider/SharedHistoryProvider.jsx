@@ -5,16 +5,21 @@ import { createContext, useContext, useMemo } from "react";
 const Context = createContext({});
 
 export const SharedHistoryProvider = ({ children }) => {
-  const historyContext = useMemo(() => ({ historyState: createEmptyHistoryState() }), []);
-  return <Context.Provider value={historyContext}>{children}</Context.Provider>;
+	const historyContext = useMemo(
+		() => ({ historyState: createEmptyHistoryState() }),
+		[],
+	);
+	return <Context.Provider value={historyContext}>{children}</Context.Provider>;
 };
 
 export const useSharedHistoryContext = () => {
-  const context = useContext(Context);
+	const context = useContext(Context);
 
-  if (context === undefined) {
-    throw new Error("useSharedHistoryContext must be used within a SharedHistoryProvider");
-  }
+	if (context === undefined) {
+		throw new Error(
+			"useSharedHistoryContext must be used within a SharedHistoryProvider",
+		);
+	}
 
-  return context;
+	return context;
 };

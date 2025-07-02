@@ -1,5 +1,22 @@
-import { Context, createContext, PropsWithChildren, ReactElement, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { ChevronDown, ChevronUp, Globe, PanelLeft, PanelRight } from "lucide-react";
+import {
+	Context,
+	createContext,
+	PropsWithChildren,
+	ReactElement,
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
+import {
+	ChevronDown,
+	ChevronUp,
+	Globe,
+	PanelLeft,
+	PanelRight,
+} from "lucide-react";
 
 import { walkTree } from "../../lib/data/walk-tree";
 import getClassNameFactory from "../../lib/get-class-name-factory";
@@ -7,12 +24,33 @@ import { getFrame } from "../../lib/get-frame";
 import { monitorHotkeys, useMonitorHotkeys } from "../../lib/use-hotkey";
 import { useLoadedOverrides } from "../../lib/use-loaded-overrides";
 import { usePreviewModeHotkeys } from "../../lib/use-preview-mode-hotkeys";
-import { UsePuckStoreContext, useRegisterUsePuckStore } from "../../lib/use-puck";
+import {
+	UsePuckStoreContext,
+	useRegisterUsePuckStore,
+} from "../../lib/use-puck";
 import { PuckAction } from "../../reducer";
-import { appStoreContext, createAppStore, defaultAppState, useAppStore, useAppStoreApi } from "../../store";
+import {
+	appStoreContext,
+	createAppStore,
+	defaultAppState,
+	useAppStore,
+	useAppStoreApi,
+} from "../../store";
 import { useRegisterHistorySlice } from "../../store/slices/history";
 import { useRegisterPermissionsSlice } from "../../store/slices/permissions";
-import type { Config, Data, IframeConfig, InitialHistory, Metadata, OnAction, Overrides, Permissions, Plugin, UiState, UserGenerics } from "../../types";
+import type {
+	Config,
+	Data,
+	IframeConfig,
+	InitialHistory,
+	Metadata,
+	OnAction,
+	Overrides,
+	Permissions,
+	Plugin,
+	UiState,
+	UserGenerics,
+} from "../../types";
 import { Viewports } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { Button } from "../Button";
@@ -37,20 +75,24 @@ const getClassName = getClassNameFactory("Puck", styles);
 const getLayoutClassName = getClassNameFactory("PuckLayout", styles);
 
 const FieldSideBar = () => {
-	const title = useAppStore((s) => (s.selectedItem ? (s.config.components[s.selectedItem.type]?.["label"] ?? s.selectedItem.type.toString()) : "Page"));
+	const title = useAppStore((s) =>
+		s.selectedItem
+			? (s.config.components[s.selectedItem.type]?.["label"] ??
+				s.selectedItem.type.toString())
+			: "Page",
+	);
 
 	return (
-		<SidebarSection
-			noPadding
-			noBorderTop
-			showBreadcrumbs
-			title={title}>
+		<SidebarSection noPadding noBorderTop showBreadcrumbs title={title}>
 			<Fields />
 		</SidebarSection>
 	);
 };
 
-type PuckProps<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>> = {
+type PuckProps<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+> = {
 	children?: ReactNode;
 	config: UserConfig;
 	data: Partial<G["UserData"] | Data>;
@@ -61,8 +103,15 @@ type PuckProps<UserConfig extends Config = Config, G extends UserGenerics<UserCo
 	permissions?: Partial<Permissions>;
 	plugins?: Plugin[];
 	overrides?: Partial<Overrides>;
-	renderHeader?: (props: { children: ReactNode; dispatch: (action: PuckAction) => void; state: G["UserAppState"] }) => ReactElement;
-	renderHeaderActions?: (props: { state: G["UserAppState"]; dispatch: (action: PuckAction) => void }) => ReactElement;
+	renderHeader?: (props: {
+		children: ReactNode;
+		dispatch: (action: PuckAction) => void;
+		state: G["UserAppState"];
+	}) => ReactElement;
+	renderHeaderActions?: (props: {
+		state: G["UserAppState"];
+		dispatch: (action: PuckAction) => void;
+	}) => ReactElement;
 	headerTitle?: string;
 	headerPath?: string;
 	viewports?: Viewports;
@@ -76,14 +125,37 @@ type PuckProps<UserConfig extends Config = Config, G extends UserGenerics<UserCo
 
 const propsContext = createContext<Partial<PuckProps>>({});
 
-function PropsProvider<UserConfig extends Config = Config>(props: PuckProps<UserConfig>) {
-	return <propsContext.Provider value={props as PuckProps}>{props.children}</propsContext.Provider>;
+function PropsProvider<UserConfig extends Config = Config>(
+	props: PuckProps<UserConfig>,
+) {
+	return (
+		<propsContext.Provider value={props as PuckProps}>
+			{props.children}
+		</propsContext.Provider>
+	);
 }
 
-const usePropsContext = () => useContext<PuckProps>(propsContext as Context<PuckProps>);
+const usePropsContext = () =>
+	useContext<PuckProps>(propsContext as Context<PuckProps>);
 
-function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>({ children }: PropsWithChildren) {
-	const { config, data: initialData, ui: initialUi, onChange, permissions = {}, plugins, overrides, viewports = defaultViewports, iframe: _iframe, initialHistory: _initialHistory, metadata, onAction } = usePropsContext();
+function PuckProvider<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>({ children }: PropsWithChildren) {
+	const {
+		config,
+		data: initialData,
+		ui: initialUi,
+		onChange,
+		permissions = {},
+		plugins,
+		overrides,
+		viewports = defaultViewports,
+		iframe: _iframe,
+		initialHistory: _initialHistory,
+		metadata,
+		onAction,
+	} = usePropsContext();
 
 	const iframe: IframeConfig = {
 		enabled: true,
@@ -125,8 +197,13 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 
 						current: {
 							...initial.viewports.current,
-							height: initialUi?.viewports?.current?.height || viewports[closestViewport]?.height || "auto",
-							width: initialUi?.viewports?.current?.width || viewports[closestViewport]?.width,
+							height:
+								initialUi?.viewports?.current?.height ||
+								viewports[closestViewport]?.height ||
+								"auto",
+							width:
+								initialUi?.viewports?.current?.width ||
+								viewports[closestViewport]?.width,
 						},
 					},
 				};
@@ -134,8 +211,13 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 		}
 
 		// DEPRECATED
-		if (Object.keys(initialData?.root || {}).length > 0 && !initialData?.root?.props) {
-			console.error("Warning: Defining props on `root` is deprecated. Please use `root.props`, or republish this page to migrate automatically.");
+		if (
+			Object.keys(initialData?.root || {}).length > 0 &&
+			!initialData?.root?.props
+		) {
+			console.error(
+				"Warning: Defining props on `root` is deprecated. Please use `root.props`, or republish this page to migrate automatically.",
+			);
 		}
 
 		// Deprecated
@@ -158,17 +240,20 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 				...clientUiState,
 				// Store categories under componentList on state to allow render functions and plugins to modify
 				componentList: config.categories
-					? Object.entries(config.categories).reduce((acc, [categoryName, category]) => {
-							return {
-								...acc,
-								[categoryName]: {
-									title: category.title,
-									components: category.components,
-									expanded: category.defaultExpanded,
-									visible: category.visible,
-								},
-							};
-						}, {})
+					? Object.entries(config.categories).reduce(
+							(acc, [categoryName, category]) => {
+								return {
+									...acc,
+									[categoryName]: {
+										title: category.title,
+										components: category.components,
+										expanded: category.defaultExpanded,
+										visible: category.visible,
+									},
+								};
+							},
+							{},
+						)
 					: {},
 			},
 		} as G["UserAppState"];
@@ -179,7 +264,10 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 	const { appendData = true } = _initialHistory || {};
 
 	const [blendedHistories] = useState(
-		[...(_initialHistory?.histories || []), ...(appendData ? [{ state: generatedAppState }] : [])].map((history) => {
+		[
+			...(_initialHistory?.histories || []),
+			...(appendData ? [{ state: generatedAppState }] : []),
+		].map((history) => {
 			// Inject default data to enable partial history injections
 			let newState = { ...generatedAppState, ...history.state };
 
@@ -195,7 +283,8 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 		}),
 	);
 
-	const initialHistoryIndex = _initialHistory?.index || blendedHistories.length - 1;
+	const initialHistoryIndex =
+		_initialHistory?.index || blendedHistories.length - 1;
 	const initialAppState = blendedHistories[initialHistoryIndex].state;
 
 	// Load all plugins into the overrides
@@ -217,10 +306,21 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 				metadata,
 			};
 		},
-		[initialAppState, config, plugins, loadedOverrides, viewports, iframe, onAction, metadata],
+		[
+			initialAppState,
+			config,
+			plugins,
+			loadedOverrides,
+			viewports,
+			iframe,
+			onAction,
+			metadata,
+		],
 	);
 
-	const [appStore] = useState(() => createAppStore(generateAppStore(initialAppState)));
+	const [appStore] = useState(() =>
+		createAppStore(generateAppStore(initialAppState)),
+	);
 
 	useEffect(() => {
 		const state = appStore.getState().state;
@@ -254,13 +354,28 @@ function PuckProvider<UserConfig extends Config = Config, G extends UserGenerics
 
 	return (
 		<appStoreContext.Provider value={appStore}>
-			<UsePuckStoreContext.Provider value={uPuckStore}>{children}</UsePuckStoreContext.Provider>
+			<UsePuckStoreContext.Provider value={uPuckStore}>
+				{children}
+			</UsePuckStoreContext.Provider>
 		</appStoreContext.Provider>
 	);
 }
 
-function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>({ children }: PropsWithChildren) {
-	const { onChange, onPublish, renderHeader, renderHeaderActions, headerTitle, headerPath, iframe: _iframe, dnd, initialHistory: _initialHistory } = usePropsContext();
+function PuckLayout<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>({ children }: PropsWithChildren) {
+	const {
+		onChange,
+		onPublish,
+		renderHeader,
+		renderHeaderActions,
+		headerTitle,
+		headerPath,
+		iframe: _iframe,
+		dnd,
+		initialHistory: _initialHistory,
+	} = usePropsContext();
 
 	const iframe: IframeConfig = {
 		enabled: true,
@@ -271,7 +386,9 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 	useInjectGlobalCss(iframe.enabled);
 
 	const leftSideBarVisible = useAppStore((s) => s.state.ui.leftSideBarVisible);
-	const rightSideBarVisible = useAppStore((s) => s.state.ui.rightSideBarVisible);
+	const rightSideBarVisible = useAppStore(
+		(s) => s.state.ui.rightSideBarVisible,
+	);
 
 	const [menuOpen, setMenuOpen] = useState(false);
 
@@ -285,15 +402,19 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 	}, [appStore]);
 
 	// DEPRECATED
-	const rootProps = useAppStore((s) => s.state.data.root.props || s.state.data.root.props);
+	const rootProps = useAppStore(
+		(s) => s.state.data.root.props || s.state.data.root.props,
+	);
 
 	const dispatch = useAppStore((s) => s.dispatch);
 
 	const toggleSidebars = useCallback(
 		(sidebar: "left" | "right") => {
 			const widerViewport = window.matchMedia("(min-width: 638px)").matches;
-			const sideBarVisible = sidebar === "left" ? leftSideBarVisible : rightSideBarVisible;
-			const oppositeSideBar = sidebar === "left" ? "rightSideBarVisible" : "leftSideBarVisible";
+			const sideBarVisible =
+				sidebar === "left" ? leftSideBarVisible : rightSideBarVisible;
+			const oppositeSideBar =
+				sidebar === "left" ? "rightSideBarVisible" : "leftSideBarVisible";
 
 			dispatch({
 				type: "setUi",
@@ -339,7 +460,9 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 	// DEPRECATED
 	const defaultHeaderRender = useMemo((): Overrides["header"] => {
 		if (renderHeader) {
-			console.warn("`renderHeader` is deprecated. Please use `overrides.header` and the `usePuck` hook instead");
+			console.warn(
+				"`renderHeader` is deprecated. Please use `overrides.header` and the `usePuck` hook instead",
+			);
 
 			const RenderHeader = ({ actions, ...props }: any) => {
 				const Comp = renderHeader!;
@@ -347,10 +470,7 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 				const appState = useAppStore((s) => s.state);
 
 				return (
-					<Comp
-						{...props}
-						dispatch={dispatch}
-						state={appState}>
+					<Comp {...props} dispatch={dispatch} state={appState}>
 						{actions}
 					</Comp>
 				);
@@ -365,19 +485,16 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 	// DEPRECATED
 	const defaultHeaderActionsRender = useMemo((): Overrides["headerActions"] => {
 		if (renderHeaderActions) {
-			console.warn("`renderHeaderActions` is deprecated. Please use `overrides.headerActions` and the `usePuck` hook instead.");
+			console.warn(
+				"`renderHeaderActions` is deprecated. Please use `overrides.headerActions` and the `usePuck` hook instead.",
+			);
 
 			const RenderHeader = (props: any) => {
 				const Comp = renderHeaderActions!;
 
 				const appState = useAppStore((s) => s.state);
 
-				return (
-					<Comp
-						{...props}
-						dispatch={dispatch}
-						state={appState}></Comp>
-				);
+				return <Comp {...props} dispatch={dispatch} state={appState}></Comp>;
 			};
 
 			return RenderHeader;
@@ -388,10 +505,19 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 
 	const overrides = useAppStore((s) => s.overrides);
 
-	const CustomPuck = useMemo(() => overrides.puck || DefaultOverride, [overrides]);
+	const CustomPuck = useMemo(
+		() => overrides.puck || DefaultOverride,
+		[overrides],
+	);
 
-	const CustomHeader = useMemo(() => overrides.header || defaultHeaderRender, [overrides]);
-	const CustomHeaderActions = useMemo(() => overrides.headerActions || defaultHeaderActionsRender, [overrides]);
+	const CustomHeader = useMemo(
+		() => overrides.header || defaultHeaderRender,
+		[overrides],
+	);
+	const CustomHeaderActions = useMemo(
+		() => overrides.headerActions || defaultHeaderActionsRender,
+		[overrides],
+	);
 
 	const [mounted, setMounted] = useState(false);
 
@@ -426,7 +552,8 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 								menuOpen,
 								mounted,
 								rightSideBarVisible,
-							})}>
+							})}
+						>
 							<div className={getLayoutClassName("inner")}>
 								<CustomHeader
 									actions={
@@ -439,43 +566,53 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 															onPublish(data as G["UserData"]);
 														}
 													}}
-													icon={<Globe size="14px" />}>
+													icon={<Globe size="14px" />}
+												>
 													Publish
 												</Button>
 											</CustomHeaderActions>
 										</>
-									}>
+									}
+								>
 									<header className={getLayoutClassName("header")}>
 										<div className={getLayoutClassName("headerInner")}>
 											<div className={getLayoutClassName("headerToggle")}>
-												<div className={getLayoutClassName("leftSideBarToggle")}>
+												<div
+													className={getLayoutClassName("leftSideBarToggle")}
+												>
 													<IconButton
 														onClick={() => {
 															toggleSidebars("left");
 														}}
-														title="Toggle left sidebar">
+														title="Toggle left sidebar"
+													>
 														<PanelLeft focusable="false" />
 													</IconButton>
 												</div>
-												<div className={getLayoutClassName("rightSideBarToggle")}>
+												<div
+													className={getLayoutClassName("rightSideBarToggle")}
+												>
 													<IconButton
 														onClick={() => {
 															toggleSidebars("right");
 														}}
-														title="Toggle right sidebar">
+														title="Toggle right sidebar"
+													>
 														<PanelRight focusable="false" />
 													</IconButton>
 												</div>
 											</div>
 											<div className={getLayoutClassName("headerTitle")}>
-												<Heading
-													rank="2"
-													size="xs">
+												<Heading rank="2" size="xs">
 													{headerTitle || rootProps?.title || "Page"}
 													{headerPath && (
 														<>
 															{" "}
-															<code className={getLayoutClassName("headerPath")}>{headerPath}</code>
+															<code
+																className={getLayoutClassName("headerPath")}
+															>
+																{headerPath}
+															</code>
 														</>
 													)}
 												</Heading>
@@ -486,8 +623,13 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 														onClick={() => {
 															return setMenuOpen(!menuOpen);
 														}}
-														title="Toggle menu bar">
-														{menuOpen ? <ChevronUp focusable="false" /> : <ChevronDown focusable="false" />}
+														title="Toggle menu bar"
+													>
+														{menuOpen ? (
+															<ChevronUp focusable="false" />
+														) : (
+															<ChevronDown focusable="false" />
+														)}
 													</IconButton>
 												</div>
 												<MenuBar<G["UserData"]>
@@ -498,12 +640,14 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 														<CustomHeaderActions>
 															<Button
 																onClick={() => {
-																	const data = appStore.getState().state.data as G["UserData"];
+																	const data = appStore.getState().state
+																		.data as G["UserData"];
 																	if (onPublish) {
 																		onPublish(data);
 																	}
 																}}
-																icon={<Globe size="14px" />}>
+																icon={<Globe size="14px" />}
+															>
 																Publish
 															</Button>
 														</CustomHeaderActions>
@@ -515,9 +659,7 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 									</header>
 								</CustomHeader>
 								<div className={getLayoutClassName("leftSideBar")}>
-									<SidebarSection
-										title="Components"
-										noBorderTop>
+									<SidebarSection title="Components" noBorderTop>
 										<Components />
 									</SidebarSection>
 									<SidebarSection title="Outline">
@@ -533,15 +675,15 @@ function PuckLayout<UserConfig extends Config = Config, G extends UserGenerics<U
 					)}
 				</CustomPuck>
 			</DragDropContext>
-			<div
-				id="puck-portal-root"
-				className={getClassName("portal")}
-			/>
+			<div id="puck-portal-root" className={getClassName("portal")} />
 		</div>
 	);
 }
 
-export function Puck<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>(props: PuckProps<UserConfig>) {
+export function Puck<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>(props: PuckProps<UserConfig>) {
 	return (
 		<PropsProvider {...props}>
 			<PuckProvider {...props}>

@@ -69,7 +69,13 @@ const theme: EditorThemeClasses = {
 		nested: {
 			listitem: "PlaygroundEditorTheme__nestedListItem",
 		},
-		olDepth: ["PlaygroundEditorTheme__ol1", "PlaygroundEditorTheme__ol2", "PlaygroundEditorTheme__ol3", "PlaygroundEditorTheme__ol4", "PlaygroundEditorTheme__ol5"],
+		olDepth: [
+			"PlaygroundEditorTheme__ol1",
+			"PlaygroundEditorTheme__ol2",
+			"PlaygroundEditorTheme__ol3",
+			"PlaygroundEditorTheme__ol4",
+			"PlaygroundEditorTheme__ol5",
+		],
 		ul: "PlaygroundEditorTheme__ul",
 	},
 	ltr: "PlaygroundEditorTheme__ltr",
@@ -83,7 +89,8 @@ const theme: EditorThemeClasses = {
 	tableAddRows: "PlaygroundEditorTheme__tableAddRows",
 	tableCell: "PlaygroundEditorTheme__tableCell",
 	tableCellActionButton: "PlaygroundEditorTheme__tableCellActionButton",
-	tableCellActionButtonContainer: "PlaygroundEditorTheme__tableCellActionButtonContainer",
+	tableCellActionButtonContainer:
+		"PlaygroundEditorTheme__tableCellActionButtonContainer",
 	tableCellEditing: "PlaygroundEditorTheme__tableCellEditing",
 	tableCellHeader: "PlaygroundEditorTheme__tableCellHeader",
 	tableCellPrimarySelected: "PlaygroundEditorTheme__tableCellPrimarySelected",

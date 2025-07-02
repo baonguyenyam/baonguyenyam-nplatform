@@ -54,7 +54,11 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
 				{ label: "Right", value: "right" },
 			],
 		},
-		class: { type: "text", placeholder: "class", labelIcon: <Hash size={16} /> },
+		class: {
+			type: "text",
+			placeholder: "class",
+			labelIcon: <Hash size={16} />,
+		},
 	},
 	defaultProps: {
 		align: "left",
@@ -63,10 +67,10 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
 	},
 	render: ({ align, text, size, level }) => {
 		return (
-			<_Heading
-				size={size}
-				rank={level as any}>
-				<span style={{ display: "block", textAlign: align, width: "100%" }}>{text}</span>
+			<_Heading size={size} rank={level as any}>
+				<span style={{ display: "block", textAlign: align, width: "100%" }}>
+					{text}
+				</span>
 			</_Heading>
 		);
 	},

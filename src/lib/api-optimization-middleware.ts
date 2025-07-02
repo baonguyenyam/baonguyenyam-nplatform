@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 // API Response Optimization Middleware
 export class APIOptimizationMiddleware {
 	// Compress response if client supports it
-	static addCompressionHeaders(response: NextResponse, contentLength?: number): NextResponse {
+	static addCompressionHeaders(
+		response: NextResponse,
+		contentLength?: number,
+	): NextResponse {
 		// Add compression hints
 		response.headers.set("Vary", "Accept-Encoding");
 
@@ -29,11 +32,18 @@ export class APIOptimizationMiddleware {
 	}
 
 	// Add caching headers based on content type
-	static addCachingHeaders(response: NextResponse, path: string, isAuthenticated: boolean = false): NextResponse {
+	static addCachingHeaders(
+		response: NextResponse,
+		path: string,
+		isAuthenticated: boolean = false,
+	): NextResponse {
 		// Different caching strategies based on path
 		if (path.startsWith("/api/v1/public/")) {
 			// Public endpoints - aggressive caching
-			response.headers.set("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=3600");
+			response.headers.set(
+				"Cache-Control",
+				"public, s-maxage=1800, stale-while-revalidate=3600",
+			);
 		} else if (path.startsWith("/api/v1/admin/") && !isAuthenticated) {
 			// Admin endpoints for unauthenticated - no cache
 			response.headers.set("Cache-Control", "no-store");
@@ -42,14 +52,20 @@ export class APIOptimizationMiddleware {
 			response.headers.set("Cache-Control", "private, max-age=300");
 		} else {
 			// Default caching
-			response.headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
+			response.headers.set(
+				"Cache-Control",
+				"public, max-age=60, stale-while-revalidate=300",
+			);
 		}
 
 		return response;
 	}
 
 	// Handle conditional requests (ETag)
-	static handleConditionalRequest(request: NextRequest, response: NextResponse): NextResponse | null {
+	static handleConditionalRequest(
+		request: NextRequest,
+		response: NextResponse,
+	): NextResponse | null {
 		const ifNoneMatch = request.headers.get("if-none-match");
 		const etag = response.headers.get("etag");
 
@@ -67,7 +83,11 @@ export class APIOptimizationMiddleware {
 	}
 
 	// Rate limiting with adaptive limits
-	static async checkRateLimit(request: NextRequest, identifier: string, userRole?: string): Promise<{ allowed: boolean; headers: Record<string, string> }> {
+	static async checkRateLimit(
+		request: NextRequest,
+		identifier: string,
+		userRole?: string,
+	): Promise<{ allowed: boolean; headers: Record<string, string> }> {
 		// Adaptive rate limits based on user role
 		const limits = {
 			ADMIN: { requests: 1000, window: 15 * 60 * 1000 },
@@ -89,7 +109,11 @@ export class APIOptimizationMiddleware {
 	}
 
 	// Monitor API performance
-	static monitorPerformance(request: NextRequest, response: NextResponse, startTime: number): void {
+	static monitorPerformance(
+		request: NextRequest,
+		response: NextResponse,
+		startTime: number,
+	): void {
 		const duration = Date.now() - startTime;
 		const method = request.method;
 		const path = new URL(request.url).pathname;
@@ -120,7 +144,12 @@ export class APIOptimizationMiddleware {
 			startTime?: number;
 		} = {},
 	): Promise<NextResponse> {
-		const { isAuthenticated = false, userRole, identifier = "anonymous", startTime = Date.now() } = options;
+		const {
+			isAuthenticated = false,
+			userRole,
+			identifier = "anonymous",
+			startTime = Date.now(),
+		} = options;
 
 		const path = new URL(request.url).pathname;
 
@@ -145,14 +174,20 @@ export class APIOptimizationMiddleware {
 		this.addCachingHeaders(response, path, isAuthenticated);
 
 		// Handle conditional requests
-		const conditionalResponse = this.handleConditionalRequest(request, response);
+		const conditionalResponse = this.handleConditionalRequest(
+			request,
+			response,
+		);
 		if (conditionalResponse) {
 			return conditionalResponse;
 		}
 
 		// Add compression headers
 		const contentLength = response.headers.get("content-length");
-		this.addCompressionHeaders(response, contentLength ? parseInt(contentLength) : undefined);
+		this.addCompressionHeaders(
+			response,
+			contentLength ? parseInt(contentLength) : undefined,
+		);
 
 		// Monitor performance
 		this.monitorPerformance(request, response, startTime);
@@ -177,10 +212,13 @@ export function withOptimization(handler: Function) {
 		} catch (error) {
 			console.error("API Error:", error);
 
-			const errorResponse = new NextResponse(JSON.stringify({ error: "Internal Server Error" }), {
-				status: 500,
-				headers: { "Content-Type": "application/json" },
-			});
+			const errorResponse = new NextResponse(
+				JSON.stringify({ error: "Internal Server Error" }),
+				{
+					status: 500,
+					headers: { "Content-Type": "application/json" },
+				},
+			);
 
 			return await APIOptimizationMiddleware.optimize(request, errorResponse, {
 				startTime,

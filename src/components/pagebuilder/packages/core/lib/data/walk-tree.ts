@@ -1,5 +1,16 @@
-import { ComponentData, Config, Content, Data, RootDataWithProps } from "../../types";
-import { NodeIndex, PrivateAppState, ZoneIndex, ZoneType } from "../../types/Internal";
+import {
+	ComponentData,
+	Config,
+	Content,
+	Data,
+	RootDataWithProps,
+} from "../../types";
+import {
+	NodeIndex,
+	PrivateAppState,
+	ZoneIndex,
+	ZoneType,
+} from "../../types/Internal";
 import { rootDroppableId } from "../root-droppable-id";
 
 import { forEachSlot } from "./for-each-slot";
@@ -16,19 +27,41 @@ import { stripSlots } from "./strip-slots";
  *
  * @returns The updated state
  */
-export function walkTree<UserData extends Data = Data>(state: PrivateAppState<UserData>, config: Config, mapContent: (content: Content, zoneCompound: string, zoneType: ZoneType) => Content | void = (content) => content, mapNodeOrSkip: (item: ComponentData, path: string[], index: number) => ComponentData | null = (item) => item): PrivateAppState<UserData> {
+export function walkTree<UserData extends Data = Data>(
+	state: PrivateAppState<UserData>,
+	config: Config,
+	mapContent: (
+		content: Content,
+		zoneCompound: string,
+		zoneType: ZoneType,
+	) => Content | void = (content) => content,
+	mapNodeOrSkip: (
+		item: ComponentData,
+		path: string[],
+		index: number,
+	) => ComponentData | null = (item) => item,
+): PrivateAppState<UserData> {
 	const newZones: Record<string, Content> = {};
 	const newZoneIndex: ZoneIndex = {};
 	const newNodeIndex: NodeIndex = {};
 
-	const processContent = (path: string[], zoneCompound: string, content: Content, zoneType: ZoneType, newId?: string): [string, Content] => {
+	const processContent = (
+		path: string[],
+		zoneCompound: string,
+		content: Content,
+		zoneType: ZoneType,
+		newId?: string,
+	): [string, Content] => {
 		const [parentId] = zoneCompound.split(":");
-		const mappedContent = (mapContent(content, zoneCompound, zoneType) ?? content) || [];
+		const mappedContent =
+			(mapContent(content, zoneCompound, zoneType) ?? content) || [];
 
 		const [_, zone] = zoneCompound.split(":");
 		const newZoneCompound = `${newId || parentId}:${zone}`;
 
-		const newContent = mappedContent.map((zoneChild, index) => processItem(zoneChild, [...path, newZoneCompound], index));
+		const newContent = mappedContent.map((zoneChild, index) =>
+			processItem(zoneChild, [...path, newZoneCompound], index),
+		);
 
 		newZoneIndex[newZoneCompound] = {
 			contentIds: newContent.map((item) => item.props.id),
@@ -38,12 +71,22 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 		return [newZoneCompound, newContent];
 	};
 
-	const processRelatedZones = (item: ComponentData, newId: string, initialPath: string[]) => {
+	const processRelatedZones = (
+		item: ComponentData,
+		newId: string,
+		initialPath: string[],
+	) => {
 		forRelatedZones(
 			item,
 			state.data,
 			(relatedPath, relatedZoneCompound, relatedContent) => {
-				const [zoneCompound, newContent] = processContent(relatedPath, relatedZoneCompound, relatedContent, "dropzone", newId);
+				const [zoneCompound, newContent] = processContent(
+					relatedPath,
+					relatedZoneCompound,
+					relatedContent,
+					"dropzone",
+					newId,
+				);
 
 				newZones[zoneCompound] = newContent;
 			},
@@ -51,7 +94,11 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 		);
 	};
 
-	const processItem = (item: ComponentData, path: string[], index: number): ComponentData => {
+	const processItem = (
+		item: ComponentData,
+		path: string[],
+		index: number,
+	): ComponentData => {
 		const mappedItem = mapNodeOrSkip(item, path, index);
 
 		// Only modify the item if the user has returned it, enabling us to prevent unnecessary mapping and creating new references, which results in re-renders
@@ -66,7 +113,13 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 			(parentId, slotId, content) => {
 				const zoneCompound = `${parentId}:${slotId}`;
 
-				const [_, newContent] = processContent(path, zoneCompound, content, "slot", parentId);
+				const [_, newContent] = processContent(
+					path,
+					zoneCompound,
+					content,
+					"slot",
+					parentId,
+				);
 
 				newProps[slotId] = newContent;
 			},
@@ -79,7 +132,9 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 		const newItem = { ...item, props: newProps };
 
 		const thisZoneCompound = path[path.length - 1];
-		const [parentId, zone] = thisZoneCompound ? thisZoneCompound.split(":") : [null, ""];
+		const [parentId, zone] = thisZoneCompound
+			? thisZoneCompound.split(":")
+			: [null, ""];
 
 		newNodeIndex[id] = {
 			data: newItem,
@@ -102,7 +157,12 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 
 	const zones = state.data.zones || {};
 
-	const [_, newContent] = processContent([], rootDroppableId, state.data.content, "root");
+	const [_, newContent] = processContent(
+		[],
+		rootDroppableId,
+		state.data.content,
+		"root",
+	);
 
 	const processedContent = newContent;
 
@@ -116,7 +176,13 @@ export function walkTree<UserData extends Data = Data>(state: PrivateAppState<Us
 			return;
 		}
 
-		const [_, newContent] = processContent([rootDroppableId], zoneCompound, zones[zoneCompound], "dropzone", parentId);
+		const [_, newContent] = processContent(
+			[rootDroppableId],
+			zoneCompound,
+			zones[zoneCompound],
+			"dropzone",
+			parentId,
+		);
 
 		newZones[zoneCompound] = newContent;
 	}, newZones);

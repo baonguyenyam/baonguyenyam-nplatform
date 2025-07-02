@@ -4,10 +4,22 @@ import { ItemSelector } from "../../lib/data/get-item";
 import { Field, FieldProps } from "../Fields";
 
 // Plugins can use `usePuck` instead of relying on props
-type RenderFunc<Props extends { [key: string]: any } = { children: ReactNode }> = (props: Props) => ReactElement;
+type RenderFunc<
+	Props extends { [key: string]: any } = { children: ReactNode },
+> = (props: Props) => ReactElement;
 
 // All direct render methods, excluding fields
-export const overrideKeys = ["header", "headerActions", "fields", "fieldLabel", "components", "componentItem", "outline", "puck", "preview"] as const;
+export const overrideKeys = [
+	"header",
+	"headerActions",
+	"fields",
+	"fieldLabel",
+	"components",
+	"componentItem",
+	"outline",
+	"puck",
+	"preview",
+] as const;
 
 export type OverrideKey = (typeof overrideKeys)[number];
 

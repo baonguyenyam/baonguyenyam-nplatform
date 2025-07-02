@@ -1,7 +1,11 @@
 import { useMemo, useRef } from "react";
 import debounce from "debounce";
 
-export default function useDebounce<T extends (...args: any[]) => void>(fn: T, ms: number, maxWait?: number) {
+export default function useDebounce<T extends (...args: any[]) => void>(
+	fn: T,
+	ms: number,
+	maxWait?: number,
+) {
 	const funcRef = useRef<T | null>(null);
 	funcRef.current = fn;
 

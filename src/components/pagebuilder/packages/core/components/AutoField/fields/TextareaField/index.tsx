@@ -7,12 +7,23 @@ import styles from "../../styles.module.css";
 
 const getClassName = getClassNameFactory("Input", styles);
 
-export const TextareaField = ({ field, onChange, readOnly, value, name, label, labelIcon, Label, id }: FieldPropsInternal) => {
+export const TextareaField = ({
+	field,
+	onChange,
+	readOnly,
+	value,
+	name,
+	label,
+	labelIcon,
+	Label,
+	id,
+}: FieldPropsInternal) => {
 	return (
 		<Label
 			label={label || name}
 			icon={labelIcon || <Type size={16} />}
-			readOnly={readOnly}>
+			readOnly={readOnly}
+		>
 			<textarea
 				id={id}
 				className={getClassName("input")}

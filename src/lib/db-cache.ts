@@ -14,7 +14,11 @@ function isCacheValid(item: { timestamp: number; ttl: number }): boolean {
 	return Date.now() - item.timestamp < item.ttl;
 }
 
-async function getCachedOrFetch<T>(key: string, fetcher: () => Promise<T>, ttl: number = CACHE_TTL): Promise<T> {
+async function getCachedOrFetch<T>(
+	key: string,
+	fetcher: () => Promise<T>,
+	ttl: number = CACHE_TTL,
+): Promise<T> {
 	const cached = cache.get(key);
 
 	if (cached && isCacheValid(cached)) {
@@ -169,7 +173,9 @@ export const clearCache = (pattern?: string) => {
 		return;
 	}
 
-	const keysToDelete = Array.from(cache.keys()).filter((key) => key.includes(pattern));
+	const keysToDelete = Array.from(cache.keys()).filter((key) =>
+		key.includes(pattern),
+	);
 
 	keysToDelete.forEach((key) => cache.delete(key));
 };

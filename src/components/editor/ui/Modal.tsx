@@ -12,7 +12,17 @@ import { createPortal } from "react-dom";
 
 import "./Modal.css";
 
-function PortalImpl({ onClose, children, title, closeOnClickOutside }: { children: ReactNode; closeOnClickOutside: boolean; onClose: () => void; title: string }) {
+function PortalImpl({
+	onClose,
+	children,
+	title,
+	closeOnClickOutside,
+}: {
+	children: ReactNode;
+	closeOnClickOutside: boolean;
+	onClose: () => void;
+	title: string;
+}) {
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -30,7 +40,11 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }: { childre
 		};
 		const clickOutsideHandler = (event: MouseEvent) => {
 			const target = event.target;
-			if (modalRef.current !== null && !modalRef.current.contains(target as Node) && closeOnClickOutside) {
+			if (
+				modalRef.current !== null &&
+				!modalRef.current.contains(target as Node) &&
+				closeOnClickOutside
+			) {
 				onClose();
 			}
 		};
@@ -53,19 +67,15 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }: { childre
 	}, [closeOnClickOutside, onClose]);
 
 	return (
-		<div
-			className="Modal__overlay"
-			role="dialog">
-			<div
-				className="Modal__modal"
-				tabIndex={-1}
-				ref={modalRef}>
+		<div className="Modal__overlay" role="dialog">
+			<div className="Modal__modal" tabIndex={-1} ref={modalRef}>
 				<h2 className="Modal__title">{title}</h2>
 				<button
 					className="Modal__closeButton"
 					aria-label="Close modal"
 					type="button"
-					onClick={onClose}>
+					onClick={onClose}
+				>
 					X
 				</button>
 				<div className="Modal__content">{children}</div>
@@ -74,12 +84,23 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }: { childre
 	);
 }
 
-export default function Modal({ onClose, children, title, closeOnClickOutside = false }: { children: ReactNode; closeOnClickOutside?: boolean; onClose: () => void; title: string }): React.JSX.Element {
+export default function Modal({
+	onClose,
+	children,
+	title,
+	closeOnClickOutside = false,
+}: {
+	children: ReactNode;
+	closeOnClickOutside?: boolean;
+	onClose: () => void;
+	title: string;
+}): React.JSX.Element {
 	return createPortal(
 		<PortalImpl
 			onClose={onClose}
 			title={title}
-			closeOnClickOutside={closeOnClickOutside}>
+			closeOnClickOutside={closeOnClickOutside}
+		>
 			{children}
 		</PortalImpl>,
 		document.body,

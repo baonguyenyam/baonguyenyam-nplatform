@@ -23,7 +23,8 @@ export async function GET(req: Request) {
 	};
 
 	try {
-		const count = await models.AttributeMeta.getAllAttributeByParentIDCount(query);
+		const count =
+			await models.AttributeMeta.getAllAttributeByParentIDCount(query);
 		const db = await models.AttributeMeta.getAllAttributeByParentID(query);
 
 		if (currentUser) {

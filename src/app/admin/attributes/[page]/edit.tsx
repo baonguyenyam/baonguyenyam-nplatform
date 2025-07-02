@@ -8,7 +8,14 @@ import { AppEditor } from "@/components/AppEditor";
 import AppLoading from "@/components/AppLoading";
 import { FieldSelect } from "@/components/fields/select";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { enumAttribute, enumPublished } from "@/lib/enum";
@@ -16,8 +23,15 @@ import { enumAttribute, enumPublished } from "@/lib/enum";
 import * as actions from "./actions";
 
 const FormSchema = z.object({
-	f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-	f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+	f_title: z
+		.string()
+		.min(2, { message: "Fullname must be at least 2 characters." }),
+	f_published: z
+		.enum(
+			enumPublished.map((item: any) => item.value) as [string, ...string[]],
+			{ required_error: "Published is required" },
+		)
+		.optional(),
 	f_content: z
 		.string()
 		.optional()
@@ -103,7 +117,8 @@ export default function FormEdit(props: any) {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-6 pb-15">
+						className="w-full space-y-6 pb-15"
+					>
 						<FormField
 							control={form.control}
 							name="f_title"
@@ -195,7 +210,10 @@ export default function FormEdit(props: any) {
 							)}
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								Save changes
 							</Button>
 						</div>

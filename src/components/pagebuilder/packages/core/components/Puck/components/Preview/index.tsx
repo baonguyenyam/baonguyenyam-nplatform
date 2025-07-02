@@ -40,14 +40,21 @@ const useBubbleIframeEvents = (ref: RefObject<HTMLIFrameElement | null>) => {
 				unregister();
 
 				// Add event listeners
-				iframe.contentDocument?.addEventListener("pointermove", handlePointerMove, {
-					capture: true,
-				});
+				iframe.contentDocument?.addEventListener(
+					"pointermove",
+					handlePointerMove,
+					{
+						capture: true,
+					},
+				);
 			};
 
 			const unregister = () => {
 				// Clean up event listeners
-				iframe.contentDocument?.removeEventListener("pointermove", handlePointerMove);
+				iframe.contentDocument?.removeEventListener(
+					"pointermove",
+					handlePointerMove,
+				);
 			};
 
 			register();
@@ -67,7 +74,9 @@ export const Preview = ({ id = "puck-preview" }: { id?: string }) => {
 	const iframe = useAppStore((s) => s.iframe);
 	const overrides = useAppStore((s) => s.overrides);
 	const metadata = useAppStore((s) => s.metadata);
-	const renderData = useAppStore((s) => (s.state.ui.previewMode === "edit" ? null : s.state.data));
+	const renderData = useAppStore((s) =>
+		s.state.ui.previewMode === "edit" ? null : s.state.data,
+	);
 
 	const Page = useCallback<React.FC<PageProps>>(
 		(pageProps) => {
@@ -110,10 +119,7 @@ export const Preview = ({ id = "puck-preview" }: { id?: string }) => {
 			<DropZonePure zone={rootDroppableId} />
 		</Page>
 	) : (
-		<Render
-			data={renderData}
-			config={config}
-		/>
+		<Render data={renderData} config={config} />
 	);
 
 	useEffect(() => {
@@ -129,7 +135,8 @@ export const Preview = ({ id = "puck-preview" }: { id?: string }) => {
 			data-puck-preview
 			onClick={() => {
 				dispatch({ type: "setUi", ui: { itemSelector: null } });
-			}}>
+			}}
+		>
 			{iframe.enabled ? (
 				<AutoFrame
 					id="preview-frame"
@@ -141,7 +148,8 @@ export const Preview = ({ id = "puck-preview" }: { id?: string }) => {
 					onNotReady={() => {
 						setStatus("MOUNTED");
 					}}
-					frameRef={ref}>
+					frameRef={ref}
+				>
 					<autoFrameContext.Consumer>
 						{({ document }) => {
 							if (Frame) {
@@ -157,7 +165,8 @@ export const Preview = ({ id = "puck-preview" }: { id?: string }) => {
 					id="preview-frame"
 					className={getClassName("frame")}
 					ref={ref}
-					data-puck-entry>
+					data-puck-entry
+				>
 					{inner}
 				</div>
 			)}

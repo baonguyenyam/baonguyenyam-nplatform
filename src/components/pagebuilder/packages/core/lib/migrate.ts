@@ -3,7 +3,10 @@ import { ComponentData, Config, Data } from "../types";
 
 import { walkTree } from "./data/walk-tree";
 
-type Migration = (props: Data & { [key: string]: any }, config?: Config) => Data;
+type Migration = (
+	props: Data & { [key: string]: any },
+	config?: Config,
+) => Data;
 
 const migrations: Migration[] = [
 	// Migrate root to root.props
@@ -11,7 +14,9 @@ const migrations: Migration[] = [
 		const rootProps = data.root.props || data.root;
 
 		if (Object.keys(data.root).length > 0 && !data.root.props) {
-			console.warn("Migration applied: Root props moved from `root` to `root.props`.");
+			console.warn(
+				"Migration applied: Root props moved from `root` to `root.props`.",
+			);
 
 			return {
 				...data,
@@ -77,14 +82,18 @@ const migrations: Migration[] = [
 
 		deletedCompounds.forEach((zoneCompound) => {
 			const [_, propName] = zoneCompound.split(":");
-			console.log(`✓ Success: Migrated "${zoneCompound}" from DropZone to slot field "${propName}"`);
+			console.log(
+				`✓ Success: Migrated "${zoneCompound}" from DropZone to slot field "${propName}"`,
+			);
 			delete updated.data.zones?.[zoneCompound];
 		});
 
 		Object.keys(updated.data.zones ?? {}).forEach((zoneCompound) => {
 			const [_, propName] = zoneCompound.split(":");
 
-			throw new Error(`Could not migrate DropZone "${zoneCompound}" to slot field. No slot exists with the name "${propName}".`);
+			throw new Error(
+				`Could not migrate DropZone "${zoneCompound}" to slot field. No slot exists with the name "${propName}".`,
+			);
 		});
 
 		delete updated.data.zones;
@@ -94,5 +103,8 @@ const migrations: Migration[] = [
 ];
 
 export function migrate(data: Data, config?: Config): Data {
-	return migrations?.reduce((acc, migration) => migration(acc, config), data) as Data;
+	return migrations?.reduce(
+		(acc, migration) => migration(acc, config),
+		data,
+	) as Data;
 }

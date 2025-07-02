@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
+import {
+	ACTIONS,
+	createPermissionChecker,
+	PERMISSION_LEVELS,
+	RESOURCES,
+} from "@/lib/permissions";
 import models from "@/models";
 
 // Search across all entities
@@ -14,13 +19,13 @@ async function GET_Handler(req: NextRequest) {
 	// Search requires at least moderator access
 	const permissionChecker = createPermissionChecker({
 		userId: session.user.id as string,
-		role: session.user.role as 'ADMIN' | 'MODERATOR' | 'USER',
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
 	if (!permissionChecker.isModerator()) {
 		return NextResponse.json(
 			{ message: "Insufficient permissions" },
-			{ status: 403 }
+			{ status: 403 },
 		);
 	}
 
@@ -51,7 +56,7 @@ async function GET_Handler(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{ message: "Error performing search", success: "error" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

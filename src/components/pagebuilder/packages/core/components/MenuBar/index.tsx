@@ -11,7 +11,17 @@ import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("MenuBar", styles);
 
-export function MenuBar<UserData extends Data>({ menuOpen = false, renderHeaderActions, setMenuOpen }: { dispatch: (action: PuckAction) => void; onPublish?: (data: UserData) => void; menuOpen: boolean; renderHeaderActions?: () => ReactElement; setMenuOpen: Dispatch<SetStateAction<boolean>> }) {
+export function MenuBar<UserData extends Data>({
+	menuOpen = false,
+	renderHeaderActions,
+	setMenuOpen,
+}: {
+	dispatch: (action: PuckAction) => void;
+	onPublish?: (data: UserData) => void;
+	menuOpen: boolean;
+	renderHeaderActions?: () => ReactElement;
+	setMenuOpen: Dispatch<SetStateAction<boolean>>;
+}) {
 	const back = useAppStore((s) => s.history.back);
 	const forward = useAppStore((s) => s.history.forward);
 	const hasFuture = useAppStore((s) => s.history.hasFuture());
@@ -26,22 +36,20 @@ export function MenuBar<UserData extends Data>({ menuOpen = false, renderHeaderA
 				if (window.matchMedia("(min-width: 638px)").matches) {
 					return;
 				}
-				if (element.tagName === "A" && element.getAttribute("href")?.startsWith("#")) {
+				if (
+					element.tagName === "A" &&
+					element.getAttribute("href")?.startsWith("#")
+				) {
 					setMenuOpen(false);
 				}
-			}}>
+			}}
+		>
 			<div className={getClassName("inner")}>
 				<div className={getClassName("history")}>
-					<IconButton
-						title="undo"
-						disabled={!hasPast}
-						onClick={back}>
+					<IconButton title="undo" disabled={!hasPast} onClick={back}>
 						<Undo2Icon size={21} />
 					</IconButton>
-					<IconButton
-						title="redo"
-						disabled={!hasFuture}
-						onClick={forward}>
+					<IconButton title="redo" disabled={!hasFuture} onClick={forward}>
 						<Redo2Icon size={21} />
 					</IconButton>
 				</div>

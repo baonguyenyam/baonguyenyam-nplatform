@@ -12,7 +12,14 @@ import AppLoading from "@/components/AppLoading";
 import AppTable from "@/components/AppTable";
 import AppTitle from "@/components/AppTitle";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Keep Dialog for upload
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog"; // Keep Dialog for upload
 import { Input } from "@/components/ui/input"; // Keep Input for URL display
 import initSupabase from "@/lib/supabase";
 import { uploadFile } from "@/lib/upload"; // Keep uploadFile utility
@@ -59,19 +66,26 @@ export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
 
 	// State for edit drawer
-	const [drawerState, setDrawerState] = useState<DrawerState>({ isOpen: false, data: null });
+	const [drawerState, setDrawerState] = useState<DrawerState>({
+		isOpen: false,
+		data: null,
+	});
 	// State for upload dialog
-	const [uploadDialogState, setUploadDialogState] = useState<UploadDialogState>({ isOpen: false, fileList: [] });
+	const [uploadDialogState, setUploadDialogState] = useState<UploadDialogState>(
+		{ isOpen: false, fileList: [] },
+	);
 	// Use the FetchResponse interface for db state
 	const [db, setDb] = useState<FetchResponse | null>(null);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 
 	// Consistent drawer close handler
 	const handleDrawerClose = () => setDrawerState({ isOpen: false, data: null });
 	// Upload dialog close handler
-	const handleUploadDialogClose = () => setUploadDialogState({ isOpen: false, fileList: [] });
+	const handleUploadDialogClose = () =>
+		setUploadDialogState({ isOpen: false, fileList: [] });
 
 	// --- Data Fetching Logic ---
 	const query = useMemo(
@@ -108,7 +122,11 @@ export default function Fetch(props: any) {
 
 	const deteteRecord = async (id: string) => {
 		// Use window.confirm for consistency
-		if (window.confirm("Are you sure you want to delete this record? This action cannot be undone.")) {
+		if (
+			window.confirm(
+				"Are you sure you want to delete this record? This action cannot be undone.",
+			)
+		) {
 			const res = await actions.deleteRecord(id); // Assuming deleteRecord also handles storage deletion
 			if (res?.success === "success") {
 				toast.success("File deleted successfully.");
@@ -193,7 +211,8 @@ export default function Fetch(props: any) {
 					variant="destructive"
 					size="sm"
 					onClick={() => deteteRecord(drawerState.data!.id)} // Use non-null assertion
-					className="px-2 h-8 space-x-1">
+					className="px-2 h-8 space-x-1"
+				>
 					<Trash className="h-4 w-4" />
 					<span>Delete</span>
 				</Button>
@@ -202,7 +221,8 @@ export default function Fetch(props: any) {
 				variant="outline"
 				size="icon"
 				onClick={handleDrawerClose}
-				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200">
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200"
+			>
 				<X className="h-5 w-5" />
 			</Button>
 		</div>
@@ -223,14 +243,18 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				{/* Keep Dialog for Uploading */}
 				<Dialog
 					open={uploadDialogState.isOpen}
-					onOpenChange={(open) => setUploadDialogState((prev) => ({ ...prev, isOpen: open, fileList: open ? [] : prev.fileList }))}>
+					onOpenChange={(open) =>
+						setUploadDialogState((prev) => ({
+							...prev,
+							isOpen: open,
+							fileList: open ? [] : prev.fileList,
+						}))
+					}
+				>
 					<DialogTrigger asChild>
 						<Button>
 							<Plus className="mr-2 h-4 w-4" />
@@ -241,17 +265,17 @@ export default function Fetch(props: any) {
 						<DialogHeader>
 							<DialogTitle>Upload {title}</DialogTitle>
 						</DialogHeader>
-						<div
-							className="overflow-auto py-2"
-							id="upload">
-							<Upload.Dragger
-								{...uploadProps}
-								style={{ maxHeight: "150px" }}>
+						<div className="overflow-auto py-2" id="upload">
+							<Upload.Dragger {...uploadProps} style={{ maxHeight: "150px" }}>
 								<p className="ant-upload-drag-icon">
 									<Inbox className="mx-auto h-12 w-12 text-gray-400" />
 								</p>
-								<p className="ant-upload-text">Click or drag file to this area to upload</p>
-								<p className="ant-upload-hint">Support for single or bulk upload.</p>
+								<p className="ant-upload-text">
+									Click or drag file to this area to upload
+								</p>
+								<p className="ant-upload-hint">
+									Support for single or bulk upload.
+								</p>
 							</Upload.Dragger>
 						</div>
 						{/* Optional: Add a button to close dialog after uploads if needed */}
@@ -317,9 +341,13 @@ export default function Fetch(props: any) {
 												</span>
 											)}
 											{/* Use text-sm for consistency */}
-											<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-[200px]">{row.name}</span>
+											<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-[200px]">
+												{row.name}
+											</span>
 										</div>
-										<div className="text-gray-500 text-xs">{dateFormat(row?.createdAt || "")}</div>
+										<div className="text-gray-500 text-xs">
+											{dateFormat(row?.createdAt || "")}
+										</div>
 									</>
 								);
 							},
@@ -356,12 +384,16 @@ export default function Fetch(props: any) {
 						{
 							header: "Extension",
 							accessor: "ext",
-							custom: (row: FileData) => <span className="text-sm">{row.ext}</span>,
+							custom: (row: FileData) => (
+								<span className="text-sm">{row.ext}</span>
+							),
 						},
 						{
 							header: "User",
 							accessor: "user.name", // Access nested property for sorting/filtering
-							custom: (row: FileData) => <span className="text-sm">{row.user?.name || "-"}</span>,
+							custom: (row: FileData) => (
+								<span className="text-sm">{row.user?.name || "-"}</span>
+							),
 						},
 						{
 							header: "Edit",
@@ -373,7 +405,8 @@ export default function Fetch(props: any) {
 										variant="outline" // Use standard variants
 										size="icon"
 										className="h-7 w-7 border-gray-400 text-black hover:bg-gray-200" // Simplified styling
-										onClick={() => setDrawerState({ isOpen: true, data: row })}>
+										onClick={() => setDrawerState({ isOpen: true, data: row })}
+									>
 										<Pencil className="h-4 w-4" /> {/* Consistent icon size */}
 									</Button>
 								);

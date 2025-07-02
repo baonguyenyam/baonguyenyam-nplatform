@@ -8,8 +8,15 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { DuplicateAction } from "../actions";
 
-export function duplicateAction<UserData extends Data>(state: PrivateAppState<UserData>, action: DuplicateAction, appStore: AppStore): PrivateAppState<UserData> {
-	const item = getItem({ index: action.sourceIndex, zone: action.sourceZone }, state)!;
+export function duplicateAction<UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: DuplicateAction,
+	appStore: AppStore,
+): PrivateAppState<UserData> {
+	const item = getItem(
+		{ index: action.sourceIndex, zone: action.sourceZone },
+		state,
+	)!;
 
 	const idsInPath = getIdsForParent(action.sourceZone, state);
 
@@ -46,13 +53,19 @@ export function duplicateAction<UserData extends Data>(state: PrivateAppState<Us
 				};
 			}
 
-			if (zoneCompound === action.sourceZone && index === action.sourceIndex + 1) {
+			if (
+				zoneCompound === action.sourceZone &&
+				index === action.sourceIndex + 1
+			) {
 				return newItem;
 			}
 
 			const [sourceZoneParent] = action.sourceZone.split(":");
 
-			if (sourceZoneParent === childItem.props.id || idsInPath.indexOf(childItem.props.id) > -1) {
+			if (
+				sourceZoneParent === childItem.props.id ||
+				idsInPath.indexOf(childItem.props.id) > -1
+			) {
 				return childItem;
 			}
 

@@ -47,14 +47,18 @@
 	outline: 0;
 }
 
-.Drawer:not(.Drawer--isDraggingFrom) .DrawerItem:focus-visible .DrawerItem-draggable {
+.Drawer:not(.Drawer--isDraggingFrom)
+	.DrawerItem:focus-visible
+	.DrawerItem-draggable {
 	border-radius: 4px;
 	outline: 2px solid var(--puck-color-azure-05);
 	outline-offset: 2px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.Drawer:not(.Drawer--isDraggingFrom) .DrawerItem:not(.DrawerItem--disabled) .DrawerItem-draggable:hover {
+	.Drawer:not(.Drawer--isDraggingFrom)
+		.DrawerItem:not(.DrawerItem--disabled)
+		.DrawerItem-draggable:hover {
 		background-color: var(--puck-color-azure-12);
 		color: var(--puck-color-azure-04);
 		transition: none;

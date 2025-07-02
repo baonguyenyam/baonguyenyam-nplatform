@@ -39,7 +39,8 @@ export const debugPlugin: Plugin = {
 							// No way to get appState without re-rendering
 							console.log(appState);
 						}}
-						title="Log state">
+						title="Log state"
+					>
 						<LogsIcon />
 					</IconButton>
 					{children}

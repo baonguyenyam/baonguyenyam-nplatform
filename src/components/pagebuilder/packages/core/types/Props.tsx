@@ -14,7 +14,9 @@ export type DefaultRootFieldProps = {
 	title?: string;
 };
 
-export type DefaultRootRenderProps<Props extends DefaultComponentProps = DefaultRootFieldProps> = WithPuckProps<WithChildren<Props>>;
+export type DefaultRootRenderProps<
+	Props extends DefaultComponentProps = DefaultRootFieldProps,
+> = WithPuckProps<WithChildren<Props>>;
 
 export type DefaultRootProps = DefaultRootRenderProps; // Deprecated
 

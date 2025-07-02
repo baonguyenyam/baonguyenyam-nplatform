@@ -6,7 +6,11 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { RemoveAction } from "../actions";
 
-export const removeAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: RemoveAction, appStore: AppStore) => {
+export const removeAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: RemoveAction,
+	appStore: AppStore,
+) => {
 	const item = getItem({ index: action.index, zone: action.zone }, state)!;
 
 	// Gather related
@@ -22,13 +26,17 @@ export const removeAction = <UserData extends Data>(state: PrivateAppState<UserD
 		[item.props.id],
 	);
 
-	const newState = walkTree<UserData>(state, appStore.config, (content, zoneCompound) => {
-		if (zoneCompound === action.zone) {
-			return remove(content, action.index);
-		}
+	const newState = walkTree<UserData>(
+		state,
+		appStore.config,
+		(content, zoneCompound) => {
+			if (zoneCompound === action.zone) {
+				return remove(content, action.index);
+			}
 
-		return content;
-	});
+			return content;
+		},
+	);
 
 	Object.keys(newState.data.zones || {}).forEach((zoneCompound) => {
 		const parentId = zoneCompound.split(":")[0];

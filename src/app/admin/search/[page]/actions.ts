@@ -37,13 +37,28 @@ export async function getAll(params: {
 	// Ensure 'id' and the search column ('title', 'name', etc.) exist in each table
 	// Use aliases to create consistent 'search_name' and 'type' columns
 	const tablesToSearch = [
-		{ tableName: "Post", nameColumn: "title", contentColumn: "content", contentType: "type" },
+		{
+			tableName: "Post",
+			nameColumn: "title",
+			contentColumn: "content",
+			contentType: "type",
+		},
 		{ tableName: "User", nameColumn: "name", contentColumn: "email" },
 		{ tableName: "Order", nameColumn: "title", contentColumn: "content" },
 		// { tableName: "Attribute", nameColumn: "title", contentColumn: "content" },
 		// { tableName: "AttributeMeta", nameColumn: "key", contentColumn: "value" },
-		{ tableName: "Category", nameColumn: "title", contentColumn: "content", contentType: "type" },
-		{ tableName: "Customer", nameColumn: "name", contentColumn: "email", contentType: "type" },
+		{
+			tableName: "Category",
+			nameColumn: "title",
+			contentColumn: "content",
+			contentType: "type",
+		},
+		{
+			tableName: "Customer",
+			nameColumn: "name",
+			contentColumn: "email",
+			contentType: "type",
+		},
 		{ tableName: "File", nameColumn: "name", contentColumn: "data" },
 		// Add other tables here, e.g., { tableName: "Order", nameColumn: "orderNumber" }
 	];
@@ -67,7 +82,12 @@ export async function getAll(params: {
 
 	if (!unionParts) {
 		// Handle case where no tables are defined to search
-		return { data: [], count: 0, success: "success", message: "No tables configured for search." };
+		return {
+			data: [],
+			count: 0,
+			success: "success",
+			message: "No tables configured for search.",
+		};
 	}
 
 	try {
@@ -91,13 +111,17 @@ export async function getAll(params: {
 	`;
 
 		// --- Execute Queries ---
-		const [searchResults, countResult] = await Promise.all([db.$queryRaw<SearchResultItem[]>(dataQuery), db.$queryRaw<CountResult[]>(countQuery)]);
+		const [searchResults, countResult] = await Promise.all([
+			db.$queryRaw<SearchResultItem[]>(dataQuery),
+			db.$queryRaw<CountResult[]>(countQuery),
+		]);
 
 		// Take maximum of 20 words from search_content for display
 		searchResults.forEach((result) => {
 			if (result.search_content) {
 				const words = result.search_content.split(" ");
-				result.search_content = words.slice(0, 20).join(" ") + (words.length > 20 ? "..." : "");
+				result.search_content =
+					words.slice(0, 20).join(" ") + (words.length > 20 ? "..." : "");
 			}
 		});
 

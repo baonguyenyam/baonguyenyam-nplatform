@@ -20,7 +20,11 @@ export const getGlobalClassName = (rootClass: string, options: Options) => {
 };
 
 const getClassNameFactory =
-	(rootClass: string, styles: Record<string, string>, config: { baseClass?: string } = { baseClass: "" }) =>
+	(
+		rootClass: string,
+		styles: Record<string, string>,
+		config: { baseClass?: string } = { baseClass: "" },
+	) =>
 	(options: Options = {}) => {
 		if (typeof options === "string") {
 			const descendant = options;
@@ -38,7 +42,8 @@ const getClassNameFactory =
 			const prefixedModifiers: OptionsObj = {};
 
 			for (const modifier in modifiers) {
-				prefixedModifiers[styles[`${rootClass}--${modifier}`]] = modifiers[modifier];
+				prefixedModifiers[styles[`${rootClass}--${modifier}`]] =
+					modifiers[modifier];
 			}
 
 			const c = styles[rootClass];

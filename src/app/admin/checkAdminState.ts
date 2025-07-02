@@ -13,7 +13,9 @@ import * as actions from "./actions";
 export default function CheckAdminState() {
 	const dispatch = useAppDispatch(); // Any where is using useAppDispatch the page will callback to CheckState
 	const memoriezAtts = useAppSelector((state) => state.attributeState.data);
-	const memoriezCategories = useAppSelector((state) => state.categoriesState.data);
+	const memoriezCategories = useAppSelector(
+		(state) => state.categoriesState.data,
+	);
 	const role = useCurrentRole();
 	if (role === undefined) {
 		window.location.href = "/admin/";

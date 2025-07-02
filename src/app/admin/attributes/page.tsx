@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { PermissionChecker } from "@/lib/admin-route-protection";
 import { meta } from "@/lib/appConst";
+import { ACTIONS, RESOURCES } from "@/lib/permissions";
 
 import Fetch from "./[page]/fetch";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Index() {
-	await PermissionChecker.check("attributes", "read");
+	await PermissionChecker.check(RESOURCES.ATTRIBUTES, ACTIONS.READ);
 
 	const breadcrumb = [
 		{
@@ -23,11 +24,7 @@ export default async function Index() {
 
 	return (
 		<div className="mx-auto flex-col flex py-5 w-full px-4 sm:px-6">
-			<Fetch
-				title={metadata.title}
-				breadcrumb={breadcrumb}
-				page={1}
-			/>
+			<Fetch title={metadata.title} breadcrumb={breadcrumb} page={1} />
 		</div>
 	);
 }

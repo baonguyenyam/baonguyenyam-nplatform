@@ -7,7 +7,16 @@ import path from "path";
 import { Bucket, s3Client } from "@/lib/s3";
 import models from "@/models";
 
-export async function upload(upload_dir: string, fileHash: string, fileExtension: string, fileBuffer: Buffer, fileSize: number, fileMimeType: string, fileName: string, id: string) {
+export async function upload(
+	upload_dir: string,
+	fileHash: string,
+	fileExtension: string,
+	fileBuffer: Buffer,
+	fileSize: number,
+	fileMimeType: string,
+	fileName: string,
+	id: string,
+) {
 	try {
 		const data = {
 			Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
@@ -47,8 +56,25 @@ export async function upload(upload_dir: string, fileHash: string, fileExtension
 	}
 }
 
-export async function uploadSave(upload_path: string, fileHash: string, fileExtension: string, fileBuffer: Buffer | string, fileName: string, id: string, fileMimeType: string, fileSize: number, upload_dir: string) {
-	await writeFile(path.join(process.cwd(), upload_path || "", "/" + fileHash + "." + fileExtension), fileBuffer);
+export async function uploadSave(
+	upload_path: string,
+	fileHash: string,
+	fileExtension: string,
+	fileBuffer: Buffer | string,
+	fileName: string,
+	id: string,
+	fileMimeType: string,
+	fileSize: number,
+	upload_dir: string,
+) {
+	await writeFile(
+		path.join(
+			process.cwd(),
+			upload_path || "",
+			"/" + fileHash + "." + fileExtension,
+		),
+		fileBuffer,
+	);
 
 	const fileDataToSave = {
 		name: fileName,

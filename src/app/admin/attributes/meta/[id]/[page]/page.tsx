@@ -19,7 +19,9 @@ export default async function Index({ params }: any) {
 
 	if (id) {
 		const getAttribute = await models.Attribute.getAttributeById(Number(id));
-		const getParent = await models.Attribute.getAttributeById(Number(getAttribute?.childrenId));
+		const getParent = await models.Attribute.getAttributeById(
+			Number(getAttribute?.childrenId),
+		);
 		if (getParent) {
 			parent = getParent;
 		}

@@ -146,11 +146,19 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 }
 
 // connectUser
-export async function connectUser(orderId: string, customerId: string, model: any, key: any) {
+export async function connectUser(
+	orderId: string,
+	customerId: string,
+	model: any,
+	key: any,
+) {
 	const session = await auth();
 	const { id: userId, role } = session?.user || {};
 	try {
-		const db = model === "customer" ? await models.Order.connectCustomerToOrder(orderId, customerId) : await models.Order.connectUserToOrder(orderId, customerId, key);
+		const db =
+			model === "customer"
+				? await models.Order.connectCustomerToOrder(orderId, customerId)
+				: await models.Order.connectUserToOrder(orderId, customerId, key);
 		return {
 			success: "success",
 			data: db,
@@ -165,11 +173,19 @@ export async function connectUser(orderId: string, customerId: string, model: an
 }
 
 // disconnectUser
-export async function disconnectUser(orderId: string, customerId: string, model: any, key: any) {
+export async function disconnectUser(
+	orderId: string,
+	customerId: string,
+	model: any,
+	key: any,
+) {
 	const session = await auth();
 	const { id: userId, role } = session?.user || {};
 	try {
-		const db = model === "customer" ? await models.Order.disconnectCustomerFromOrder(orderId, customerId) : await models.Order.disconnectUserFromOrder(orderId, customerId, key);
+		const db =
+			model === "customer"
+				? await models.Order.disconnectCustomerFromOrder(orderId, customerId)
+				: await models.Order.disconnectUserFromOrder(orderId, customerId, key);
 		return {
 			success: "success",
 			data: db,
@@ -188,7 +204,10 @@ export async function searchAttributeMeta(search: string, attributeId: string) {
 	const session = await auth();
 	const { id: userId, role } = session?.user || {};
 	try {
-		const db = await models.AttributeMeta.getAllAttributeMetaByKeyOrValue(search, Number(attributeId));
+		const db = await models.AttributeMeta.getAllAttributeMetaByKeyOrValue(
+			search,
+			Number(attributeId),
+		);
 		return {
 			success: "success",
 			data: db,

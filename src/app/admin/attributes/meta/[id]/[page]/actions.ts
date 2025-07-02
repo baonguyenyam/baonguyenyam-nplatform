@@ -8,7 +8,8 @@ export async function getAll(query: any) {
 	const { id, role } = session?.user || {};
 	try {
 		const db = await models.AttributeMeta.getAllAttributeByParentID(query);
-		const dbCount = await models.AttributeMeta.getAllAttributeByParentIDCount(query);
+		const dbCount =
+			await models.AttributeMeta.getAllAttributeByParentIDCount(query);
 		return {
 			data: db,
 			count: dbCount,
@@ -70,7 +71,10 @@ export async function updateRecord(id: string, data: any) {
 		data,
 	};
 	try {
-		const db = await models.AttributeMeta.updateAttributeMeta(Number(id), _body);
+		const db = await models.AttributeMeta.updateAttributeMeta(
+			Number(id),
+			_body,
+		);
 		return {
 			success: "success",
 			data: db,

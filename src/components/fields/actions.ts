@@ -30,7 +30,10 @@ export async function getAttribute(attributeId: number, value: string) {
 	const session = await auth();
 	const { id: userId, role } = session?.user || {};
 	try {
-		const db = await models.AttributeMeta.getAttributeByAttributeIdIdAndValue(attributeId, value);
+		const db = await models.AttributeMeta.getAttributeByAttributeIdIdAndValue(
+			attributeId,
+			value,
+		);
 		return {
 			data: db,
 			success: "success",

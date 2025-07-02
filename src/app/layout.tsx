@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@/auth";
@@ -10,13 +9,6 @@ import { appState } from "@/lib/appConst";
 import StoreProvider from "./StoreProvider";
 
 import "./globals.css";
-
-// const inter = Inter({
-// 	subsets: ["latin"],
-// 	variable: "--font-inter",
-// 	display: "swap",
-// 	fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-// });
 
 export const metadata: Metadata = {
 	title: {
@@ -31,21 +23,22 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function RootLayout({ children }: React.PropsWithChildren) {
+export default async function RootLayout({
+	children,
+}: React.PropsWithChildren) {
 	const session = await auth();
 	return (
 		<SessionProvider session={session}>
-			<html
-				lang="en"
-				suppressHydrationWarning={true}>
+			<html lang="en" suppressHydrationWarning={true}>
 				<body
-					// className={`${inter.className}`}
-					suppressHydrationWarning={true}>
+					suppressHydrationWarning={true}
+				>
 					<ThemeProvider
 						attribute="class"
 						defaultTheme="system"
 						enableSystem
-						disableTransitionOnChange>
+						disableTransitionOnChange
+					>
 						<StoreProvider>{children}</StoreProvider>
 					</ThemeProvider>
 					<Toaster richColors />

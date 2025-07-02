@@ -9,7 +9,10 @@ import { PrivateAppState } from "../types/Internal";
 import { duplicateAction } from "./actions/duplicate";
 import { insertAction } from "./actions/insert";
 import { moveAction } from "./actions/move";
-import { registerZoneAction, unregisterZoneAction } from "./actions/register-zone";
+import {
+	registerZoneAction,
+	unregisterZoneAction,
+} from "./actions/register-zone";
 import { removeAction } from "./actions/remove";
 import { reorderAction } from "./actions/reorder";
 import { replaceAction } from "./actions/replace";
@@ -23,15 +26,35 @@ export * from "./actions";
 
 export type ActionType = "insert" | "reorder";
 
-export type StateReducer<UserData extends Data = Data> = Reducer<PrivateAppState<UserData>, PuckAction>;
+export type StateReducer<UserData extends Data = Data> = Reducer<
+	PrivateAppState<UserData>,
+	PuckAction
+>;
 
-function storeInterceptor<UserData extends Data = Data>(reducer: StateReducer<UserData>, record?: (appState: AppState<UserData>) => void, onAction?: OnAction<UserData>) {
-	return (state: PrivateAppState<UserData>, action: PuckAction): PrivateAppState<UserData> => {
+function storeInterceptor<UserData extends Data = Data>(
+	reducer: StateReducer<UserData>,
+	record?: (appState: AppState<UserData>) => void,
+	onAction?: OnAction<UserData>,
+) {
+	return (
+		state: PrivateAppState<UserData>,
+		action: PuckAction,
+	): PrivateAppState<UserData> => {
 		const newAppState = reducer(state, action);
 
-		const isValidType = !["registerZone", "unregisterZone", "setData", "setUi", "set"].includes(action.type);
+		const isValidType = ![
+			"registerZone",
+			"unregisterZone",
+			"setData",
+			"setUi",
+			"set",
+		].includes(action.type);
 
-		if (typeof action.recordHistory !== "undefined" ? action.recordHistory : isValidType) {
+		if (
+			typeof action.recordHistory !== "undefined"
+				? action.recordHistory
+				: isValidType
+		) {
 			if (record) record(newAppState);
 		}
 
@@ -41,7 +64,15 @@ function storeInterceptor<UserData extends Data = Data>(reducer: StateReducer<Us
 	};
 }
 
-export function createReducer<UserData extends Data>({ record, onAction, appStore }: { record?: (appState: AppState<UserData>) => void; onAction?: OnAction<UserData>; appStore: AppStore }): StateReducer<UserData> {
+export function createReducer<UserData extends Data>({
+	record,
+	onAction,
+	appStore,
+}: {
+	record?: (appState: AppState<UserData>) => void;
+	onAction?: OnAction<UserData>;
+	appStore: AppStore;
+}): StateReducer<UserData> {
 	return storeInterceptor(
 		(state, action) => {
 			if (action.type === "set") {

@@ -6,7 +6,14 @@
  *
  */
 
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
@@ -16,7 +23,17 @@ type DropDownContextType = {
 
 const DropDownContext = React.createContext<DropDownContextType | null>(null);
 
-export function DropDownItem({ children, className, onClick, title }: { children: React.ReactNode; className: string; onClick: (event: React.MouseEvent<HTMLButtonElement>) => void; title?: string }) {
+export function DropDownItem({
+	children,
+	className,
+	onClick,
+	title,
+}: {
+	children: React.ReactNode;
+	className: string;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	title?: string;
+}) {
 	const ref = useRef<HTMLButtonElement>(null);
 
 	const dropDownContext = React.useContext(DropDownContext);
@@ -39,15 +56,25 @@ export function DropDownItem({ children, className, onClick, title }: { children
 			onClick={onClick}
 			ref={ref}
 			title={title}
-			type="button">
+			type="button"
+		>
 			{children}
 		</button>
 	);
 }
 
-function DropDownItems({ children, dropDownRef, onClose }: { children: React.ReactNode; dropDownRef: React.Ref<HTMLDivElement>; onClose: () => void }) {
+function DropDownItems({
+	children,
+	dropDownRef,
+	onClose,
+}: {
+	children: React.ReactNode;
+	dropDownRef: React.Ref<HTMLDivElement>;
+	onClose: () => void;
+}) {
 	const [items, setItems] = useState<React.RefObject<HTMLButtonElement>[]>();
-	const [highlightedItem, setHighlightedItem] = useState<React.RefObject<HTMLButtonElement>>();
+	const [highlightedItem, setHighlightedItem] =
+		useState<React.RefObject<HTMLButtonElement>>();
 
 	const registerItem = useCallback(
 		(itemRef: React.RefObject<HTMLButtonElement>) => {
@@ -100,17 +127,30 @@ function DropDownItems({ children, dropDownRef, onClose }: { children: React.Rea
 
 	return (
 		<DropDownContext.Provider value={contextValue}>
-			<div
-				className="dropdown"
-				ref={dropDownRef}
-				onKeyDown={handleKeyDown}>
+			<div className="dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
 				{children}
 			</div>
 		</DropDownContext.Provider>
 	);
 }
 
-export default function DropDown({ disabled = false, buttonLabel, buttonAriaLabel, buttonClassName, buttonIconClassName, children, stopCloseOnClickSelf }: { disabled?: boolean; buttonAriaLabel?: string; buttonClassName: string; buttonIconClassName?: string; buttonLabel?: string; children: ReactNode; stopCloseOnClickSelf?: boolean }): React.JSX.Element {
+export default function DropDown({
+	disabled = false,
+	buttonLabel,
+	buttonAriaLabel,
+	buttonClassName,
+	buttonIconClassName,
+	children,
+	stopCloseOnClickSelf,
+}: {
+	disabled?: boolean;
+	buttonAriaLabel?: string;
+	buttonClassName: string;
+	buttonIconClassName?: string;
+	buttonLabel?: string;
+	children: ReactNode;
+	stopCloseOnClickSelf?: boolean;
+}): React.JSX.Element {
 	const dropDownRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const [showDropDown, setShowDropDown] = useState(false);
@@ -140,7 +180,11 @@ export default function DropDown({ disabled = false, buttonLabel, buttonAriaLabe
 			const handle = (event: MouseEvent) => {
 				const target = event.target;
 				if (stopCloseOnClickSelf) {
-					if (dropDownRef.current && dropDownRef.current.contains(target as Node)) return;
+					if (
+						dropDownRef.current &&
+						dropDownRef.current.contains(target as Node)
+					)
+						return;
 				}
 				if (!button.contains(target as Node)) {
 					setShowDropDown(false);
@@ -162,17 +206,18 @@ export default function DropDown({ disabled = false, buttonLabel, buttonAriaLabe
 				aria-label={buttonAriaLabel || buttonLabel}
 				className={buttonClassName}
 				onClick={() => setShowDropDown(!showDropDown)}
-				ref={buttonRef}>
+				ref={buttonRef}
+			>
 				{buttonIconClassName && <span className={buttonIconClassName} />}
-				{buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
+				{buttonLabel && (
+					<span className="text dropdown-button-text">{buttonLabel}</span>
+				)}
 				<i className="chevron-down" />
 			</button>
 
 			{showDropDown &&
 				createPortal(
-					<DropDownItems
-						dropDownRef={dropDownRef}
-						onClose={handleClose}>
+					<DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
 						{children}
 					</DropDownItems>,
 					document.body,

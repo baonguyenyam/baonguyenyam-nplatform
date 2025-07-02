@@ -1,4 +1,15 @@
-import { CSSProperties, ReactNode, Ref, SyntheticEvent, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+	CSSProperties,
+	ReactNode,
+	Ref,
+	SyntheticEvent,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { UniqueIdentifier } from "@dnd-kit/abstract";
 import { Copy, CornerLeftUp, Trash } from "lucide-react";
@@ -30,7 +41,15 @@ const actionsOverlayTop = space * 6.5;
 const actionsTop = -(actionsOverlayTop - 8);
 const actionsSide = space;
 
-const DefaultActionBar = ({ label, children, parentAction }: { label: string | undefined; children: ReactNode; parentAction: ReactNode }) => (
+const DefaultActionBar = ({
+	label,
+	children,
+	parentAction,
+}: {
+	label: string | undefined;
+	children: ReactNode;
+	parentAction: ReactNode;
+}) => (
 	<ActionBar>
 		<ActionBar.Group>
 			{parentAction}
@@ -51,8 +70,40 @@ export type ComponentDndData = {
 	inDroppableZone: boolean;
 };
 
-export const DraggableComponent = ({ children, depth, componentType, id, index, zoneCompound, isLoading = false, isSelected = false, debug, label, isEnabled, autoDragAxis, userDragAxis, inDroppableZone = true }: { children: (ref: Ref<any>) => ReactNode; componentType: string; depth: number; id: string; index: number; zoneCompound: string; isSelected?: boolean; debug?: string; label?: string; isLoading: boolean; isEnabled?: boolean; autoDragAxis: DragAxis; userDragAxis?: DragAxis; inDroppableZone: boolean }) => {
-	const zoom = useAppStore((s) => (s.selectedItem?.props.id === id ? s.zoomConfig.zoom : 1));
+export const DraggableComponent = ({
+	children,
+	depth,
+	componentType,
+	id,
+	index,
+	zoneCompound,
+	isLoading = false,
+	isSelected = false,
+	debug,
+	label,
+	isEnabled,
+	autoDragAxis,
+	userDragAxis,
+	inDroppableZone = true,
+}: {
+	children: (ref: Ref<any>) => ReactNode;
+	componentType: string;
+	depth: number;
+	id: string;
+	index: number;
+	zoneCompound: string;
+	isSelected?: boolean;
+	debug?: string;
+	label?: string;
+	isLoading: boolean;
+	isEnabled?: boolean;
+	autoDragAxis: DragAxis;
+	userDragAxis?: DragAxis;
+	inDroppableZone: boolean;
+}) => {
+	const zoom = useAppStore((s) =>
+		s.selectedItem?.props.id === id ? s.zoomConfig.zoom : 1,
+	);
 	const overrides = useAppStore((s) => s.overrides);
 	const dispatch = useAppStore((s) => s.dispatch);
 	const iframe = useAppStore((s) => s.iframe);
@@ -92,7 +143,8 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 		[setLocalZones],
 	);
 
-	const containsActiveZone = Object.values(localZones).filter(Boolean).length > 0;
+	const containsActiveZone =
+		Object.values(localZones).filter(Boolean).length > 0;
 
 	const path = useAppStore(useShallow((s) => s.state.indexes.nodes[id]?.path));
 	const permissions = useAppStore(
@@ -103,7 +155,10 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 		}),
 	);
 
-	const userIsDragging = useContextStore(ZoneStoreContext, (s) => !!s.draggedItem);
+	const userIsDragging = useContextStore(
+		ZoneStoreContext,
+		(s) => !!s.draggedItem,
+	);
 
 	const canCollide = permissions.drag || userIsDragging;
 
@@ -155,7 +210,12 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 	const [portalEl, setPortalEl] = useState<HTMLElement>();
 
 	useEffect(() => {
-		setPortalEl(iframe.enabled ? ref.current?.ownerDocument.body : (ref.current?.closest<HTMLElement>("[data-puck-preview]") ?? document.body));
+		setPortalEl(
+			iframe.enabled
+				? ref.current?.ownerDocument.body
+				: (ref.current?.closest<HTMLElement>("[data-puck-preview]") ??
+						document.body),
+		);
 	}, [iframe.enabled, ref.current]);
 
 	const getStyle = useCallback(() => {
@@ -164,14 +224,22 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 		const rect = ref.current!.getBoundingClientRect();
 		const deepScrollPosition = getDeepScrollPosition(ref.current);
 
-		const portalContainerEl = iframe.enabled ? null : ref.current?.closest<HTMLElement>("[data-puck-preview]");
+		const portalContainerEl = iframe.enabled
+			? null
+			: ref.current?.closest<HTMLElement>("[data-puck-preview]");
 
 		const portalContainerRect = portalContainerEl?.getBoundingClientRect();
-		const portalScroll = portalContainerEl ? getDeepScrollPosition(portalContainerEl) : { x: 0, y: 0 };
+		const portalScroll = portalContainerEl
+			? getDeepScrollPosition(portalContainerEl)
+			: { x: 0, y: 0 };
 
 		const scroll = {
-			x: deepScrollPosition.x - portalScroll.x - (portalContainerRect?.left ?? 0),
-			y: deepScrollPosition.y - portalScroll.y - (portalContainerRect?.top ?? 0),
+			x:
+				deepScrollPosition.x -
+				portalScroll.x -
+				(portalContainerRect?.left ?? 0),
+			y:
+				deepScrollPosition.y - portalScroll.y - (portalContainerRect?.top ?? 0),
 		};
 
 		const style: CSSProperties = {
@@ -212,7 +280,10 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 		};
 	}, [id, zoneCompound, index, componentType, sync]);
 
-	const CustomActionBar = useMemo(() => overrides.actionBar || DefaultActionBar, [overrides.actionBar]);
+	const CustomActionBar = useMemo(
+		() => overrides.actionBar || DefaultActionBar,
+		[overrides.actionBar],
+	);
 
 	const onClick = useCallback(
 		(e: Event | SyntheticEvent) => {
@@ -242,7 +313,9 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 
 		const parentZoneCompound = `${parentNode.parentId}:${parentNode.zone}`;
 
-		const parentIndex = zones[parentZoneCompound].contentIds.indexOf(node.parentId);
+		const parentIndex = zones[parentZoneCompound].contentIds.indexOf(
+			node.parentId,
+		);
 
 		dispatch({
 			type: "setUi",
@@ -324,7 +397,16 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 			el.removeEventListener("mouseout", _onMouseOut);
 			el.removeAttribute("data-puck-dragging");
 		};
-	}, [ref, onClick, containsActiveZone, zoneCompound, id, userIsDragging, thisIsDragging, inDroppableZone]);
+	}, [
+		ref,
+		onClick,
+		containsActiveZone,
+		zoneCompound,
+		id,
+		userIsDragging,
+		thisIsDragging,
+		inDroppableZone,
+	]);
 
 	useEffect(() => {
 		if (ref.current && disabled) {
@@ -388,7 +470,10 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 		if (ref.current) {
 			const computedStyle = window.getComputedStyle(ref.current);
 
-			if (computedStyle.display === "inline" || computedStyle.display === "inline-block") {
+			if (
+				computedStyle.display === "inline" ||
+				computedStyle.display === "inline-block"
+			) {
 				setDragAxis("x");
 
 				return;
@@ -399,9 +484,7 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 	}, [ref, userDragAxis, autoDragAxis]);
 
 	const parentAction = ctx?.areaId && ctx?.areaId !== "root" && (
-		<ActionBar.Action
-			onClick={onSelectParent}
-			label="Select parent">
+		<ActionBar.Action onClick={onSelectParent} label="Select parent">
 			<CornerLeftUp size={16} />
 		</ActionBar.Action>
 	);
@@ -416,7 +499,15 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 			registerLocalZone,
 			unregisterLocalZone,
 		}),
-		[ctx, id, zoneCompound, index, depth, registerLocalZone, unregisterLocalZone],
+		[
+			ctx,
+			id,
+			zoneCompound,
+			index,
+			depth,
+			registerLocalZone,
+			unregisterLocalZone,
+		],
 	);
 
 	return (
@@ -430,7 +521,8 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 							hover: hover || indicativeHover,
 						})}
 						style={{ ...style }}
-						data-puck-overlay>
+						data-puck-overlay
+					>
 						{debug}
 						{isLoading && (
 							<div className={getClassName("loadingOverlay")}>
@@ -441,7 +533,8 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 							className={getClassName("actionsOverlay")}
 							style={{
 								top: actionsOverlayTop / zoom,
-							}}>
+							}}
+						>
 							<div
 								className={getClassName("actions")}
 								style={{
@@ -451,21 +544,19 @@ export const DraggableComponent = ({ children, depth, componentType, id, index, 
 									paddingLeft: actionsSide,
 									paddingRight: actionsSide,
 								}}
-								ref={syncActionsPosition}>
+								ref={syncActionsPosition}
+							>
 								<CustomActionBar
 									parentAction={parentAction}
-									label={DEBUG ? id : label}>
+									label={DEBUG ? id : label}
+								>
 									{permissions.duplicate && (
-										<ActionBar.Action
-											onClick={onDuplicate}
-											label="Duplicate">
+										<ActionBar.Action onClick={onDuplicate} label="Duplicate">
 											<Copy size={16} />
 										</ActionBar.Action>
 									)}
 									{permissions.delete && (
-										<ActionBar.Action
-											onClick={onDelete}
-											label="Delete">
+										<ActionBar.Action onClick={onDelete} label="Delete">
 											<Trash size={16} />
 										</ActionBar.Action>
 									)}

@@ -24,7 +24,8 @@ export default function Fetch(props: any) {
 	const [open, setOpen] = useState<any>(["", null]);
 	const [db, setDb] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 	const query = useMemo(
 		() => ({
@@ -72,10 +73,7 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={subparent?.title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={subparent?.title} breadcrumb={breadcrumb} />
 				<Button onClick={() => setOpen(["create", null])}>
 					<Plus />
 					Create {subparent?.title}
@@ -114,16 +112,20 @@ export default function Fetch(props: any) {
 									<div className="flex flex-row items-center space-x-2">
 										{row?.value && row?.value.length > 0 ? (
 											<>
-												{checkStringIsTextOrColorHexOrURL(row?.value) === "color" && (
+												{checkStringIsTextOrColorHexOrURL(row?.value) ===
+													"color" && (
 													<>
 														<div
 															className="w-5 h-5 rounded-full border border-gray-300"
-															style={{ backgroundColor: row?.value }}></div>
+															style={{ backgroundColor: row?.value }}
+														></div>
 														<span>{row?.value}</span>
 													</>
 												)}
-												{checkStringIsTextOrColorHexOrURL(row?.value) === "text" && <span>{row?.value}</span>}
-												{checkStringIsTextOrColorHexOrURL(row?.value) === "url" && (
+												{checkStringIsTextOrColorHexOrURL(row?.value) ===
+													"text" && <span>{row?.value}</span>}
+												{checkStringIsTextOrColorHexOrURL(row?.value) ===
+													"url" && (
 													<Image
 														src={row?.value}
 														alt={row?.value}
@@ -148,7 +150,8 @@ export default function Fetch(props: any) {
 									<Button
 										size="icon"
 										className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-										onClick={() => setOpen(["edit", row])}>
+										onClick={() => setOpen(["edit", row])}
+									>
 										<Pencil />
 									</Button>
 								);
@@ -180,10 +183,12 @@ export default function Fetch(props: any) {
 					<Button
 						type="button"
 						onClick={() => setOpen(["", null])}
-						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
+						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
+					>
 						<X />
 					</Button>
-				}>
+				}
+			>
 				<FormEdit
 					parent={id}
 					type={subparent?.type}
@@ -212,17 +217,20 @@ export default function Fetch(props: any) {
 							onClick={() => {
 								deteteRecord(open[1]?.id);
 								setOpen(["", open[1]]);
-							}}>
+							}}
+						>
 							<Trash /> Delete
 						</Button>
 						<Button
 							type="button"
 							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
-							onClick={() => setOpen(["", null])}>
+							onClick={() => setOpen(["", null])}
+						>
 							<X />
 						</Button>
 					</div>
-				}>
+				}
+			>
 				<FormEdit
 					parent={id}
 					id={open[1]?.id}

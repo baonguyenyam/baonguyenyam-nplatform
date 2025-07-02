@@ -41,12 +41,7 @@ export default async function Index({ params }: any) {
 
 	return (
 		<div className="mx-auto flex-col flex py-5 w-full px-4 sm:px-6">
-			<Fetch
-				title={title}
-				breadcrumb={breadcrumb}
-				id={id}
-				page={pageNumber}
-			/>
+			<Fetch title={title} breadcrumb={breadcrumb} id={id} page={pageNumber} />
 		</div>
 	);
 }

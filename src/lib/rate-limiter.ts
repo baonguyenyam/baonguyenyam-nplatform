@@ -2,7 +2,8 @@ import { PERFORMANCE_CONFIG } from "@/lib/performance-config";
 
 // Simple in-memory rate limiter
 class RateLimiter {
-	private requests: Map<string, { count: number; resetTime: number }> = new Map();
+	private requests: Map<string, { count: number; resetTime: number }> =
+		new Map();
 
 	isAllowed(identifier: string, limit: number, windowMs: number): boolean {
 		const now = Date.now();
@@ -63,7 +64,11 @@ export function checkRateLimit(
 } {
 	const config = PERFORMANCE_CONFIG.API.RATE_LIMIT[userRole];
 
-	const allowed = rateLimiter.isAllowed(identifier, config.REQUESTS, config.WINDOW);
+	const allowed = rateLimiter.isAllowed(
+		identifier,
+		config.REQUESTS,
+		config.WINDOW,
+	);
 
 	return {
 		success: allowed,
@@ -73,7 +78,9 @@ export function checkRateLimit(
 	};
 }
 
-export function getRateLimitHeaders(rateLimitResult: ReturnType<typeof checkRateLimit>) {
+export function getRateLimitHeaders(
+	rateLimitResult: ReturnType<typeof checkRateLimit>,
+) {
 	return {
 		"X-RateLimit-Limit": rateLimitResult.limit.toString(),
 		"X-RateLimit-Remaining": rateLimitResult.remaining.toString(),

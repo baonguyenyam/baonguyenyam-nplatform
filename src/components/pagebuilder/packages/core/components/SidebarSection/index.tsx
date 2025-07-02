@@ -11,25 +11,41 @@ import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("SidebarSection", styles);
 
-export const SidebarSection = ({ children, title, background, showBreadcrumbs, noBorderTop, noPadding, isLoading }: { children: ReactNode; title: ReactNode; background?: string; showBreadcrumbs?: boolean; noBorderTop?: boolean; noPadding?: boolean; isLoading?: boolean | null }) => {
+export const SidebarSection = ({
+	children,
+	title,
+	background,
+	showBreadcrumbs,
+	noBorderTop,
+	noPadding,
+	isLoading,
+}: {
+	children: ReactNode;
+	title: ReactNode;
+	background?: string;
+	showBreadcrumbs?: boolean;
+	noBorderTop?: boolean;
+	noPadding?: boolean;
+	isLoading?: boolean | null;
+}) => {
 	const setUi = useAppStore((s) => s.setUi);
 	const breadcrumbs = useBreadcrumbs(1);
 
 	return (
 		<div
 			className={getClassName({ noBorderTop, noPadding })}
-			style={{ background }}>
+			style={{ background }}
+		>
 			<div className={getClassName("title")}>
 				<div className={getClassName("breadcrumbs")}>
 					{showBreadcrumbs
 						? breadcrumbs.map((breadcrumb, i) => (
-								<div
-									key={i}
-									className={getClassName("breadcrumb")}>
+								<div key={i} className={getClassName("breadcrumb")}>
 									<button
 										type="button"
 										className={getClassName("breadcrumbLabel")}
-										onClick={() => setUi({ itemSelector: breadcrumb.selector })}>
+										onClick={() => setUi({ itemSelector: breadcrumb.selector })}
+									>
 										{breadcrumb.label}
 									</button>
 									<ChevronRight size={16} />
@@ -37,9 +53,7 @@ export const SidebarSection = ({ children, title, background, showBreadcrumbs, n
 							))
 						: null}
 					<div className={getClassName("heading")}>
-						<Heading
-							rank="2"
-							size="xs">
+						<Heading rank="2" size="xs">
 							{title}
 						</Heading>
 					</div>

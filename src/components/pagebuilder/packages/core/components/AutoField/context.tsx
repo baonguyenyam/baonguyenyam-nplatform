@@ -34,10 +34,18 @@ export const NestedFieldProvider = ({
 	const subReadOnlyFields = useMemo(
 		() =>
 			Object.keys(readOnlyFields).reduce((acc, readOnlyKey) => {
-				const isLocal = readOnlyKey.indexOf(subPath) > -1 || readOnlyKey.indexOf(wildcardSubPath) > -1;
+				const isLocal =
+					readOnlyKey.indexOf(subPath) > -1 ||
+					readOnlyKey.indexOf(wildcardSubPath) > -1;
 
 				if (isLocal) {
-					const subPathPattern = new RegExp(`^(${name}|${wildcardName})\.`.replace(/\[/g, "\\[").replace(/\]/g, "\\]").replace(/\./g, "\\.").replace(/\*/g, "\\*"));
+					const subPathPattern = new RegExp(
+						`^(${name}|${wildcardName})\.`
+							.replace(/\[/g, "\\[")
+							.replace(/\]/g, "\\]")
+							.replace(/\./g, "\\.")
+							.replace(/\*/g, "\\*"),
+					);
 
 					const localName = readOnlyKey.replace(subPathPattern, "");
 
@@ -52,5 +60,11 @@ export const NestedFieldProvider = ({
 		[name, subName, wildcardName, readOnlyFields],
 	);
 
-	return <NestedFieldContext.Provider value={{ readOnlyFields: subReadOnlyFields, localName: subName }}>{children}</NestedFieldContext.Provider>;
+	return (
+		<NestedFieldContext.Provider
+			value={{ readOnlyFields: subReadOnlyFields, localName: subName }}
+		>
+			{children}
+		</NestedFieldContext.Provider>
+	);
 };

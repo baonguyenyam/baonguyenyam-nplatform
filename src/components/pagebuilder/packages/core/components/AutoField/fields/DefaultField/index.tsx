@@ -7,7 +7,17 @@ import styles from "../../styles.module.css";
 
 const getClassName = getClassNameFactory("Input", styles);
 
-export const DefaultField = ({ field, onChange, readOnly, value: _value, name, label, labelIcon, Label, id }: FieldPropsInternal) => {
+export const DefaultField = ({
+	field,
+	onChange,
+	readOnly,
+	value: _value,
+	name,
+	label,
+	labelIcon,
+	Label,
+	id,
+}: FieldPropsInternal) => {
 	const value = _value as string | number | undefined | null;
 
 	return (
@@ -21,7 +31,8 @@ export const DefaultField = ({ field, onChange, readOnly, value: _value, name, l
 					</>
 				)
 			}
-			readOnly={readOnly}>
+			readOnly={readOnly}
+		>
 			<input
 				className={getClassName("input")}
 				autoComplete="off"
@@ -51,7 +62,11 @@ export const DefaultField = ({ field, onChange, readOnly, value: _value, name, l
 				id={id}
 				min={field.type === "number" ? field.min : undefined}
 				max={field.type === "number" ? field.max : undefined}
-				placeholder={field.type === "text" || field.type === "number" ? field.placeholder : undefined}
+				placeholder={
+					field.type === "text" || field.type === "number"
+						? field.placeholder
+						: undefined
+				}
 				step={field.type === "number" ? field.step : undefined}
 			/>
 		</Label>

@@ -2,13 +2,21 @@ import { Data, DefaultComponentProps, DefaultRootFieldProps } from "../types";
 
 import { defaultData } from "./data/default-data";
 
-type PropTransform<Props extends DefaultComponentProps = DefaultComponentProps, RootProps extends DefaultComponentProps = DefaultRootFieldProps> = Partial<
+type PropTransform<
+	Props extends DefaultComponentProps = DefaultComponentProps,
+	RootProps extends DefaultComponentProps = DefaultRootFieldProps,
+> = Partial<
 	{
-		[ComponentName in keyof Props]: (props: Props[ComponentName] & { [key: string]: any }) => Props[ComponentName];
+		[ComponentName in keyof Props]: (
+			props: Props[ComponentName] & { [key: string]: any },
+		) => Props[ComponentName];
 	} & { root: (props: RootProps & { [key: string]: any }) => RootProps }
 >;
 
-export function transformProps<Props extends DefaultComponentProps = DefaultComponentProps, RootProps extends DefaultComponentProps = DefaultRootFieldProps>(data: Partial<Data>, propTransforms: PropTransform<Props, RootProps>): Data {
+export function transformProps<
+	Props extends DefaultComponentProps = DefaultComponentProps,
+	RootProps extends DefaultComponentProps = DefaultRootFieldProps,
+>(data: Partial<Data>, propTransforms: PropTransform<Props, RootProps>): Data {
 	const mapItem = (item: any) => {
 		if (propTransforms[item.type]) {
 			return {

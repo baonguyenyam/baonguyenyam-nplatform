@@ -27,11 +27,7 @@ export default function Fetch(props: any) {
 		<>
 			<div className="mx-auto p-5 dark:bg-gray-800 dark:text-white w-full">
 				<div className="my-5 flex flex-col justify-between items-center space-y-1">
-					<Title
-						data={title}
-						breadcrumb={breadcrumb}
-						className=""
-					/>
+					<Title data={title} breadcrumb={breadcrumb} className="" />
 					<BreadcrumbBar />
 				</div>
 			</div>

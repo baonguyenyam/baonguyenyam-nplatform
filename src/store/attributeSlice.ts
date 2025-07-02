@@ -26,14 +26,16 @@ import { createSlice } from "@reduxjs/toolkit";
 // 	]
 // }
 
-const initialState: { data: any } = { data: null }
+const initialState: { data: any } = { data: null };
 
 const attributeSlice = createSlice({
 	name: "attributeState",
 	initialState,
 	reducers: {
 		deleteAttribute: (state, action) => {
-			const newState = state.data.filter((item: any) => item.id !== action.payload);
+			const newState = state.data.filter(
+				(item: any) => item.id !== action.payload,
+			);
 			return { ...state, data: newState };
 		},
 		addAttribute: (state, action) => {
@@ -47,5 +49,6 @@ const attributeSlice = createSlice({
 	},
 });
 
-export const { setAttribute, deleteAttribute, addAttribute } = attributeSlice.actions;
+export const { setAttribute, deleteAttribute, addAttribute } =
+	attributeSlice.actions;
 export default attributeSlice.reducer;

@@ -42,7 +42,9 @@ export type RadioField = BaseField & {
 	options: FieldOptions;
 };
 
-export type ArrayField<Props extends { [key: string]: any } = { [key: string]: any }> = BaseField & {
+export type ArrayField<
+	Props extends { [key: string]: any } = { [key: string]: any },
+> = BaseField & {
 	type: "array";
 	arrayFields: {
 		[SubPropName in keyof Props[0]]: Field<Props[0][SubPropName]>;
@@ -53,7 +55,9 @@ export type ArrayField<Props extends { [key: string]: any } = { [key: string]: a
 	min?: number;
 };
 
-export type ObjectField<Props extends { [key: string]: any } = { [key: string]: any }> = BaseField & {
+export type ObjectField<
+	Props extends { [key: string]: any } = { [key: string]: any },
+> = BaseField & {
 	type: "object";
 	objectFields: Props extends any[]
 		? never
@@ -63,14 +67,20 @@ export type ObjectField<Props extends { [key: string]: any } = { [key: string]: 
 };
 
 // DEPRECATED
-export type Adaptor<AdaptorParams = {}, TableShape extends Record<string, any> = {}, PropShape = TableShape> = {
+export type Adaptor<
+	AdaptorParams = {},
+	TableShape extends Record<string, any> = {},
+	PropShape = TableShape,
+> = {
 	name: string;
 	fetchList: (adaptorParams?: AdaptorParams) => Promise<TableShape[] | null>;
 	mapProp?: (value: TableShape) => PropShape;
 };
 
 // DEPRECATED
-export type ExternalFieldWithAdaptor<Props extends { [key: string]: any } = { [key: string]: any }> = BaseField & {
+export type ExternalFieldWithAdaptor<
+	Props extends { [key: string]: any } = { [key: string]: any },
+> = BaseField & {
 	type: "external";
 	placeholder?: string;
 	adaptor: Adaptor<any, any, Props>;
@@ -78,10 +88,15 @@ export type ExternalFieldWithAdaptor<Props extends { [key: string]: any } = { [k
 	getItemSummary: (item: Props, index?: number) => string;
 };
 
-export type ExternalField<Props extends { [key: string]: any } = { [key: string]: any }> = BaseField & {
+export type ExternalField<
+	Props extends { [key: string]: any } = { [key: string]: any },
+> = BaseField & {
 	type: "external";
 	placeholder?: string;
-	fetchList: (params: { query: string; filters: Record<string, any> }) => Promise<any[] | null>;
+	fetchList: (params: {
+		query: string;
+		filters: Record<string, any>;
+	}) => Promise<any[] | null>;
 	mapProp?: (value: any) => Props;
 	mapRow?: (value: any) => Record<string, string | number | ReactElement>;
 	getItemSummary?: (item: Props, index?: number) => string;
@@ -94,7 +109,14 @@ export type ExternalField<Props extends { [key: string]: any } = { [key: string]
 
 export type CustomField<Props = {}> = BaseField & {
 	type: "custom";
-	render: (props: { field: CustomField<Props>; name: string; id: string; value: Props; onChange: (value: Props) => void; readOnly?: boolean }) => ReactElement;
+	render: (props: {
+		field: CustomField<Props>;
+		name: string;
+		id: string;
+		value: Props;
+		onChange: (value: Props) => void;
+		readOnly?: boolean;
+	}) => ReactElement;
 };
 
 export type SlotField = BaseField & {
@@ -103,10 +125,25 @@ export type SlotField = BaseField & {
 	disallow?: string[];
 };
 
-export type Field<Props = any> = TextField | NumberField | TextareaField | SelectField | RadioField | ArrayField<Props extends { [key: string]: any } ? Props : any> | ObjectField<Props extends { [key: string]: any } ? Props : any> | ExternalField<Props extends { [key: string]: any } ? Props : any> | ExternalFieldWithAdaptor<Props extends { [key: string]: any } ? Props : any> | CustomField<Props> | SlotField;
+export type Field<Props = any> =
+	| TextField
+	| NumberField
+	| TextareaField
+	| SelectField
+	| RadioField
+	| ArrayField<Props extends { [key: string]: any } ? Props : any>
+	| ObjectField<Props extends { [key: string]: any } ? Props : any>
+	| ExternalField<Props extends { [key: string]: any } ? Props : any>
+	| ExternalFieldWithAdaptor<Props extends { [key: string]: any } ? Props : any>
+	| CustomField<Props>
+	| SlotField;
 
-export type Fields<ComponentProps extends DefaultComponentProps = DefaultComponentProps> = {
-	[PropName in keyof Omit<ComponentProps, "editMode">]: Field<ComponentProps[PropName]>;
+export type Fields<
+	ComponentProps extends DefaultComponentProps = DefaultComponentProps,
+> = {
+	[PropName in keyof Omit<ComponentProps, "editMode">]: Field<
+		ComponentProps[PropName]
+	>;
 };
 
 export type FieldProps<F = Field<any>, ValueType = any> = {

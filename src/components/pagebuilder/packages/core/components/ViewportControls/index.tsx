@@ -17,7 +17,19 @@ const icons = {
 const getClassName = getClassNameFactory("ViewportControls", styles);
 const getClassNameButton = getClassNameFactory("ViewportButton", styles);
 
-const ViewportButton = ({ children, height = "auto", title, width, onClick }: { children: ReactNode; height?: number | "auto"; title: string; width: number; onClick: (viewport: Viewport) => void }) => {
+const ViewportButton = ({
+	children,
+	height = "auto",
+	title,
+	width,
+	onClick,
+}: {
+	children: ReactNode;
+	height?: number | "auto";
+	title: string;
+	width: number;
+	onClick: (viewport: Viewport) => void;
+}) => {
 	const viewports = useAppStore((s) => s.state.ui.viewports);
 
 	const [isActive, setIsActive] = useState(false);
@@ -35,7 +47,8 @@ const ViewportButton = ({ children, height = "auto", title, width, onClick }: { 
 				onClick={(e) => {
 					e.stopPropagation();
 					onClick({ width, height });
-				}}>
+				}}
+			>
 				<span className={getClassNameButton("inner")}>{children}</span>
 			</IconButton>
 		</span>
@@ -53,10 +66,22 @@ const defaultZoomOptions = [
 	{ label: "200%", value: 2 },
 ];
 
-export const ViewportControls = ({ autoZoom, zoom, onViewportChange, onZoom }: { autoZoom: number; zoom: number; onViewportChange: (viewport: Viewport) => void; onZoom: (zoom: number) => void }) => {
+export const ViewportControls = ({
+	autoZoom,
+	zoom,
+	onViewportChange,
+	onZoom,
+}: {
+	autoZoom: number;
+	zoom: number;
+	onViewportChange: (viewport: Viewport) => void;
+	onZoom: (zoom: number) => void;
+}) => {
 	const viewports = useAppStore((s) => s.viewports);
 
-	const defaultsContainAutoZoom = defaultZoomOptions.find((option) => option.value === autoZoom);
+	const defaultsContainAutoZoom = defaultZoomOptions.find(
+		(option) => option.value === autoZoom,
+	);
 
 	const zoomOptions = useMemo(
 		() =>
@@ -83,9 +108,16 @@ export const ViewportControls = ({ autoZoom, zoom, onViewportChange, onZoom }: {
 					key={i}
 					height={viewport.height}
 					width={viewport.width}
-					title={viewport.label ? `Switch to ${viewport.label} viewport` : "Switch viewport"}
-					onClick={onViewportChange}>
-					{typeof viewport.icon === "string" ? icons[viewport.icon as keyof typeof icons] || viewport.icon : viewport.icon || icons.Smartphone}
+					title={
+						viewport.label
+							? `Switch to ${viewport.label} viewport`
+							: "Switch viewport"
+					}
+					onClick={onViewportChange}
+				>
+					{typeof viewport.icon === "string"
+						? icons[viewport.icon as keyof typeof icons] || viewport.icon
+						: viewport.icon || icons.Smartphone}
 				</ViewportButton>
 			))}
 			<div className={getClassName("divider")} />
@@ -94,8 +126,16 @@ export const ViewportControls = ({ autoZoom, zoom, onViewportChange, onZoom }: {
 				disabled={zoom <= zoomOptions[0]?.value}
 				onClick={(e) => {
 					e.stopPropagation();
-					onZoom(zoomOptions[Math.max(zoomOptions.findIndex((option) => option.value === zoom) - 1, 0)].value);
-				}}>
+					onZoom(
+						zoomOptions[
+							Math.max(
+								zoomOptions.findIndex((option) => option.value === zoom) - 1,
+								0,
+							)
+						].value,
+					);
+				}}
+			>
 				<ZoomOut size={16} />
 			</IconButton>
 			<IconButton
@@ -104,8 +144,16 @@ export const ViewportControls = ({ autoZoom, zoom, onViewportChange, onZoom }: {
 				onClick={(e) => {
 					e.stopPropagation();
 
-					onZoom(zoomOptions[Math.min(zoomOptions.findIndex((option) => option.value === zoom) + 1, zoomOptions.length - 1)].value);
-				}}>
+					onZoom(
+						zoomOptions[
+							Math.min(
+								zoomOptions.findIndex((option) => option.value === zoom) + 1,
+								zoomOptions.length - 1,
+							)
+						].value,
+					);
+				}}
+			>
 				<ZoomIn size={16} />
 			</IconButton>
 			<div className={getClassName("divider")} />
@@ -114,7 +162,8 @@ export const ViewportControls = ({ autoZoom, zoom, onViewportChange, onZoom }: {
 				value={zoom.toString()}
 				onChange={(e) => {
 					onZoom(parseFloat(e.currentTarget.value));
-				}}>
+				}}
+			>
 				{zoomOptions.map((option) => (
 					<option
 						key={option.label}

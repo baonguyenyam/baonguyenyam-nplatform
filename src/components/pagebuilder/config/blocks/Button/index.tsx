@@ -10,7 +10,16 @@ export type ButtonProps = {
 	color: "black" | "white" | "#000000" | string;
 	backgroundColor?: string;
 	fontSize?: string;
-	fontWeight?: "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+	fontWeight?:
+		| "100"
+		| "200"
+		| "300"
+		| "400"
+		| "500"
+		| "600"
+		| "700"
+		| "800"
+		| "900";
 	radius?: string;
 	display?: "inline-block" | "block";
 	letterSpacing?: string;
@@ -90,10 +99,26 @@ export const Button: ComponentConfig<ButtonProps> = {
 				return `${item.top} ${item.right} ${item.bottom} ${item.left}`;
 			},
 			arrayFields: {
-				top: { type: "text", placeholder: "Top", labelIcon: <Hash size={16} /> },
-				right: { type: "text", placeholder: "Right", labelIcon: <Hash size={16} /> },
-				bottom: { type: "text", placeholder: "Bottom", labelIcon: <Hash size={16} /> },
-				left: { type: "text", placeholder: "Left", labelIcon: <Hash size={16} /> },
+				top: {
+					type: "text",
+					placeholder: "Top",
+					labelIcon: <Hash size={16} />,
+				},
+				right: {
+					type: "text",
+					placeholder: "Right",
+					labelIcon: <Hash size={16} />,
+				},
+				bottom: {
+					type: "text",
+					placeholder: "Bottom",
+					labelIcon: <Hash size={16} />,
+				},
+				left: {
+					type: "text",
+					placeholder: "Left",
+					labelIcon: <Hash size={16} />,
+				},
 			},
 			max: 1,
 			labelIcon: <Hash size={16} />,
@@ -126,14 +151,34 @@ export const Button: ComponentConfig<ButtonProps> = {
 			placeholder: "border-radius",
 			labelIcon: <Hash size={16} />,
 		},
-		class: { type: "text", placeholder: "class", labelIcon: <Hash size={16} /> },
+		class: {
+			type: "text",
+			placeholder: "class",
+			labelIcon: <Hash size={16} />,
+		},
 	},
 	defaultProps: {
 		label: "Button",
 		href: "#",
 		color: "",
 	},
-	render: ({ href, color, label, backgroundColor, padding, class: className, radius, target, fontSize, fontWeight, display, letterSpacing, textAlign, textTransform, puck }) => {
+	render: ({
+		href,
+		color,
+		label,
+		backgroundColor,
+		padding,
+		class: className,
+		radius,
+		target,
+		fontSize,
+		fontWeight,
+		display,
+		letterSpacing,
+		textAlign,
+		textTransform,
+		puck,
+	}) => {
 		return (
 			<>
 				{href !== "#" ? (
@@ -143,7 +188,9 @@ export const Button: ComponentConfig<ButtonProps> = {
 						style={{
 							color: color,
 							backgroundColor: backgroundColor,
-							padding: padding?.length ? `${padding[0].top} ${padding[0].right} ${padding[0].bottom} ${padding[0].left}` : "0px",
+							padding: padding?.length
+								? `${padding[0].top} ${padding[0].right} ${padding[0].bottom} ${padding[0].left}`
+								: "0px",
 							textDecoration: "none",
 							display: display,
 							fontSize: fontSize,
@@ -155,7 +202,8 @@ export const Button: ComponentConfig<ButtonProps> = {
 							textTransform: textTransform,
 						}}
 						tabIndex={puck.isEditing ? -1 : undefined}
-						className={className}>
+						className={className}
+					>
 						{label}
 					</a>
 				) : (
@@ -163,7 +211,9 @@ export const Button: ComponentConfig<ButtonProps> = {
 						style={{
 							color: color,
 							backgroundColor: backgroundColor,
-							padding: padding?.length ? `${padding[0].top} ${padding[0].right} ${padding[0].bottom} ${padding[0].left}` : "0px",
+							padding: padding?.length
+								? `${padding[0].top} ${padding[0].right} ${padding[0].bottom} ${padding[0].left}`
+								: "0px",
 							textDecoration: "none",
 							display: display,
 							fontSize: fontSize,
@@ -175,7 +225,8 @@ export const Button: ComponentConfig<ButtonProps> = {
 							textTransform: textTransform,
 						}}
 						tabIndex={puck.isEditing ? -1 : undefined}
-						className={className}>
+						className={className}
+					>
 						{label}
 					</span>
 				)}

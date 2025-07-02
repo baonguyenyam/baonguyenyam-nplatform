@@ -6,7 +6,12 @@ import { getItem } from "./data/get-item";
 import { generateId } from "./generate-id";
 
 // Makes testing easier without mocks
-export const insertComponent = async (componentType: string, zone: string, index: number, appStore: AppStore) => {
+export const insertComponent = async (
+	componentType: string,
+	zone: string,
+	index: number,
+	appStore: AppStore,
+) => {
 	// Reuse newData so ID retains parity between dispatch and resolver
 	const id = generateId(componentType);
 

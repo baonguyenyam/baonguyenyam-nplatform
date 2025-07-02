@@ -2,11 +2,20 @@ import { Point } from "@dnd-kit/geometry";
 
 const DEBUG = false;
 
-const debugElements: Record<string, { svg: SVGSVGElement; line: SVGLineElement; text: SVGTextElement }> = {};
+const debugElements: Record<
+	string,
+	{ svg: SVGSVGElement; line: SVGLineElement; text: SVGTextElement }
+> = {};
 
 let timeout: NodeJS.Timeout;
 
-export const collisionDebug = (a: Point, b: Point, id: string, color: string, label?: string | null) => {
+export const collisionDebug = (
+	a: Point,
+	b: Point,
+	id: string,
+	color: string,
+	label?: string | null,
+) => {
 	if (!DEBUG) return;
 
 	const debugId = `${id}-debug`;
@@ -35,7 +44,10 @@ export const collisionDebug = (a: Point, b: Point, id: string, color: string, la
 
 			// svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 			svg.setAttribute("id", debugId);
-			svg.setAttribute("style", "position: fixed; height: 100%; width: 100%; pointer-events: none; top: 0px; left: 0px;");
+			svg.setAttribute(
+				"style",
+				"position: fixed; height: 100%; width: 100%; pointer-events: none; top: 0px; left: 0px;",
+			);
 			svg.appendChild(line);
 			svg.appendChild(text);
 

@@ -7,13 +7,16 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 import CheckAdminState from "./checkAdminState";
 
-export default async function AdminLayout({ children }: React.PropsWithChildren) {
+export default async function AdminLayout({
+	children,
+}: React.PropsWithChildren) {
 	const cookieStore = await cookies();
 	const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 	return (
 		<main
 			suppressHydrationWarning={true}
-			className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+			className="flex min-h-screen flex-col bg-white dark:bg-gray-900"
+		>
 			<CheckState />
 			<CheckAdminState />
 			<SidebarProvider defaultOpen={defaultOpen}>

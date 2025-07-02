@@ -45,7 +45,8 @@ export default function BlogLayout(props: any) {
 						{data.map((item: any) => (
 							<div
 								key={item?.id}
-								className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition duration-300 dark:bg-gray-800 dark:text-white">
+								className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition duration-300 dark:bg-gray-800 dark:text-white"
+							>
 								<Link href={`/blog/${item?.slug}`}>
 									<SmartImage
 										aspectRatio="16 / 9"

@@ -22,7 +22,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 	events: {
 		async signIn({ user }) {
 			try {
-				const existingUser = await models.User.getUserByEmail(user?.email || "");
+				const existingUser = await models.User.getUserByEmail(
+					user?.email || "",
+				);
 				if (!existingUser) {
 					await models.User.createUser({
 						email: user.email!,
@@ -33,7 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 						avatar: user.image ? user.image : null,
 					});
 					// sendEmail - only import and use in server environment
-					if (typeof window === 'undefined') {
+					if (typeof window === "undefined") {
 						try {
 							const { sendEmail } = await import("./lib/server-utils");
 							const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
@@ -45,7 +47,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				}
 				if (existingUser && !existingUser?.emailVerified) return;
 				if (existingUser?.isTwoFactorEnabled) {
-					const twoFactorConfirmation = await models.Auth.getTwoFactorConfirmationByUserId(existingUser?.id);
+					const twoFactorConfirmation =
+						await models.Auth.getTwoFactorConfirmationByUserId(
+							existingUser?.id,
+						);
 					if (!twoFactorConfirmation) return;
 					await db.twoFactorConfirmation.delete({
 						where: {

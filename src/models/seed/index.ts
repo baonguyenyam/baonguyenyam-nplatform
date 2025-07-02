@@ -17,20 +17,32 @@ async function main() {
 	CustomerSeed();
 	AttributeSeed();
 
-	if (process.env.ENABLE_SUPABASE === "true" || process.env.ENABLE_SUPABASE === "1") {
+	if (
+		process.env.ENABLE_SUPABASE === "true" ||
+		process.env.ENABLE_SUPABASE === "1"
+	) {
 		// VERY IMPORTANT
 		// Realtime
 		const getallTable = async () => {
-			await prisma.$queryRaw`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`.then((res: any) => {
-				res.forEach(async (table: any) => {
-					await prisma.$queryRaw`SELECT * FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = ${table.table_name}`.then(async (checkRealtime: any) => {
-						if (checkRealtime.length < 1 && table.table_name !== "_prisma_migrations") {
-							const table_name = table.table_name;
-							await prisma.$executeRawUnsafe(`ALTER PUBLICATION supabase_realtime ADD TABLE "${table_name}"`);
-						}
+			await prisma.$queryRaw`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`.then(
+				(res: any) => {
+					res.forEach(async (table: any) => {
+						await prisma.$queryRaw`SELECT * FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = ${table.table_name}`.then(
+							async (checkRealtime: any) => {
+								if (
+									checkRealtime.length < 1 &&
+									table.table_name !== "_prisma_migrations"
+								) {
+									const table_name = table.table_name;
+									await prisma.$executeRawUnsafe(
+										`ALTER PUBLICATION supabase_realtime ADD TABLE "${table_name}"`,
+									);
+								}
+							},
+						);
 					});
-				});
-			});
+				},
+			);
 		};
 		getallTable();
 	}

@@ -11,7 +11,10 @@ export async function POST(req: Request) {
 		// Basic validation
 		if (!email || !password) {
 			// Use 400 Bad Request for missing input
-			return Response.json({ message: "Email and password are required" }, { status: 400 });
+			return Response.json(
+				{ message: "Email and password are required" },
+				{ status: 400 },
+			);
 		}
 
 		// Fetch user including the password hash
@@ -22,8 +25,13 @@ export async function POST(req: Request) {
 		if (!dbUser || !dbUser.password) {
 			// User not found or password field missing (shouldn't happen with Prisma schema)
 			// Keep the error message generic for security
-			console.warn(`Sign-in attempt failed for email: ${email}. User not found or password missing.`);
-			return Response.json({ message: "Invalid email or password" }, { status: 401 });
+			console.warn(
+				`Sign-in attempt failed for email: ${email}. User not found or password missing.`,
+			);
+			return Response.json(
+				{ message: "Invalid email or password" },
+				{ status: 401 },
+			);
 		}
 
 		// Compare passwords
@@ -36,12 +44,20 @@ export async function POST(req: Request) {
 			return Response.json({ user }, { status: 200 });
 		} else {
 			// Password mismatch
-			console.warn(`Sign-in attempt failed for email: ${email}. Invalid password.`);
-			return Response.json({ message: "Invalid email or password" }, { status: 401 });
+			console.warn(
+				`Sign-in attempt failed for email: ${email}. Invalid password.`,
+			);
+			return Response.json(
+				{ message: "Invalid email or password" },
+				{ status: 401 },
+			);
 		}
 	} catch (error) {
 		console.error("Sign-in API error:", error);
 		// Generic server error for unexpected issues
-		return Response.json({ message: "An internal server error occurred" }, { status: 500 });
+		return Response.json(
+			{ message: "An internal server error occurred" },
+			{ status: 500 },
+		);
 	}
 }

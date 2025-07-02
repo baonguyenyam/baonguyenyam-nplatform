@@ -34,32 +34,49 @@ export default function View() {
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(true);
 	const memoriezAttrs = useAppSelector((state) => state.attributeState.data);
-	const att_orders = useMemo(() => memoriezAttrs?.filter((item: any) => item.mapto === "order"), [memoriezAttrs]);
-	const memoriezPermission = useAppSelector((state) => (state.appState && "order_permission" in state.appState ? (state.appState.order_permission as PermissionGroup[]) : []));
+	const att_orders = useMemo(
+		() => memoriezAttrs?.filter((item: any) => item.mapto === "order"),
+		[memoriezAttrs],
+	);
+	const memoriezPermission = useAppSelector((state) =>
+		state.appState && "order_permission" in state.appState
+			? (state.appState.order_permission as PermissionGroup[])
+			: [],
+	);
 
 	// State to hold the current permissions being edited
-	const [permissionsState, setPermissionsState] = useState<PermissionGroup[]>([]);
+	const [permissionsState, setPermissionsState] = useState<PermissionGroup[]>(
+		[],
+	);
 
 	// Initialize or update local state when Redux state or attributes change
 	useEffect(() => {
 		if (att_orders && att_orders.length > 0) {
 			const initialPermissions = att_orders.map((item: any) => {
 				// Find existing permissions for this attribute group from Redux store
-				const existingGroupPermission = memoriezPermission?.find((p: any) => p.id === item.id);
+				const existingGroupPermission = memoriezPermission?.find(
+					(p: any) => p.id === item.id,
+				);
 
 				return {
 					id: item.id,
 					title: item.title,
 					children: item.children.map((child: any) => {
 						// Find existing permissions for this child attribute from Redux store
-						const existingChildPermission = existingGroupPermission?.children?.find((c: any) => c.id === child.id);
+						const existingChildPermission =
+							existingGroupPermission?.children?.find(
+								(c: any) => c.id === child.id,
+							);
 
 						return {
 							id: child.id,
 							title: child.title,
 							permission: enumOrderType.map((type) => {
 								// Find the specific permission type (e.g., 'view', 'edit')
-								const existingTypePermission = existingChildPermission?.permission?.find((perm: any) => perm.key === type.value);
+								const existingTypePermission =
+									existingChildPermission?.permission?.find(
+										(perm: any) => perm.key === type.value,
+									);
 								return {
 									key: type.value,
 									// Default to false if not found in Redux state
@@ -92,7 +109,12 @@ export default function View() {
 	}, [dispatch]);
 
 	// Handler to update the state when a switch is toggled
-	const handlePermissionChange = (groupId: number, childId: number, typeKey: string, checked: boolean) => {
+	const handlePermissionChange = (
+		groupId: number,
+		childId: number,
+		typeKey: string,
+		checked: boolean,
+	) => {
 		setPermissionsState(
 			produce((draft) => {
 				const group = draft.find((g) => g.id === groupId);
@@ -110,7 +132,11 @@ export default function View() {
 	};
 
 	// Function to get the current checked state for a switch
-	const getCheckedState = (groupId: number, childId: number, typeKey: string): boolean => {
+	const getCheckedState = (
+		groupId: number,
+		childId: number,
+		typeKey: string,
+	): boolean => {
 		const group = permissionsState.find((g) => g.id === groupId);
 		const child = group?.children.find((c) => c.id === childId);
 		const permission = child?.permission.find((p) => p.key === typeKey);
@@ -125,9 +151,7 @@ export default function View() {
 						(
 							item, // Use the items passed to the function (which is permissionsState)
 						) => (
-							<div
-								key={item.id}
-								className="mb-4 text-sm gap-4">
+							<div key={item.id} className="mb-4 text-sm gap-4">
 								<div className="mb-4">
 									<h3 className="text-xl font-semibold mb-2 flex items-center gap-2 border-b pb-2 mb-5">
 										<span>{item.title}</span>
@@ -136,9 +160,7 @@ export default function View() {
 										{" "}
 										{/* Added flex-wrap */}
 										{item.children.map((child) => (
-											<div
-												key={child.id}
-												className="mb-5">
+											<div key={child.id} className="mb-5">
 												{" "}
 												{/* Added margin-bottom */}
 												<div className="flex items-center gap-2 uppercase text-xs font-semibold">
@@ -152,17 +174,28 @@ export default function View() {
 													{enumOrderType.map((type) => (
 														<div
 															className="flex items-center gap-2" // Keep items aligned
-															key={type.value}>
+															key={type.value}
+														>
 															<Switch
 																id={`${item.id}-${child.id}-${type.value}`} // More specific ID
-																checked={getCheckedState(item.id, child.id, type.value)}
+																checked={getCheckedState(
+																	item.id,
+																	child.id,
+																	type.value,
+																)}
 																onCheckedChange={(checked) => {
-																	handlePermissionChange(item.id, child.id, type.value, checked);
+																	handlePermissionChange(
+																		item.id,
+																		child.id,
+																		type.value,
+																		checked,
+																	);
 																}}
 															/>
 															<label
 																htmlFor={`${item.id}-${child.id}-${type.value}`}
-																className="text-xs cursor-pointer">
+																className="text-xs cursor-pointer"
+															>
 																{" "}
 																{/* Added cursor-pointer */}
 																{type.label}

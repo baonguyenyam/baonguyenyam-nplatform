@@ -16,7 +16,17 @@ import styles from "./styles.module.css";
 const getClassName = getClassNameFactory("ArrayField", styles);
 const getClassNameItem = getClassNameFactory("ArrayFieldItem", styles);
 
-export const ArrayField = ({ field, onChange, value: _value, name, label, labelIcon, readOnly, id, Label = (props) => <div {...props} /> }: FieldPropsInternal) => {
+export const ArrayField = ({
+	field,
+	onChange,
+	value: _value,
+	name,
+	label,
+	labelIcon,
+	readOnly,
+	id,
+	Label = (props) => <div {...props} />,
+}: FieldPropsInternal) => {
 	const thisArrayState = useAppStore((s) => s.state.ui.arrayState[id]);
 	const setUi = useAppStore((s) => s.setUi);
 	const { readOnlyFields, localName = name } = useNestedFieldContext();
@@ -36,7 +46,8 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 	const [localState, setLocalState] = useState({ arrayState, value });
 
 	useEffect(() => {
-		const _arrayState = appStore.getState().state.ui.arrayState[id] ?? arrayState;
+		const _arrayState =
+			appStore.getState().state.ui.arrayState[id] ?? arrayState;
 
 		setLocalState({ arrayState: _arrayState, value });
 	}, [value]);
@@ -57,7 +68,10 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 	);
 
 	const getHighestIndex = useCallback(() => {
-		return arrayState.items.reduce((acc, item) => (item._originalIndex > acc ? item._originalIndex : acc), -1);
+		return arrayState.items.reduce(
+			(acc, item) => (item._originalIndex > acc ? item._originalIndex : acc),
+			-1,
+		);
 	}, [arrayState]);
 
 	const regenerateArrayState = useCallback(
@@ -68,8 +82,12 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 				const arrayStateItem = arrayState.items[idx];
 
 				const newItem = {
-					_originalIndex: typeof arrayStateItem?._originalIndex !== "undefined" ? arrayStateItem._originalIndex : highestIndex + 1,
-					_arrayId: arrayState.items[idx]?._arrayId || `${id}-${highestIndex + 1}`,
+					_originalIndex:
+						typeof arrayStateItem?._originalIndex !== "undefined"
+							? arrayStateItem._originalIndex
+							: highestIndex + 1,
+					_arrayId:
+						arrayState.items[idx]?._arrayId || `${id}-${highestIndex + 1}`,
 				};
 
 				if (newItem._originalIndex > highestIndex) {
@@ -95,7 +113,9 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 	const [draggedItem, setDraggedItem] = useState("");
 	const isDragging = !!draggedItem;
 
-	const canEdit = useAppStore((s) => s.permissions.getPermissions({ item: s.selectedItem }).edit);
+	const canEdit = useAppStore(
+		(s) => s.permissions.getPermissions({ item: s.selectedItem }).edit,
+	);
 
 	const forceReadOnly = !canEdit;
 
@@ -105,14 +125,18 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 		return null;
 	}
 
-	const addDisabled = (field.max !== undefined && localState.arrayState.items.length >= field.max) || readOnly;
+	const addDisabled =
+		(field.max !== undefined &&
+			localState.arrayState.items.length >= field.max) ||
+		readOnly;
 
 	return (
 		<Label
 			label={label || name}
 			icon={labelIcon || <List size={16} />}
 			el="div"
-			readOnly={readOnly}>
+			readOnly={readOnly}
+		>
 			<SortableProvider
 				onDragStart={(id) => setDraggedItem(id)}
 				onDragEnd={() => {
@@ -129,7 +153,11 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 
 					const newValue = reorder(localState.value, move.source, move.target);
 
-					const newArrayStateItems: ItemWithId[] = reorder(arrayState.items, move.source, move.target);
+					const newArrayStateItems: ItemWithId[] = reorder(
+						arrayState.items,
+						move.source,
+						move.target,
+					);
 
 					const state = appStore.getState().state;
 
@@ -147,16 +175,16 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 					});
 
 					valueRef.current = newValue;
-				}}>
+				}}
+			>
 				<div
 					className={getClassName({
 						hasItems: Array.isArray(value) && value.length > 0,
 						addDisabled,
-					})}>
+					})}
+				>
 					{localState.arrayState.items.length > 0 && (
-						<div
-							className={getClassName("inner")}
-							data-dnd-container>
+						<div className={getClassName("inner")} data-dnd-container>
 							{localState.arrayState.items.map((item, i) => {
 								const { _arrayId = `${id}-${i}`, _originalIndex = i } = item;
 								const data: any = Array.from(localState.value || [])[i] || {};
@@ -166,7 +194,8 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 										key={_arrayId}
 										id={_arrayId}
 										index={i}
-										disabled={readOnly}>
+										disabled={readOnly}
+									>
 										{({ status, ref, handleRef }) => (
 											<div
 												ref={ref}
@@ -174,7 +203,8 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 													isExpanded: arrayState.openId === _arrayId,
 													isDragging: status === "dragging",
 													readOnly,
-												})}>
+												})}
+											>
 												<div
 													ref={handleRef}
 													onClick={(e) => {
@@ -197,8 +227,11 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 															);
 														}
 													}}
-													className={getClassNameItem("summary")}>
-													{field.getItemSummary ? field.getItemSummary(data, i) : `Item #${_originalIndex}`}
+													className={getClassNameItem("summary")}
+												>
+													{field.getItemSummary
+														? field.getItemSummary(data, i)
+														: `Item #${_originalIndex}`}
 													<div className={getClassNameItem("rhs")}>
 														{!readOnly && (
 															<div className={getClassNameItem("actions")}>
@@ -211,27 +244,40 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 
 																			const existingValue = [...(value || [])];
 
-																			existingValue.splice(i, 0, existingValue[i]);
+																			existingValue.splice(
+																				i,
+																				0,
+																				existingValue[i],
+																			);
 
-																			const newUi = mapArrayStateToUi(regenerateArrayState(existingValue));
+																			const newUi = mapArrayStateToUi(
+																				regenerateArrayState(existingValue),
+																			);
 
 																			setUi(newUi, false);
 																			onChange(existingValue);
 																		}}
-																		title="Duplicate">
+																		title="Duplicate"
+																	>
 																		<Copy size={16} />
 																	</IconButton>
 																</div>
 																<div className={getClassNameItem("action")}>
 																	<IconButton
 																		type="button"
-																		disabled={field.min !== undefined && field.min >= localState.arrayState.items.length}
+																		disabled={
+																			field.min !== undefined &&
+																			field.min >=
+																				localState.arrayState.items.length
+																		}
 																		onClick={(e) => {
 																			e.stopPropagation();
 
 																			const existingValue = [...(value || [])];
 
-																			const existingItems = [...(arrayState.items || [])];
+																			const existingItems = [
+																				...(arrayState.items || []),
+																			];
 
 																			existingValue.splice(i, 1);
 																			existingItems.splice(i, 1);
@@ -245,7 +291,8 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 
 																			onChange(existingValue);
 																		}}
-																		title="Delete">
+																		title="Delete"
+																	>
 																		<Trash size={16} />
 																	</IconButton>
 																</div>
@@ -269,7 +316,11 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 															const localSubPath = `${localIndexName}.${subName}`;
 															const localWildcardSubPath = `${localWildcardName}.${subName}`;
 
-															const subReadOnly = forceReadOnly ? forceReadOnly : typeof readOnlyFields[subPath] !== "undefined" ? readOnlyFields[localSubPath] : readOnlyFields[localWildcardSubPath];
+															const subReadOnly = forceReadOnly
+																? forceReadOnly
+																: typeof readOnlyFields[subPath] !== "undefined"
+																	? readOnlyFields[localSubPath]
+																	: readOnlyFields[localWildcardSubPath];
 
 															const label = subField.label || subName;
 
@@ -279,7 +330,8 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 																	name={localIndexName}
 																	wildcardName={localWildcardName}
 																	subName={subName}
-																	readOnlyFields={readOnlyFields}>
+																	readOnlyFields={readOnlyFields}
+																>
 																	<AutoFieldPrivate
 																		name={subPath}
 																		label={label}
@@ -322,13 +374,17 @@ export const ArrayField = ({ field, onChange, value: _value, name, label, labelI
 
 								const existingValue = value || [];
 
-								const newValue = [...existingValue, field.defaultItemProps || {}];
+								const newValue = [
+									...existingValue,
+									field.defaultItemProps || {},
+								];
 
 								const newArrayState = regenerateArrayState(newValue);
 
 								setUi(mapArrayStateToUi(newArrayState), false);
 								onChange(newValue);
-							}}>
+							}}
+						>
 							<Plus size={21} />
 						</button>
 					)}

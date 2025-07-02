@@ -1,12 +1,28 @@
-import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND } from "@lexical/list";
+import {
+	INSERT_ORDERED_LIST_COMMAND,
+	INSERT_UNORDERED_LIST_COMMAND,
+} from "@lexical/list";
 import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
-import { $createHeadingNode, $isHeadingNode, $isQuoteNode } from "@lexical/rich-text";
+import {
+	$createHeadingNode,
+	$isHeadingNode,
+	$isQuoteNode,
+} from "@lexical/rich-text";
 import { $patchStyleText, $setBlocksType } from "@lexical/selection";
 import { $isTableSelection } from "@lexical/table";
 import { $getNearestBlockElementAncestorOrThrow } from "@lexical/utils";
-import { $createParagraphNode, $getSelection, $isRangeSelection, $isTextNode } from "lexical";
+import {
+	$createParagraphNode,
+	$getSelection,
+	$isRangeSelection,
+	$isTextNode,
+} from "lexical";
 
-import { DEFAULT_FONT_SIZE, MAX_ALLOWED_FONT_SIZE, MIN_ALLOWED_FONT_SIZE } from "../../provider/ToolbarProvider";
+import {
+	DEFAULT_FONT_SIZE,
+	MAX_ALLOWED_FONT_SIZE,
+	MIN_ALLOWED_FONT_SIZE,
+} from "../../provider/ToolbarProvider";
 
 export let UpdateFontSizeType;
 (function (UpdateFontSizeType) {
@@ -88,7 +104,10 @@ export const updateFontSizeInSelection = (editor, newFontSize, updateType) => {
 			prevFontSize = `${DEFAULT_FONT_SIZE}px`;
 		}
 		prevFontSize = prevFontSize.slice(0, -2);
-		const nextFontSize = calculateNextFontSize(Number(prevFontSize), updateType);
+		const nextFontSize = calculateNextFontSize(
+			Number(prevFontSize),
+			updateType,
+		);
 		return `${nextFontSize}px`;
 	};
 

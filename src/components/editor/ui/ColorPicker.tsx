@@ -18,12 +18,31 @@ interface ColorPickerProps {
 	onChange?: (color: string) => void;
 }
 
-const basicColors = ["#d0021b", "#f5a623", "#f8e71c", "#8b572a", "#7ed321", "#417505", "#bd10e0", "#9013fe", "#4a90e2", "#50e3c2", "#b8e986", "#000000", "#4a4a4a", "#9b9b9b", "#ffffff"];
+const basicColors = [
+	"#d0021b",
+	"#f5a623",
+	"#f8e71c",
+	"#8b572a",
+	"#7ed321",
+	"#417505",
+	"#bd10e0",
+	"#9013fe",
+	"#4a90e2",
+	"#50e3c2",
+	"#b8e986",
+	"#000000",
+	"#4a4a4a",
+	"#9b9b9b",
+	"#ffffff",
+];
 
 const WIDTH = 214;
 const HEIGHT = 150;
 
-export default function ColorPicker({ color, onChange }: Readonly<ColorPickerProps>): React.JSX.Element {
+export default function ColorPicker({
+	color,
+	onChange,
+}: Readonly<ColorPickerProps>): React.JSX.Element {
 	const [selfColor, setSelfColor] = useState(transformColor("hex", color));
 	const [inputColor, setInputColor] = useState(color);
 	const innerDivRef = useRef(null);
@@ -89,12 +108,9 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
 		<div
 			className="color-picker-wrapper"
 			style={{ width: WIDTH }}
-			ref={innerDivRef}>
-			<TextInput
-				label="Hex"
-				onChange={onSetHex}
-				value={inputColor}
-			/>
+			ref={innerDivRef}
+		>
+			<TextInput label="Hex" onChange={onSetHex} value={inputColor} />
 			<div className="color-picker-basic-color">
 				{basicColors.map((basicColor) => (
 					<button
@@ -112,7 +128,8 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
 			<MoveWrapper
 				className="color-picker-saturation"
 				style={{ backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)` }}
-				onChange={onMoveSaturation}>
+				onChange={onMoveSaturation}
+			>
 				<div
 					className="color-picker-saturation_cursor"
 					style={{
@@ -122,9 +139,7 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
 					}}
 				/>
 			</MoveWrapper>
-			<MoveWrapper
-				className="color-picker-hue"
-				onChange={onMoveHue}>
+			<MoveWrapper className="color-picker-hue" onChange={onMoveHue}>
 				<div
 					className="color-picker-hue_cursor"
 					style={{
@@ -153,7 +168,12 @@ interface MoveWrapperProps {
 	children: React.JSX.Element;
 }
 
-function MoveWrapper({ className, style, onChange, children }: MoveWrapperProps) {
+function MoveWrapper({
+	className,
+	style,
+	onChange,
+	children,
+}: MoveWrapperProps) {
 	const divRef = useRef<HTMLDivElement>(null);
 
 	const move = (e: React.MouseEvent | MouseEvent): void => {
@@ -193,7 +213,8 @@ function MoveWrapper({ className, style, onChange, children }: MoveWrapperProps)
 			ref={divRef}
 			className={className}
 			style={style}
-			onMouseDown={onMouseDown}>
+			onMouseDown={onMouseDown}
+		>
 			{children}
 		</div>
 	);
@@ -247,7 +268,10 @@ export function toHex(value: string): string {
 function hex2rgb(hex: string): RGB {
 	const rbgArr = (
 		hex
-			.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => "#" + r + r + g + g + b + b)
+			.replace(
+				/^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+				(m, r, g, b) => "#" + r + r + g + g + b + b,
+			)
 			.substring(1)
 			.match(/.{2}/g) || []
 	).map((x) => parseInt(x, 16));
@@ -267,7 +291,13 @@ function rgb2hsv({ r, g, b }: RGB): HSV {
 	const max = Math.max(r, g, b);
 	const d = max - Math.min(r, g, b);
 
-	const h = d ? (max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? 2 + (b - r) / d : 4 + (r - g) / d) * 60 : 0;
+	const h = d
+		? (max === r
+				? (g - b) / d + (g < b ? 6 : 0)
+				: max === g
+					? 2 + (b - r) / d
+					: 4 + (r - g) / d) * 60
+		: 0;
 	const s = max ? (d / max) * 100 : 0;
 	const v = max * 100;
 
@@ -296,7 +326,10 @@ function rgb2hex({ b, g, r }: RGB): string {
 	return "#" + [r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
 
-function transformColor<M extends keyof Color, C extends Color[M]>(format: M, color: C): Color {
+function transformColor<M extends keyof Color, C extends Color[M]>(
+	format: M,
+	color: C,
+): Color {
 	let hex: Color["hex"] = toHex("#121212");
 	let rgb: Color["rgb"] = hex2rgb(hex);
 	let hsv: Color["hsv"] = rgb2hsv(rgb);

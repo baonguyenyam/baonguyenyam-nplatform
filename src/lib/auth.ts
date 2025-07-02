@@ -12,5 +12,9 @@ export const currentRole = async () => {
 
 export const currentPermissions = async () => {
 	const session = await auth();
-	return JSON.parse(typeof session?.user.permissions === "string" ? session.user.permissions : "[]");
+	return JSON.parse(
+		typeof session?.user.permissions === "string"
+			? session.user.permissions
+			: "[]",
+	);
 };

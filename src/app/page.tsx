@@ -20,10 +20,7 @@ export default async function Index() {
 	const session = await auth();
 	return (
 		<DefaultLayout>
-			<HomePage
-				state={appState}
-				session={session}
-			/>
+			<HomePage state={appState} session={session} />
 		</DefaultLayout>
 	);
 }

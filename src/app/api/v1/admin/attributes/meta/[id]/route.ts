@@ -51,7 +51,10 @@ export async function PUT(req: Request) {
 	const { id, role } = session?.user || {};
 	const body = await req.json();
 	const params = req.url.split("/").pop();
-	const db = await models.AttributeMeta.updateAttributeMeta(Number(params), body);
+	const db = await models.AttributeMeta.updateAttributeMeta(
+		Number(params),
+		body,
+	);
 	if (session && db) {
 		return new Response(
 			JSON.stringify({

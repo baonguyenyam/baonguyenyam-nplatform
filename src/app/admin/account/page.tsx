@@ -29,10 +29,7 @@ export default async function Index() {
 
 	return (
 		<div className="mx-auto flex-col flex py-5 w-full px-4 sm:px-6 justify-center items-center flex-grow">
-			<Fetch
-				breadcrumb={breadcrumb}
-				email={session?.user?.email}
-			/>
+			<Fetch breadcrumb={breadcrumb} email={session?.user?.email} />
 		</div>
 	);
 }

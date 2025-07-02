@@ -29,7 +29,11 @@ export type Props = {
 	Space: SpaceProps;
 };
 
-export type UserConfig = Config<Props, RootProps, "layout" | "typography" | "interactive" | "template">;
+export type UserConfig = Config<
+	Props,
+	RootProps,
+	"layout" | "typography" | "interactive" | "template"
+>;
 
 export type UserData = Data<Props, RootProps>;
 
@@ -76,6 +80,8 @@ export const conf: UserConfig = {
 
 export const initialData: Record<string, UserData> = {};
 
-export const componentKey = Buffer.from(`${Object.keys(conf.components).join("-")}-${JSON.stringify(initialData)}`).toString("base64");
+export const componentKey = Buffer.from(
+	`${Object.keys(conf.components).join("-")}-${JSON.stringify(initialData)}`,
+).toString("base64");
 
 export default conf;

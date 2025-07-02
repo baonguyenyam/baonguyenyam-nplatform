@@ -2,7 +2,11 @@
 	position: absolute;
 	pointer-events: none;
 
-	--overlay-background: color-mix(in srgb, var(--puck-color-azure-08) 30%, transparent);
+	--overlay-background: color-mix(
+		in srgb,
+		var(--puck-color-azure-08) 30%,
+		transparent
+	);
 }
 
 .DraggableComponent-overlay {
@@ -38,7 +42,8 @@
 	z-index: 1;
 }
 
-.DraggableComponent--hover:not(.DraggableComponent--isLocked) > .DraggableComponent-overlay {
+.DraggableComponent--hover:not(.DraggableComponent--isLocked)
+	> .DraggableComponent-overlay {
 	background: var(--overlay-background);
 }
 
@@ -51,7 +56,10 @@
 }
 
 /* Won't work in FF */
-.DraggableComponent:has(.DraggableComponent--hover > .DraggableComponent-overlay) > .DraggableComponent-overlay {
+.DraggableComponent:has(
+	.DraggableComponent--hover > .DraggableComponent-overlay
+)
+> .DraggableComponent-overlay {
 	display: none;
 }
 

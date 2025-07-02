@@ -13,7 +13,12 @@ import { Direction } from "../../../../types";
  *
  * @returns A boolean describingw hether or not the leadingEdge of the dragShape is over the mid-point of the dropShape
  */
-export const getMidpointImpact = (dragShape: Shape, dropShape: Shape, direction: Direction, offsetMultiplier: number = 0): boolean => {
+export const getMidpointImpact = (
+	dragShape: Shape,
+	dropShape: Shape,
+	direction: Direction,
+	offsetMultiplier: number = 0,
+): boolean => {
 	const dragRect = dragShape.boundingRectangle;
 	const dropCenter = dropShape.center;
 

@@ -4,7 +4,11 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { SetAction } from "../actions";
 
-export const setAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: SetAction<UserData>, appStore: AppStore): PrivateAppState<UserData> => {
+export const setAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: SetAction<UserData>,
+	appStore: AppStore,
+): PrivateAppState<UserData> => {
 	if (typeof action.state === "object") {
 		const newState = {
 			...state,
@@ -15,7 +19,9 @@ export const setAction = <UserData extends Data>(state: PrivateAppState<UserData
 			return newState;
 		}
 
-		console.warn("`set` is expensive and may cause unnecessary re-renders. Consider using a more atomic action instead.");
+		console.warn(
+			"`set` is expensive and may cause unnecessary re-renders. Consider using a more atomic action instead.",
+		);
 
 		return walkTree(newState, appStore.config);
 	}

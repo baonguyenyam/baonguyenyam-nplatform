@@ -150,7 +150,10 @@ export class DatabaseOptimizer {
 	}
 
 	// Connection-aware query execution
-	static async executeWithRetry<T>(operation: () => Promise<T>, maxRetries: number = 3): Promise<T> {
+	static async executeWithRetry<T>(
+		operation: () => Promise<T>,
+		maxRetries: number = 3,
+	): Promise<T> {
 		let lastError: Error;
 
 		for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -173,7 +176,12 @@ export class DatabaseOptimizer {
 	}
 
 	private static isRetryableError(error: any): boolean {
-		const retryableErrors = ["ECONNRESET", "ENOTFOUND", "ETIMEDOUT", "connection refused"];
+		const retryableErrors = [
+			"ECONNRESET",
+			"ENOTFOUND",
+			"ETIMEDOUT",
+			"connection refused",
+		];
 
 		const errorMessage = error?.message?.toLowerCase() || "";
 		return retryableErrors.some((code) => errorMessage.includes(code));

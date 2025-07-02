@@ -14,10 +14,17 @@ export async function PUT(req: Request) {
 
 	// Disconnect the customer from the order
 	if (!orderId || !customerId) {
-		return Response.json({ message: "Invalid order or customer ID" }, { status: 400 });
+		return Response.json(
+			{ message: "Invalid order or customer ID" },
+			{ status: 400 },
+		);
 	}
 
-	const db = await models.Order.disconnectUserFromOrder(orderId, customerId, table);
+	const db = await models.Order.disconnectUserFromOrder(
+		orderId,
+		customerId,
+		table,
+	);
 	if (session && db) {
 		return new Response(
 			JSON.stringify({
@@ -50,7 +57,10 @@ export async function POST(req: Request) {
 
 	// Connect the customer to the order
 	if (!orderId || !customerId) {
-		return Response.json({ message: "Invalid order or customer ID" }, { status: 400 });
+		return Response.json(
+			{ message: "Invalid order or customer ID" },
+			{ status: 400 },
+		);
 	}
 
 	const db = await models.Order.connectUserToOrder(orderId, customerId, table);

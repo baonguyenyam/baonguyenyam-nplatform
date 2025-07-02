@@ -9,13 +9,21 @@ import { Fields } from "./Fields";
 import { DefaultComponentProps } from "./Props";
 import { AsFieldProps, WithChildren, WithId, WithPuckProps } from "./Utils";
 
-export type PuckComponent<Props> = (props: WithId<WithPuckProps<Props>>) => JSX.Element;
+export type PuckComponent<Props> = (
+	props: WithId<WithPuckProps<Props>>,
+) => JSX.Element;
 
 export type ResolveDataTrigger = "insert" | "replace" | "load" | "force";
 
-export type ComponentConfig<RenderProps extends DefaultComponentProps = DefaultComponentProps, FieldProps extends DefaultComponentProps = RenderProps, DataShape = Omit<ComponentData<FieldProps>, "type">> = {
+export type ComponentConfig<
+	RenderProps extends DefaultComponentProps = DefaultComponentProps,
+	FieldProps extends DefaultComponentProps = RenderProps,
+	DataShape = Omit<ComponentData<FieldProps>, "type">,
+> = {
 	render: PuckComponent<{
-		[PropName in keyof RenderProps]: RenderProps[PropName] extends Slot ? (props?: Omit<DropZoneProps, "zone">) => ReactNode : RenderProps[PropName];
+		[PropName in keyof RenderProps]: RenderProps[PropName] extends Slot
+			? (props?: Omit<DropZoneProps, "zone">) => ReactNode
+			: RenderProps[PropName];
 	}>;
 	label?: string;
 	defaultProps?: FieldProps;
@@ -63,7 +71,13 @@ export type ComponentConfig<RenderProps extends DefaultComponentProps = DefaultC
 	metadata?: Metadata;
 };
 
-export type RootConfig<RootProps extends DefaultComponentProps = any> = Partial<ComponentConfig<WithChildren<RootProps>, AsFieldProps<RootProps>, RootData<AsFieldProps<RootProps>>>>;
+export type RootConfig<RootProps extends DefaultComponentProps = any> = Partial<
+	ComponentConfig<
+		WithChildren<RootProps>,
+		AsFieldProps<RootProps>,
+		RootData<AsFieldProps<RootProps>>
+	>
+>;
 
 type Category<ComponentName> = {
 	components?: ComponentName[];
@@ -72,12 +86,19 @@ type Category<ComponentName> = {
 	defaultExpanded?: boolean;
 };
 
-export type Config<Props extends DefaultComponentProps = DefaultComponentProps, RootProps extends DefaultComponentProps = any, CategoryName extends string = string> = {
+export type Config<
+	Props extends DefaultComponentProps = DefaultComponentProps,
+	RootProps extends DefaultComponentProps = any,
+	CategoryName extends string = string,
+> = {
 	categories?: Record<CategoryName, Category<keyof Props>> & {
 		other?: Category<keyof Props>;
 	};
 	components: {
-		[ComponentName in keyof Props]: Omit<ComponentConfig<Props[ComponentName], Props[ComponentName]>, "type">;
+		[ComponentName in keyof Props]: Omit<
+			ComponentConfig<Props[ComponentName], Props[ComponentName]>,
+			"type"
+		>;
 	};
 	root?: RootConfig<RootProps>;
 };

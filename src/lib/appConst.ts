@@ -1,4 +1,21 @@
-import { BookOpen, FerrisWheel, File, Home, HomeIcon, Image, LayoutDashboard, Lock, Map, Package, PanelsTopLeft, Settings, ShoppingCart, Store, User, Users } from "lucide-react";
+import {
+	BookOpen,
+	FerrisWheel,
+	File,
+	Home,
+	HomeIcon,
+	Image,
+	LayoutDashboard,
+	Lock,
+	Map,
+	Package,
+	PanelsTopLeft,
+	Settings,
+	ShoppingCart,
+	Store,
+	User,
+	Users,
+} from "lucide-react";
 
 // title: String
 // url: String
@@ -108,11 +125,36 @@ export const FooterItems = [
 export const appState = {
 	appName: "nPlatform",
 	appVersion: "2.0.0",
-	appDescription: "nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
-	ACCEPTED_IMG_FILE_TYPES: ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"],
-	ACCEPTED_VIDEO_FILE_TYPES: ["video/mp4", "video/avi", "video/mov", "video/wmv", "video/flv"],
-	ACCEPTED_AUDIO_FILE_TYPES: ["audio/mp3", "audio/wav", "audio/ogg", "audio/mpeg"],
-	ACCEPTED_DOC_FILE_TYPES: ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/zip", "application/x-zip-compressed", "application/x-zip"],
+	appDescription:
+		"nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
+	ACCEPTED_IMG_FILE_TYPES: [
+		"image/jpeg",
+		"image/jpg",
+		"image/png",
+		"image/gif",
+		"image/webp",
+	],
+	ACCEPTED_VIDEO_FILE_TYPES: [
+		"video/mp4",
+		"video/avi",
+		"video/mov",
+		"video/wmv",
+		"video/flv",
+	],
+	ACCEPTED_AUDIO_FILE_TYPES: [
+		"audio/mp3",
+		"audio/wav",
+		"audio/ogg",
+		"audio/mpeg",
+	],
+	ACCEPTED_DOC_FILE_TYPES: [
+		"application/pdf",
+		"application/msword",
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		"application/zip",
+		"application/x-zip-compressed",
+		"application/x-zip",
+	],
 	UPLOAD_PATH: "/public/uploads/",
 	UPLOAD_DIR: "uploads",
 	url: "https://nguyenpham.pro",
@@ -123,16 +165,22 @@ export const appState = {
 export const meta = (data: any) => {
 	return {
 		title: data?.title || "nPlatform",
-		description: data?.description || "nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
+		description:
+			data?.description ||
+			"nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
 		openGraph: {
 			title: data?.title || "nPlatform",
-			description: data?.description || "nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
+			description:
+				data?.description ||
+				"nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
 			images: data.openGraph?.images || [],
 		},
 		twitter: {
 			card: "summary_large_image",
 			title: data?.title || "nPlatform",
-			description: data?.description || "nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
+			description:
+				data?.description ||
+				"nPlatform continually draws and delivers new audiences to create a global network of connected best-in-class apparel decorators, manufacturers, graphic designers, and brand influencers.",
 			creator: "@madelab",
 			images: data.openGraph?.images || [],
 		},

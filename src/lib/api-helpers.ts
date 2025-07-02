@@ -14,7 +14,12 @@ interface ApiResponse<T = any> {
 }
 
 // Success response helper
-export function successResponse<T>(data: T, message: string = "Success", count?: number, pagination?: any): Response {
+export function successResponse<T>(
+	data: T,
+	message: string = "Success",
+	count?: number,
+	pagination?: any,
+): Response {
 	const response: ApiResponse<T> = {
 		success: true,
 		message,
@@ -39,7 +44,11 @@ export function successResponse<T>(data: T, message: string = "Success", count?:
 }
 
 // Error response helper
-export function errorResponse(message: string = "An error occurred", status: number = 500, error?: string): Response {
+export function errorResponse(
+	message: string = "An error occurred",
+	status: number = 500,
+	error?: string,
+): Response {
 	return new Response(
 		JSON.stringify({
 			success: false,
@@ -97,7 +106,9 @@ export function parseQueryParams(searchParams: URLSearchParams) {
 		filterBy: searchParams.get("filterBy") || "",
 		byCat: searchParams.get("cat") || "all",
 		type: searchParams.get("type") || null,
-		published: searchParams.get("published") ? searchParams.get("published") === "true" : undefined,
+		published: searchParams.get("published")
+			? searchParams.get("published") === "true"
+			: undefined,
 		min: searchParams.get("min") === "true",
 	};
 }
@@ -146,7 +157,10 @@ export function cachedSuccessResponse<T>(
 }
 
 // Response with compression hints
-export function compressedResponse<T>(data: T, message: string = "Success"): Response {
+export function compressedResponse<T>(
+	data: T,
+	message: string = "Success",
+): Response {
 	const jsonString = JSON.stringify({
 		success: true,
 		message,
@@ -165,10 +179,17 @@ export function compressedResponse<T>(data: T, message: string = "Success"): Res
 }
 
 // Streaming response for large datasets
-export function streamingResponse<T>(dataGenerator: AsyncGenerator<T, void, unknown>, message: string = "Success"): Response {
+export function streamingResponse<T>(
+	dataGenerator: AsyncGenerator<T, void, unknown>,
+	message: string = "Success",
+): Response {
 	const stream = new ReadableStream({
 		async start(controller) {
-			controller.enqueue(new TextEncoder().encode(`{"success":true,"message":"${message}","data":[`));
+			controller.enqueue(
+				new TextEncoder().encode(
+					`{"success":true,"message":"${message}","data":[`,
+				),
+			);
 
 			let first = true;
 			for await (const item of dataGenerator) {
@@ -193,13 +214,18 @@ export function streamingResponse<T>(dataGenerator: AsyncGenerator<T, void, unkn
 }
 
 // Enhanced response with streaming for large datasets
-export async function streamingSuccessResponse<T>(dataStream: AsyncGenerator<T[], void, unknown>, message: string = "Success"): Promise<Response> {
+export async function streamingSuccessResponse<T>(
+	dataStream: AsyncGenerator<T[], void, unknown>,
+	message: string = "Success",
+): Promise<Response> {
 	const encoder = new TextEncoder();
 
 	const stream = new ReadableStream({
 		async start(controller) {
 			try {
-				controller.enqueue(encoder.encode(`{"success":true,"message":"${message}","data":[`));
+				controller.enqueue(
+					encoder.encode(`{"success":true,"message":"${message}","data":[`),
+				);
 
 				let isFirst = true;
 				for await (const batch of dataStream) {
@@ -231,7 +257,13 @@ export async function streamingSuccessResponse<T>(dataStream: AsyncGenerator<T[]
 }
 
 // Response with better compression hints
-export function optimizedSuccessResponse<T>(data: T, message: string = "Success", count?: number, pagination?: any, cacheSeconds: number = 300): Response {
+export function optimizedSuccessResponse<T>(
+	data: T,
+	message: string = "Success",
+	count?: number,
+	pagination?: any,
+	cacheSeconds: number = 300,
+): Response {
 	const response: ApiResponse<T> = {
 		success: true,
 		message,
@@ -263,7 +295,12 @@ export function optimizedSuccessResponse<T>(data: T, message: string = "Success"
 }
 
 // Enhanced batch processing for large operations
-export async function batchProcessResponse<T>(items: T[], processor: (batch: T[]) => Promise<any>, batchSize: number = 50, message: string = "Batch processing completed"): Promise<Response> {
+export async function batchProcessResponse<T>(
+	items: T[],
+	processor: (batch: T[]) => Promise<any>,
+	batchSize: number = 50,
+	message: string = "Batch processing completed",
+): Promise<Response> {
 	const results = [];
 	const batches = [];
 
@@ -274,7 +311,9 @@ export async function batchProcessResponse<T>(items: T[], processor: (batch: T[]
 	// Process batches in parallel (but limit concurrency)
 	const concurrencyLimit = 3;
 	for (let i = 0; i < batches.length; i += concurrencyLimit) {
-		const batchPromises = batches.slice(i, i + concurrencyLimit).map((batch) => processor(batch));
+		const batchPromises = batches
+			.slice(i, i + concurrencyLimit)
+			.map((batch) => processor(batch));
 
 		const batchResults = await Promise.all(batchPromises);
 		results.push(...batchResults);
@@ -286,7 +325,10 @@ export async function batchProcessResponse<T>(items: T[], processor: (batch: T[]
 // Parse advanced query parameters with validation
 export function parseAdvancedQueryParams(searchParams: URLSearchParams) {
 	const page = Math.max(1, parseInt(searchParams.get("page") ?? "1"));
-	const limit = Math.min(Math.max(1, parseInt(searchParams.get("limit") ?? "20")), 100);
+	const limit = Math.min(
+		Math.max(1, parseInt(searchParams.get("limit") ?? "20")),
+		100,
+	);
 	const skip = (page - 1) * limit;
 
 	const orderBy = searchParams.get("orderBy") || "createdAt";
@@ -313,7 +355,9 @@ export function parseAdvancedQueryParams(searchParams: URLSearchParams) {
 		search: searchParams.get("s") || "",
 		orderBy: { [orderBy]: orderDirection },
 		filters,
-		published: searchParams.get("published") ? searchParams.get("published") === "true" : undefined,
+		published: searchParams.get("published")
+			? searchParams.get("published") === "true"
+			: undefined,
 		min: searchParams.get("min") === "true",
 	};
 }

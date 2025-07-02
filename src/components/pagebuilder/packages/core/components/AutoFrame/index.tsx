@@ -1,4 +1,11 @@
-import { createContext, ReactNode, RefObject, useContext, useEffect, useState } from "react";
+import {
+	createContext,
+	ReactNode,
+	RefObject,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import { createPortal } from "react-dom";
 import hash from "object-hash";
 
@@ -27,7 +34,10 @@ const getStyles = (styleSheet?: CSSStyleSheet) => {
 		try {
 			return [...styleSheet.cssRules].map((rule) => rule.cssText).join("");
 		} catch (e) {
-			console.warn("Access to stylesheet %s is denied. Ignoring…", styleSheet.href);
+			console.warn(
+				"Access to stylesheet %s is denied. Ignoring…",
+				styleSheet.href,
+			);
 		}
 	}
 
@@ -46,7 +56,15 @@ const syncAttributes = (sourceElement: Element, targetElement: Element) => {
 
 const defer = (fn: () => void) => setTimeout(fn, 0);
 
-const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }: { children: ReactNode; debug?: boolean; onStylesLoaded?: () => void }) => {
+const CopyHostStyles = ({
+	children,
+	debug = false,
+	onStylesLoaded = () => null,
+}: {
+	children: ReactNode;
+	debug?: boolean;
+	onStylesLoaded?: () => void;
+}) => {
 	const { document: doc, window: win } = useFrame();
 
 	useEffect(() => {
@@ -57,7 +75,8 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 		const elements: { original: HTMLElement; mirror: HTMLElement }[] = [];
 		const hashes: Record<string, boolean> = {};
 
-		const lookupEl = (el: HTMLElement) => elements.findIndex((elementMap) => elementMap.original === el);
+		const lookupEl = (el: HTMLElement) =>
+			elements.findIndex((elementMap) => elementMap.original === el);
 
 		const mirrorEl = async (el: HTMLElement, inlineStyles = false) => {
 			let mirror: HTMLStyleElement;
@@ -84,7 +103,9 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 
 				if (!styles) {
 					if (debug) {
-						console.warn(`Tried to load styles for link element, but couldn't find them. Skipping...`);
+						console.warn(
+							`Tried to load styles for link element, but couldn't find them. Skipping...`,
+						);
 					}
 
 					return;
@@ -103,7 +124,10 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 		const addEl = async (el: HTMLElement) => {
 			const index = lookupEl(el);
 			if (index > -1) {
-				if (debug) console.log(`Tried to add an element that was already mirrored. Updating instead...`);
+				if (debug)
+					console.log(
+						`Tried to add an element that was already mirrored. Updating instead...`,
+					);
 
 				elements[index].mirror.innerText = el.innerText;
 
@@ -119,7 +143,10 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 			const elHash = hash(mirror.outerHTML);
 
 			if (hashes[elHash]) {
-				if (debug) console.log(`iframe already contains element that is being mirrored. Skipping...`);
+				if (debug)
+					console.log(
+						`iframe already contains element that is being mirrored. Skipping...`,
+					);
 
 				return;
 			}
@@ -135,7 +162,10 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 		const removeEl = (el: HTMLElement) => {
 			const index = lookupEl(el);
 			if (index === -1) {
-				if (debug) console.log(`Tried to remove an element that did not exist. Skipping...`);
+				if (debug)
+					console.log(
+						`Tried to remove an element that did not exist. Skipping...`,
+					);
 
 				return;
 			}
@@ -152,8 +182,14 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 			mutations.forEach((mutation) => {
 				if (mutation.type === "childList") {
 					mutation.addedNodes.forEach((node) => {
-						if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
-							const el = node.nodeType === Node.TEXT_NODE ? node.parentElement : (node as HTMLElement);
+						if (
+							node.nodeType === Node.TEXT_NODE ||
+							node.nodeType === Node.ELEMENT_NODE
+						) {
+							const el =
+								node.nodeType === Node.TEXT_NODE
+									? node.parentElement
+									: (node as HTMLElement);
 
 							if (el && el.matches(styleSelector)) {
 								defer(() => addEl(el));
@@ -162,8 +198,14 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 					});
 
 					mutation.removedNodes.forEach((node) => {
-						if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
-							const el = node.nodeType === Node.TEXT_NODE ? node.parentElement : (node as HTMLElement);
+						if (
+							node.nodeType === Node.TEXT_NODE ||
+							node.nodeType === Node.ELEMENT_NODE
+						) {
+							const el =
+								node.nodeType === Node.TEXT_NODE
+									? node.parentElement
+									: (node as HTMLElement);
 
 							if (el && el.matches(styleSelector)) {
 								defer(() => removeEl(el));
@@ -210,7 +252,9 @@ const CopyHostStyles = ({ children, debug = false, onStylesLoaded = () => null }
 				return mirror;
 			}),
 		).then((mirrorStyles) => {
-			const filtered = mirrorStyles.filter((el) => typeof el !== "undefined") as HTMLStyleElement[];
+			const filtered = mirrorStyles.filter(
+				(el) => typeof el !== "undefined",
+			) as HTMLStyleElement[];
 
 			filtered.forEach((mirror) => {
 				mirror.onload = () => {
@@ -272,7 +316,16 @@ export const autoFrameContext = createContext<AutoFrameContext>({});
 
 export const useFrame = () => useContext(autoFrameContext);
 
-function AutoFrame({ children, className, debug, id, onReady = () => {}, onNotReady = () => {}, frameRef, ...props }: AutoFrameProps) {
+function AutoFrame({
+	children,
+	className,
+	debug,
+	id,
+	onReady = () => {},
+	onNotReady = () => {},
+	frameRef,
+	...props
+}: AutoFrameProps) {
 	const [loaded, setLoaded] = useState(false);
 	const [ctx, setCtx] = useState<AutoFrameContext>({});
 	const [mountTarget, setMountTarget] = useState<HTMLElement | null>();
@@ -288,7 +341,9 @@ function AutoFrame({ children, className, debug, id, onReady = () => {}, onNotRe
 				window: win || undefined,
 			});
 
-			setMountTarget(frameRef.current.contentDocument?.getElementById("frame-root"));
+			setMountTarget(
+				frameRef.current.contentDocument?.getElementById("frame-root"),
+			);
 
 			if (doc && win && stylesLoaded) {
 				onReady();
@@ -307,12 +362,14 @@ function AutoFrame({ children, className, debug, id, onReady = () => {}, onNotRe
 			ref={frameRef}
 			onLoad={() => {
 				setLoaded(true);
-			}}>
+			}}
+		>
 			<autoFrameContext.Provider value={ctx}>
 				{loaded && mountTarget && (
 					<CopyHostStyles
 						debug={debug}
-						onStylesLoaded={() => setStylesLoaded(true)}>
+						onStylesLoaded={() => setStylesLoaded(true)}
+					>
 						{createPortal(children, mountTarget)}
 					</CopyHostStyles>
 				)}

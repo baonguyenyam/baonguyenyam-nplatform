@@ -5,7 +5,11 @@ import React, { useMemo } from "react";
 import { rootZone } from "../../lib/root-droppable-id";
 import { useSlots } from "../../lib/use-slots";
 import { Config, Data, Metadata, UserGenerics } from "../../types";
-import { DropZoneProvider, DropZonePure, DropZoneRenderPure } from "../DropZone";
+import {
+	DropZoneProvider,
+	DropZonePure,
+	DropZoneRenderPure,
+} from "../DropZone";
 import { DropZoneContext } from "../DropZone/context";
 import { SlotRender } from "../SlotRender";
 
@@ -19,7 +23,18 @@ export const renderContext = React.createContext<{
 	metadata: {},
 });
 
-export function Render<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>({ config, data, metadata = {} }: { config: UserConfig; data: Partial<G["UserData"] | Data>; metadata?: Metadata }) {
+export function Render<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>({
+	config,
+	data,
+	metadata = {},
+}: {
+	config: UserConfig;
+	data: Partial<G["UserData"] | Data>;
+	metadata?: Metadata;
+}) {
 	const defaultedData = {
 		...data,
 		root: data.root || {},
@@ -44,11 +59,7 @@ export function Render<UserConfig extends Config = Config, G extends UserGeneric
 	};
 
 	const propsWithSlots = useSlots(config.root, pageProps, (props) => (
-		<SlotRender
-			{...props}
-			config={config}
-			metadata={metadata}
-		/>
+		<SlotRender {...props} config={config} metadata={metadata} />
 	));
 
 	const nextContextValue = useMemo<DropZoneContext>(

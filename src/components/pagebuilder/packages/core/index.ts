@@ -23,4 +23,9 @@ export * from "./lib/migrate";
 export * from "./lib/transform-props";
 export * from "./lib/resolve-all-data";
 export { mapSlotsPublic as mapSlots } from "./lib/data/map-slots";
-export { createUsePuck, usePuck, type UsePuckData, type PuckApi } from "./lib/use-puck";
+export {
+	createUsePuck,
+	usePuck,
+	type UsePuckData,
+	type PuckApi,
+} from "./lib/use-puck";

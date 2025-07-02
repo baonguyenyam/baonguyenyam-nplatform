@@ -100,7 +100,12 @@ export const getAllPosts = async (query: any) => {
 			where: {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 			select: {
 				id: true,
@@ -146,7 +151,12 @@ export const getPostsCount = async (query: any) => {
 			where: {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 		});
 		return count;

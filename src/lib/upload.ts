@@ -74,13 +74,18 @@ export async function uploadFile(files: any) {
 			try {
 				if (process.env.ENABLE_R2 === "true" || process.env.ENABLE_R2 === "1") {
 					const data = {
-						Bucket: process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
+						Bucket:
+							process.env.NODE_ENV === "production" ? Bucket.prod : Bucket.dev,
 						Key: `${upload_dir}/${fileHash}.${fileExtension}`,
 					};
 
-					const signedUrl = await getSignedUrl(s3Client, new PutObjectCommand(data), {
-						expiresIn: 3600,
-					});
+					const signedUrl = await getSignedUrl(
+						s3Client,
+						new PutObjectCommand(data),
+						{
+							expiresIn: 3600,
+						},
+					);
 
 					await fetch(signedUrl, {
 						method: "PUT",
@@ -112,7 +117,14 @@ export async function uploadFile(files: any) {
 						};
 					}
 				} else {
-					await writeFile(path.join(process.cwd(), upload_path || "", "/" + fileHash + "." + fileExtension), fileBuffer);
+					await writeFile(
+						path.join(
+							process.cwd(),
+							upload_path || "",
+							"/" + fileHash + "." + fileExtension,
+						),
+						fileBuffer,
+					);
 					const fileDataToSave = {
 						name: fileName,
 						hash: fileHash,

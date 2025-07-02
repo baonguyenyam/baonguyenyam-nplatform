@@ -11,7 +11,13 @@ import * as React from "react";
 
 import Modal from "../ui/Modal";
 
-export default function useModal(): [React.JSX.Element | null, (title: string, showModal: (onClose: () => void) => React.JSX.Element) => void] {
+export default function useModal(): [
+	React.JSX.Element | null,
+	(
+		title: string,
+		showModal: (onClose: () => void) => React.JSX.Element,
+	) => void,
+] {
 	const [modalContent, setModalContent] = useState<null | {
 		closeOnClickOutside: boolean;
 		content: React.JSX.Element;
@@ -31,7 +37,8 @@ export default function useModal(): [React.JSX.Element | null, (title: string, s
 			<Modal
 				onClose={onClose}
 				title={title}
-				closeOnClickOutside={closeOnClickOutside}>
+				closeOnClickOutside={closeOnClickOutside}
+			>
 				{content}
 			</Modal>
 		);

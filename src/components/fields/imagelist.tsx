@@ -12,8 +12,17 @@ import { Button } from "../ui/button";
 import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 
-export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setThumbnail?: any; fetchData?: any; onChange?: any; viewOnly?: boolean }) {
-	const { role, data, thumbnail, setThumbnail, fetchData, onChange, viewOnly } = props;
+export function ImageList(props: {
+	role?: any;
+	data?: any;
+	thumbnail?: any;
+	setThumbnail?: any;
+	fetchData?: any;
+	onChange?: any;
+	viewOnly?: boolean;
+}) {
+	const { role, data, thumbnail, setThumbnail, fetchData, onChange, viewOnly } =
+		props;
 
 	return (
 		<>
@@ -22,12 +31,14 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 					<LightGallery
 						speed={500}
 						plugins={[lgZoom]}
-						elementClassNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+						elementClassNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
+					>
 						{data.map((item: any) => (
 							<Link
 								key={item.id}
 								href={item.url}
-								className="flex items-center flex-col gap-3 group relative">
+								className="flex items-center flex-col gap-3 group relative"
+							>
 								<img
 									src={item.url}
 									alt={item?.name || ""}
@@ -50,10 +61,17 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 											size="icon"
 											variant="destructive"
 											onClick={async () => {
-												if (confirm("Are you sure you want to delete this record?")) {
-													const del = await fetch(`/api/admin/files/${item.id}`, {
-														method: "POST",
-													});
+												if (
+													confirm(
+														"Are you sure you want to delete this record?",
+													)
+												) {
+													const del = await fetch(
+														`/api/admin/files/${item.id}`,
+														{
+															method: "POST",
+														},
+													);
 													const res = await del.json();
 													if (res.success === "success") {
 														toast.success(res.message);
@@ -63,14 +81,19 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 													}
 												}
 											}}
-											className="text-xs rounded-full w-5 h-5 absolute -top-2 -right-2">
+											className="text-xs rounded-full w-5 h-5 absolute -top-2 -right-2"
+										>
 											<X className="text-white" />
 										</Button>
 									)}
 								</div>
 								{!viewOnly && (
 									<>
-										{thumbnail === item.url && <span className="bg-white shadow text-black px-3 py-2 rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Thumbnail</span>}
+										{thumbnail === item.url && (
+											<span className="bg-white shadow text-black px-3 py-2 rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+												Thumbnail
+											</span>
+										)}
 										{thumbnail !== item.url && (
 											<Button
 												type="button"
@@ -85,11 +108,15 @@ export function ImageList(props: { role?: any; data?: any; thumbnail?: any; setT
 														preview.innerHTML = "";
 														const img = document.createElement("img");
 														img.src = item.url;
-														img.className = "w-64 h-full max-h-32 object-cover border-2 border-gray-300 rounded-lg";
-														document.getElementById("previewimg")?.appendChild(img);
+														img.className =
+															"w-64 h-full max-h-32 object-cover border-2 border-gray-300 rounded-lg";
+														document
+															.getElementById("previewimg")
+															?.appendChild(img);
 													}
 												}}
-												className="text-xs hidden group-hover:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+												className="text-xs hidden group-hover:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+											>
 												Set as Thumbnail
 											</Button>
 										)}

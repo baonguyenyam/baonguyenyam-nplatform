@@ -8,10 +8,25 @@
 import { Dispatch, useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { $isAutoLinkNode, $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
+import {
+	$isAutoLinkNode,
+	$isLinkNode,
+	TOGGLE_LINK_COMMAND,
+} from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $findMatchingParent, mergeRegister } from "@lexical/utils";
-import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_CRITICAL, COMMAND_PRIORITY_HIGH, COMMAND_PRIORITY_LOW, KEY_ESCAPE_COMMAND, LexicalEditor, NodeSelection, RangeSelection, SELECTION_CHANGE_COMMAND } from "lexical";
+import {
+	$getSelection,
+	$isRangeSelection,
+	COMMAND_PRIORITY_CRITICAL,
+	COMMAND_PRIORITY_HIGH,
+	COMMAND_PRIORITY_LOW,
+	KEY_ESCAPE_COMMAND,
+	LexicalEditor,
+	NodeSelection,
+	RangeSelection,
+	SELECTION_CHANGE_COMMAND,
+} from "lexical";
 
 import { getSelectedNode } from "../../utils/getSelectedNode";
 import { setFloatingElemPositionForLinkEditor } from "../../utils/setFloatingElemPositionForLinkEditor";
@@ -19,13 +34,25 @@ import { sanitizeUrl } from "../../utils/url";
 
 import "./index.css";
 
-function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor: LexicalEditor; isLink: boolean; setIsLink: Dispatch<boolean>; anchorElem: HTMLElement }): React.JSX.Element {
+function FloatingLinkEditor({
+	editor,
+	isLink,
+	setIsLink,
+	anchorElem,
+}: {
+	editor: LexicalEditor;
+	isLink: boolean;
+	setIsLink: Dispatch<boolean>;
+	anchorElem: HTMLElement;
+}): React.JSX.Element {
 	const editorRef = useRef<HTMLDivElement | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [linkUrl, setLinkUrl] = useState("");
 	const [editedLinkUrl, setEditedLinkUrl] = useState("");
 	const [isEditMode, setEditMode] = useState(false);
-	const [lastSelection, setLastSelection] = useState<RangeSelection | NodeSelection | null>(null);
+	const [lastSelection, setLastSelection] = useState<
+		RangeSelection | NodeSelection | null
+	>(null);
 
 	const updateLinkEditor = useCallback(() => {
 		const selection = $getSelection();
@@ -50,8 +77,15 @@ function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor:
 
 		const rootElement = editor.getRootElement();
 
-		if (selection !== null && nativeSelection !== null && rootElement !== null && rootElement.contains(nativeSelection.anchorNode) && editor.isEditable()) {
-			const domRect: DOMRect | undefined = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+		if (
+			selection !== null &&
+			nativeSelection !== null &&
+			rootElement !== null &&
+			rootElement.contains(nativeSelection.anchorNode) &&
+			editor.isEditable()
+		) {
+			const domRect: DOMRect | undefined =
+				nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
 			if (domRect) {
 				domRect.y += 40;
 				setFloatingElemPositionForLinkEditor(domRect, editorElem, anchorElem);
@@ -139,7 +173,9 @@ function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor:
 		}
 	}, [isEditMode]);
 
-	const monitorInputInteraction = (event: React.KeyboardEvent<HTMLInputElement>) => {
+	const monitorInputInteraction = (
+		event: React.KeyboardEvent<HTMLInputElement>,
+	) => {
 		if (event.key === "Enter") {
 			event.preventDefault();
 			handleLinkSubmission();
@@ -159,9 +195,7 @@ function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor:
 	};
 
 	return (
-		<div
-			ref={editorRef}
-			className="link-editor">
+		<div ref={editorRef} className="link-editor">
 			{!isLink ? null : isEditMode ? (
 				<>
 					<input
@@ -197,10 +231,7 @@ function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor:
 				</>
 			) : (
 				<div className="link-view">
-					<a
-						href={linkUrl}
-						target="_blank"
-						rel="noopener noreferrer">
+					<a href={linkUrl} target="_blank" rel="noopener noreferrer">
 						{linkUrl}
 					</a>
 					<div
@@ -228,7 +259,10 @@ function FloatingLinkEditor({ editor, isLink, setIsLink, anchorElem }: { editor:
 	);
 }
 
-function useFloatingLinkEditorToolbar(editor: LexicalEditor, anchorElem: HTMLElement): React.JSX.Element | null {
+function useFloatingLinkEditorToolbar(
+	editor: LexicalEditor,
+	anchorElem: HTMLElement,
+): React.JSX.Element | null {
 	const [activeEditor, setActiveEditor] = useState(editor);
 	const [isLink, setIsLink] = useState(false);
 
@@ -278,7 +312,11 @@ function useFloatingLinkEditorToolbar(editor: LexicalEditor, anchorElem: HTMLEle
 	);
 }
 
-export default function FloatingLinkEditorPlugin({ anchorElem = document.body }: { anchorElem?: HTMLElement }): React.JSX.Element | null {
+export default function FloatingLinkEditorPlugin({
+	anchorElem = document.body,
+}: {
+	anchorElem?: HTMLElement;
+}): React.JSX.Element | null {
 	const [editor] = useLexicalComposerContext();
 	return useFloatingLinkEditorToolbar(editor, anchorElem);
 }

@@ -24,7 +24,8 @@ export default function Fetch(props: any) {
 	const [open, setOpen] = useState<any>(["", null]);
 	const [db, setDb] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 	const query = useMemo(
 		() => ({
@@ -72,10 +73,7 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				<Button onClick={() => setOpen(["create", null])}>
 					<Plus />
 					Create {title}
@@ -118,7 +116,10 @@ export default function Fetch(props: any) {
 											)}
 											<span
 												className="whitespace-nowrap truncate overflow-ellipsis max-w-xs cursor-pointer underline"
-												onClick={() => router.push(`/admin/attributes/view/${row.id}`)}>
+												onClick={() =>
+													router.push(`/admin/attributes/view/${row.id}`)
+												}
+											>
 												{row.title}
 											</span>
 										</div>
@@ -132,7 +133,9 @@ export default function Fetch(props: any) {
 							custom: (row: any) => {
 								return (
 									<div className="flex items-center space-x-2">
-										<span className="text-sm uppercase font-semibold">{row?.mapto}</span>
+										<span className="text-sm uppercase font-semibold">
+											{row?.mapto}
+										</span>
 									</div>
 								);
 							},
@@ -167,7 +170,8 @@ export default function Fetch(props: any) {
 									<Button
 										size="icon"
 										className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-										onClick={() => setOpen(["edit", row])}>
+										onClick={() => setOpen(["edit", row])}
+									>
 										<Pencil />
 									</Button>
 								);
@@ -199,10 +203,12 @@ export default function Fetch(props: any) {
 					<Button
 						type="button"
 						onClick={() => setOpen(["", null])}
-						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
+						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
+					>
 						<X />
 					</Button>
-				}>
+				}
+			>
 				<FormEdit
 					onChange={(event: string, data: any) => {
 						if (event === "submit") {
@@ -229,17 +235,20 @@ export default function Fetch(props: any) {
 							onClick={() => {
 								deteteRecord(open[1]?.id);
 								setOpen(["", open[1]]);
-							}}>
+							}}
+						>
 							<Trash /> Delete
 						</Button>
 						<Button
 							type="button"
 							className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
-							onClick={() => setOpen(["", null])}>
+							onClick={() => setOpen(["", null])}
+						>
 							<X />
 						</Button>
 					</div>
-				}>
+				}
+			>
 				<FormEdit
 					id={open[1]?.id}
 					onChange={(event: string, data: any) => {

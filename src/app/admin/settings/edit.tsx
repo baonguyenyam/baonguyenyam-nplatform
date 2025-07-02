@@ -10,9 +10,21 @@ import { z } from "zod";
 import { AppEditor } from "@/components/AppEditor";
 import AppLoading from "@/components/AppLoading";
 import { FieldUpload } from "@/components/fields/upload";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/SettingTab";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/SettingTab";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { appState } from "@/lib/appConst";
 import { useAppDispatch } from "@/store";
@@ -21,14 +33,26 @@ import { SET_APP_STATE } from "@/store/appSlice";
 import * as actions from "./actions";
 
 const FormSchema = z.object({
-	f_title: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
-	f_description: z.string().min(2, { message: "Content must be at least 2 characters." }),
+	f_title: z
+		.string()
+		.min(2, { message: "Fullname must be at least 2 characters." }),
+	f_description: z
+		.string()
+		.min(2, { message: "Content must be at least 2 characters." }),
 	f_page: z.any().optional(),
 	f_tax: z.any().optional(),
-	f_bill_note: z.string().min(2, { message: "Bill note must be at least 2 characters." }),
-	f_bill_company_name: z.string().min(2, { message: "Bill company name must be at least 2 characters." }),
-	f_bill_company_address: z.string().min(2, { message: "Bill company address must be at least 2 characters." }),
-	f_bill_company_info: z.string().min(2, { message: "Bill company info must be at least 2 characters." }),
+	f_bill_note: z
+		.string()
+		.min(2, { message: "Bill note must be at least 2 characters." }),
+	f_bill_company_name: z
+		.string()
+		.min(2, { message: "Bill company name must be at least 2 characters." }),
+	f_bill_company_address: z
+		.string()
+		.min(2, { message: "Bill company address must be at least 2 characters." }),
+	f_bill_company_info: z
+		.string()
+		.min(2, { message: "Bill company info must be at least 2 characters." }),
 	f_bill_company_phone: z.string().optional(),
 	f_file: z
 		.any()
@@ -77,16 +101,31 @@ export default function FormEdit() {
 		}
 		dispatch(
 			SET_APP_STATE({
-				pageSize: update.data?.find((item: any) => item.key === "page")?.value || 10,
-				title: update.data?.find((item: any) => item.key === "title")?.value || "",
-				description: update.data?.find((item: any) => item.key === "description")?.value || "",
-				image: update.data?.find((item: any) => item.key === "image")?.value || "",
+				pageSize:
+					update.data?.find((item: any) => item.key === "page")?.value || 10,
+				title:
+					update.data?.find((item: any) => item.key === "title")?.value || "",
+				description:
+					update.data?.find((item: any) => item.key === "description")?.value ||
+					"",
+				image:
+					update.data?.find((item: any) => item.key === "image")?.value || "",
 				tax: update.data?.find((item: any) => item.key === "tax")?.value || 8.5,
-				bill_note: update.data?.find((item: any) => item.key === "bill_note")?.value || "",
-				bill_company_name: update.data?.find((item: any) => item.key === "bill_company_name")?.value || "",
-				bill_company_address: update.data?.find((item: any) => item.key === "bill_company_address")?.value || "",
-				bill_company_info: update.data?.find((item: any) => item.key === "bill_company_info")?.value || "",
-				bill_company_phone: update.data?.find((item: any) => item.key === "bill_company_phone")?.value || "",
+				bill_note:
+					update.data?.find((item: any) => item.key === "bill_note")?.value ||
+					"",
+				bill_company_name:
+					update.data?.find((item: any) => item.key === "bill_company_name")
+						?.value || "",
+				bill_company_address:
+					update.data?.find((item: any) => item.key === "bill_company_address")
+						?.value || "",
+				bill_company_info:
+					update.data?.find((item: any) => item.key === "bill_company_info")
+						?.value || "",
+				bill_company_phone:
+					update.data?.find((item: any) => item.key === "bill_company_phone")
+						?.value || "",
 			}),
 		);
 		fetchData();
@@ -110,18 +149,33 @@ export default function FormEdit() {
 		if (res?.success === "success" && res?.data) {
 			setData(res.data);
 			form.reset({
-				f_title: res.data?.find((item: any) => item.key === "title")?.value || "",
-				f_description: res.data?.find((item: any) => item.key === "description")?.value || "",
+				f_title:
+					res.data?.find((item: any) => item.key === "title")?.value || "",
+				f_description:
+					res.data?.find((item: any) => item.key === "description")?.value ||
+					"",
 				f_page: res.data?.find((item: any) => item.key === "page")?.value || 10,
 				f_tax: res.data?.find((item: any) => item.key === "tax")?.value || 8.5,
-				f_bill_note: res.data?.find((item: any) => item.key === "bill_note")?.value || "",
-				f_bill_company_name: res.data?.find((item: any) => item.key === "bill_company_name")?.value || "",
-				f_bill_company_address: res.data?.find((item: any) => item.key === "bill_company_address")?.value || "",
-				f_bill_company_info: res.data?.find((item: any) => item.key === "bill_company_info")?.value || "",
-				f_bill_company_phone: res.data?.find((item: any) => item.key === "bill_company_phone")?.value || "",
-				f_file: res.data?.find((item: any) => item.key === "image")?.value || "",
+				f_bill_note:
+					res.data?.find((item: any) => item.key === "bill_note")?.value || "",
+				f_bill_company_name:
+					res.data?.find((item: any) => item.key === "bill_company_name")
+						?.value || "",
+				f_bill_company_address:
+					res.data?.find((item: any) => item.key === "bill_company_address")
+						?.value || "",
+				f_bill_company_info:
+					res.data?.find((item: any) => item.key === "bill_company_info")
+						?.value || "",
+				f_bill_company_phone:
+					res.data?.find((item: any) => item.key === "bill_company_phone")
+						?.value || "",
+				f_file:
+					res.data?.find((item: any) => item.key === "image")?.value || "",
 			});
-			setThumbnail(res.data?.find((item: any) => item.key === "image")?.value || "");
+			setThumbnail(
+				res.data?.find((item: any) => item.key === "image")?.value || "",
+			);
 			setLoading(false);
 		} else {
 			setData(null);
@@ -141,37 +195,41 @@ export default function FormEdit() {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className="w-full space-y-6 pb-15">
+							className="w-full space-y-6 pb-15"
+						>
 							<Tabs
 								defaultValue="tab-1"
 								orientation="vertical"
-								className="flex w-full items-start gap-10 mt-5">
+								className="flex w-full items-start gap-10 mt-5"
+							>
 								<TabsList className="flex-col rounded-none border-l border-border bg-transparent p-0">
 									<TabsTrigger
 										value="tab-1"
-										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
+										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
+									>
 										Site configuration
 									</TabsTrigger>
 									<TabsTrigger
 										value="tab-2"
-										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
+										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
+									>
 										Production configuration
 									</TabsTrigger>
 									<TabsTrigger
 										value="tab-3"
-										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
+										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
+									>
 										APIs configuration
 									</TabsTrigger>
 									<TabsTrigger
 										value="tab-4"
-										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">
+										className="relative w-full justify-start rounded-none after:absolute after:inset-y-0 after:start-0 after:w-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
+									>
 										Local configuration
 									</TabsTrigger>
 								</TabsList>
 								<div className="grow text-start">
-									<TabsContent
-										value="tab-1"
-										className="space-y-10">
+									<TabsContent value="tab-1" className="space-y-10">
 										<FormField
 											control={form.control}
 											name="f_title"
@@ -246,9 +304,7 @@ export default function FormEdit() {
 											)}
 										/>
 									</TabsContent>
-									<TabsContent
-										value="tab-2"
-										className="space-y-10">
+									<TabsContent value="tab-2" className="space-y-10">
 										<FormField
 											control={form.control}
 											name="f_tax"
@@ -295,10 +351,7 @@ export default function FormEdit() {
 												<FormItem>
 													<FormLabel>Company Name</FormLabel>
 													<FormControl>
-														<Input
-															placeholder="Bill Company Name"
-															{...field}
-														/>
+														<Input placeholder="Bill Company Name" {...field} />
 													</FormControl>
 													<FormMessage />
 												</FormItem>
@@ -327,10 +380,7 @@ export default function FormEdit() {
 												<FormItem>
 													<FormLabel>Company Info</FormLabel>
 													<FormControl>
-														<Input
-															placeholder="Bill Company Info"
-															{...field}
-														/>
+														<Input placeholder="Bill Company Info" {...field} />
 													</FormControl>
 													<FormMessage />
 												</FormItem>
@@ -353,21 +403,20 @@ export default function FormEdit() {
 											)}
 										/>
 									</TabsContent>
-									<TabsContent
-										value="tab-3"
-										className="space-y-10">
+									<TabsContent value="tab-3" className="space-y-10">
 										This feature is not available yet.
 									</TabsContent>
-									<TabsContent
-										value="tab-4"
-										className="space-y-10">
+									<TabsContent value="tab-4" className="space-y-10">
 										<div className="item">
-											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">Local Storage</h3>
+											<h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
+												Local Storage
+											</h3>
 											{Object.keys(localStorage)?.map((key) => {
 												return (
 													<div
 														key={key}
-														className="flex items-center justify-between space-y-3 ">
+														className="flex items-center justify-between space-y-3 "
+													>
 														<div className="flex items-center space-x-2">
 															<Button
 																size="icon"
@@ -375,12 +424,17 @@ export default function FormEdit() {
 																variant="destructive"
 																onClick={(e) => {
 																	clearCache(key, e);
-																}}>
+																}}
+															>
 																<X className="h-3 w-3" />
 															</Button>
-															<span className="text-sm font-medium text-gray-700 dark:text-gray-200">{key}</span>
+															<span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+																{key}
+															</span>
 														</div>
-														<div className="text-xs">{localStorage.getItem(key)?.length} bytes</div>
+														<div className="text-xs">
+															{localStorage.getItem(key)?.length} bytes
+														</div>
 													</div>
 												);
 											})}
@@ -392,7 +446,8 @@ export default function FormEdit() {
 													e.preventDefault();
 													localStorage.clear();
 													toast.success("All Local Storage cleared");
-												}}>
+												}}
+											>
 												Clear all Local Storage
 											</Button>
 										</div>
@@ -403,7 +458,10 @@ export default function FormEdit() {
 								<div className="l"></div>
 								<Button
 									type="submit"
-									disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+									disabled={
+										!form.formState.isDirty || form.formState.isSubmitting
+									}
+								>
 									Save changes
 								</Button>
 							</div>

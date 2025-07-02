@@ -5,7 +5,11 @@ import { ReorderAction } from "../actions";
 
 import { moveAction } from "./move";
 
-export const reorderAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: ReorderAction, appStore: AppStore): PrivateAppState<UserData> => {
+export const reorderAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: ReorderAction,
+	appStore: AppStore,
+): PrivateAppState<UserData> => {
 	return moveAction(
 		state,
 		{

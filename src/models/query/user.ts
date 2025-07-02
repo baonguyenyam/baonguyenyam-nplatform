@@ -1,5 +1,9 @@
 import { db } from "@/lib/db";
-import { cachedGetUserByEmail, cachedGetUserById, clearCache } from "@/lib/db-cache";
+import {
+	cachedGetUserByEmail,
+	cachedGetUserById,
+	clearCache,
+} from "@/lib/db-cache";
 
 // Get User by Email - use cached version for auth
 export const getUserByEmail = async (email: string) => {
@@ -43,7 +47,10 @@ export const getAllUsers = async (query: any) => {
 			where: {
 				published: published !== undefined ? published : undefined,
 				...(s && {
-					OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+					OR: [
+						{ email: { contains: s, mode: "insensitive" } },
+						{ name: { contains: s, mode: "insensitive" } },
+					],
 				}),
 			},
 			select: {
@@ -75,7 +82,10 @@ export const getUsersCount = async (query: any) => {
 			where: {
 				published: published !== undefined ? published : undefined,
 				...(s && {
-					OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+					OR: [
+						{ email: { contains: s, mode: "insensitive" } },
+						{ name: { contains: s, mode: "insensitive" } },
+					],
 				}),
 			},
 		});

@@ -22,7 +22,12 @@ import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
-import { $getRoot, $insertNodes, EditorState, LexicalEditor as LexicalEditorType } from "lexical";
+import {
+	$getRoot,
+	$insertNodes,
+	EditorState,
+	LexicalEditor as LexicalEditorType,
+} from "lexical";
 
 import useMediaQuery from "./hooks/useMediaQuery";
 import LexicalAutoLinkPlugin from "./plugins/AutoLinkPlugin/index";
@@ -96,8 +101,11 @@ function InitializeFromHtmlPlugin({ htmlString }: { htmlString?: string }) {
 
 export function Editor(props: any) {
 	const isSmallWidthViewPort = useMediaQuery("(max-width: 1025px)");
-	const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
-	const placeholder = <Placeholder>{props.placeholder || "Enter some rich text..."}</Placeholder>;
+	const [floatingAnchorElem, setFloatingAnchorElem] =
+		useState<HTMLDivElement | null>(null);
+	const placeholder = (
+		<Placeholder>{props.placeholder || "Enter some rich text..."}</Placeholder>
+	);
 	const { value, onChange, ...restProps } = props;
 	const initialConfig = {
 		namespace: "MyEditor",
@@ -106,7 +114,9 @@ export function Editor(props: any) {
 		nodes: [...Nodes],
 		showTreeView: true,
 	};
-	const sharedHistoryContext = useSharedHistoryContext() as { historyState: any } | null;
+	const sharedHistoryContext = useSharedHistoryContext() as {
+		historyState: any;
+	} | null;
 	const historyState = sharedHistoryContext?.historyState || null;
 	const [isSourceView, setIsSourceView] = useState(false);
 	// sourceHtml holds the content for the textarea, initialized from props.value
@@ -116,7 +126,8 @@ export function Editor(props: any) {
 	function handleOnChange(editorState: EditorState, editor: LexicalEditorType) {
 		// Prevent calling onChange during the very initial state setup
 		const isComposing = editor.isComposing();
-		const isUpdating = editorState.read(() => $getRoot().getTextContent()) !== ""; // Basic check if content exists
+		const isUpdating =
+			editorState.read(() => $getRoot().getTextContent()) !== ""; // Basic check if content exists
 
 		if (onChange && !isComposing && isUpdating) {
 			editorState.read(() => {
@@ -181,13 +192,18 @@ export function Editor(props: any) {
 			<>
 				<button
 					type="button"
-					onClick={isSourceView ? () => switchToEditorView() : () => switchToSourceView()}
+					onClick={
+						isSourceView
+							? () => switchToEditorView()
+							: () => switchToSourceView()
+					}
 					style={{
 						borderRadius: "5px",
 						cursor: "pointer",
 						padding: "2px 7px",
 					}}
-					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600">
+					className="bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+				>
 					{isSourceView ? "Visual Editor" : "HTML Code"}
 				</button>
 			</>
@@ -204,7 +220,11 @@ export function Editor(props: any) {
 				indentLevel--;
 			}
 			result += tab.repeat(indentLevel) + "<" + element + ">\n";
-			if (element.startsWith("<") && !element.startsWith("</") && !element.endsWith("/>")) {
+			if (
+				element.startsWith("<") &&
+				!element.startsWith("</") &&
+				!element.endsWith("/>")
+			) {
 				indentLevel++;
 			}
 		});
@@ -246,7 +266,12 @@ export function Editor(props: any) {
 									onChange(value);
 								}
 							}}
-							extensions={[html(), vscodeDark, EditorView.lineWrapping, keymap.of([indentWithTab])]}
+							extensions={[
+								html(),
+								vscodeDark,
+								EditorView.lineWrapping,
+								keymap.of([indentWithTab]),
+							]}
 							basicSetup={{
 								lineNumbers: true,
 								tabSize: 2,
@@ -279,9 +304,7 @@ export function Editor(props: any) {
 							<RichTextPlugin
 								contentEditable={
 									<div className="editor-scroller">
-										<div
-											className="editor"
-											ref={onRef}>
+										<div className="editor" ref={onRef}>
 											<ContentEditable />
 										</div>
 									</div>
@@ -303,10 +326,7 @@ export function Editor(props: any) {
 							<TabFocusPlugin />
 							<ContextMenuPlugin />
 							<TabIndentationPlugin maxIndent={7} />
-							<TablePlugin
-								hasCellMerge={true}
-								hasCellBackgroundColor={true}
-							/>
+							<TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
 							<HorizontalRulePlugin />
 							<LinkPlugin />
 							<ClickableLinkPlugin />
@@ -319,7 +339,9 @@ export function Editor(props: any) {
 										cellMerge={true}
 									/>
 									<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
-									<FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
+									<FloatingTextFormatToolbarPlugin
+										anchorElem={floatingAnchorElem}
+									/>
 								</>
 							)}
 							<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
@@ -341,7 +363,8 @@ export function Editor(props: any) {
 						padding: "0 5px",
 						borderRadius: "0 0 10px 10px",
 					}}
-					className="bg-gray-50 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-800">
+					className="bg-gray-50 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-800"
+				>
 					<ViewSourceTogglePlugin />
 				</div>
 			</LexicalComposer>

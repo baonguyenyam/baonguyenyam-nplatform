@@ -15,7 +15,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // 	"order_permission": ObjectArray,
 // }
 
-const initialState = {}
+const initialState = {};
 
 const appSlice = createSlice({
 	name: "appState",

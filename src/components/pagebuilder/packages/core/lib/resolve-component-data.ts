@@ -1,6 +1,12 @@
 import fdeq from "fast-deep-equal";
 
-import { ComponentData, Config, Metadata, ResolveDataTrigger, RootDataWithProps } from "../types";
+import {
+	ComponentData,
+	Config,
+	Metadata,
+	ResolveDataTrigger,
+	RootDataWithProps,
+} from "../types";
 
 import { createIsSlotConfig } from "./data/is-slot";
 import { mapSlotsAsync } from "./data/map-slots";
@@ -10,8 +16,21 @@ export const cache: {
 	lastChange: Record<string, any>;
 } = { lastChange: {} };
 
-export const resolveComponentData = async <T extends ComponentData | RootDataWithProps>(item: T, config: Config, metadata: Metadata = {}, onResolveStart?: (item: T) => void, onResolveEnd?: (item: T) => void, trigger: ResolveDataTrigger = "replace", recursive: boolean = true) => {
-	const configForItem = "type" in item && item.type !== "root" ? config.components[item.type] : config.root;
+export const resolveComponentData = async <
+	T extends ComponentData | RootDataWithProps,
+>(
+	item: T,
+	config: Config,
+	metadata: Metadata = {},
+	onResolveStart?: (item: T) => void,
+	onResolveEnd?: (item: T) => void,
+	trigger: ResolveDataTrigger = "replace",
+	recursive: boolean = true,
+) => {
+	const configForItem =
+		"type" in item && item.type !== "root"
+			? config.components[item.type]
+			: config.root;
 
 	if (configForItem?.resolveData && item.props) {
 		const id = "id" in item.props ? item.props.id : "root";
@@ -28,12 +47,13 @@ export const resolveComponentData = async <T extends ComponentData | RootDataWit
 			onResolveStart(item);
 		}
 
-		const { props: resolvedProps, readOnly = {} } = await configForItem.resolveData(item, {
-			changed,
-			lastData: oldItem,
-			metadata: { ...metadata, ...configForItem.metadata },
-			trigger,
-		});
+		const { props: resolvedProps, readOnly = {} } =
+			await configForItem.resolveData(item, {
+				changed,
+				lastData: oldItem,
+				metadata: { ...metadata, ...configForItem.metadata },
+				trigger,
+			});
 
 		let resolvedItem = {
 			...item,
@@ -47,7 +67,22 @@ export const resolveComponentData = async <T extends ComponentData | RootDataWit
 			resolvedItem = (await mapSlotsAsync(
 				resolvedItem,
 				async (content) => {
-					return Promise.all(content.map(async (childItem) => (await resolveComponentData(childItem as T, config, metadata, onResolveStart, onResolveEnd, trigger, false)).node));
+					return Promise.all(
+						content.map(
+							async (childItem) =>
+								(
+									await resolveComponentData(
+										childItem as T,
+										config,
+										metadata,
+										onResolveStart,
+										onResolveEnd,
+										trigger,
+										false,
+									)
+								).node,
+						),
+					);
 				},
 				false,
 				createIsSlotConfig(config),

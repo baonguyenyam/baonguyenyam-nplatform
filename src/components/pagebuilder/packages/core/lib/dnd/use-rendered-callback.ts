@@ -13,7 +13,10 @@ import { useDragDropManager } from "@dnd-kit/react";
  * @param deps
  * @returns
  */
-export function useRenderedCallback<T extends (...args: any[]) => any>(callback: T, deps: DependencyList) {
+export function useRenderedCallback<T extends (...args: any[]) => any>(
+	callback: T,
+	deps: DependencyList,
+) {
 	const manager = useDragDropManager();
 
 	return useCallback(

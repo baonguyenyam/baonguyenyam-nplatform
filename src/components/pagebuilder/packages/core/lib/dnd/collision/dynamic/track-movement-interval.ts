@@ -33,7 +33,10 @@ const intervalCache: Interval = {
  *
  * @returns Current movement interval
  */
-export const trackMovementInterval = (point: Point, dragAxis: DragAxis = "dynamic") => {
+export const trackMovementInterval = (
+	point: Point,
+	dragAxis: DragAxis = "dynamic",
+) => {
 	intervalCache.current = point;
 
 	intervalCache.delta = {
@@ -41,9 +44,13 @@ export const trackMovementInterval = (point: Point, dragAxis: DragAxis = "dynami
 		y: point.y - intervalCache.previous.y,
 	};
 
-	intervalCache.direction = getDirection(dragAxis, intervalCache.delta) || intervalCache.direction;
+	intervalCache.direction =
+		getDirection(dragAxis, intervalCache.delta) || intervalCache.direction;
 
-	if (Math.abs(intervalCache.delta.x) > INTERVAL_SENSITIVITY || Math.abs(intervalCache.delta.y) > INTERVAL_SENSITIVITY) {
+	if (
+		Math.abs(intervalCache.delta.x) > INTERVAL_SENSITIVITY ||
+		Math.abs(intervalCache.delta.y) > INTERVAL_SENSITIVITY
+	) {
 		intervalCache.previous = Point.from(point);
 	}
 

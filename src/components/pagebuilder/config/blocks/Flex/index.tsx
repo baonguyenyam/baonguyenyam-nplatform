@@ -134,10 +134,26 @@ const FlexInternal: ComponentConfig<FlexProps> = {
 				return `${item.top} ${item.right} ${item.bottom} ${item.left}`;
 			},
 			arrayFields: {
-				top: { type: "text", placeholder: "Top", labelIcon: <Hash size={16} /> },
-				right: { type: "text", placeholder: "Right", labelIcon: <Hash size={16} /> },
-				bottom: { type: "text", placeholder: "Bottom", labelIcon: <Hash size={16} /> },
-				left: { type: "text", placeholder: "Left", labelIcon: <Hash size={16} /> },
+				top: {
+					type: "text",
+					placeholder: "Top",
+					labelIcon: <Hash size={16} />,
+				},
+				right: {
+					type: "text",
+					placeholder: "Right",
+					labelIcon: <Hash size={16} />,
+				},
+				bottom: {
+					type: "text",
+					placeholder: "Bottom",
+					labelIcon: <Hash size={16} />,
+				},
+				left: {
+					type: "text",
+					placeholder: "Left",
+					labelIcon: <Hash size={16} />,
+				},
 			},
 			max: 1,
 			labelIcon: <Hash size={16} />,
@@ -155,10 +171,26 @@ const FlexInternal: ComponentConfig<FlexProps> = {
 				return `${item.top} ${item.right} ${item.bottom} ${item.left}`;
 			},
 			arrayFields: {
-				top: { type: "text", placeholder: "Top", labelIcon: <Hash size={16} /> },
-				right: { type: "text", placeholder: "Right", labelIcon: <Hash size={16} /> },
-				bottom: { type: "text", placeholder: "Bottom", labelIcon: <Hash size={16} /> },
-				left: { type: "text", placeholder: "Left", labelIcon: <Hash size={16} /> },
+				top: {
+					type: "text",
+					placeholder: "Top",
+					labelIcon: <Hash size={16} />,
+				},
+				right: {
+					type: "text",
+					placeholder: "Right",
+					labelIcon: <Hash size={16} />,
+				},
+				bottom: {
+					type: "text",
+					placeholder: "Bottom",
+					labelIcon: <Hash size={16} />,
+				},
+				left: {
+					type: "text",
+					placeholder: "Left",
+					labelIcon: <Hash size={16} />,
+				},
 			},
 			labelIcon: <Hash size={16} />,
 			max: 1,
@@ -183,7 +215,25 @@ const FlexInternal: ComponentConfig<FlexProps> = {
 		wrap: "wrap",
 		items: [],
 	},
-	render: ({ justifyContent, alignItems, direction, gap, wrap, items: Items, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat, backgroundAttachment, padding, margin, class: className, maxWidth, puck }) => {
+	render: ({
+		justifyContent,
+		alignItems,
+		direction,
+		gap,
+		wrap,
+		items: Items,
+		backgroundColor,
+		backgroundImage,
+		backgroundSize,
+		backgroundPosition,
+		backgroundRepeat,
+		backgroundAttachment,
+		padding,
+		margin,
+		class: className,
+		maxWidth,
+		puck,
+	}) => {
 		return (
 			<Items
 				disallow={["Hero", "Stats"]}
@@ -194,7 +244,9 @@ const FlexInternal: ComponentConfig<FlexProps> = {
 					flexDirection: direction,
 					gap,
 					backgroundColor,
-					backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+					backgroundImage: backgroundImage
+						? `url(${backgroundImage})`
+						: undefined,
 					backgroundSize,
 					backgroundPosition,
 					backgroundRepeat,

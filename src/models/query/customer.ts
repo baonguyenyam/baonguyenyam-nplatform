@@ -53,7 +53,10 @@ export const getAllCustomers = async (query: any) => {
 			where: {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
-				OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+				OR: [
+					{ email: { contains: s, mode: "insensitive" } },
+					{ name: { contains: s, mode: "insensitive" } },
+				],
 			},
 			select: {
 				id: true,
@@ -89,7 +92,10 @@ export const getCustomersCount = async (query: any) => {
 			where: {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
-				OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
+				OR: [
+					{ email: { contains: s, mode: "insensitive" } },
+					{ name: { contains: s, mode: "insensitive" } },
+				],
 			},
 		});
 		return count;

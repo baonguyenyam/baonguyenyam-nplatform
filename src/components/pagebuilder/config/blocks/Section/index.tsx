@@ -90,10 +90,26 @@ const SectionInternal: ComponentConfig<SectionProps> = {
 				return `${item.top} ${item.right} ${item.bottom} ${item.left}`;
 			},
 			arrayFields: {
-				top: { type: "text", placeholder: "Top", labelIcon: <Hash size={16} /> },
-				right: { type: "text", placeholder: "Right", labelIcon: <Hash size={16} /> },
-				bottom: { type: "text", placeholder: "Bottom", labelIcon: <Hash size={16} /> },
-				left: { type: "text", placeholder: "Left", labelIcon: <Hash size={16} /> },
+				top: {
+					type: "text",
+					placeholder: "Top",
+					labelIcon: <Hash size={16} />,
+				},
+				right: {
+					type: "text",
+					placeholder: "Right",
+					labelIcon: <Hash size={16} />,
+				},
+				bottom: {
+					type: "text",
+					placeholder: "Bottom",
+					labelIcon: <Hash size={16} />,
+				},
+				left: {
+					type: "text",
+					placeholder: "Left",
+					labelIcon: <Hash size={16} />,
+				},
 			},
 			labelIcon: <Hash size={16} />,
 			max: 1,
@@ -111,27 +127,61 @@ const SectionInternal: ComponentConfig<SectionProps> = {
 				return `${item.top} ${item.right} ${item.bottom} ${item.left}`;
 			},
 			arrayFields: {
-				top: { type: "text", placeholder: "Top", labelIcon: <Hash size={16} /> },
-				right: { type: "text", placeholder: "Right", labelIcon: <Hash size={16} /> },
-				bottom: { type: "text", placeholder: "Bottom", labelIcon: <Hash size={16} /> },
-				left: { type: "text", placeholder: "Left", labelIcon: <Hash size={16} /> },
+				top: {
+					type: "text",
+					placeholder: "Top",
+					labelIcon: <Hash size={16} />,
+				},
+				right: {
+					type: "text",
+					placeholder: "Right",
+					labelIcon: <Hash size={16} />,
+				},
+				bottom: {
+					type: "text",
+					placeholder: "Bottom",
+					labelIcon: <Hash size={16} />,
+				},
+				left: {
+					type: "text",
+					placeholder: "Left",
+					labelIcon: <Hash size={16} />,
+				},
 			},
 			labelIcon: <Hash size={16} />,
 			max: 1,
 		},
-		class: { type: "text", placeholder: "class", labelIcon: <Hash size={16} /> },
+		class: {
+			type: "text",
+			placeholder: "class",
+			labelIcon: <Hash size={16} />,
+		},
 	},
 	defaultProps: {
 		items: [],
 	},
-	render: ({ items: Items, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat, backgroundAttachment, padding, margin, class: className, puck }) => {
+	render: ({
+		items: Items,
+		backgroundColor,
+		backgroundImage,
+		backgroundSize,
+		backgroundPosition,
+		backgroundRepeat,
+		backgroundAttachment,
+		padding,
+		margin,
+		class: className,
+		puck,
+	}) => {
 		return (
 			<Items
 				// disallow={["Hero", "Stats"]}
 				className={getClassName() + (className ? ` ${className}` : "")}
 				style={{
 					backgroundColor,
-					backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+					backgroundImage: backgroundImage
+						? `url(${backgroundImage})`
+						: undefined,
 					backgroundSize,
 					backgroundPosition,
 					backgroundRepeat,

@@ -2,7 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
-import { useDebouncedCallback, useMemoizedCallback } from "@/hooks/useMemoizedCallback";
+import {
+	useDebouncedCallback,
+	useMemoizedCallback,
+} from "@/hooks/useMemoizedCallback";
 import { pageSkip } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 
@@ -27,9 +30,17 @@ interface DrawerState<T> {
 	data: T | null;
 }
 
-export function useAdminTable<T extends BaseEntity>({ apiActions, tableName, title, breadcrumb }: UseAdminTableOptions<T>) {
+export function useAdminTable<T extends BaseEntity>({
+	apiActions,
+	tableName,
+	title,
+	breadcrumb,
+}: UseAdminTableOptions<T>) {
 	// State management
-	const [db, setDb] = useState<{ data: T[]; count: number }>({ data: [], count: 0 });
+	const [db, setDb] = useState<{ data: T[]; count: number }>({
+		data: [],
+		count: 0,
+	});
 	const [loading, setLoading] = useState(true);
 	const [drawerState, setDrawerState] = useState<DrawerState<T>>({
 		mode: null,
@@ -37,7 +48,8 @@ export function useAdminTable<T extends BaseEntity>({ apiActions, tableName, tit
 	});
 
 	// Redux state
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 
 	// URL params
 	const search = useSearchParams();
@@ -51,7 +63,9 @@ export function useAdminTable<T extends BaseEntity>({ apiActions, tableName, tit
 			orderBy: search.get("orderBy") || "createdAt",
 			filterBy: search.get("filterBy") || "",
 			cat: search.get("cat") || "",
-			published: search.get("published") ? search.get("published") === "true" : undefined,
+			published: search.get("published")
+				? search.get("published") === "true"
+				: undefined,
 		}),
 		[pageSize, search],
 	);
@@ -132,7 +146,9 @@ export function useAdminTable<T extends BaseEntity>({ apiActions, tableName, tit
 				try {
 					const result = await apiActions.deleteMultiple(ids);
 					if (result) {
-						toast.success(`${ids.length} ${title.toLowerCase()}(s) deleted successfully`);
+						toast.success(
+							`${ids.length} ${title.toLowerCase()}(s) deleted successfully`,
+						);
 						await fetchData();
 					} else {
 						toast.error(`Failed to delete selected ${title.toLowerCase()}s`);

@@ -1,7 +1,12 @@
 "use server";
 
 import { auth } from "@/auth";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
+import {
+	ACTIONS,
+	createPermissionChecker,
+	PERMISSION_LEVELS,
+	RESOURCES,
+} from "@/lib/permissions";
 import { sendEmail } from "@/lib/server-utils";
 import models from "@/models";
 
@@ -37,10 +42,16 @@ export async function deleteRecord(id: string) {
 	// Check permission to delete users
 	const permissionChecker = createPermissionChecker({
 		userId: session.user.id as string,
-		role: session.user.role as 'ADMIN' | 'MODERATOR' | 'USER',
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.USERS, ACTIONS.DELETE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.USERS,
+			ACTIONS.DELETE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to delete users",
@@ -74,10 +85,16 @@ export async function createRecord(data: any) {
 	// Check permission to create users
 	const permissionChecker = createPermissionChecker({
 		userId: session.user.id as string,
-		role: session.user.role as 'ADMIN' | 'MODERATOR' | 'USER',
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.USERS, ACTIONS.CREATE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.USERS,
+			ACTIONS.CREATE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to create users",

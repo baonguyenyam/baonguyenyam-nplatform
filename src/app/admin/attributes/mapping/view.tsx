@@ -1,7 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowRight, Construction, Divide, Dot, Folder, List, ListCollapse, Minus, StretchHorizontal } from "lucide-react";
+import {
+	ArrowRight,
+	Construction,
+	Divide,
+	Dot,
+	Folder,
+	List,
+	ListCollapse,
+	Minus,
+	StretchHorizontal,
+} from "lucide-react";
 
 import AppLoading from "@/components/AppLoading";
 import { Badge } from "@/components/ui/badge";
@@ -29,9 +39,7 @@ export default function View() {
 			<>
 				{item && item.length > 0 ? (
 					item.map((item: any) => (
-						<div
-							key={item.id}
-							className="mb-4 text-sm gap-4">
+						<div key={item.id} className="mb-4 text-sm gap-4">
 							<div className="mb-4">
 								<h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
 									<Construction className="w-4 h-4" />
@@ -40,15 +48,14 @@ export default function View() {
 								<div className="space-y-2">
 									{item.children.map((child: any) => (
 										<div key={child.id}>
-											<div
-												key={child.id}
-												className="flex items-center gap-2">
+											<div key={child.id} className="flex items-center gap-2">
 												<Folder className="w-4 h-4" />
 												<span>{child.title}</span>
 												<Badge
 													className="text-xs text-gray-500 dark:text-gray-400"
 													variant="outline"
-													color="primary">
+													color="primary"
+												>
 													{child.type}
 												</Badge>
 												{child.type !== "text" && (
@@ -81,11 +88,13 @@ export default function View() {
 			{!loading && (
 				<div className="mt-5">
 					{enumAttribute.map((item) => (
-						<div
-							key={item.value}
-							className="mb-4">
+						<div key={item.value} className="mb-4">
 							<h2 className="text-2xl font-semibold mb-4">{item.label}</h2>
-							<div className="grid grid-cols-2 xl:grid-cols-3 border border-gray-300 rounded-lg p-10 mb-10">{template(attrs?.filter((attr: any) => attr.mapto === item.value))}</div>
+							<div className="grid grid-cols-2 xl:grid-cols-3 border border-gray-300 rounded-lg p-10 mb-10">
+								{template(
+									attrs?.filter((attr: any) => attr.mapto === item.value),
+								)}
+							</div>
 						</div>
 					))}
 				</div>

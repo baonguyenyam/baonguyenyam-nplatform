@@ -1,8 +1,21 @@
-import { ArrowRight, BarChart3, Calendar, CheckSquare, Clock, Users } from "lucide-react";
+import {
+	ArrowRight,
+	BarChart3,
+	Calendar,
+	CheckSquare,
+	Clock,
+	Users,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 export default async function HomePage(props: any) {
 	const { state, session } = props;
@@ -19,14 +32,16 @@ export default async function HomePage(props: any) {
 				<div className="container px-4 md:px-6">
 					<div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
 						<div className="space-y-4">
-							<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">{state.appName}</h1>
-							<p className="max-w-[600px] text-muted-foreground md:text-xl">{state.appDescription}</p>
+							<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+								{state.appName}
+							</h1>
+							<p className="max-w-[600px] text-muted-foreground md:text-xl">
+								{state.appDescription}
+							</p>
 							<div className="flex flex-col gap-2 min-[400px]:flex-row">
 								{!session?.user && (
 									<Link href="/authentication/login">
-										<Button
-											variant="outline"
-											size="lg">
+										<Button variant="outline" size="lg">
 											Login
 										</Button>
 									</Link>
@@ -72,63 +87,106 @@ export default async function HomePage(props: any) {
 				<div className="container px-4 md:px-6">
 					<div className="flex flex-col items-center justify-center space-y-4 text-center">
 						<div className="space-y-2">
-							<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
-							<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum tenetur, voluptatem earum cum adipisci ut in ea animi quibusdam. Quis sunt facilis fugit, labore ipsam quas repellat dicta vel numquam.</p>
+							<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+								Features
+							</h2>
+							<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum
+								tenetur, voluptatem earum cum adipisci ut in ea animi quibusdam.
+								Quis sunt facilis fugit, labore ipsam quas repellat dicta vel
+								numquam.
+							</p>
 						</div>
 					</div>
 					<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<CheckSquare className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<Users className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<Calendar className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<BarChart3 className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<Clock className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 						<Card className="dark:bg-gray-800 dark:border-0">
 							<CardHeader className="flex flex-row gap-4 items-start">
 								<ArrowRight className="h-8 w-12 text-primary" />
-								<CardTitle>Lorem ipsum, dolor sit amet consectetur adipisi</CardTitle>
+								<CardTitle>
+									Lorem ipsum, dolor sit amet consectetur adipisi
+								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<CardDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium amet quidem maxime, iure consequatur tenetur, a impedit dolorum mag</CardDescription>
+								<CardDescription>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Praesentium amet quidem maxime, iure consequatur tenetur, a
+									impedit dolorum mag
+								</CardDescription>
 							</CardContent>
 						</Card>
 					</div>

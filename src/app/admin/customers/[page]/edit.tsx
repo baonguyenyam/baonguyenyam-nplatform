@@ -9,7 +9,15 @@ import { FieldInput } from "@/components/fields/input";
 import { FieldSelect } from "@/components/fields/select"; // For 'published' status
 import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole"; // Keep if role affects fields
@@ -51,14 +59,20 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 	// --- Zod Schema ---
 	// Define the validation schema for the vendor form
 	let FormSchema = z.object({
-		f_email: z.string().email({ message: "Invalid email address." }).optional().or(z.literal("")), // Allow empty string
+		f_email: z
+			.string()
+			.email({ message: "Invalid email address." })
+			.optional()
+			.or(z.literal("")), // Allow empty string
 		f_phone: z.string().optional(),
 		f_address: z.string().optional(),
 		f_city: z.string().optional(),
 		f_state: z.string().optional(),
 		f_country: z.string().optional(),
 		// Use enum for published status for consistency
-		f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
+		f_published: z
+			.enum(enumPublished.map((item) => item.value) as [string, ...string[]])
+			.optional(),
 		f_firstname: z.string().optional(),
 		f_lastname: z.string().optional(),
 		f_zip: z.string().optional(),
@@ -141,16 +155,32 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 					const fieldValue = item?.children?.map((child: any) => {
 						const childFieldName = `${fieldName}_${child.id}`;
 						if (child?.type === "select") {
-							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+							const childValue = (
+								_attribute?.find((c: any) => c.id === item.id) || {}
+							)?.data?.find((v: any) => v.id === child.id)?.value;
+							form.setValue(
+								childFieldName as keyof z.infer<typeof FormSchema>,
+								childValue || "",
+							);
 						}
 						if (child?.type === "checkbox") {
-							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value || "[]";
-							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+							const childValue =
+								(
+									_attribute?.find((c: any) => c.id === item.id) || {}
+								)?.data?.find((v: any) => v.id === child.id)?.value || "[]";
+							form.setValue(
+								childFieldName as keyof z.infer<typeof FormSchema>,
+								childValue || "",
+							);
 						}
 						if (child?.type === "text") {
-							const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-							form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+							const childValue = (
+								_attribute?.find((c: any) => c.id === item.id) || {}
+							)?.data?.find((v: any) => v.id === child.id)?.value;
+							form.setValue(
+								childFieldName as keyof z.infer<typeof FormSchema>,
+								childValue || "",
+							);
 						}
 					});
 				});
@@ -205,12 +235,19 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 		};
 
 		// Use update or create action based on presence of id
-		const action = id ? actions.updateRecord(id, body) : actions.createRecord(body); // Assuming meta is empty for vendors
+		const action = id
+			? actions.updateRecord(id, body)
+			: actions.createRecord(body); // Assuming meta is empty for vendors
 
 		try {
 			const res = await action;
 			if (res.success === "success") {
-				toast.success(res.message || (id ? "Customer updated successfully!" : "Customer created successfully!"));
+				toast.success(
+					res.message ||
+						(id
+							? "Customer updated successfully!"
+							: "Customer created successfully!"),
+				);
 				onChange("submit", res.data); // Notify parent component
 			} else {
 				toast.error(res.message || "An error occurred.");
@@ -229,7 +266,8 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 					{/* Use pb-20 or similar to prevent overlap with bottom bar */}
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-4 pb-20">
+						className="w-full space-y-4 pb-20"
+					>
 						{/* Name Field */}
 						<div className="grid grid-cols-2 gap-5">
 							<FormField
@@ -352,14 +390,10 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 						</div>
 
 						{atts?.length > 0 && (
-							<Tabs
-								defaultValue={atts?.[0]?.id}
-								className="mb-10">
+							<Tabs defaultValue={atts?.[0]?.id} className="mb-10">
 								<TabsList className="mt-5 mb-2">
 									{atts?.map((item: any) => (
-										<TabsTrigger
-											key={item.id}
-											value={item.id}>
+										<TabsTrigger key={item.id} value={item.id}>
 											{item.title}
 										</TabsTrigger>
 									))}
@@ -369,7 +403,8 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 										<TabsContent
 											key={item.id}
 											value={item.id}
-											className="space-y-15">
+											className="space-y-15"
+										>
 											<div className="grid grid-cols-3 gap-5">
 												{item?.children?.map((child: any) => {
 													const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
@@ -377,7 +412,9 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 														<Fragment key={child.id}>
 															<FormField
 																control={form.control}
-																name={fieldName as keyof z.infer<typeof FormSchema>}
+																name={
+																	fieldName as keyof z.infer<typeof FormSchema>
+																}
 																render={({ field }) => (
 																	<FormItem>
 																		<FormLabel>{child.title}</FormLabel>
@@ -386,14 +423,19 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 																				<Input {...field} />
 																			</FormControl>
 																		)}
-																		{(child?.type === "select" || child?.type === "checkbox") && (
+																		{(child?.type === "select" ||
+																			child?.type === "checkbox") && (
 																			<>
 																				{FieldSelectAttribute({
 																					mode: id ? "edit" : "create",
 																					field,
 																					form,
 																					type: child?.type,
-																					key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																					key:
+																						"f_" +
+																						stringToKeyValue(item.title) +
+																						"_" +
+																						item.id,
 																					id: child.id,
 																				})}
 																			</>
@@ -441,7 +483,10 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								{form.formState.isSubmitting ? "Saving..." : "Save Changes"}
 							</Button>
 						</div>

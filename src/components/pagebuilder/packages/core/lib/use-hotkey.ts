@@ -2,7 +2,37 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
-const keys = ["ctrl", "meta", "shift", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] as const;
+const keys = [
+	"ctrl",
+	"meta",
+	"shift",
+	"a",
+	"b",
+	"c",
+	"d",
+	"e",
+	"f",
+	"g",
+	"h",
+	"i",
+	"j",
+	"k",
+	"l",
+	"m",
+	"n",
+	"o",
+	"p",
+	"q",
+	"r",
+	"s",
+	"t",
+	"u",
+	"v",
+	"w",
+	"x",
+	"y",
+	"z",
+] as const;
 
 type KeyStrict = (typeof keys)[number];
 type KeyMapStrict = Partial<Record<KeyStrict, boolean>>;
@@ -53,8 +83,10 @@ const useHotkeyStore = create<{
 }>()(
 	subscribeWithSelector((set) => ({
 		held: {},
-		hold: (key) => set((s) => (s.held[key] ? s : { held: { ...s.held, [key]: true } })),
-		release: (key) => set((s) => (s.held[key] ? { held: { ...s.held, [key]: false } } : s)),
+		hold: (key) =>
+			set((s) => (s.held[key] ? s : { held: { ...s.held, [key]: true } })),
+		release: (key) =>
+			set((s) => (s.held[key] ? { held: { ...s.held, [key]: false } } : s)),
 		reset: (held = {}) => set(() => ({ held })),
 		triggers: {},
 	})),
@@ -70,7 +102,13 @@ export const monitorHotkeys = (doc: Document) => {
 			const { held, triggers } = useHotkeyStore.getState();
 
 			Object.values(triggers).forEach(({ combo, cb }) => {
-				const conditionMet = Object.entries(combo).every(([key, value]) => value === !!held[key]) && Object.entries(held).every(([key, value]) => value === !!(combo as KeyMap)[key]);
+				const conditionMet =
+					Object.entries(combo).every(
+						([key, value]) => value === !!held[key],
+					) &&
+					Object.entries(held).every(
+						([key, value]) => value === !!(combo as KeyMap)[key],
+					);
 
 				if (conditionMet) {
 					e.preventDefault();

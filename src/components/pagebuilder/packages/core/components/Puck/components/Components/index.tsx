@@ -11,5 +11,9 @@ export const Components = () => {
 
 	const Wrapper = useMemo(() => overrides.components || "div", [overrides]);
 
-	return <Wrapper>{componentList ? componentList : <ComponentList id="all" />}</Wrapper>;
+	return (
+		<Wrapper>
+			{componentList ? componentList : <ComponentList id="all" />}
+		</Wrapper>
+	);
 };

@@ -13,9 +13,7 @@ export default function StoreProvider({ children }: React.PropsWithChildren) {
 	const storeRef = useRef(store);
 	return (
 		<Provider store={storeRef.current}>
-			<PersistGate
-				loading={null}
-				persistor={persistor}>
+			<PersistGate loading={null} persistor={persistor}>
 				{children}
 			</PersistGate>
 		</Provider>

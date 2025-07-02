@@ -1,54 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { authError, createPagination, parsePaginationParams, parseQueryParams, successResponse } from "@/lib/api-helpers";
+import {
+	authError,
+	createPagination,
+	parsePaginationParams,
+	parseQueryParams,
+	successResponse,
+} from "@/lib/api-helpers";
 import { withUsersPermission } from "@/lib/auth-middleware";
 import { ACTIONS, PERMISSION_LEVELS } from "@/lib/permissions";
 import models from "@/models";
 
 // get all users
-export const GET = withUsersPermission(ACTIONS.READ)(async (req: NextRequest) => {
-	try {
-		const url = new URL(req.url);
-		const searchParams = url.searchParams;
+export const GET = withUsersPermission(ACTIONS.READ)(
+	async (req: NextRequest) => {
+		try {
+			const url = new URL(req.url);
+			const searchParams = url.searchParams;
 
-		// Parse pagination and query parameters
-		const pagination = parsePaginationParams(searchParams);
-		const queryParams = parseQueryParams(searchParams);
+			// Parse pagination and query parameters
+			const pagination = parsePaginationParams(searchParams);
+			const queryParams = parseQueryParams(searchParams);
 
-		// Combine parameters
-		const query = {
-			...queryParams,
-			...pagination,
-		};
+			// Combine parameters
+			const query = {
+				...queryParams,
+				...pagination,
+			};
 
-		// Fetch data and count in parallel for better performance
-		const [db, count] = await Promise.all([models.User.getAllUsers(query), models.User.getUsersCount(query)]);
+			// Fetch data and count in parallel for better performance
+			const [db, count] = await Promise.all([
+				models.User.getAllUsers(query),
+				models.User.getUsersCount(query),
+			]);
 
-		if (!db) {
-			throw new Error("Failed to fetch users");
+			if (!db) {
+				throw new Error("Failed to fetch users");
+			}
+
+			// Create pagination info
+			const paginationInfo = createPagination(
+				count || 0,
+				pagination.page,
+				pagination.limit,
+			);
+
+			return NextResponse.json({
+				message: "Users fetched successfully",
+				data: db,
+				count: count || 0,
+				pagination: paginationInfo,
+				success: true,
+			});
+		} catch (error) {
+			return NextResponse.json(
+				{
+					message: "Error fetching users",
+					error: error instanceof Error ? error.message : "Unknown error",
+					success: false,
+				},
+				{ status: 500 },
+			);
 		}
-
-		// Create pagination info
-		const paginationInfo = createPagination(count || 0, pagination.page, pagination.limit);
-
-		return NextResponse.json({
-			message: "Users fetched successfully",
-			data: db,
-			count: count || 0,
-			pagination: paginationInfo,
-			success: true,
-		});
-	} catch (error) {
-		return NextResponse.json(
-			{
-				message: "Error fetching users",
-				error: error instanceof Error ? error.message : "Unknown error",
-				success: false,
-			},
-			{ status: 500 },
-		);
-	}
-});
+	},
+);
 
 // Create User
 export const POST = withUsersPermission(

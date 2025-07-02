@@ -9,8 +9,21 @@
 import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
-import { DecoratorBlockNode, SerializedDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
-import type { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, ElementFormatType, LexicalEditor, LexicalNode, NodeKey, Spread } from "lexical";
+import {
+	DecoratorBlockNode,
+	SerializedDecoratorBlockNode,
+} from "@lexical/react/LexicalDecoratorBlockNode";
+import type {
+	DOMConversionMap,
+	DOMConversionOutput,
+	DOMExportOutput,
+	EditorConfig,
+	ElementFormatType,
+	LexicalEditor,
+	LexicalNode,
+	NodeKey,
+	Spread,
+} from "lexical";
 
 const WIDGET_SCRIPT_URL = "https://platform.twitter.com/widgets.js";
 
@@ -27,7 +40,9 @@ type TweetComponentProps = Readonly<{
 	tweetID: string;
 }>;
 
-function convertTweetElement(domNode: HTMLDivElement): DOMConversionOutput | null {
+function convertTweetElement(
+	domNode: HTMLDivElement,
+): DOMConversionOutput | null {
 	const id = domNode.getAttribute("data-lexical-tweet-id");
 	if (id) {
 		const node = $createTweetNode(id);
@@ -38,7 +53,15 @@ function convertTweetElement(domNode: HTMLDivElement): DOMConversionOutput | nul
 
 let isTwitterScriptLoading = true;
 
-function TweetComponent({ className, format, loadingComponent, nodeKey, onError, onLoad, tweetID }: TweetComponentProps) {
+function TweetComponent({
+	className,
+	format,
+	loadingComponent,
+	nodeKey,
+	onError,
+	onLoad,
+	tweetID,
+}: TweetComponentProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	const previousTweetIDRef = useRef<string>("");
@@ -89,7 +112,8 @@ function TweetComponent({ className, format, loadingComponent, nodeKey, onError,
 		<BlockWithAlignableContents
 			className={className}
 			format={format}
-			nodeKey={nodeKey}>
+			nodeKey={nodeKey}
+		>
 			{isTweetLoading ? loadingComponent : null}
 			<div
 				style={{ display: "inline-block", width: "550px" }}
@@ -163,7 +187,10 @@ export class TweetNode extends DecoratorBlockNode {
 		return this.__id;
 	}
 
-	getTextContent(_includeInert?: boolean | undefined, _includeDirectionless?: false | undefined): string {
+	getTextContent(
+		_includeInert?: boolean | undefined,
+		_includeDirectionless?: false | undefined,
+	): string {
 		return `https://twitter.com/i/web/status/${this.__id}`;
 	}
 
@@ -193,6 +220,8 @@ export function $createTweetNode(tweetID: string): TweetNode {
 	return new TweetNode(tweetID);
 }
 
-export function $isTweetNode(node: TweetNode | LexicalNode | null | undefined): node is TweetNode {
+export function $isTweetNode(
+	node: TweetNode | LexicalNode | null | undefined,
+): node is TweetNode {
 	return node instanceof TweetNode;
 }

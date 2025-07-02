@@ -47,7 +47,8 @@ const SmartImage = (props: any) => {
 			{isError && (
 				<div
 					className={`bg-gray-200 ${className}`}
-					style={{ aspectRatio: imageAspectRatio, ...style }}>
+					style={{ aspectRatio: imageAspectRatio, ...style }}
+				>
 					<Image
 						src={appState.placeholder}
 						alt="Fallback Image"

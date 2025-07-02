@@ -19,7 +19,14 @@ type Props = Readonly<{
 	type?: HTMLInputTypeAttribute;
 }>;
 
-export default function TextInput({ label, value, onChange, placeholder = "", "data-test-id": dataTestId, type = "text" }: Props): React.JSX.Element {
+export default function TextInput({
+	label,
+	value,
+	onChange,
+	placeholder = "",
+	"data-test-id": dataTestId,
+	type = "text",
+}: Props): React.JSX.Element {
 	return (
 		<div className="Input__wrapper">
 			<label className="Input__label">{label}</label>

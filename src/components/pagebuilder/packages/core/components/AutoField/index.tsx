@@ -1,4 +1,12 @@
-import { ReactElement, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+	ReactElement,
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { Lock } from "lucide-react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
@@ -9,14 +17,35 @@ import { UiState } from "../../types";
 
 import { ObjectField } from "./fields/ObjectField";
 import { NestedFieldContext } from "./context";
-import { ArrayField, DefaultField, ExternalField, RadioField, SelectField, TextareaField } from "./fields";
+import {
+	ArrayField,
+	DefaultField,
+	ExternalField,
+	RadioField,
+	SelectField,
+	TextareaField,
+} from "./fields";
 
 import styles from "./styles.module.css";
 
 const getClassName = getClassNameFactory("Input", styles);
 const getClassNameWrapper = getClassNameFactory("InputWrapper", styles);
 
-export const FieldLabel = ({ children, icon, label, el = "label", readOnly, className }: { children?: ReactNode; icon?: ReactNode; label: string; el?: "label" | "div"; readOnly?: boolean; className?: string }) => {
+export const FieldLabel = ({
+	children,
+	icon,
+	label,
+	el = "label",
+	readOnly,
+	className,
+}: {
+	children?: ReactNode;
+	icon?: ReactNode;
+	label: string;
+	el?: "label" | "div";
+	readOnly?: boolean;
+	className?: string;
+}) => {
 	const El = el;
 	return (
 		<El className={className}>
@@ -25,9 +54,7 @@ export const FieldLabel = ({ children, icon, label, el = "label", readOnly, clas
 				{label}
 
 				{readOnly && (
-					<div
-						className={getClassName("disabledIcon")}
-						title="Read-only">
+					<div className={getClassName("disabledIcon")} title="Read-only">
 						<Lock size="12" />
 					</div>
 				)}
@@ -45,10 +72,19 @@ type FieldLabelPropsInternal = {
 	readOnly?: boolean;
 };
 
-export const FieldLabelInternal = ({ children, icon, label, el = "label", readOnly }: FieldLabelPropsInternal) => {
+export const FieldLabelInternal = ({
+	children,
+	icon,
+	label,
+	el = "label",
+	readOnly,
+}: FieldLabelPropsInternal) => {
 	const overrides = useAppStore((s) => s.overrides);
 
-	const Wrapper = useMemo(() => overrides.fieldLabel || FieldLabel, [overrides]);
+	const Wrapper = useMemo(
+		() => overrides.fieldLabel || FieldLabel,
+		[overrides],
+	);
 
 	if (!label) {
 		return <>{children}</>;
@@ -60,20 +96,27 @@ export const FieldLabelInternal = ({ children, icon, label, el = "label", readOn
 			icon={icon}
 			className={getClassName({ readOnly })}
 			readOnly={readOnly}
-			el={el}>
+			el={el}
+		>
 			{children}
 		</Wrapper>
 	);
 };
 
-type FieldPropsInternalOptional<ValueType = any, F = Field<any>> = FieldProps<F, ValueType> & {
+type FieldPropsInternalOptional<ValueType = any, F = Field<any>> = FieldProps<
+	F,
+	ValueType
+> & {
 	Label?: React.FC<FieldLabelPropsInternal>;
 	label?: string;
 	labelIcon?: ReactNode;
 	name?: string;
 };
 
-export type FieldPropsInternal<ValueType = any, F = Field<any>> = FieldProps<F, ValueType> & {
+export type FieldPropsInternal<ValueType = any, F = Field<any>> = FieldProps<
+	F,
+	ValueType
+> & {
 	Label: React.FC<FieldLabelPropsInternal>;
 	label?: string;
 	labelIcon?: ReactNode;
@@ -81,7 +124,10 @@ export type FieldPropsInternal<ValueType = any, F = Field<any>> = FieldProps<F, 
 	name?: string;
 };
 
-function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>>(
+function AutoFieldInternal<
+	ValueType = any,
+	FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>,
+>(
 	props: FieldPropsInternalOptional<ValueType, FieldType> & {
 		Label?: React.FC<FieldLabelPropsInternal>;
 	},
@@ -134,7 +180,10 @@ function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<Value
 
 	const onFocus = useCallback(
 		(e: React.FocusEvent) => {
-			if (mergedProps.name && (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA")) {
+			if (
+				mergedProps.name &&
+				(e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA")
+			) {
 				e.stopPropagation();
 
 				dispatch({
@@ -171,10 +220,7 @@ function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<Value
 		const CustomField = field.render as any;
 
 		return (
-			<div
-				className={getClassNameWrapper()}
-				onFocus={onFocus}
-				onBlur={onBlur}>
+			<div className={getClassNameWrapper()} onFocus={onFocus} onBlur={onBlur}>
 				<div className={getClassName()}>
 					<CustomField {...mergedProps} />
 				</div>
@@ -191,7 +237,8 @@ function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<Value
 			value={{
 				readOnlyFields: nestedFieldContext.readOnlyFields || readOnly || {},
 				localName: nestedFieldContext.localName,
-			}}>
+			}}
+		>
 			<div
 				className={getClassNameWrapper()}
 				onFocus={onFocus}
@@ -201,7 +248,8 @@ function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<Value
 					// For example, a field within an array may bubble an event
 					// and fail to stop propagation.
 					e.stopPropagation();
-				}}>
+				}}
+			>
 				<Render {...mergedProps}>{children}</Render>
 			</div>
 		</NestedFieldContext.Provider>
@@ -210,7 +258,10 @@ function AutoFieldInternal<ValueType = any, FieldType extends FieldNoLabel<Value
 
 type FieldNoLabel<Props = any> = Omit<Field<Props>, "label">;
 
-export function AutoFieldPrivate<ValueType = any, FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>>(
+export function AutoFieldPrivate<
+	ValueType = any,
+	FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>,
+>(
 	props: FieldPropsInternalOptional<ValueType, FieldType> & {
 		Label?: React.FC<FieldLabelPropsInternal>;
 	},
@@ -249,15 +300,13 @@ export function AutoFieldPrivate<ValueType = any, FieldType extends FieldNoLabel
 		onChange: onChangeLocal,
 	};
 
-	return (
-		<AutoFieldInternal<ValueType, FieldType>
-			{...props}
-			{...localProps}
-		/>
-	);
+	return <AutoFieldInternal<ValueType, FieldType> {...props} {...localProps} />;
 }
 
-export function AutoField<ValueType = any, FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>>(props: FieldProps<FieldType, ValueType>) {
+export function AutoField<
+	ValueType = any,
+	FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>,
+>(props: FieldProps<FieldType, ValueType>) {
 	const DefaultLabel = useMemo(() => {
 		const DefaultLabel = (labelProps: any) => (
 			<div
@@ -274,9 +323,6 @@ export function AutoField<ValueType = any, FieldType extends FieldNoLabel<ValueT
 	}
 
 	return (
-		<AutoFieldInternal<ValueType, FieldType>
-			{...props}
-			Label={DefaultLabel}
-		/>
+		<AutoFieldInternal<ValueType, FieldType> {...props} Label={DefaultLabel} />
 	);
 }

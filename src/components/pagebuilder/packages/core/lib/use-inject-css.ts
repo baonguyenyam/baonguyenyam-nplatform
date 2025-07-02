@@ -4,7 +4,10 @@ import { getFrame } from "./get-frame";
 
 const styles = ``;
 
-export const useInjectStyleSheet = (initialStyles: string, iframeEnabled?: boolean) => {
+export const useInjectStyleSheet = (
+	initialStyles: string,
+	iframeEnabled?: boolean,
+) => {
 	const [el, setEl] = useState<HTMLStyleElement>();
 
 	useEffect(() => {

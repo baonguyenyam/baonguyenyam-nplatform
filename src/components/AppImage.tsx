@@ -18,7 +18,18 @@ interface AppImageProps {
 	onError?: () => void;
 }
 
-function AppImage({ src, alt = "Image", className = "", width, height, title = "", id, priority = false, loading = "lazy", onError }: AppImageProps) {
+function AppImage({
+	src,
+	alt = "Image",
+	className = "",
+	width,
+	height,
+	title = "",
+	id,
+	priority = false,
+	loading = "lazy",
+	onError,
+}: AppImageProps) {
 	const [imgSrc, setImgSrc] = useState(src || appState.placeholder);
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
@@ -117,7 +128,9 @@ function AppImage({ src, alt = "Image", className = "", width, height, title = "
 	}, [src, imgSrc, onError]);
 
 	return (
-		<div className={`relative ${className} ${isLoading ? "animate-pulse bg-gray-200" : ""}`}>
+		<div
+			className={`relative ${className} ${isLoading ? "animate-pulse bg-gray-200" : ""}`}
+		>
 			<Image
 				id={id}
 				src={imgSrc}

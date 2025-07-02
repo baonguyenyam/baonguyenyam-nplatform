@@ -1,18 +1,64 @@
 import { useState } from "react";
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
-import { ArrowUpDown, Check, ChevronDown, ChevronsUpDown, InboxIcon } from "lucide-react";
+import {
+	ColumnDef,
+	ColumnFiltersState,
+	flexRender,
+	getCoreRowModel,
+	getFilteredRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	SortingState,
+	useReactTable,
+	VisibilityState,
+} from "@tanstack/react-table";
+import {
+	ArrowUpDown,
+	Check,
+	ChevronDown,
+	ChevronsUpDown,
+	InboxIcon,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import AppPagination from "@/components/AppPagination";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+	Command,
+	CommandGroup,
+	CommandItem,
+	CommandList,
+} from "@/components/ui/command";
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import { cn, pageSkip } from "@/lib/utils";
 
 export default function AppTable(props: any) {
@@ -24,7 +70,17 @@ export default function AppTable(props: any) {
 	const [open, setOpen] = useState(false);
 	const [openorder, setOpenOrder] = useState(false);
 	const [value, setValue] = useState("");
-	const { data, columns, count, page, pageSize, url, onChange, multipleDisable, actions } = props;
+	const {
+		data,
+		columns,
+		count,
+		page,
+		pageSize,
+		url,
+		onChange,
+		multipleDisable,
+		actions,
+	} = props;
 	const searchVal = useSearchParams();
 	const query = {
 		take: Number(pageSize),
@@ -39,7 +95,10 @@ export default function AppTable(props: any) {
 		id: "select",
 		header: ({ table }) => (
 			<Checkbox
-				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
 				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
 				aria-label="Select all"
 			/>
@@ -64,12 +123,18 @@ export default function AppTable(props: any) {
 				className: column.className,
 			},
 			cell: (info: any) => {
-				return <div className={`whitespace-nowrap truncate overflow-ellipsis max-w-xs ${column?.className || ""}`}>{info?.column?.columnDef?.custom ? info?.column?.columnDef?.custom(info.row.original) : info.getValue()}</div>;
+				return (
+					<div
+						className={`whitespace-nowrap truncate overflow-ellipsis max-w-xs ${column?.className || ""}`}
+					>
+						{info?.column?.columnDef?.custom
+							? info?.column?.columnDef?.custom(info.row.original)
+							: info.getValue()}
+					</div>
+				);
 			},
 			Header: ({ column }: any) => (
-				<div
-					className="font-bold"
-					onClick={column.getToggleSortingHandler()}>
+				<div className="font-bold" onClick={column.getToggleSortingHandler()}>
 					{column.render("Header")}
 					{{
 						asc: <ArrowUpDown className="ml-auto" />,
@@ -78,7 +143,12 @@ export default function AppTable(props: any) {
 				</div>
 			),
 			enableSorting: column.accessor === "edit" ? false : true,
-			enableHiding: column.accessor === "edit" || column.accessor === "name" || column.accessor === "title" ? false : true,
+			enableHiding:
+				column.accessor === "edit" ||
+				column.accessor === "name" ||
+				column.accessor === "title"
+					? false
+					: true,
 		};
 	});
 
@@ -188,11 +258,19 @@ export default function AppTable(props: any) {
 					<div className="flex flex-col">
 						{data.length > 0 && (
 							<>
-								<CardTitle className="text-sm font-medium">Item(s) Found</CardTitle>
-								<CardDescription className="text-sm text-muted-foreground">{count} item(s)</CardDescription>
+								<CardTitle className="text-sm font-medium">
+									Item(s) Found
+								</CardTitle>
+								<CardDescription className="text-sm text-muted-foreground">
+									{count} item(s)
+								</CardDescription>
 							</>
 						)}
-						{data.length === 0 && <CardTitle className="text-sm font-medium">No Item Found</CardTitle>}
+						{data.length === 0 && (
+							<CardTitle className="text-sm font-medium">
+								No Item Found
+							</CardTitle>
+						)}
 					</div>
 					<div className="flex flex-row items-center space-x-2">
 						{rowSelection && Object.keys(rowSelection).length > 0 && (
@@ -204,32 +282,38 @@ export default function AppTable(props: any) {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent
 									align="end"
-									className="dark:bg-gray-800 dark:border-gray-700">
+									className="dark:bg-gray-800 dark:border-gray-700"
+								>
 									<DropdownMenuItem
 										className="capitalize"
 										onClick={() => {
 											deleteSelected(rowSelection);
 										}}
-										disabled={Object.keys(rowSelection).length === 0}>
+										disabled={Object.keys(rowSelection).length === 0}
+									>
 										Delete selected
 									</DropdownMenuItem>
-									{multipleDisable && multipleDisable?.includes("unpublish") ? null : (
+									{multipleDisable &&
+									multipleDisable?.includes("unpublish") ? null : (
 										<DropdownMenuItem
 											className="capitalize"
 											onClick={() => {
 												publishSelected(rowSelection);
 											}}
-											disabled={Object.keys(rowSelection).length === 0}>
+											disabled={Object.keys(rowSelection).length === 0}
+										>
 											Unpublish
 										</DropdownMenuItem>
 									)}
-									{multipleDisable && multipleDisable?.includes("publish") ? null : (
+									{multipleDisable &&
+									multipleDisable?.includes("publish") ? null : (
 										<DropdownMenuItem
 											className="capitalize"
 											onClick={() => {
 												publishSelected(rowSelection, true);
 											}}
-											disabled={Object.keys(rowSelection).length === 0}>
+											disabled={Object.keys(rowSelection).length === 0}
+										>
 											Publish
 										</DropdownMenuItem>
 									)}
@@ -248,13 +332,15 @@ export default function AppTable(props: any) {
 							<DropdownMenuTrigger asChild>
 								<Button
 									variant="outline"
-									className="ml-auto dark:bg-gray-800 dark:text-gray-200">
+									className="ml-auto dark:bg-gray-800 dark:text-gray-200"
+								>
 									Columns <ChevronDown />
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
 								align="end"
-								className="dark:bg-gray-800 dark:border-gray-700">
+								className="dark:bg-gray-800 dark:border-gray-700"
+							>
 								{table
 									.getAllColumns()
 									.filter((column) => column.getCanHide())
@@ -264,29 +350,39 @@ export default function AppTable(props: any) {
 												key={column.id}
 												className="capitalize"
 												checked={column.getIsVisible()}
-												onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+												onCheckedChange={(value) =>
+													column.toggleVisibility(!!value)
+												}
+											>
 												{column.id}
 											</DropdownMenuCheckboxItem>
 										);
 									})}
 							</DropdownMenuContent>
 						</DropdownMenu>
-						<Popover
-							open={open}
-							onOpenChange={setOpen}>
+						<Popover open={open} onOpenChange={setOpen}>
 							<PopoverTrigger asChild>
 								<Button
 									variant="outline"
 									role="combobox"
 									aria-expanded={open}
-									className="justify-between ml-auto dark:bg-gray-800 dark:text-gray-200">
-									{query.orderBy && query.orderBy ? (order.find((order: any) => order.value === query.orderBy)?.label ? order.find((order: any) => order.value === query.orderBy)?.label : "Select Order") : "Select Order"}
+									className="justify-between ml-auto dark:bg-gray-800 dark:text-gray-200"
+								>
+									{query.orderBy && query.orderBy
+										? order.find((order: any) => order.value === query.orderBy)
+												?.label
+											? order.find(
+													(order: any) => order.value === query.orderBy,
+												)?.label
+											: "Select Order"
+										: "Select Order"}
 									<ChevronsUpDown className="opacity-50" />
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent
 								className="w-[200px] p-0 dark:bg-gray-800 dark:border-gray-700"
-								align="end">
+								align="end"
+							>
 								<Command className="dark:bg-gray-800 dark:border-gray-700">
 									<CommandList>
 										<CommandGroup>
@@ -298,9 +394,17 @@ export default function AppTable(props: any) {
 														setValue(currentValue);
 														doOrderBy(currentValue);
 														setOpen(false);
-													}}>
+													}}
+												>
 													{order.label}
-													<Check className={cn("ml-auto", value === order.value ? "opacity-100" : "opacity-0")} />
+													<Check
+														className={cn(
+															"ml-auto",
+															value === order.value
+																? "opacity-100"
+																: "opacity-0",
+														)}
+													/>
 												</CommandItem>
 											))}
 										</CommandGroup>
@@ -309,22 +413,30 @@ export default function AppTable(props: any) {
 							</PopoverContent>
 						</Popover>
 						{filter && filter?.length > 0 && (
-							<Popover
-								open={openorder}
-								onOpenChange={setOpenOrder}>
+							<Popover open={openorder} onOpenChange={setOpenOrder}>
 								<PopoverTrigger asChild>
 									<Button
 										variant="outline"
 										role="combobox"
 										aria-expanded={open}
-										className="justify-between">
-										{query.filterBy && query.filterBy ? (filter.find((filter: any) => filter.value === query.filterBy)?.label ? filter.find((filter: any) => filter.value === query.filterBy)?.label : "Select One") : "Select One"}
+										className="justify-between"
+									>
+										{query.filterBy && query.filterBy
+											? filter.find(
+													(filter: any) => filter.value === query.filterBy,
+												)?.label
+												? filter.find(
+														(filter: any) => filter.value === query.filterBy,
+													)?.label
+												: "Select One"
+											: "Select One"}
 										<ChevronsUpDown className="opacity-50" />
 									</Button>
 								</PopoverTrigger>
 								<PopoverContent
 									className="w-[200px] p-0 dark:bg-gray-800 dark:border-gray-700"
-									align="end">
+									align="end"
+								>
 									<Command className="dark:bg-gray-800 dark:border-gray-700">
 										<CommandList>
 											<CommandGroup>
@@ -336,9 +448,17 @@ export default function AppTable(props: any) {
 															setValue(currentValue);
 															doFilterBy(currentValue);
 															setOpenOrder(false);
-														}}>
+														}}
+													>
 														{filter.label}
-														<Check className={cn("ml-auto", value === filter.value ? "opacity-100" : "opacity-0")} />
+														<Check
+															className={cn(
+																"ml-auto",
+																value === filter.value
+																	? "opacity-100"
+																	: "opacity-0",
+															)}
+														/>
 													</CommandItem>
 												))}
 											</CommandGroup>
@@ -356,22 +476,34 @@ export default function AppTable(props: any) {
 								{table.getHeaderGroups().map((headerGroup) => (
 									<TableRow
 										key={headerGroup.id}
-										className="h-8 dark:border-gray-600">
+										className="h-8 dark:border-gray-600"
+									>
 										{headerGroup.headers.map((header, index) => (
 											<TableHead
 												key={index}
-												className={cn("px-2 first:w-7 last:w-15 last:text-right bg-gray-50 dark:bg-gray-800 dark:text-gray-200", (header.column.columnDef.meta as any)?.className)}>
+												className={cn(
+													"px-2 first:w-7 last:w-15 last:text-right bg-gray-50 dark:bg-gray-800 dark:text-gray-200",
+													(header.column.columnDef.meta as any)?.className,
+												)}
+											>
 												{header.isPlaceholder ? null : (
 													<div
 														className={`${header.column.getCanSort() ? "flex items-center justify-between cursor-pointer" : ""}`}
-														onClick={header.column.getToggleSortingHandler()}>
-														<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{flexRender(header.column.columnDef.header, header.getContext())}</span>
+														onClick={header.column.getToggleSortingHandler()}
+													>
+														<span className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
+															{flexRender(
+																header.column.columnDef.header,
+																header.getContext(),
+															)}
+														</span>
 														{header.column.getCanSort() && (
 															<div className="text-sm ml-auto">
 																{{
 																	asc: <ArrowUpDown className="w-5 h-5" />,
 																	desc: <ArrowUpDown className="w-5 h-5" />,
-																}[header.column.getIsSorted() as string] ?? null}
+																}[header.column.getIsSorted() as string] ??
+																	null}
 															</div>
 														)}
 													</div>
@@ -386,28 +518,45 @@ export default function AppTable(props: any) {
 							{table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
-									className={cn("h-8 hover:bg-muted dark:hover:bg-gray-800 dark:border-gray-800", row.getIsSelected() && "bg-muted dark:bg-gray-800 dark:border-gray-900")}>
+									className={cn(
+										"h-8 hover:bg-muted dark:hover:bg-gray-800 dark:border-gray-800",
+										row.getIsSelected() &&
+											"bg-muted dark:bg-gray-800 dark:border-gray-900",
+									)}
+								>
 									{row.getVisibleCells().map((cell, index) => (
 										<TableCell
 											key={index}
-											className={cn("px-2 first:w-7 last:w-15 last:text-right", (cell.column.columnDef.meta as any)?.className)}>
-											<div className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
+											className={cn(
+												"px-2 first:w-7 last:w-15 last:text-right",
+												(cell.column.columnDef.meta as any)?.className,
+											)}
+										>
+											<div className="whitespace-nowrap truncate overflow-ellipsis max-w-xs">
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext(),
+												)}
+											</div>
 										</TableCell>
 									))}
 								</TableRow>
 							))}
 							{data.length === 0 && (
 								<TableRow className="bg-transparent!">
-									<TableCell
-										colSpan={columns.length}
-										className="p-0!">
+									<TableCell colSpan={columns.length} className="p-0!">
 										<div className="flex flex-col items-center justify-center h-[50vh] gap-6 bg-gray-50 rounded-2xl dark:bg-gray-800">
 											<div className="flex items-center justify-center w-20 h-20 bg-gray-900 text-white rounded-full">
 												<InboxIcon className="w-10 h-10 text-white" />
 											</div>
 											<div className="space-y-2 text-center">
-												<h2 className="text-2xl font-bold tracking-tight">No data to display</h2>
-												<p className="text-gray-500">It looks like there's no data available yet. Try adding some new items.</p>
+												<h2 className="text-2xl font-bold tracking-tight">
+													No data to display
+												</h2>
+												<p className="text-gray-500">
+													It looks like there's no data available yet. Try
+													adding some new items.
+												</p>
 											</div>
 										</div>
 									</TableCell>

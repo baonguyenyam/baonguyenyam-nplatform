@@ -3,7 +3,13 @@ import { PrivateAppState } from "../../types/Internal";
 
 import { walkTree } from "./walk-tree";
 
-export const flattenData = <UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>(state: PrivateAppState<G["UserData"]>, config: UserConfig) => {
+export const flattenData = <
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>(
+	state: PrivateAppState<G["UserData"]>,
+	config: UserConfig,
+) => {
 	const data: ComponentData[] = [];
 
 	walkTree(

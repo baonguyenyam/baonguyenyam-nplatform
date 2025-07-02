@@ -1,8 +1,15 @@
 import { Data } from "@dnd-kit/abstract";
-import { useDraggable, UseDraggableInput, useDroppable, UseDroppableInput } from "@dnd-kit/react";
+import {
+	useDraggable,
+	UseDraggableInput,
+	useDroppable,
+	UseDroppableInput,
+} from "@dnd-kit/react";
 import { useSortable, UseSortableInput } from "@dnd-kit/react/sortable";
 
-export function useDroppableSafe<T extends Data>(input: UseDroppableInput<T>): Pick<ReturnType<typeof useDroppable<T>>, "ref"> {
+export function useDroppableSafe<T extends Data>(
+	input: UseDroppableInput<T>,
+): Pick<ReturnType<typeof useDroppable<T>>, "ref"> {
 	if (typeof window === "undefined") {
 		return { ref: () => {} };
 	}
@@ -11,7 +18,9 @@ export function useDroppableSafe<T extends Data>(input: UseDroppableInput<T>): P
 	return useDroppable(input);
 }
 
-export function useDraggableSafe<T extends Data>(input: UseDraggableInput): Pick<ReturnType<typeof useDraggable<T>>, "ref"> {
+export function useDraggableSafe<T extends Data>(
+	input: UseDraggableInput,
+): Pick<ReturnType<typeof useDraggable<T>>, "ref"> {
 	if (typeof window === "undefined") {
 		return { ref: () => {} };
 	}
@@ -20,7 +29,11 @@ export function useDraggableSafe<T extends Data>(input: UseDraggableInput): Pick
 	return useDraggable(input);
 }
 
-export function useSortableSafe<T extends Data>(input: UseSortableInput<T>): Pick<ReturnType<typeof useSortable<T>>, "ref" | "handleRef"> & { status: string } {
+export function useSortableSafe<T extends Data>(
+	input: UseSortableInput<T>,
+): Pick<ReturnType<typeof useSortable<T>>, "ref" | "handleRef"> & {
+	status: string;
+} {
 	if (typeof window === "undefined") {
 		return { ref: () => {}, status: "idle", handleRef: () => {} };
 	}

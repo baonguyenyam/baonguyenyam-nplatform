@@ -43,7 +43,10 @@ export class Point {
 	}
 
 	public calcDistanceTo(point: Point): number {
-		return Math.sqrt(Math.pow(this.calcDeltaXTo(point), 2) + Math.pow(this.calcDeltaYTo(point), 2));
+		return Math.sqrt(
+			Math.pow(this.calcDeltaXTo(point), 2) +
+				Math.pow(this.calcDeltaYTo(point), 2),
+		);
 	}
 }
 

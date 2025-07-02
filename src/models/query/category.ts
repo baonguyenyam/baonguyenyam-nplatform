@@ -44,7 +44,8 @@ export const createCategory = async (data: any) => {
 
 // get all categories
 export const getAllCategories = async (query: any) => {
-	const { take, skip, s, orderBy, filterBy, byCat, type, min, published } = query;
+	const { take, skip, s, orderBy, filterBy, byCat, type, min, published } =
+		query;
 	try {
 		const categories = !min
 			? await db.category.findMany({
@@ -53,7 +54,12 @@ export const getAllCategories = async (query: any) => {
 					where: {
 						published: published ? published : undefined,
 						type: type ? type : filterBy ? filterBy : undefined,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+						OR: s
+							? [
+									{ title: { contains: s, mode: "insensitive" } },
+									{ content: { contains: s, mode: "insensitive" } },
+								]
+							: undefined,
 					},
 					select: {
 						id: true,
@@ -69,7 +75,12 @@ export const getAllCategories = async (query: any) => {
 					where: {
 						published: published ? published : undefined,
 						type: type ? type : filterBy ? filterBy : undefined,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+						OR: s
+							? [
+									{ title: { contains: s, mode: "insensitive" } },
+									{ content: { contains: s, mode: "insensitive" } },
+								]
+							: undefined,
 					},
 					select: {
 						id: true,
@@ -97,7 +108,12 @@ export const getCategoriesCount = async (query: any) => {
 			where: {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 		});
 		return count;

@@ -5,37 +5,42 @@ import { ACTIONS, PERMISSION_LEVELS } from "@/lib/permissions";
 import models from "@/models";
 
 // get all orders
-export const GET = withOrdersPermission(ACTIONS.READ)(async (req: NextRequest) => {
-	try {
-		// QUERY PARAMS
-		const query = {
-			s: new URL(req.url).searchParams.get("s") || "",
-			skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
-			take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
-			orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
-			filterBy: new URL(req.url).searchParams.get("filterBy") || "",
-			byCat: new URL(req.url).searchParams.get("cat") || "all",
-		};
+export const GET = withOrdersPermission(ACTIONS.READ)(
+	async (req: NextRequest) => {
+		try {
+			// QUERY PARAMS
+			const query = {
+				s: new URL(req.url).searchParams.get("s") || "",
+				skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
+				take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
+				orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
+				filterBy: new URL(req.url).searchParams.get("filterBy") || "",
+				byCat: new URL(req.url).searchParams.get("cat") || "all",
+			};
 
-		const [count, db] = await Promise.all([models.Order.getOrdersCount(query), models.Order.getAllOrders(query)]);
+			const [count, db] = await Promise.all([
+				models.Order.getOrdersCount(query),
+				models.Order.getAllOrders(query),
+			]);
 
-		return NextResponse.json({
-			message: "Data fetched successfully",
-			data: db,
-			count: count,
-			success: true,
-		});
-	} catch (error) {
-		return NextResponse.json(
-			{
-				message: "Error fetching orders",
-				error: error instanceof Error ? error.message : "Unknown error",
-				success: false,
-			},
-			{ status: 500 },
-		);
-	}
-});
+			return NextResponse.json({
+				message: "Data fetched successfully",
+				data: db,
+				count: count,
+				success: true,
+			});
+		} catch (error) {
+			return NextResponse.json(
+				{
+					message: "Error fetching orders",
+					error: error instanceof Error ? error.message : "Unknown error",
+					success: false,
+				},
+				{ status: 500 },
+			);
+		}
+	},
+);
 
 // Create Order
 export const POST = withOrdersPermission(

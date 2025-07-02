@@ -1,7 +1,18 @@
 import { configurator, Sensor } from "@dnd-kit/abstract";
 import type { DragDropManager, Draggable } from "@dnd-kit/dom";
-import { getDocument, getFrameTransform, isElement, isHTMLElement, isPointerEvent, Listeners } from "@dnd-kit/dom/utilities";
-import { type Coordinates, type Distance, exceedsDistance } from "@dnd-kit/geometry";
+import {
+	getDocument,
+	getFrameTransform,
+	isElement,
+	isHTMLElement,
+	isPointerEvent,
+	Listeners,
+} from "@dnd-kit/dom/utilities";
+import {
+	type Coordinates,
+	type Distance,
+	exceedsDistance,
+} from "@dnd-kit/geometry";
 import type { CleanupFunction } from "@dnd-kit/state";
 import { batch, effect } from "@dnd-kit/state";
 
@@ -21,14 +32,22 @@ export interface ActivationConstraints {
 }
 
 export interface PointerSensorOptions {
-	activationConstraints?: ActivationConstraints | ((event: PointerEvent, source: Draggable) => ActivationConstraints | undefined);
+	activationConstraints?:
+		| ActivationConstraints
+		| ((
+				event: PointerEvent,
+				source: Draggable,
+		  ) => ActivationConstraints | undefined);
 }
 
 /**
  * The PointerSensor class is an input sensor that handles Pointer events,
  * such as mouse, touch and pen interactions.
  */
-export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions> {
+export class PointerSensor extends Sensor<
+	DragDropManager,
+	PointerSensorOptions
+> {
 	protected listeners = new Listeners();
 
 	protected cleanup: Set<CleanupFunction> = new Set();
@@ -102,7 +121,8 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 			this.listeners.bind(doc, [
 				{
 					type: "pointermove",
-					listener: (event: PointerEvent) => this.handlePointerMove(event, doc, options),
+					listener: (event: PointerEvent) =>
+						this.handlePointerMove(event, doc, options),
 				},
 				{
 					type: "pointerup",
@@ -124,8 +144,18 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 		};
 	}
 
-	protected handlePointerDown(event: PointerEvent, source: Draggable, options: PointerSensorOptions = {}) {
-		if (this.disabled || !event.isPrimary || event.button !== 0 || !isElement(event.target) || source.disabled) {
+	protected handlePointerDown(
+		event: PointerEvent,
+		source: Draggable,
+		options: PointerSensorOptions = {},
+	) {
+		if (
+			this.disabled ||
+			!event.isPrimary ||
+			event.button !== 0 ||
+			!isElement(event.target) ||
+			source.disabled
+		) {
 			return;
 		}
 
@@ -139,7 +169,10 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 		this.source = source;
 
 		const { activationConstraints } = options;
-		const constraints = typeof activationConstraints === "function" ? activationConstraints(event, source) : activationConstraints;
+		const constraints =
+			typeof activationConstraints === "function"
+				? activationConstraints(event, source)
+				: activationConstraints;
 
 		event.stopImmediatePropagation();
 
@@ -149,7 +182,10 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 			const { delay } = constraints;
 
 			if (delay) {
-				const timeout = setTimeout(() => this.handleStart(source, event), delay.value);
+				const timeout = setTimeout(
+					() => this.handleStart(source, event),
+					delay.value,
+				);
 
 				this.#clearTimeout = () => {
 					clearTimeout(timeout);
@@ -167,12 +203,17 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 		this.cleanup.add(cleanup);
 	}
 
-	protected handlePointerMove(event: PointerEvent, doc: Document, options: PointerSensorOptions) {
+	protected handlePointerMove(
+		event: PointerEvent,
+		doc: Document,
+		options: PointerSensorOptions,
+	) {
 		if (!this.source) {
 			return;
 		}
 
-		const ownerDocument = this.source.element && getDocument(this.source.element);
+		const ownerDocument =
+			this.source.element && getDocument(this.source.element);
 
 		// Event may have duplicated between documents if user is bubbling events
 		if (doc !== ownerDocument) {
@@ -206,11 +247,17 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 			y: coordinates.y - this.initialCoordinates.y,
 		};
 		const { activationConstraints } = options;
-		const constraints = typeof activationConstraints === "function" ? activationConstraints(event, this.source) : activationConstraints;
+		const constraints =
+			typeof activationConstraints === "function"
+				? activationConstraints(event, this.source)
+				: activationConstraints;
 		const { distance, delay } = constraints ?? {};
 
 		if (distance) {
-			if (distance.tolerance != null && exceedsDistance(delta, distance.tolerance)) {
+			if (
+				distance.tolerance != null &&
+				exceedsDistance(delta, distance.tolerance)
+			) {
 				return this.handleCancel();
 			}
 			if (exceedsDistance(delta, distance.value)) {
@@ -265,7 +312,11 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 
 		this.#clearTimeout?.();
 
-		if (!initialCoordinates || manager.dragOperation.status.initialized || this.started) {
+		if (
+			!initialCoordinates ||
+			manager.dragOperation.status.initialized ||
+			this.started
+		) {
 			return;
 		}
 
@@ -318,7 +369,10 @@ export class PointerSensor extends Sensor<DragDropManager, PointerSensorOptions>
 			return;
 		}
 
-		const isNativeDraggable = isHTMLElement(target) && target.draggable && target.getAttribute("draggable") === "true";
+		const isNativeDraggable =
+			isHTMLElement(target) &&
+			target.draggable &&
+			target.getAttribute("draggable") === "true";
 
 		if (isNativeDraggable) {
 			this.handleCancel();

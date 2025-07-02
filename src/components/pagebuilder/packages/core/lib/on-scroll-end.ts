@@ -1,4 +1,7 @@
-export const onScrollEnd = (frame: Document | Element | null | undefined, cb: () => void) => {
+export const onScrollEnd = (
+	frame: Document | Element | null | undefined,
+	cb: () => void,
+) => {
 	let scrollTimeout: NodeJS.Timeout;
 
 	const callback = function () {

@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-// Basic admin route patterns 
+// Basic admin route patterns
 const ADMIN_ROUTES = [
 	"/admin",
 	"/admin/dashboard",
@@ -26,18 +26,19 @@ const ADMIN_ROUTES = [
  * Simplified admin route checker for middleware
  * Only checks if user is authenticated and has basic admin role
  */
-export function checkAdminRoutePermission(pathname: string, userRole?: string): boolean {
+export function checkAdminRoutePermission(
+	pathname: string,
+	userRole?: string,
+): boolean {
 	// Check if it's an admin route
-	const isAdminRoute = ADMIN_ROUTES.some(route =>
-		pathname.startsWith(route)
-	);
+	const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
 
 	if (!isAdminRoute) {
 		return true; // Not an admin route, allow access
 	}
 
-	// For admin routes, require ADMIN role
-	return userRole === "ADMIN";
+	// For admin routes, require ADMIN or MODERATOR role
+	return userRole === "ADMIN" || userRole === "MODERATOR";
 }
 
 /**

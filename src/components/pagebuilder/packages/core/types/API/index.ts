@@ -17,7 +17,11 @@ export type IframeConfig = {
 	waitForStyles?: boolean;
 };
 
-export type OnAction<UserData extends Data = Data> = (action: PuckAction, appState: AppState<UserData>, prevAppState: AppState<UserData>) => void;
+export type OnAction<UserData extends Data = Data> = (
+	action: PuckAction,
+	appState: AppState<UserData>,
+	prevAppState: AppState<UserData>,
+) => void;
 
 export type Plugin = {
 	overrides: Partial<Overrides>;
@@ -40,7 +44,9 @@ type InitialHistoryNoAppend<AS = Partial<AppState>> = {
 	appendData?: false;
 };
 
-export type InitialHistory<AS = Partial<AppState>> = InitialHistoryAppend<AS> | InitialHistoryNoAppend<AS>;
+export type InitialHistory<AS = Partial<AppState>> =
+	| InitialHistoryAppend<AS>
+	| InitialHistoryNoAppend<AS>;
 
 export type Slot = Content;
 

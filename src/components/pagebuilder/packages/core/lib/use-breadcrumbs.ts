@@ -30,10 +30,13 @@ export const useBreadcrumbs = (renderCount?: number) => {
 
 				const node = appStore.getState().state.indexes.nodes[componentId];
 				const parentId = node.path[node.path.length - 1];
-				const contentIds = appStore.getState().state.indexes.zones[parentId]?.contentIds || [];
+				const contentIds =
+					appStore.getState().state.indexes.zones[parentId]?.contentIds || [];
 				const index = contentIds.indexOf(componentId);
 
-				const label = node ? (config.components[node.data.type]?.label ?? node.data.type) : "Component";
+				const label = node
+					? (config.components[node.data.type]?.label ?? node.data.type)
+					: "Component";
 
 				return {
 					label,

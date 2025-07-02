@@ -10,7 +10,10 @@ export const addToZoneCache = (key: string, data: Content) => {
 	zoneCache[key] = data;
 };
 
-export function registerZoneAction<UserData extends Data>(state: PrivateAppState<UserData>, action: RegisterZoneAction): PrivateAppState<UserData> {
+export function registerZoneAction<UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: RegisterZoneAction,
+): PrivateAppState<UserData> {
 	if (zoneCache[action.zone]) {
 		return {
 			...state,
@@ -38,7 +41,10 @@ export function registerZoneAction<UserData extends Data>(state: PrivateAppState
 	return { ...state, data: setupZone(state.data, action.zone) };
 }
 
-export function unregisterZoneAction<UserData extends Data>(state: PrivateAppState<UserData>, action: UnregisterZoneAction): PrivateAppState<UserData> {
+export function unregisterZoneAction<UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: UnregisterZoneAction,
+): PrivateAppState<UserData> {
 	const _zones = { ...(state.data.zones || {}) };
 	const zoneIndex = { ...(state.indexes.zones || {}) };
 

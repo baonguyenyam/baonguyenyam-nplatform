@@ -8,7 +8,9 @@ import { LayerTree } from "../../../LayerTree";
 export const Outline = () => {
 	const outlineOverride = useAppStore((s) => s.overrides.outline);
 
-	const rootZones = useAppStore(useShallow((s) => findZonesForArea(s.state, "root")));
+	const rootZones = useAppStore(
+		useShallow((s) => findZonesForArea(s.state, "root")),
+	);
 
 	const Wrapper = useMemo(() => outlineOverride || "div", [outlineOverride]);
 	return (

@@ -25,9 +25,7 @@ const UpdateForm = () => {
 						setName(e.target.value);
 					}}
 				/>
-				<Button
-					onClick={() => update({ user: { name } })}
-					type="submit">
+				<Button onClick={() => update({ user: { name } })} type="submit">
 					Update
 				</Button>
 			</div>
@@ -57,10 +55,16 @@ export default function ClientExample() {
 				<h2 className="text-xl font-bold">Third-party backend integration</h2>
 
 				<pre>{apiResponse}</pre>
-				<p className="italic">Note: This example only works when using the Keycloak provider.</p>
+				<p className="italic">
+					Note: This example only works when using the Keycloak provider.
+				</p>
 			</div>
 
-			{status === "loading" ? <div>Loading...</div> : <SessionData session={session} />}
+			{status === "loading" ? (
+				<div>Loading...</div>
+			) : (
+				<SessionData session={session} />
+			)}
 			<UpdateForm />
 		</div>
 	);

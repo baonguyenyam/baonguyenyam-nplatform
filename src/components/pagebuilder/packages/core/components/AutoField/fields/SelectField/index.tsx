@@ -9,8 +9,22 @@ import styles from "../../styles.module.css";
 
 const getClassName = getClassNameFactory("Input", styles);
 
-export const SelectField = ({ field, onChange, label, labelIcon, Label, value, name, readOnly, id }: FieldPropsInternal) => {
-	const flatOptions = useMemo(() => (field.type === "select" ? field.options.map(({ value }) => value) : []), [field]);
+export const SelectField = ({
+	field,
+	onChange,
+	label,
+	labelIcon,
+	Label,
+	value,
+	name,
+	readOnly,
+	id,
+}: FieldPropsInternal) => {
+	const flatOptions = useMemo(
+		() =>
+			field.type === "select" ? field.options.map(({ value }) => value) : [],
+		[field],
+	);
 
 	if (field.type !== "select" || !field.options) {
 		return null;
@@ -20,7 +34,8 @@ export const SelectField = ({ field, onChange, label, labelIcon, Label, value, n
 		<Label
 			label={label || name}
 			icon={labelIcon || <ChevronDown size={16} />}
-			readOnly={readOnly}>
+			readOnly={readOnly}
+		>
 			<select
 				id={id}
 				title={label || name}
@@ -35,7 +50,8 @@ export const SelectField = ({ field, onChange, label, labelIcon, Label, value, n
 						onChange(e.target.value);
 					}
 				}}
-				value={value}>
+				value={value}
+			>
 				{field.options.map((option) => (
 					<option
 						key={option.label + option.value}

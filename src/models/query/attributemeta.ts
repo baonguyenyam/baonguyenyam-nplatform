@@ -16,7 +16,10 @@ export const getAttributeMetaById = async (id: number) => {
 };
 
 // getAttributeByIdAndValue
-export const getAttributeByAttributeIdIdAndValue = async (attributeId: number, value: string) => {
+export const getAttributeByAttributeIdIdAndValue = async (
+	attributeId: number,
+	value: string,
+) => {
 	try {
 		const attributeMeta = await db.attributeMeta.findFirst({
 			where: {
@@ -40,7 +43,10 @@ export const getAllAttributeByParentID = async (query: any) => {
 			skip: skip ? skip : undefined,
 			where: {
 				attributeId: Number(parent),
-				OR: [{ key: { contains: s, mode: "insensitive" } }, { value: { contains: s, mode: "insensitive" } }],
+				OR: [
+					{ key: { contains: s, mode: "insensitive" } },
+					{ value: { contains: s, mode: "insensitive" } },
+				],
 			},
 			select: {
 				id: true,
@@ -101,14 +107,20 @@ export const getAttributeMetaByKey = async (key: string) => {
 };
 
 // Get all AttributeMeta by Key Or Value
-export const getAllAttributeMetaByKeyOrValue = async (s: string, attributeId: number) => {
+export const getAllAttributeMetaByKeyOrValue = async (
+	s: string,
+	attributeId: number,
+) => {
 	try {
 		const attributeMeta = await db.attributeMeta.findMany({
 			take: 50,
 			skip: 0,
 			where: {
 				attributeId,
-				OR: [{ key: { contains: s, mode: "insensitive" } }, { value: { contains: s, mode: "insensitive" } }],
+				OR: [
+					{ key: { contains: s, mode: "insensitive" } },
+					{ value: { contains: s, mode: "insensitive" } },
+				],
 			},
 			select: {
 				id: true,

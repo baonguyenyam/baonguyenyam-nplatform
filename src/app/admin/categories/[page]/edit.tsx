@@ -8,7 +8,13 @@ import AppLoading from "@/components/AppLoading";
 import { FieldInput } from "@/components/fields/input";
 import { FieldSelect } from "@/components/fields/select"; // For 'type' and 'published' status
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { useCurrentRole } from "@/hooks/useCurrentRole"; // Keep if role affects fields
 import { enumPublished, enumType } from "@/lib/enum"; // Use enums
 
@@ -35,11 +41,17 @@ interface FormEditProps {
 // --- Zod Schema ---
 // Define the validation schema for the category form
 const FormSchema = z.object({
-	f_title: z.string().min(2, { message: "Title must be at least 2 characters." }),
+	f_title: z
+		.string()
+		.min(2, { message: "Title must be at least 2 characters." }),
 	f_slug: z.string().optional(), // Slug might be auto-generated or optional
 	// Ensure the enum values are correctly typed for Zod
-	f_type: z.enum(enumType.map((item) => item.value) as [string, ...string[]]).optional(),
-	f_published: z.enum(enumPublished.map((item) => item.value) as [string, ...string[]]).optional(),
+	f_type: z
+		.enum(enumType.map((item) => item.value) as [string, ...string[]])
+		.optional(),
+	f_published: z
+		.enum(enumPublished.map((item) => item.value) as [string, ...string[]])
+		.optional(),
 });
 
 export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
@@ -103,12 +115,19 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 		};
 
 		// Use update or create action based on presence of id
-		const action = id ? actions.updateRecord(id, body) : actions.createRecord(body); // Assuming meta is empty
+		const action = id
+			? actions.updateRecord(id, body)
+			: actions.createRecord(body); // Assuming meta is empty
 
 		try {
 			const res = await action;
 			if (res.success === "success") {
-				toast.success(res.message || (id ? "Category updated successfully!" : "Category created successfully!"));
+				toast.success(
+					res.message ||
+						(id
+							? "Category updated successfully!"
+							: "Category created successfully!"),
+				);
 				onChange("submit", res.data); // Notify parent component
 			} else {
 				toast.error(res.message || "An error occurred.");
@@ -127,7 +146,8 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 					{/* Use pb-20 or similar to prevent overlap with bottom bar */}
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-4 pb-20">
+						className="w-full space-y-4 pb-20"
+					>
 						{/* Title Field */}
 						<FormField
 							control={form.control}
@@ -200,7 +220,10 @@ export default function FormEdit({ id, initialData, onChange }: FormEditProps) {
 
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								{form.formState.isSubmitting ? "Saving..." : "Save Changes"}
 							</Button>
 						</div>

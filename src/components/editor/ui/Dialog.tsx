@@ -20,11 +20,12 @@ export function DialogButtonsList({ children }: Props): React.JSX.Element {
 	return <div className="DialogButtonsList">{children}</div>;
 }
 
-export function DialogActions({ "data-test-id": dataTestId, children }: Props): React.JSX.Element {
+export function DialogActions({
+	"data-test-id": dataTestId,
+	children,
+}: Props): React.JSX.Element {
 	return (
-		<div
-			className="DialogActions"
-			data-test-id={dataTestId}>
+		<div className="DialogActions" data-test-id={dataTestId}>
 			{children}
 		</div>
 	);

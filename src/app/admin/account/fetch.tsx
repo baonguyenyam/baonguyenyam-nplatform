@@ -10,14 +10,25 @@ import AppLoading from "@/components/AppLoading";
 import AppTitle from "@/components/AppTitle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import * as actions from "./actions";
 
 const FormSchema = z.object({
-	first_name: z.string().min(2, { message: "First name must be at least 2 characters." }),
-	last_name: z.string().min(2, { message: "Last name must be at least 2 characters." }),
+	first_name: z
+		.string()
+		.min(2, { message: "First name must be at least 2 characters." }),
+	last_name: z
+		.string()
+		.min(2, { message: "Last name must be at least 2 characters." }),
 	address: z.string().optional(),
 	city: z.string().optional(),
 	state: z.string().optional(),
@@ -114,11 +125,10 @@ export default function Fetch(props: any) {
 								</AvatarFallback>
 							</Avatar>
 							<div className="mb-10 flex flex-col justify-between items-center gap-1">
-								<AppTitle
-									data={db?.name}
-									breadcrumb={breadcrumb}
-								/>
-								<p className="text-sm text-zinc-500 dark:text-zinc-400">{db?.email}</p>
+								<AppTitle data={db?.name} breadcrumb={breadcrumb} />
+								<p className="text-sm text-zinc-500 dark:text-zinc-400">
+									{db?.email}
+								</p>
 								{/* <p className="text-xs text-zinc-500 dark:text-zinc-400">ID: {db?.id}</p> */}
 							</div>
 						</div>
@@ -126,7 +136,8 @@ export default function Fetch(props: any) {
 						<Form {...form}>
 							<form
 								onSubmit={form.handleSubmit(onSubmit)}
-								className="w-full space-y-6">
+								className="w-full space-y-6"
+							>
 								<div className="grid grid-cols-2 gap-10">
 									<FormField
 										control={form.control}

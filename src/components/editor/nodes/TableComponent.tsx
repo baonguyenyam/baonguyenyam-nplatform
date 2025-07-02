@@ -6,21 +6,71 @@
  *
  */
 
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { createPortal } from "react-dom";
-import { $generateJSONFromSelectedNodes, $generateNodesFromSerializedNodes, $insertGeneratedNodes } from "@lexical/clipboard";
+import {
+	$generateJSONFromSelectedNodes,
+	$generateNodesFromSerializedNodes,
+	$insertGeneratedNodes,
+} from "@lexical/clipboard";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { LexicalNestedComposer } from "@lexical/react/LexicalNestedComposer";
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
 import type { RangeSelection, TextFormatType } from "lexical";
-import { $addUpdateTag, $createParagraphNode, $createRangeSelection, $getNodeByKey, $getRoot, $getSelection, $isNodeSelection, $isRangeSelection, CLICK_COMMAND, COMMAND_PRIORITY_LOW, COPY_COMMAND, createEditor, CUT_COMMAND, EditorThemeClasses, FORMAT_TEXT_COMMAND, KEY_ARROW_DOWN_COMMAND, KEY_ARROW_LEFT_COMMAND, KEY_ARROW_RIGHT_COMMAND, KEY_ARROW_UP_COMMAND, KEY_BACKSPACE_COMMAND, KEY_DELETE_COMMAND, KEY_ENTER_COMMAND, KEY_ESCAPE_COMMAND, KEY_TAB_COMMAND, LexicalEditor, NodeKey, PASTE_COMMAND } from "lexical";
+import {
+	$addUpdateTag,
+	$createParagraphNode,
+	$createRangeSelection,
+	$getNodeByKey,
+	$getRoot,
+	$getSelection,
+	$isNodeSelection,
+	$isRangeSelection,
+	CLICK_COMMAND,
+	COMMAND_PRIORITY_LOW,
+	COPY_COMMAND,
+	createEditor,
+	CUT_COMMAND,
+	EditorThemeClasses,
+	FORMAT_TEXT_COMMAND,
+	KEY_ARROW_DOWN_COMMAND,
+	KEY_ARROW_LEFT_COMMAND,
+	KEY_ARROW_RIGHT_COMMAND,
+	KEY_ARROW_UP_COMMAND,
+	KEY_BACKSPACE_COMMAND,
+	KEY_DELETE_COMMAND,
+	KEY_ENTER_COMMAND,
+	KEY_ESCAPE_COMMAND,
+	KEY_TAB_COMMAND,
+	LexicalEditor,
+	NodeKey,
+	PASTE_COMMAND,
+} from "lexical";
 
 import { CellContext } from "../plugins/TablePlugin";
 import { IS_APPLE } from "../utils/environment";
 
-import { $isTableNode, Cell, cellHTMLCache, cellTextContentCache, createRow, createUID, exportTableCellsToHTML, extractRowsFromHTML, Rows, TableNode } from "./TableNode";
+import {
+	$isTableNode,
+	Cell,
+	cellHTMLCache,
+	cellTextContentCache,
+	createRow,
+	createUID,
+	exportTableCellsToHTML,
+	extractRowsFromHTML,
+	Rows,
+	TableNode,
+} from "./TableNode";
 
 type SortOptions = { type: "ascending" | "descending"; x: number };
 
@@ -48,7 +98,10 @@ function isStartingResize(target: HTMLElement): boolean {
 	return target.nodeType === 1 && target.hasAttribute("data-table-resize");
 }
 
-function generateHTMLFromJSON(editorStateJSON: string, cellEditor: LexicalEditor): string {
+function generateHTMLFromJSON(
+	editorStateJSON: string,
+	cellEditor: LexicalEditor,
+): string {
 	const editorState = cellEditor.parseEditorState(editorStateJSON);
 	let html = cellHTMLCache.get(editorStateJSON);
 	if (html === undefined) {
@@ -65,7 +118,12 @@ function getCurrentDocument(editor: LexicalEditor): Document {
 	return rootElement !== null ? rootElement.ownerDocument : document;
 }
 
-function isCopy(keyCode: number, shiftKey: boolean, metaKey: boolean, ctrlKey: boolean): boolean {
+function isCopy(
+	keyCode: number,
+	shiftKey: boolean,
+	metaKey: boolean,
+	ctrlKey: boolean,
+): boolean {
 	if (shiftKey) {
 		return false;
 	}
@@ -76,7 +134,12 @@ function isCopy(keyCode: number, shiftKey: boolean, metaKey: boolean, ctrlKey: b
 	return false;
 }
 
-function isCut(keyCode: number, shiftKey: boolean, metaKey: boolean, ctrlKey: boolean): boolean {
+function isCut(
+	keyCode: number,
+	shiftKey: boolean,
+	metaKey: boolean,
+	ctrlKey: boolean,
+): boolean {
 	if (shiftKey) {
 		return false;
 	}
@@ -87,7 +150,12 @@ function isCut(keyCode: number, shiftKey: boolean, metaKey: boolean, ctrlKey: bo
 	return false;
 }
 
-function isPaste(keyCode: number, shiftKey: boolean, metaKey: boolean, ctrlKey: boolean): boolean {
+function isPaste(
+	keyCode: number,
+	shiftKey: boolean,
+	metaKey: boolean,
+	ctrlKey: boolean,
+): boolean {
 	if (shiftKey) {
 		return false;
 	}
@@ -121,7 +189,14 @@ function getTableCellWidth(domElement: HTMLElement): number {
 	return 0;
 }
 
-function $updateCells(rows: Rows, ids: Array<string>, cellCoordMap: Map<string, [number, number]>, cellEditor: null | LexicalEditor, updateTableNode: (fn2: (tableNode: TableNode) => void) => void, fn: () => void): void {
+function $updateCells(
+	rows: Rows,
+	ids: Array<string>,
+	cellCoordMap: Map<string, [number, number]>,
+	cellEditor: null | LexicalEditor,
+	updateTableNode: (fn2: (tableNode: TableNode) => void) => void,
+	fn: () => void,
+): void {
 	for (const id of ids) {
 		const cell = getCell(rows, id, cellCoordMap);
 		if (cell !== null && cellEditor !== null) {
@@ -144,7 +219,11 @@ function isTargetOnPossibleUIControl(target: HTMLElement): boolean {
 	let node: HTMLElement | null = target;
 	while (node !== null) {
 		const nodeName = node.nodeName;
-		if (nodeName === "BUTTON" || nodeName === "INPUT" || nodeName === "TEXTAREA") {
+		if (
+			nodeName === "BUTTON" ||
+			nodeName === "INPUT" ||
+			nodeName === "TEXTAREA"
+		) {
 			return true;
 		}
 		node = node.parentElement;
@@ -152,7 +231,11 @@ function isTargetOnPossibleUIControl(target: HTMLElement): boolean {
 	return false;
 }
 
-function getSelectedRect(startID: string, endID: string, cellCoordMap: Map<string, [number, number]>): null | { startX: number; endX: number; startY: number; endY: number } {
+function getSelectedRect(
+	startID: string,
+	endID: string,
+	cellCoordMap: Map<string, [number, number]>,
+): null | { startX: number; endX: number; startY: number; endY: number } {
 	const startCoords = cellCoordMap.get(startID);
 	const endCoords = cellCoordMap.get(endID);
 	if (startCoords === undefined || endCoords === undefined) {
@@ -171,7 +254,12 @@ function getSelectedRect(startID: string, endID: string, cellCoordMap: Map<strin
 	};
 }
 
-function getSelectedIDs(rows: Rows, startID: string, endID: string, cellCoordMap: Map<string, [number, number]>): Array<string> {
+function getSelectedIDs(
+	rows: Rows,
+	startID: string,
+	endID: string,
+	cellCoordMap: Map<string, [number, number]>,
+): Array<string> {
 	const rect = getSelectedRect(startID, endID, cellCoordMap);
 	if (rect === null) {
 		return [];
@@ -187,7 +275,10 @@ function getSelectedIDs(rows: Rows, startID: string, endID: string, cellCoordMap
 	return ids;
 }
 
-function extractCellsFromRows(rows: Rows, rect: { startX: number; endX: number; startY: number; endY: number }): Rows {
+function extractCellsFromRows(
+	rows: Rows,
+	rect: { startX: number; endX: number; startY: number; endY: number },
+): Rows {
 	const { startX, endY, endX, startY } = rect;
 	const newRows: Rows = [];
 
@@ -216,13 +307,18 @@ function TableCellEditor({ cellEditor }: { cellEditor: LexicalEditor }) {
 			initialEditor={cellEditor}
 			initialTheme={cellEditorConfig.theme}
 			initialNodes={cellEditorConfig.nodes}
-			skipCollabChecks={true}>
+			skipCollabChecks={true}
+		>
 			{cellEditorPlugins}
 		</LexicalNestedComposer>
 	);
 }
 
-function getCell(rows: Rows, cellID: string, cellCoordMap: Map<string, [number, number]>): null | Cell {
+function getCell(
+	rows: Rows,
+	cellID: string,
+	cellCoordMap: Map<string, [number, number]>,
+): null | Cell {
 	const coords = cellCoordMap.get(cellID);
 	if (coords === undefined) {
 		return null;
@@ -232,7 +328,27 @@ function getCell(rows: Rows, cellID: string, cellCoordMap: Map<string, [number, 
 	return row.cells[x];
 }
 
-function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, onClose, updateTableNode, setSortingOptions, sortingOptions }: { cell: Cell; menuElem: HTMLElement; updateCellsByID: (ids: Array<string>, fn: () => void) => void; onClose: () => void; updateTableNode: (fn2: (tableNode: TableNode) => void) => void; cellCoordMap: Map<string, [number, number]>; rows: Rows; setSortingOptions: (options: null | SortOptions) => void; sortingOptions: null | SortOptions }) {
+function TableActionMenu({
+	cell,
+	rows,
+	cellCoordMap,
+	menuElem,
+	updateCellsByID,
+	onClose,
+	updateTableNode,
+	setSortingOptions,
+	sortingOptions,
+}: {
+	cell: Cell;
+	menuElem: HTMLElement;
+	updateCellsByID: (ids: Array<string>, fn: () => void) => void;
+	onClose: () => void;
+	updateTableNode: (fn2: (tableNode: TableNode) => void) => void;
+	cellCoordMap: Map<string, [number, number]>;
+	rows: Rows;
+	setSortingOptions: (options: null | SortOptions) => void;
+	sortingOptions: null | SortOptions;
+}) {
 	const dropDownRef = useRef<null | HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -247,7 +363,10 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			const dropdownElem = dropDownRef.current;
-			if (dropdownElem !== null && !dropdownElem.contains(event.target as Node)) {
+			if (
+				dropdownElem !== null &&
+				!dropdownElem.contains(event.target as Node)
+			) {
 				event.stopPropagation();
 			}
 		};
@@ -277,18 +396,26 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 			}}
 			onClick={(e) => {
 				e.stopPropagation();
-			}}>
+			}}
+		>
 			<button
 				type="button"
 				className="item"
 				onClick={() => {
 					updateTableNode((tableNode) => {
 						$addUpdateTag("history-push");
-						tableNode.updateCellType(x, y, cell.type === "normal" ? "header" : "normal");
+						tableNode.updateCellType(
+							x,
+							y,
+							cell.type === "normal" ? "header" : "normal",
+						);
 					});
 					onClose();
-				}}>
-				<span className="text">{cell.type === "normal" ? "Make header" : "Remove header"}</span>
+				}}
+			>
+				<span className="text">
+					{cell.type === "normal" ? "Make header" : "Remove header"}
+				</span>
 			</button>
 			<button
 				type="button"
@@ -300,7 +427,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						root.append($createParagraphNode());
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Clear cell</span>
 			</button>
 			<hr />
@@ -313,29 +441,36 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 							onClick={() => {
 								setSortingOptions(null);
 								onClose();
-							}}>
+							}}
+						>
 							<span className="text">Remove sorting</span>
 						</button>
 					)}
-					{(sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === "descending") && (
+					{(sortingOptions === null ||
+						sortingOptions.x !== x ||
+						sortingOptions.type === "descending") && (
 						<button
 							type="button"
 							className="item"
 							onClick={() => {
 								setSortingOptions({ type: "ascending", x });
 								onClose();
-							}}>
+							}}
+						>
 							<span className="text">Sort ascending</span>
 						</button>
 					)}
-					{(sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === "ascending") && (
+					{(sortingOptions === null ||
+						sortingOptions.x !== x ||
+						sortingOptions.type === "ascending") && (
 						<button
 							type="button"
 							className="item"
 							onClick={() => {
 								setSortingOptions({ type: "descending", x });
 								onClose();
-							}}>
+							}}
+						>
 							<span className="text">Sort descending</span>
 						</button>
 					)}
@@ -351,7 +486,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						tableNode.insertRowAt(y);
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Insert row above</span>
 			</button>
 			<button
@@ -363,7 +499,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						tableNode.insertRowAt(y + 1);
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Insert row below</span>
 			</button>
 			<hr />
@@ -376,7 +513,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						tableNode.insertColumnAt(x);
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Insert column left</span>
 			</button>
 			<button
@@ -388,7 +526,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						tableNode.insertColumnAt(x + 1);
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Insert column right</span>
 			</button>
 			<hr />
@@ -402,7 +541,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 							tableNode.deleteColumnAt(x);
 						});
 						onClose();
-					}}>
+					}}
+				>
 					<span className="text">Delete column</span>
 				</button>
 			)}
@@ -416,7 +556,8 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 							tableNode.deleteRowAt(y);
 						});
 						onClose();
-					}}>
+					}}
+				>
 					<span className="text">Delete row</span>
 				</button>
 			)}
@@ -430,14 +571,41 @@ function TableActionMenu({ cell, rows, cellCoordMap, menuElem, updateCellsByID, 
 						tableNode.remove();
 					});
 					onClose();
-				}}>
+				}}
+			>
 				<span className="text">Delete table</span>
 			</button>
 		</div>
 	);
 }
 
-function TableCell({ cell, cellCoordMap, cellEditor, isEditing, isSelected, isPrimarySelected, theme, updateCellsByID, updateTableNode, rows, setSortingOptions, sortingOptions }: { cell: Cell; isEditing: boolean; isSelected: boolean; isPrimarySelected: boolean; theme: EditorThemeClasses; cellEditor: LexicalEditor; updateCellsByID: (ids: Array<string>, fn: () => void) => void; updateTableNode: (fn2: (tableNode: TableNode) => void) => void; cellCoordMap: Map<string, [number, number]>; rows: Rows; setSortingOptions: (options: null | SortOptions) => void; sortingOptions: null | SortOptions }) {
+function TableCell({
+	cell,
+	cellCoordMap,
+	cellEditor,
+	isEditing,
+	isSelected,
+	isPrimarySelected,
+	theme,
+	updateCellsByID,
+	updateTableNode,
+	rows,
+	setSortingOptions,
+	sortingOptions,
+}: {
+	cell: Cell;
+	isEditing: boolean;
+	isSelected: boolean;
+	isPrimarySelected: boolean;
+	theme: EditorThemeClasses;
+	cellEditor: LexicalEditor;
+	updateCellsByID: (ids: Array<string>, fn: () => void) => void;
+	updateTableNode: (fn2: (tableNode: TableNode) => void) => void;
+	cellCoordMap: Map<string, [number, number]>;
+	rows: Rows;
+	setSortingOptions: (options: null | SortOptions) => void;
+	sortingOptions: null | SortOptions;
+}) {
 	const [showMenu, setShowMenu] = useState(false);
 	const menuRootRef = useRef(null);
 	const isHeader = cell.type !== "normal";
@@ -446,7 +614,11 @@ function TableCell({ cell, cellCoordMap, cellEditor, isEditing, isSelected, isPr
 	const cellWidth = cell.width;
 	const menuElem = menuRootRef.current;
 	const coords = cellCoordMap.get(cell.id);
-	const isSorted = sortingOptions !== null && coords !== undefined && coords[0] === sortingOptions.x && coords[1] === 0;
+	const isSorted =
+		sortingOptions !== null &&
+		coords !== undefined &&
+		coords[0] === sortingOptions.x &&
+		coords[1] === 0;
 
 	useEffect(() => {
 		if (isEditing || !isPrimarySelected) {
@@ -459,34 +631,38 @@ function TableCell({ cell, cellCoordMap, cellEditor, isEditing, isSelected, isPr
 			className={`${theme.tableCell} ${isHeader ? theme.tableCellHeader : ""} ${isSelected ? theme.tableCellSelected : ""}`}
 			data-id={cell.id}
 			tabIndex={-1}
-			style={{ width: cellWidth !== null ? cellWidth : undefined }}>
-			{isPrimarySelected && <div className={`${theme.tableCellPrimarySelected} ${isEditing ? theme.tableCellEditing : ""}`} />}
+			style={{ width: cellWidth !== null ? cellWidth : undefined }}
+		>
+			{isPrimarySelected && (
+				<div
+					className={`${theme.tableCellPrimarySelected} ${isEditing ? theme.tableCellEditing : ""}`}
+				/>
+			)}
 			{isPrimarySelected && isEditing ? (
 				<TableCellEditor cellEditor={cellEditor} />
 			) : (
 				<>
 					<div
 						dangerouslySetInnerHTML={{
-							__html: editorStateJSON === "" ? createEmptyParagraphHTML(theme) : generateHTMLFromJSON(editorStateJSON, cellEditor),
+							__html:
+								editorStateJSON === ""
+									? createEmptyParagraphHTML(theme)
+									: generateHTMLFromJSON(editorStateJSON, cellEditor),
 						}}
 					/>
-					<div
-						className={theme.tableCellResizer}
-						data-table-resize="true"
-					/>
+					<div className={theme.tableCellResizer} data-table-resize="true" />
 				</>
 			)}
 			{isPrimarySelected && !isEditing && (
-				<div
-					className={theme.tableCellActionButtonContainer}
-					ref={menuRootRef}>
+				<div className={theme.tableCellActionButtonContainer} ref={menuRootRef}>
 					<button
 						type="button"
 						className={theme.tableCellActionButton}
 						onClick={(e) => {
 							setShowMenu(!showMenu);
 							e.stopPropagation();
-						}}>
+						}}
+					>
 						<i className="chevron-down" />
 					</button>
 				</div>
@@ -512,13 +688,24 @@ function TableCell({ cell, cellCoordMap, cellEditor, isEditing, isSelected, isPr
 	);
 }
 
-export default function TableComponent({ nodeKey, rows: rawRows, theme }: { nodeKey: NodeKey; rows: Rows; theme: EditorThemeClasses }) {
-	const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
+export default function TableComponent({
+	nodeKey,
+	rows: rawRows,
+	theme,
+}: {
+	nodeKey: NodeKey;
+	rows: Rows;
+	theme: EditorThemeClasses;
+}) {
+	const [isSelected, setSelected, clearSelection] =
+		useLexicalNodeSelection(nodeKey);
 	const resizeMeasureRef = useRef<{ size: number; point: number }>({
 		point: 0,
 		size: 0,
 	});
-	const [sortingOptions, setSortingOptions] = useState<null | SortOptions>(null);
+	const [sortingOptions, setSortingOptions] = useState<null | SortOptions>(
+		null,
+	);
 	const addRowsRef = useRef(null);
 	const lastCellIDRef = useRef<string | null>(null);
 	const tableResizerRulerRef = useRef<null | HTMLDivElement>(null);
@@ -565,7 +752,9 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 		_rows.unshift(rawRows[0]);
 		return _rows;
 	}, [rawRows, sortingOptions]);
-	const [primarySelectedCellID, setPrimarySelectedCellID] = useState<null | string>(null);
+	const [primarySelectedCellID, setPrimarySelectedCellID] = useState<
+		null | string
+	>(null);
 	const cellEditor = useMemo<null | LexicalEditor>(() => {
 		if (cellEditorConfig === null) {
 			return null;
@@ -579,11 +768,18 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 		return _cellEditor;
 	}, [cellEditorConfig]);
 	const [selectedCellIDs, setSelectedCellIDs] = useState<Array<string>>([]);
-	const selectedCellSet = useMemo<Set<string>>(() => new Set(selectedCellIDs), [selectedCellIDs]);
+	const selectedCellSet = useMemo<Set<string>>(
+		() => new Set(selectedCellIDs),
+		[selectedCellIDs],
+	);
 
 	useEffect(() => {
 		const tableElem = tableRef.current;
-		if (isSelected && document.activeElement === document.body && tableElem !== null) {
+		if (
+			isSelected &&
+			document.activeElement === document.body &&
+			tableElem !== null
+		) {
 			tableElem.focus();
 		}
 	}, [isSelected]);
@@ -619,7 +815,12 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			const id = rows[y].cells[x].id;
 			lastCellIDRef.current = id;
 			if (extend) {
-				const selectedIDs = getSelectedIDs(rows, primarySelectedCellID as string, id, cellCoordMap);
+				const selectedIDs = getSelectedIDs(
+					rows,
+					primarySelectedCellID as string,
+					id,
+					cellCoordMap,
+				);
 				setSelectedCellIDs(selectedIDs);
 			} else {
 				setPrimarySelectedCellID(id);
@@ -670,7 +871,11 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 
 		const handlePointerDown = (event: PointerEvent) => {
 			const possibleID = getCellID(event.target as HTMLElement);
-			if (possibleID !== null && editor.isEditable() && tableElem.contains(event.target as HTMLElement)) {
+			if (
+				possibleID !== null &&
+				editor.isEditable() &&
+				tableElem.contains(event.target as HTMLElement)
+			) {
 				if (isAtEdgeOfTable(event)) {
 					setSelected(true);
 					setPrimarySelectedCellID(null);
@@ -699,7 +904,10 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					lastCellIDRef.current = null;
 				}
 				setSelectedCellIDs(NO_CELLS);
-			} else if (primarySelectedCellID !== null && !isTargetOnPossibleUIControl(event.target as HTMLElement)) {
+			} else if (
+				primarySelectedCellID !== null &&
+				!isTargetOnPossibleUIControl(event.target as HTMLElement)
+			) {
 				setSelected(false);
 				mouseDownRef.current = false;
 				if (isEditing) {
@@ -736,12 +944,23 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			if (!isEditing) {
 				const { clientX, clientY } = event;
 				const { width, x, y, height } = tableRect;
-				const isOnRightEdge = clientX > x + width * 0.9 && clientX < x + width + 40 && !mouseDownRef.current;
+				const isOnRightEdge =
+					clientX > x + width * 0.9 &&
+					clientX < x + width + 40 &&
+					!mouseDownRef.current;
 				setShowAddColumns(isOnRightEdge);
-				const isOnBottomEdge = event.target === addRowsRef.current || (clientY > y + height * 0.85 && clientY < y + height + 5 && !mouseDownRef.current);
+				const isOnBottomEdge =
+					event.target === addRowsRef.current ||
+					(clientY > y + height * 0.85 &&
+						clientY < y + height + 5 &&
+						!mouseDownRef.current);
 				setShowAddRows(isOnBottomEdge);
 			}
-			if (isEditing || !mouseDownRef.current || primarySelectedCellID === null) {
+			if (
+				isEditing ||
+				!mouseDownRef.current ||
+				primarySelectedCellID === null
+			) {
 				return;
 			}
 			const possibleID = getCellID(event.target as HTMLElement);
@@ -749,7 +968,12 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				if (selectedCellIDs.length === 0) {
 					tableElem.style.userSelect = "none";
 				}
-				const selectedIDs = getSelectedIDs(rows, primarySelectedCellID, possibleID, cellCoordMap);
+				const selectedIDs = getSelectedIDs(
+					rows,
+					primarySelectedCellID,
+					possibleID,
+					cellCoordMap,
+				);
 				if (selectedIDs.length === 1) {
 					setSelectedCellIDs(NO_CELLS);
 				} else {
@@ -774,7 +998,11 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				});
 				setResizingID(null);
 			}
-			if (tableElem !== null && selectedCellIDs.length > 1 && mouseDownRef.current) {
+			if (
+				tableElem !== null &&
+				selectedCellIDs.length > 1 &&
+				mouseDownRef.current
+			) {
 				tableElem.style.userSelect = "text";
 				window.getSelection()?.removeAllRanges();
 			}
@@ -790,7 +1018,21 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			doc.removeEventListener("pointermove", handlePointerMove);
 			doc.removeEventListener("pointerup", handlePointerUp);
 		};
-	}, [cellEditor, editor, isEditing, rows, saveEditorToJSON, primarySelectedCellID, selectedCellSet, selectedCellIDs, cellCoordMap, resizingID, updateTableNode, setSelected, selectTable]);
+	}, [
+		cellEditor,
+		editor,
+		isEditing,
+		rows,
+		saveEditorToJSON,
+		primarySelectedCellID,
+		selectedCellSet,
+		selectedCellIDs,
+		cellCoordMap,
+		resizingID,
+		updateTableNode,
+		setSelected,
+		selectTable,
+	]);
 
 	useEffect(() => {
 		if (!isEditing && primarySelectedCellID !== null) {
@@ -817,13 +1059,29 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			const handleKeyDown = (event: KeyboardEvent) => {
 				// Ignore arrow keys, escape or tab
 				const keyCode = event.keyCode;
-				if (keyCode === 16 || keyCode === 27 || keyCode === 9 || keyCode === 37 || keyCode === 38 || keyCode === 39 || keyCode === 40 || keyCode === 8 || keyCode === 46 || !editor.isEditable()) {
+				if (
+					keyCode === 16 ||
+					keyCode === 27 ||
+					keyCode === 9 ||
+					keyCode === 37 ||
+					keyCode === 38 ||
+					keyCode === 39 ||
+					keyCode === 40 ||
+					keyCode === 8 ||
+					keyCode === 46 ||
+					!editor.isEditable()
+				) {
 					return;
 				}
 				if (keyCode === 13) {
 					event.preventDefault();
 				}
-				if (!isEditing && primarySelectedCellID !== null && editor.getEditorState().read(() => $getSelection() === null) && (event.target as HTMLElement).contentEditable !== "true") {
+				if (
+					!isEditing &&
+					primarySelectedCellID !== null &&
+					editor.getEditorState().read(() => $getSelection() === null) &&
+					(event.target as HTMLElement).contentEditable !== "true"
+				) {
 					if (isCopy(keyCode, event.shiftKey, event.metaKey, event.ctrlKey)) {
 						editor.dispatchCommand(COPY_COMMAND, event);
 						return;
@@ -854,7 +1112,14 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				doc.removeEventListener("keydown", handleKeyDown);
 			};
 		}
-	}, [cellEditor, editor, isEditing, rows, primarySelectedCellID, cellCoordMap]);
+	}, [
+		cellEditor,
+		editor,
+		isEditing,
+		rows,
+		primarySelectedCellID,
+		cellCoordMap,
+	]);
 
 	const updateCellsByID = useCallback(
 		(ids: Array<string>, fn: () => void) => {
@@ -879,7 +1144,14 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			});
 		}
 		return false;
-	}, [isEditing, isSelected, primarySelectedCellID, selectedCellIDs, updateCellsByID, updateTableNode]);
+	}, [
+		isEditing,
+		isSelected,
+		primarySelectedCellID,
+		selectedCellIDs,
+		updateCellsByID,
+		updateTableNode,
+	]);
 
 	useEffect(() => {
 		const tableElem = tableRef.current;
@@ -887,8 +1159,14 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			return;
 		}
 
-		const copyDataToClipboard = (event: ClipboardEvent, htmlString: string, lexicalString: string, plainTextString: string) => {
-			const clipboardData = event instanceof KeyboardEvent ? null : event.clipboardData;
+		const copyDataToClipboard = (
+			event: ClipboardEvent,
+			htmlString: string,
+			lexicalString: string,
+			plainTextString: string,
+		) => {
+			const clipboardData =
+				event instanceof KeyboardEvent ? null : event.clipboardData;
 			event.preventDefault();
 
 			if (clipboardData != null) {
@@ -912,16 +1190,24 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			}
 		};
 
-		const getTypeFromObject = async (clipboardData: DataTransfer | ClipboardItem, type: string): Promise<string> => {
+		const getTypeFromObject = async (
+			clipboardData: DataTransfer | ClipboardItem,
+			type: string,
+		): Promise<string> => {
 			try {
-				return clipboardData instanceof DataTransfer ? clipboardData.getData(type) : clipboardData instanceof ClipboardItem ? await (await clipboardData.getType(type)).text() : "";
+				return clipboardData instanceof DataTransfer
+					? clipboardData.getData(type)
+					: clipboardData instanceof ClipboardItem
+						? await (await clipboardData.getType(type)).text()
+						: "";
 			} catch {
 				return "";
 			}
 		};
 
 		const pasteContent = async (event: ClipboardEvent) => {
-			let clipboardData: null | DataTransfer | ClipboardItem = (event instanceof InputEvent ? null : event.clipboardData) || null;
+			let clipboardData: null | DataTransfer | ClipboardItem =
+				(event instanceof InputEvent ? null : event.clipboardData) || null;
 
 			if (primarySelectedCellID !== null && cellEditor !== null) {
 				event.preventDefault();
@@ -934,28 +1220,49 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 						// NO-OP
 					}
 				}
-				const lexicalString = clipboardData !== null ? await getTypeFromObject(clipboardData, "application/x-lexical-editor") : "";
+				const lexicalString =
+					clipboardData !== null
+						? await getTypeFromObject(
+								clipboardData,
+								"application/x-lexical-editor",
+							)
+						: "";
 
 				if (lexicalString) {
 					try {
 						const payload = JSON.parse(lexicalString);
-						if (payload.namespace === editor._config.namespace && Array.isArray(payload.nodes)) {
-							$updateCells(rows, [primarySelectedCellID], cellCoordMap, cellEditor, updateTableNode, () => {
-								const root = $getRoot();
-								root.clear();
-								root.append($createParagraphNode());
-								root.selectEnd();
-								const nodes = $generateNodesFromSerializedNodes(payload.nodes);
-								const sel = $getSelection();
-								if ($isRangeSelection(sel)) {
-									$insertGeneratedNodes(cellEditor, nodes, sel);
-								}
-							});
+						if (
+							payload.namespace === editor._config.namespace &&
+							Array.isArray(payload.nodes)
+						) {
+							$updateCells(
+								rows,
+								[primarySelectedCellID],
+								cellCoordMap,
+								cellEditor,
+								updateTableNode,
+								() => {
+									const root = $getRoot();
+									root.clear();
+									root.append($createParagraphNode());
+									root.selectEnd();
+									const nodes = $generateNodesFromSerializedNodes(
+										payload.nodes,
+									);
+									const sel = $getSelection();
+									if ($isRangeSelection(sel)) {
+										$insertGeneratedNodes(cellEditor, nodes, sel);
+									}
+								},
+							);
 							return;
 						}
 					} catch {}
 				}
-				const htmlString = clipboardData !== null ? await getTypeFromObject(clipboardData, "text/html") : "";
+				const htmlString =
+					clipboardData !== null
+						? await getTypeFromObject(clipboardData, "text/html")
+						: "";
 
 				if (htmlString) {
 					try {
@@ -966,41 +1273,61 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 						if (possibleTableElement != null) {
 							const pasteRows = extractRowsFromHTML(possibleTableElement);
 							updateTableNode((tableNode) => {
-								const [x, y] = cellCoordMap.get(primarySelectedCellID) as [number, number];
+								const [x, y] = cellCoordMap.get(primarySelectedCellID) as [
+									number,
+									number,
+								];
 								$addUpdateTag("history-push");
 								tableNode.mergeRows(x, y, pasteRows);
 							});
 							return;
 						}
-						$updateCells(rows, [primarySelectedCellID], cellCoordMap, cellEditor, updateTableNode, () => {
-							const root = $getRoot();
-							root.clear();
-							root.append($createParagraphNode());
-							root.selectEnd();
-							const nodes = $generateNodesFromDOM(editor, dom);
-							const sel = $getSelection();
-							if ($isRangeSelection(sel)) {
-								$insertGeneratedNodes(cellEditor, nodes, sel);
-							}
-						});
+						$updateCells(
+							rows,
+							[primarySelectedCellID],
+							cellCoordMap,
+							cellEditor,
+							updateTableNode,
+							() => {
+								const root = $getRoot();
+								root.clear();
+								root.append($createParagraphNode());
+								root.selectEnd();
+								const nodes = $generateNodesFromDOM(editor, dom);
+								const sel = $getSelection();
+								if ($isRangeSelection(sel)) {
+									$insertGeneratedNodes(cellEditor, nodes, sel);
+								}
+							},
+						);
 						return;
 					} catch {}
 				}
 
 				// Multi-line plain text in rich text mode pasted as separate paragraphs
 				// instead of single paragraph with linebreaks.
-				const text = clipboardData !== null ? await getTypeFromObject(clipboardData, "text/plain") : "";
+				const text =
+					clipboardData !== null
+						? await getTypeFromObject(clipboardData, "text/plain")
+						: "";
 
 				if (text != null) {
-					$updateCells(rows, [primarySelectedCellID], cellCoordMap, cellEditor, updateTableNode, () => {
-						const root = $getRoot();
-						root.clear();
-						root.selectEnd();
-						const sel = $getSelection();
-						if (sel !== null) {
-							sel.insertRawText(text);
-						}
-					});
+					$updateCells(
+						rows,
+						[primarySelectedCellID],
+						cellCoordMap,
+						cellEditor,
+						updateTableNode,
+						() => {
+							const root = $getRoot();
+							root.clear();
+							root.selectEnd();
+							const sel = $getSelection();
+							if (sel !== null) {
+								sel.insertRawText(text);
+							}
+						},
+					);
 				}
 			}
 		};
@@ -1014,9 +1341,13 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					return;
 				}
 				const editorState = cellEditor.parseEditorState(json);
-				const plainTextString = editorState.read(() => $getRoot().getTextContent());
+				const plainTextString = editorState.read(() =>
+					$getRoot().getTextContent(),
+				);
 				const lexicalString = editorState.read(() => {
-					return JSON.stringify($generateJSONFromSelectedNodes(cellEditor, null));
+					return JSON.stringify(
+						$generateJSONFromSelectedNodes(cellEditor, null),
+					);
 				});
 
 				copyDataToClipboard(event, htmlString, lexicalString, plainTextString);
@@ -1025,8 +1356,16 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 
 		const copyCellRange = (event: ClipboardEvent) => {
 			const lastCellID = lastCellIDRef.current;
-			if (primarySelectedCellID !== null && cellEditor !== null && lastCellID !== null) {
-				const rect = getSelectedRect(primarySelectedCellID, lastCellID, cellCoordMap);
+			if (
+				primarySelectedCellID !== null &&
+				cellEditor !== null &&
+				lastCellID !== null
+			) {
+				const rect = getSelectedRect(
+					primarySelectedCellID,
+					lastCellID,
+					cellCoordMap,
+				);
 				if (rect === null) {
 					return;
 				}
@@ -1047,9 +1386,17 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			}
 		};
 
-		const handlePaste = (event: ClipboardEvent, activeEditor: LexicalEditor) => {
+		const handlePaste = (
+			event: ClipboardEvent,
+			activeEditor: LexicalEditor,
+		) => {
 			const selection = $getSelection();
-			if (primarySelectedCellID !== null && !isEditing && selection === null && activeEditor === editor) {
+			if (
+				primarySelectedCellID !== null &&
+				!isEditing &&
+				selection === null &&
+				activeEditor === editor
+			) {
 				pasteContent(event);
 				mouseDownRef.current = false;
 				setSelectedCellIDs(NO_CELLS);
@@ -1060,7 +1407,12 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 
 		const handleCopy = (event: ClipboardEvent, activeEditor: LexicalEditor) => {
 			const selection = $getSelection();
-			if (primarySelectedCellID !== null && !isEditing && selection === null && activeEditor === editor) {
+			if (
+				primarySelectedCellID !== null &&
+				!isEditing &&
+				selection === null &&
+				activeEditor === editor
+			) {
 				if (selectedCellIDs.length === 0) {
 					copyPrimaryCell(event);
 				} else {
@@ -1083,8 +1435,16 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				},
 				COMMAND_PRIORITY_LOW,
 			),
-			editor.registerCommand<ClipboardEvent>(PASTE_COMMAND, handlePaste, COMMAND_PRIORITY_LOW),
-			editor.registerCommand<ClipboardEvent>(COPY_COMMAND, handleCopy, COMMAND_PRIORITY_LOW),
+			editor.registerCommand<ClipboardEvent>(
+				PASTE_COMMAND,
+				handlePaste,
+				COMMAND_PRIORITY_LOW,
+			),
+			editor.registerCommand<ClipboardEvent>(
+				COPY_COMMAND,
+				handleCopy,
+				COMMAND_PRIORITY_LOW,
+			),
 			editor.registerCommand<ClipboardEvent>(
 				CUT_COMMAND,
 				(event: ClipboardEvent, activeEditor) => {
@@ -1096,16 +1456,31 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				},
 				COMMAND_PRIORITY_LOW,
 			),
-			editor.registerCommand<KeyboardEvent>(KEY_BACKSPACE_COMMAND, clearCellsCommand, COMMAND_PRIORITY_LOW),
-			editor.registerCommand<KeyboardEvent>(KEY_DELETE_COMMAND, clearCellsCommand, COMMAND_PRIORITY_LOW),
+			editor.registerCommand<KeyboardEvent>(
+				KEY_BACKSPACE_COMMAND,
+				clearCellsCommand,
+				COMMAND_PRIORITY_LOW,
+			),
+			editor.registerCommand<KeyboardEvent>(
+				KEY_DELETE_COMMAND,
+				clearCellsCommand,
+				COMMAND_PRIORITY_LOW,
+			),
 			editor.registerCommand<TextFormatType>(
 				FORMAT_TEXT_COMMAND,
 				(payload) => {
 					if (primarySelectedCellID !== null && !isEditing) {
-						$updateCells(rows, [primarySelectedCellID, ...selectedCellIDs], cellCoordMap, cellEditor, updateTableNode, () => {
-							const sel = $createSelectAll();
-							sel.formatText(payload);
-						});
+						$updateCells(
+							rows,
+							[primarySelectedCellID, ...selectedCellIDs],
+							cellCoordMap,
+							cellEditor,
+							updateTableNode,
+							() => {
+								const sel = $createSelectAll();
+								sel.formatText(payload);
+							},
+						);
 						return true;
 					}
 					return false;
@@ -1116,7 +1491,14 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				KEY_ENTER_COMMAND,
 				(event, targetEditor) => {
 					const selection = $getSelection();
-					if (primarySelectedCellID === null && !isEditing && $isNodeSelection(selection) && selection.has(nodeKey) && selection.getNodes().length === 1 && targetEditor === editor) {
+					if (
+						primarySelectedCellID === null &&
+						!isEditing &&
+						$isNodeSelection(selection) &&
+						selection.has(nodeKey) &&
+						selection.getNodes().length === 1 &&
+						targetEditor === editor
+					) {
 						const firstCellID = rows[0].cells[0].id;
 						setPrimarySelectedCellID(firstCellID);
 						focusCell(tableElem, firstCellID);
@@ -1133,9 +1515,16 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				KEY_TAB_COMMAND,
 				(event) => {
 					const selection = $getSelection();
-					if (!isEditing && selection === null && primarySelectedCellID !== null) {
+					if (
+						!isEditing &&
+						selection === null &&
+						primarySelectedCellID !== null
+					) {
 						const isBackward = event.shiftKey;
-						const [x, y] = cellCoordMap.get(primarySelectedCellID) as [number, number];
+						const [x, y] = cellCoordMap.get(primarySelectedCellID) as [
+							number,
+							number,
+						];
 						event.preventDefault();
 						let nextX = null;
 						let nextY = null;
@@ -1171,7 +1560,9 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					const selection = $getSelection();
 					if (!isEditing && selection === null) {
 						const extend = event.shiftKey;
-						const cellID = extend ? lastCellIDRef.current || primarySelectedCellID : primarySelectedCellID;
+						const cellID = extend
+							? lastCellIDRef.current || primarySelectedCellID
+							: primarySelectedCellID;
 						if (cellID !== null) {
 							const [x, y] = cellCoordMap.get(cellID) as [number, number];
 							if (y !== 0) {
@@ -1183,7 +1574,13 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					if (!$isRangeSelection(selection) || targetEditor !== cellEditor) {
 						return false;
 					}
-					if (selection.isCollapsed() && selection.anchor.getNode().getTopLevelElementOrThrow().getPreviousSibling() === null) {
+					if (
+						selection.isCollapsed() &&
+						selection.anchor
+							.getNode()
+							.getTopLevelElementOrThrow()
+							.getPreviousSibling() === null
+					) {
 						event.preventDefault();
 						return true;
 					}
@@ -1197,7 +1594,9 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					const selection = $getSelection();
 					if (!isEditing && selection === null) {
 						const extend = event.shiftKey;
-						const cellID = extend ? lastCellIDRef.current || primarySelectedCellID : primarySelectedCellID;
+						const cellID = extend
+							? lastCellIDRef.current || primarySelectedCellID
+							: primarySelectedCellID;
 						if (cellID !== null) {
 							const [x, y] = cellCoordMap.get(cellID) as [number, number];
 							if (y !== rows.length - 1) {
@@ -1209,7 +1608,13 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					if (!$isRangeSelection(selection) || targetEditor !== cellEditor) {
 						return false;
 					}
-					if (selection.isCollapsed() && selection.anchor.getNode().getTopLevelElementOrThrow().getNextSibling() === null) {
+					if (
+						selection.isCollapsed() &&
+						selection.anchor
+							.getNode()
+							.getTopLevelElementOrThrow()
+							.getNextSibling() === null
+					) {
 						event.preventDefault();
 						return true;
 					}
@@ -1223,7 +1628,9 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					const selection = $getSelection();
 					if (!isEditing && selection === null) {
 						const extend = event.shiftKey;
-						const cellID = extend ? lastCellIDRef.current || primarySelectedCellID : primarySelectedCellID;
+						const cellID = extend
+							? lastCellIDRef.current || primarySelectedCellID
+							: primarySelectedCellID;
 						if (cellID !== null) {
 							const [x, y] = cellCoordMap.get(cellID) as [number, number];
 							if (x !== 0) {
@@ -1249,7 +1656,9 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					const selection = $getSelection();
 					if (!isEditing && selection === null) {
 						const extend = event.shiftKey;
-						const cellID = extend ? lastCellIDRef.current || primarySelectedCellID : primarySelectedCellID;
+						const cellID = extend
+							? lastCellIDRef.current || primarySelectedCellID
+							: primarySelectedCellID;
 						if (cellID !== null) {
 							const [x, y] = cellCoordMap.get(cellID) as [number, number];
 							if (x !== rows[y].cells.length - 1) {
@@ -1263,7 +1672,12 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 					}
 					if (selection.isCollapsed()) {
 						const anchor = selection.anchor;
-						if ((anchor.type === "text" && anchor.offset === anchor.getNode().getTextContentSize()) || (anchor.type === "element" && anchor.offset === anchor.getNode().getChildrenSize())) {
+						if (
+							(anchor.type === "text" &&
+								anchor.offset === anchor.getNode().getTextContentSize()) ||
+							(anchor.type === "element" &&
+								anchor.offset === anchor.getNode().getChildrenSize())
+						) {
 							event.preventDefault();
 							return true;
 						}
@@ -1300,7 +1714,23 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				COMMAND_PRIORITY_LOW,
 			),
 		);
-	}, [cellCoordMap, cellEditor, clearCellsCommand, clearSelection, editor, isEditing, modifySelectedCells, nodeKey, primarySelectedCellID, rows, saveEditorToJSON, selectTable, selectedCellIDs, setSelected, updateTableNode]);
+	}, [
+		cellCoordMap,
+		cellEditor,
+		clearCellsCommand,
+		clearSelection,
+		editor,
+		isEditing,
+		modifySelectedCells,
+		nodeKey,
+		primarySelectedCellID,
+		rows,
+		saveEditorToJSON,
+		selectTable,
+		selectedCellIDs,
+		setSelected,
+		updateTableNode,
+	]);
 
 	if (cellEditor === null) {
 		return;
@@ -1311,12 +1741,11 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 			<table
 				className={`${theme.table} ${isSelected ? theme.tableSelected : ""}`}
 				ref={tableRef}
-				tabIndex={-1}>
+				tabIndex={-1}
+			>
 				<tbody>
 					{rows.map((row) => (
-						<tr
-							key={row.id}
-							className={theme.tableRow}>
+						<tr key={row.id} className={theme.tableRow}>
 							{row.cells.map((cell) => {
 								const { id } = cell;
 								return (
@@ -1357,10 +1786,7 @@ export default function TableComponent({ nodeKey, rows: rawRows, theme }: { node
 				/>
 			)}
 			{resizingID !== null && (
-				<div
-					className={theme.tableResizeRuler}
-					ref={tableResizerRulerRef}
-				/>
+				<div className={theme.tableResizeRuler} ref={tableResizerRulerRef} />
 			)}
 		</div>
 	);

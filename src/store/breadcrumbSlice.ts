@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: { data: any[] } = {
-	data: []
-}
+	data: [],
+};
 
 const appSlice = createSlice({
 	name: "breadcrumbState",
 	initialState,
 	reducers: {
 		deleteBreadcrumb: (state, action) => {
-			const newState = state.data.filter((item: any) => item.id !== action.payload);
+			const newState = state.data.filter(
+				(item: any) => item.id !== action.payload,
+			);
 			return { ...state, data: newState };
 		},
 		addBreadcrumb: (state, action) => {

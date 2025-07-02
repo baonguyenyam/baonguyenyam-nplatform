@@ -19,7 +19,8 @@ export class GlobalPosition {
 		if (this.frameEl) {
 			this.frameRect = this.frameEl.getBoundingClientRect();
 
-			this.scaleFactor = this.frameRect.width / (this.frameEl.contentWindow?.innerWidth || 1);
+			this.scaleFactor =
+				this.frameRect.width / (this.frameEl.contentWindow?.innerWidth || 1);
 		}
 	}
 

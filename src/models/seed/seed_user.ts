@@ -26,7 +26,8 @@ export const UserSeed = async () => {
 				state: "TX",
 				zip: "76119",
 				country: "United States",
-				avatar: "https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
+				avatar:
+					"https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
 				role: "ADMIN",
 				published: true,
 				password,
@@ -45,7 +46,8 @@ export const UserSeed = async () => {
 				state: "TX",
 				zip: "76119",
 				country: "United States",
-				avatar: "https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
+				avatar:
+					"https://gravatar.com/avatar/c117ad54bfae426e74c0b69f49b213156477c0f43eb73e063758c35b991075a4",
 				role: "ADMIN",
 				published: true,
 				password,

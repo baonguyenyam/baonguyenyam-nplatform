@@ -23,16 +23,20 @@ type Props = {
 	onChange?: (color: string) => void;
 };
 
-export default function DropdownColorPicker({ disabled = false, stopCloseOnClickSelf = true, color, onChange, ...rest }: Props) {
+export default function DropdownColorPicker({
+	disabled = false,
+	stopCloseOnClickSelf = true,
+	color,
+	onChange,
+	...rest
+}: Props) {
 	return (
 		<DropDown
 			{...rest}
 			disabled={disabled}
-			stopCloseOnClickSelf={stopCloseOnClickSelf}>
-			<ColorPicker
-				color={color}
-				onChange={onChange}
-			/>
+			stopCloseOnClickSelf={stopCloseOnClickSelf}
+		>
+			<ColorPicker color={color} onChange={onChange} />
 		</DropDown>
 	);
 }

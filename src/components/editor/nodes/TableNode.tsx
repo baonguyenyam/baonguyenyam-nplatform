@@ -8,7 +8,17 @@
 
 import * as React from "react";
 import { Suspense } from "react";
-import type { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, LexicalEditor, LexicalNode, NodeKey, SerializedLexicalNode, Spread } from "lexical";
+import type {
+	DOMConversionMap,
+	DOMConversionOutput,
+	DOMExportOutput,
+	EditorConfig,
+	LexicalEditor,
+	LexicalNode,
+	NodeKey,
+	SerializedLexicalNode,
+	Spread,
+} from "lexical";
 import { DecoratorNode } from "lexical";
 
 export type Cell = {
@@ -30,9 +40,13 @@ export type Rows = Array<Row>;
 export const cellHTMLCache: Map<string, string> = new Map();
 export const cellTextContentCache: Map<string, string> = new Map();
 
-const emptyEditorJSON = '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
+const emptyEditorJSON =
+	'{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
 
-const plainTextEditorJSON = (text: string) => (text === "" ? emptyEditorJSON : `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":${text},"type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`);
+const plainTextEditorJSON = (text: string) =>
+	text === ""
+		? emptyEditorJSON
+		: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":${text},"type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`;
 
 const TableComponent = React.lazy(() => import("./TableComponent"));
 
@@ -82,7 +96,9 @@ export function extractRowsFromHTML(tableElem: HTMLTableElement): Rows {
 			const cellElem = cellElems[x] as HTMLElement;
 			const isHeader = cellElem.nodeName === "TH";
 			const cell = createCell(isHeader ? "header" : "normal");
-			cell.json = plainTextEditorJSON(JSON.stringify(cellElem.innerText.replace(/\n/g, " ")));
+			cell.json = plainTextEditorJSON(
+				JSON.stringify(cellElem.innerText.replace(/\n/g, " ")),
+			);
 			cells.push(cell);
 		}
 		const row = createRow();
@@ -109,7 +125,9 @@ function convertTableElement(domNode: HTMLElement): null | DOMConversionOutput {
 			const cellElem = cellElems[x] as HTMLElement;
 			const isHeader = cellElem.nodeName === "TH";
 			const cell = createCell(isHeader ? "header" : "normal");
-			cell.json = plainTextEditorJSON(JSON.stringify(cellElem.innerText.replace(/\n/g, " ")));
+			cell.json = plainTextEditorJSON(
+				JSON.stringify(cellElem.innerText.replace(/\n/g, " ")),
+			);
 			cells.push(cell);
 		}
 		const row = createRow();
@@ -119,25 +137,42 @@ function convertTableElement(domNode: HTMLElement): null | DOMConversionOutput {
 	return { node: $createTableNode(rows) };
 }
 
-export function exportTableCellsToHTML(rows: Rows, rect?: { startX: number; endX: number; startY: number; endY: number }): HTMLElement {
+export function exportTableCellsToHTML(
+	rows: Rows,
+	rect?: { startX: number; endX: number; startY: number; endY: number },
+): HTMLElement {
 	const table = document.createElement("table");
 	const colGroup = document.createElement("colgroup");
 	const tBody = document.createElement("tbody");
 	const firstRow = rows[0];
 
-	for (let x = rect != null ? rect.startX : 0; x < (rect != null ? rect.endX + 1 : firstRow.cells.length); x++) {
+	for (
+		let x = rect != null ? rect.startX : 0;
+		x < (rect != null ? rect.endX + 1 : firstRow.cells.length);
+		x++
+	) {
 		const col = document.createElement("col");
 		colGroup.append(col);
 	}
 
-	for (let y = rect != null ? rect.startY : 0; y < (rect != null ? rect.endY + 1 : rows.length); y++) {
+	for (
+		let y = rect != null ? rect.startY : 0;
+		y < (rect != null ? rect.endY + 1 : rows.length);
+		y++
+	) {
 		const row = rows[y];
 		const cells = row.cells;
 		const rowElem = document.createElement("tr");
 
-		for (let x = rect != null ? rect.startX : 0; x < (rect != null ? rect.endX + 1 : cells.length); x++) {
+		for (
+			let x = rect != null ? rect.startX : 0;
+			x < (rect != null ? rect.endX + 1 : cells.length);
+			x++
+		) {
 			const cell = cells[x];
-			const cellElem = document.createElement(cell.type === "header" ? "th" : "td");
+			const cellElem = document.createElement(
+				cell.type === "header" ? "th" : "td",
+			);
 			cellElem.innerHTML = cellHTMLCache.get(cell.json) || "";
 			rowElem.appendChild(cellElem);
 		}
@@ -213,7 +248,11 @@ export class TableNode extends DecoratorNode<React.JSX.Element> {
 			for (let x = startX; x < endX; x++) {
 				const cell = cells[x];
 				const mergeCell = mergeCells[x - startX];
-				const cellClone = { ...cell, json: mergeCell.json, type: mergeCell.type };
+				const cellClone = {
+					...cell,
+					json: mergeCell.json,
+					type: mergeCell.type,
+				};
 				cellsClone[x] = cellClone;
 			}
 			rows[y] = rowClone;
@@ -354,7 +393,9 @@ export class TableNode extends DecoratorNode<React.JSX.Element> {
 	}
 }
 
-export function $isTableNode(node: LexicalNode | null | undefined): node is TableNode {
+export function $isTableNode(
+	node: LexicalNode | null | undefined,
+): node is TableNode {
 	return node instanceof TableNode;
 }
 
@@ -362,13 +403,21 @@ export function $createTableNode(rows: Rows): TableNode {
 	return new TableNode(rows);
 }
 
-export function $createTableNodeWithDimensions(rowCount: number, columnCount: number, includeHeaders = true): TableNode {
+export function $createTableNodeWithDimensions(
+	rowCount: number,
+	columnCount: number,
+	includeHeaders = true,
+): TableNode {
 	const rows: Rows = [];
 	for (let y = 0; y < columnCount; y++) {
 		const row: Row = createRow();
 		rows.push(row);
 		for (let x = 0; x < rowCount; x++) {
-			row.cells.push(createCell(includeHeaders === true && (y === 0 || x === 0) ? "header" : "normal"));
+			row.cells.push(
+				createCell(
+					includeHeaders === true && (y === 0 || x === 0) ? "header" : "normal",
+				),
+			);
 		}
 	}
 	return new TableNode(rows);

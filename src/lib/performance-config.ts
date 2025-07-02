@@ -50,7 +50,11 @@ export const PERFORMANCE_CONFIG = {
 		MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
 		ALLOWED_TYPES: {
 			IMAGES: ["image/jpeg", "image/png", "image/webp", "image/gif"],
-			DOCUMENTS: ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+			DOCUMENTS: [
+				"application/pdf",
+				"application/msword",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			],
 			VIDEOS: ["video/mp4", "video/webm"],
 		},
 	},

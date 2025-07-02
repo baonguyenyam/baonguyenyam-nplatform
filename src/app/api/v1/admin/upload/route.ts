@@ -17,7 +17,9 @@ async function POST_Handler(req: NextRequest) {
 
 	try {
 		const formData = await req.formData();
-		const files = formData.getAll("file").filter((item): item is File => item instanceof File);
+		const files = formData
+			.getAll("file")
+			.filter((item): item is File => item instanceof File);
 		const db = [];
 
 		for (const file of files) {
@@ -36,47 +38,90 @@ async function POST_Handler(req: NextRequest) {
 				if (fileSizeInMB > maxFileSize) {
 					return NextResponse.json(
 						{ message: `File size exceeds ${maxFileSize / (1024 * 1024)}MB` },
-						{ status: 400 }
+						{ status: 400 },
 					);
 				}
 				if (!file) {
-					return NextResponse.json({ message: "File not found" }, { status: 400 });
+					return NextResponse.json(
+						{ message: "File not found" },
+						{ status: 400 },
+					);
 				}
 				if (!fileName) {
-					return NextResponse.json({ message: "Invalid file" }, { status: 400 });
+					return NextResponse.json(
+						{ message: "Invalid file" },
+						{ status: 400 },
+					);
 				}
 				if (!fileBuffer) {
-					return NextResponse.json({ message: "Invalid file data" }, { status: 400 });
+					return NextResponse.json(
+						{ message: "Invalid file data" },
+						{ status: 400 },
+					);
 				}
 
 				if (r2 === "true" || r2 === "1") {
 					if (!id) {
-						return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+						return NextResponse.json(
+							{ message: "User ID is required" },
+							{ status: 400 },
+						);
 					}
-					const item = await actions.upload(upload_dir, fileHash, fileExtension, fileBuffer, fileSize, fileMimeType, fileName, id);
+					const item = await actions.upload(
+						upload_dir,
+						fileHash,
+						fileExtension,
+						fileBuffer,
+						fileSize,
+						fileMimeType,
+						fileName,
+						id,
+					);
 
 					if (item) {
 						db.push(item);
 					} else {
-						return NextResponse.json({ message: "Can not upload the file" }, { status: 500 });
+						return NextResponse.json(
+							{ message: "Can not upload the file" },
+							{ status: 500 },
+						);
 					}
 				} else {
 					if (!id) {
-						return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+						return NextResponse.json(
+							{ message: "User ID is required" },
+							{ status: 400 },
+						);
 					}
-					const item = await actions.uploadSave(upload_path, fileHash, fileExtension, fileBuffer, fileName, id, fileMimeType, fileSize, upload_dir);
+					const item = await actions.uploadSave(
+						upload_path,
+						fileHash,
+						fileExtension,
+						fileBuffer,
+						fileName,
+						id,
+						fileMimeType,
+						fileSize,
+						upload_dir,
+					);
 
 					if (item) {
 						db.push(item);
 					} else {
-						return NextResponse.json({ message: "Can not upload the file" }, { status: 500 });
+						return NextResponse.json(
+							{ message: "Can not upload the file" },
+							{ status: 500 },
+						);
 					}
 				}
 			}
 		}
 
 		if (db.length === 0) {
-			return NextResponse.json({ message: "Can not upload the file" }, { status: 400 });
+			return NextResponse.json(
+				{ message: "Can not upload the file" },
+				{ status: 400 },
+			);
 		}
 
 		return NextResponse.json({
@@ -85,7 +130,10 @@ async function POST_Handler(req: NextRequest) {
 			success: "success",
 		});
 	} catch (error) {
-		return NextResponse.json({ message: "Error uploading file" }, { status: 500 });
+		return NextResponse.json(
+			{ message: "Error uploading file" },
+			{ status: 500 },
+		);
 	}
 }
 

@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, PermissionLevel, RESOURCES, UserPermissionContext } from "./permissions";
+import {
+	ACTIONS,
+	createPermissionChecker,
+	PERMISSION_LEVELS,
+	PermissionLevel,
+	RESOURCES,
+	UserPermissionContext,
+} from "./permissions";
 
 /**
  * Enhanced Authorization Middleware
@@ -14,13 +21,19 @@ interface AuthorizationOptions {
 	action?: string;
 	level?: PermissionLevel;
 	requireOwnership?: boolean;
-	customCheck?: (userContext: UserPermissionContext, req: NextRequest) => boolean;
+	customCheck?: (
+		userContext: UserPermissionContext,
+		req: NextRequest,
+	) => boolean;
 }
 
 /**
  * Middleware chính để kiểm tra authorization
  */
-export async function withAuthorization(req: NextRequest, options: AuthorizationOptions = {}): Promise<{ authorized: boolean; user?: any; error?: string }> {
+export async function withAuthorization(
+	req: NextRequest,
+	options: AuthorizationOptions = {},
+): Promise<{ authorized: boolean; user?: any; error?: string }> {
 	try {
 		// Lấy session từ auth
 		const session = await auth();
@@ -35,7 +48,9 @@ export async function withAuthorization(req: NextRequest, options: Authorization
 		const userContext: UserPermissionContext = {
 			userId: user.id as string,
 			role: user.role as "ADMIN" | "MODERATOR" | "USER",
-			customPermissions: user.permissions ? parseCustomPermissions(user.permissions) : undefined,
+			customPermissions: user.permissions
+				? parseCustomPermissions(user.permissions)
+				: undefined,
 		};
 
 		// Nếu không có options, chỉ cần authenticated
@@ -55,7 +70,11 @@ export async function withAuthorization(req: NextRequest, options: Authorization
 
 		// Kiểm tra resource permission
 		if (options.resource && options.action) {
-			const hasPermission = permissionChecker.hasPermission(options.resource as any, options.action as any, options.level || PERMISSION_LEVELS.READ);
+			const hasPermission = permissionChecker.hasPermission(
+				options.resource as any,
+				options.action as any,
+				options.level || PERMISSION_LEVELS.READ,
+			);
 
 			if (!hasPermission) {
 				return { authorized: false, error: "Insufficient permissions" };
@@ -67,8 +86,17 @@ export async function withAuthorization(req: NextRequest, options: Authorization
 			const resourceId = extractResourceId(req);
 			if (resourceId) {
 				// Cần implement logic để lấy owner của resource
-				const resourceOwner = await getResourceOwner(options.resource!, resourceId);
-				if (resourceOwner && !permissionChecker.hasOwnerPermission(options.resource as any, resourceOwner)) {
+				const resourceOwner = await getResourceOwner(
+					options.resource!,
+					resourceId,
+				);
+				if (
+					resourceOwner &&
+					!permissionChecker.hasOwnerPermission(
+						options.resource as any,
+						resourceOwner,
+					)
+				) {
 					// Nếu không phải owner, kiểm tra có quyền admin không
 					if (!permissionChecker.isAdmin()) {
 						return { authorized: false, error: "Resource access denied" };
@@ -88,8 +116,13 @@ export async function withAuthorization(req: NextRequest, options: Authorization
  * HOC cho API routes với authorization
  */
 export function withApiAuthorization(options: AuthorizationOptions = {}) {
-	return function (handler: (req: NextRequest, context: any) => Promise<NextResponse>) {
-		return async function (req: NextRequest, context: any): Promise<NextResponse> {
+	return function (
+		handler: (req: NextRequest, context: any) => Promise<NextResponse>,
+	) {
+		return async function (
+			req: NextRequest,
+			context: any,
+		): Promise<NextResponse> {
 			const authResult = await withAuthorization(req, options);
 
 			if (!authResult.authorized) {
@@ -121,7 +154,10 @@ export const withUsersPermission = (action: string, level?: PermissionLevel) =>
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withProductsPermission = (action: string, level?: PermissionLevel) =>
+export const withProductsPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.PRODUCTS,
 		action,
@@ -135,7 +171,10 @@ export const withOrdersPermission = (action: string, level?: PermissionLevel) =>
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withCategoriesPermission = (action: string, level?: PermissionLevel) =>
+export const withCategoriesPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.CATEGORIES,
 		action,
@@ -156,28 +195,40 @@ export const withFilesPermission = (action: string, level?: PermissionLevel) =>
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withAttributesPermission = (action: string, level?: PermissionLevel) =>
+export const withAttributesPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.ATTRIBUTES,
 		action,
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withCustomersPermission = (action: string, level?: PermissionLevel) =>
+export const withCustomersPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.CUSTOMERS,
 		action,
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withVendorsPermission = (action: string, level?: PermissionLevel) =>
+export const withVendorsPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.VENDORS,
 		action,
 		level: level || PERMISSION_LEVELS.READ,
 	});
 
-export const withSettingsPermission = (action: string, level?: PermissionLevel) =>
+export const withSettingsPermission = (
+	action: string,
+	level?: PermissionLevel,
+) =>
 	withApiAuthorization({
 		resource: RESOURCES.SETTINGS,
 		action,
@@ -197,7 +248,8 @@ export const requireAdmin = () =>
  */
 export const requireModerator = () =>
 	withApiAuthorization({
-		customCheck: (userContext) => ["ADMIN", "MODERATOR"].includes(userContext.role),
+		customCheck: (userContext) =>
+			["ADMIN", "MODERATOR"].includes(userContext.role),
 	});
 
 /**
@@ -232,7 +284,10 @@ function extractResourceId(req: NextRequest): string | null {
 	return segments[idIndex] || null;
 }
 
-async function getResourceOwner(resource: string, resourceId: string): Promise<string | null> {
+async function getResourceOwner(
+	resource: string,
+	resourceId: string,
+): Promise<string | null> {
 	// Implement logic để lấy owner của resource từ database
 	// Ví dụ:
 	try {
@@ -278,7 +333,9 @@ export function createClientPermissionChecker(user: any) {
 	const userContext: UserPermissionContext = {
 		userId: user.id,
 		role: user.role,
-		customPermissions: user.permissions ? parseCustomPermissions(user.permissions) : undefined,
+		customPermissions: user.permissions
+			? parseCustomPermissions(user.permissions)
+			: undefined,
 	};
 
 	return createPermissionChecker(userContext);

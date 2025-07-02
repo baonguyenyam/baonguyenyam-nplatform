@@ -36,10 +36,7 @@ export default async function Index() {
 	return (
 		<div className="mx-auto flex-col flex py-5 w-full px-4 sm:px-6 relative h-full">
 			<div className="space-y-3">
-				<AppTitle
-					data={metadata.title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={metadata.title} breadcrumb={breadcrumb} />
 				<View />
 			</div>
 		</div>

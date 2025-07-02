@@ -59,18 +59,21 @@
 
 @media (hover: hover) and (pointer: fine) {
 	.ExternalInput:not(.ExternalInput--readOnly) .ExternalInput-button:hover,
-	.ExternalInput:not(.ExternalInput--readOnly) .ExternalInput-detachButton:hover {
+	.ExternalInput:not(.ExternalInput--readOnly)
+		.ExternalInput-detachButton:hover {
 		background: var(--puck-color-azure-12);
 		transition: none;
 	}
 
-	.ExternalInput:not(.ExternalInput--readOnly) .ExternalInput-detachButton:hover {
+	.ExternalInput:not(.ExternalInput--readOnly)
+		.ExternalInput-detachButton:hover {
 		color: var(--puck-color-azure-04);
 	}
 }
 
 .ExternalInput:not(.ExternalInput--readOnly) .ExternalInput-button:active,
-.ExternalInput:not(.ExternalInput--readOnly) .ExternalInput-detachButton:active {
+.ExternalInput:not(.ExternalInput--readOnly)
+	.ExternalInput-detachButton:active {
 	background: var(--puck-color-azure-11);
 	transition: none;
 }
@@ -180,13 +183,17 @@
 		margin-inline-start: -5px;
 	}
 
-	.ExternalInputModal-tbody .ExternalInputModal-tr:hover .ExternalInputModal-td:first-of-type {
+	.ExternalInputModal-tbody
+		.ExternalInputModal-tr:hover
+		.ExternalInputModal-td:first-of-type {
 		border-inline-start: 4px solid var(--puck-color-azure-04);
 		padding-inline-start: 20px;
 	}
 }
 
-.ExternalInputModal-tbody .ExternalInputModal-tr:last-of-type .ExternalInputModal-td {
+.ExternalInputModal-tbody
+	.ExternalInputModal-tr:last-of-type
+	.ExternalInputModal-td {
 	border-bottom: none;
 }
 

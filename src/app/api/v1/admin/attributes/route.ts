@@ -34,7 +34,7 @@ async function GET_Handler(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{ message: "Error fetching attributes", success: "error" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }
@@ -53,7 +53,7 @@ async function POST_Handler(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{ message: "Error creating attribute", success: "error" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }
@@ -72,7 +72,7 @@ async function DELETE_Handler(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{ message: "Error deleting attributes", success: "error" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

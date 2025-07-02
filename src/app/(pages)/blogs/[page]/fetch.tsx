@@ -15,7 +15,8 @@ export default function Fetch(props: any) {
 	const { title, page, breadcrumb } = props;
 	const [db, setDb] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const query = useMemo(
 		() => ({
 			type,
@@ -28,7 +29,9 @@ export default function Fetch(props: any) {
 		const public_APIUrl = process.env.public_APIUrl;
 		// get all items and leave the first one
 		const getAll = cache(async () => {
-			const res = await fetch(`${public_APIUrl}/public/posts?skip=${query.skip}&take=${Number(pageSize) + 1}`).then((res) => res.json());
+			const res = await fetch(
+				`${public_APIUrl}/public/posts?skip=${query.skip}&take=${Number(pageSize) + 1}`,
+			).then((res) => res.json());
 			return res;
 		});
 		const resResult = await getAll();
@@ -46,11 +49,7 @@ export default function Fetch(props: any) {
 		<>
 			<div className="mx-auto p-5 dark:bg-gray-800 dark:text-white w-full">
 				<div className="my-5 flex flex-col justify-between items-center space-y-1">
-					<Title
-						data={title}
-						breadcrumb={breadcrumb}
-						className=""
-					/>
+					<Title data={title} breadcrumb={breadcrumb} className="" />
 					<BreadcrumbBar />
 				</div>
 			</div>

@@ -13,22 +13,25 @@ export type SectionProps = {
 	style?: CSSProperties;
 };
 
-export const Section = forwardRef<HTMLDivElement, SectionProps>(({ children, className, maxWidth = "1280px", style = {} }, ref) => {
-	return (
-		<div
-			className={`${getClassName()}${className ? ` ${className}` : ""}`}
-			style={{
-				...style,
-			}}
-			ref={ref}>
+export const Section = forwardRef<HTMLDivElement, SectionProps>(
+	({ children, className, maxWidth = "1280px", style = {} }, ref) => {
+		return (
 			<div
-				className={getClassName("inner")}
-				// style={{ maxWidth }}
+				className={`${getClassName()}${className ? ` ${className}` : ""}`}
+				style={{
+					...style,
+				}}
+				ref={ref}
 			>
-				{children}
+				<div
+					className={getClassName("inner")}
+					// style={{ maxWidth }}
+				>
+					{children}
+				</div>
 			</div>
-		</div>
-	);
-});
+		);
+	},
+);
 
 Section.displayName = "Section";

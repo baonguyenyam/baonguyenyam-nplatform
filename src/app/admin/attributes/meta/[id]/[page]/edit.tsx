@@ -8,7 +8,14 @@ import { z } from "zod";
 import AppLoading from "@/components/AppLoading";
 import { FieldUpload } from "@/components/fields/upload";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCurrentRole } from "@/hooks/useCurrentRole";
@@ -18,7 +25,9 @@ import { checkStringIsTextOrColorHexOrURL } from "@/lib/utils";
 import * as actions from "./actions";
 
 const FormSchema = z.object({
-	f_key: z.string().min(2, { message: "Fullname must be at least 2 characters." }),
+	f_key: z
+		.string()
+		.min(2, { message: "Fullname must be at least 2 characters." }),
 	f_value: z
 		.string()
 		.optional()
@@ -100,7 +109,8 @@ export default function FormEdit(props: any) {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-6 pb-15">
+						className="w-full space-y-6 pb-15"
+					>
 						<FormField
 							control={form.control}
 							name="f_key"
@@ -108,10 +118,7 @@ export default function FormEdit(props: any) {
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input
-											placeholder="Name"
-											{...field}
-										/>
+										<Input placeholder="Name" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -125,10 +132,7 @@ export default function FormEdit(props: any) {
 									<FormLabel>Value</FormLabel>
 									{type === "text" && (
 										<FormControl>
-											<Input
-												placeholder="Value"
-												{...field}
-											/>
+											<Input placeholder="Value" {...field} />
 										</FormControl>
 									)}
 									{type !== "text" && (
@@ -136,15 +140,23 @@ export default function FormEdit(props: any) {
 											onValueChange={(e) => {
 												setVal(e);
 											}}
-											defaultValue={checkStringIsTextOrColorHexOrURL(data?.type || "text")}
-											className="w-full">
+											defaultValue={checkStringIsTextOrColorHexOrURL(
+												data?.type || "text",
+											)}
+											className="w-full"
+										>
 											<TabsList>
 												<TabsTrigger value="text">Text</TabsTrigger>
 												<TabsTrigger value="color">Color</TabsTrigger>
 												<TabsTrigger value="photo">Photo</TabsTrigger>
 											</TabsList>
 											<TabsContent value="text">
-												{(val === "text" || val === undefined || !val || checkStringIsTextOrColorHexOrURL(field?.value || "") === "text") && (
+												{(val === "text" ||
+													val === undefined ||
+													!val ||
+													checkStringIsTextOrColorHexOrURL(
+														field?.value || "",
+													) === "text") && (
 													<FormControl>
 														<Input
 															placeholder="Value"
@@ -157,7 +169,10 @@ export default function FormEdit(props: any) {
 												)}
 											</TabsContent>
 											<TabsContent value="color">
-												{(val === "color" || checkStringIsTextOrColorHexOrURL(field?.value || "") === "color") && (
+												{(val === "color" ||
+													checkStringIsTextOrColorHexOrURL(
+														field?.value || "",
+													) === "color") && (
 													<ColorPicker
 														defaultValue={field?.value || "#000000"}
 														showText={true}
@@ -168,7 +183,10 @@ export default function FormEdit(props: any) {
 												)}
 											</TabsContent>
 											<TabsContent value="photo">
-												{(val === "photo" || checkStringIsTextOrColorHexOrURL(field?.value || "") === "url") && (
+												{(val === "photo" ||
+													checkStringIsTextOrColorHexOrURL(
+														field?.value || "",
+													) === "url") && (
 													<FormField
 														control={form.control}
 														name="f_file"
@@ -202,7 +220,10 @@ export default function FormEdit(props: any) {
 						<div className="post_bottom z-10 absolute bottom-0 right-0 flex w-full items-center justify-end space-x-2 rounded-b-lg border-t bg-white p-4 dark:bg-gray-900 dark:border-gray-700">
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								Save changes
 							</Button>
 						</div>

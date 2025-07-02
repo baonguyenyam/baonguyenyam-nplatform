@@ -39,7 +39,18 @@ export const createAttribute = async (data: any) => {
 
 // get all attributes
 export const getAllAttributes = async (query: any) => {
-	const { take, skip, s, orderBy, filterBy, byCat, type, parent, min, published } = query;
+	const {
+		take,
+		skip,
+		s,
+		orderBy,
+		filterBy,
+		byCat,
+		type,
+		parent,
+		min,
+		published,
+	} = query;
 	try {
 		const attributes = !min
 			? await db.attribute.findMany({
@@ -49,7 +60,12 @@ export const getAllAttributes = async (query: any) => {
 						published: published ? published : undefined,
 						type: type ? type : filterBy ? filterBy : undefined,
 						childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+						OR: s
+							? [
+									{ title: { contains: s, mode: "insensitive" } },
+									{ content: { contains: s, mode: "insensitive" } },
+								]
+							: undefined,
 					},
 					select: {
 						id: true,
@@ -72,7 +88,12 @@ export const getAllAttributes = async (query: any) => {
 						type: type ? type : filterBy ? filterBy : undefined,
 						published: published ? published : undefined,
 						childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
-						OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+						OR: s
+							? [
+									{ title: { contains: s, mode: "insensitive" } },
+									{ content: { contains: s, mode: "insensitive" } },
+								]
+							: undefined,
 					},
 					select: {
 						id: true,
@@ -131,7 +152,12 @@ export const getAttributesCount = async (query: any) => {
 				published: published ? published : undefined,
 				type: type ? type : filterBy ? filterBy : undefined,
 				childrenId: parent && parseInt(parent) ? parseInt(parent) : null,
-				OR: s ? [{ title: { contains: s, mode: "insensitive" } }, { content: { contains: s, mode: "insensitive" } }] : undefined,
+				OR: s
+					? [
+							{ title: { contains: s, mode: "insensitive" } },
+							{ content: { contains: s, mode: "insensitive" } },
+						]
+					: undefined,
 			},
 		});
 		return count;

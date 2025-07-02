@@ -10,6 +10,8 @@ import { useEffect, useLayoutEffect } from "react";
 
 import { CAN_USE_DOM } from "../utils/canUseDOM";
 
-const useLayoutEffectImpl: typeof useLayoutEffect = CAN_USE_DOM ? useLayoutEffect : useEffect;
+const useLayoutEffectImpl: typeof useLayoutEffect = CAN_USE_DOM
+	? useLayoutEffect
+	: useEffect;
 
 export default useLayoutEffectImpl;

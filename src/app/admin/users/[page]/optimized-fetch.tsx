@@ -76,12 +76,22 @@ export default function OptimizedUsersFetch(props: any) {
 			{
 				header: "Role",
 				accessor: "role",
-				custom: (row: User) => <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${row.role === "ADMIN" ? "bg-purple-100 text-purple-800" : "bg-blue-100 text-blue-800"}`}>{row.role}</span>,
+				custom: (row: User) => (
+					<span
+						className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${row.role === "ADMIN" ? "bg-purple-100 text-purple-800" : "bg-blue-100 text-blue-800"}`}
+					>
+						{row.role}
+					</span>
+				),
 			},
 			{
 				header: "Created",
 				accessor: "createdAt",
-				custom: (row: User) => <span className="text-sm text-gray-500">{dateFormat(row.createdAt)}</span>,
+				custom: (row: User) => (
+					<span className="text-sm text-gray-500">
+						{dateFormat(row.createdAt)}
+					</span>
+				),
 			},
 		],
 		[],
@@ -115,7 +125,8 @@ export default function OptimizedUsersFetch(props: any) {
 					variant="destructive"
 					size="sm"
 					onClick={() => deleteRecord(drawerState.data!.id)}
-					className="px-2 h-8 space-x-1">
+					className="px-2 h-8 space-x-1"
+				>
 					🗑️ Delete
 				</Button>
 			)}
@@ -123,7 +134,8 @@ export default function OptimizedUsersFetch(props: any) {
 				variant="outline"
 				size="icon"
 				onClick={handleDrawerClose}
-				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400">
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400"
+			>
 				✕
 			</Button>
 		</div>
@@ -144,10 +156,7 @@ export default function OptimizedUsersFetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				<Button onClick={handleCreate}>
 					<Plus className="mr-2 h-4 w-4" />
 					Create {title}
@@ -176,7 +185,8 @@ export default function OptimizedUsersFetch(props: any) {
 				width={500}
 				onClose={handleDrawerClose}
 				open={!!drawerState.mode}
-				extra={renderDrawerExtra()}>
+				extra={renderDrawerExtra()}
+			>
 				{renderDrawerContent()}
 			</Drawer>
 		</>

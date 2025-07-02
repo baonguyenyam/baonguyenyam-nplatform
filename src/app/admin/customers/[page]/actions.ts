@@ -1,7 +1,12 @@
 "use server";
 
 import { auth } from "@/auth";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
+import {
+	ACTIONS,
+	createPermissionChecker,
+	PERMISSION_LEVELS,
+	RESOURCES,
+} from "@/lib/permissions";
 import { sendEmail } from "@/lib/server-utils";
 import models from "@/models";
 
@@ -20,7 +25,13 @@ export async function getAll(query: any) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.READ,
+			PERMISSION_LEVELS.READ,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to read customers",
@@ -59,7 +70,13 @@ export async function deleteRecord(id: string) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.DELETE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.DELETE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to delete customers",
@@ -96,7 +113,13 @@ export async function createRecord(data: any) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.CREATE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.CREATE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to create customers",
@@ -133,7 +156,13 @@ export async function updateRecord(id: string, data: any) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.UPDATE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.UPDATE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to update customers",
@@ -170,7 +199,13 @@ export async function getRecord(id: string) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.READ,
+			PERMISSION_LEVELS.READ,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to read customers",
@@ -208,7 +243,13 @@ export async function deleteMultipleRecords(ids: string[]) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.BULK_DELETE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.BULK_DELETE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to bulk delete customers",
@@ -246,7 +287,13 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
 	});
 
-	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.BULK_UPDATE, PERMISSION_LEVELS.WRITE)) {
+	if (
+		!permissionChecker.hasPermission(
+			RESOURCES.CUSTOMERS,
+			ACTIONS.BULK_UPDATE,
+			PERMISSION_LEVELS.WRITE,
+		)
+	) {
 		return {
 			success: "error",
 			message: "Insufficient permissions to bulk update customers",

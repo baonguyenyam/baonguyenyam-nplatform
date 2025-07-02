@@ -12,12 +12,22 @@ type SlotRenderProps = DropZoneProps & {
 	metadata: Metadata;
 };
 
-export const SlotRenderPure = (props: SlotRenderProps) => <SlotRender {...props} />;
+export const SlotRenderPure = (props: SlotRenderProps) => (
+	<SlotRender {...props} />
+);
 
-export const ContextSlotRender = ({ componentId, zone }: { componentId: string; zone: string }) => {
+export const ContextSlotRender = ({
+	componentId,
+	zone,
+}: {
+	componentId: string;
+	zone: string;
+}) => {
 	const config = useAppStore((s) => s.config);
 	const metadata = useAppStore((s) => s.metadata);
-	const slotContent = useAppStore((s) => s.state.indexes.nodes[componentId]?.data.props[zone] ?? null);
+	const slotContent = useAppStore(
+		(s) => s.state.indexes.nodes[componentId]?.data.props[zone] ?? null,
+	);
 
 	return (
 		<SlotRenderPure
@@ -29,15 +39,19 @@ export const ContextSlotRender = ({ componentId, zone }: { componentId: string; 
 	);
 };
 
-const Item = ({ config, item, metadata }: { config: Config; item: ComponentData; metadata: Metadata }) => {
+const Item = ({
+	config,
+	item,
+	metadata,
+}: {
+	config: Config;
+	item: ComponentData;
+	metadata: Metadata;
+}) => {
 	const Component = config.components[item.type];
 
 	const props = useSlots(Component, item.props, (slotProps) => (
-		<SlotRenderPure
-			{...slotProps}
-			config={config}
-			metadata={metadata}
-		/>
+		<SlotRenderPure {...slotProps} config={config} metadata={metadata} />
 	));
 
 	return (
@@ -57,26 +71,28 @@ const Item = ({ config, item, metadata }: { config: Config; item: ComponentData;
  *
  * Replacement for DropZoneRender
  */
-export const SlotRender = forwardRef<HTMLDivElement, SlotRenderProps>(function SlotRenderInternal({ className, style, content, config, metadata }, ref) {
-	return (
-		<div
-			className={className}
-			style={style}
-			ref={ref}>
-			{content.map((item) => {
-				if (!config.components[item.type]) {
-					return null;
-				}
+export const SlotRender = forwardRef<HTMLDivElement, SlotRenderProps>(
+	function SlotRenderInternal(
+		{ className, style, content, config, metadata },
+		ref,
+	) {
+		return (
+			<div className={className} style={style} ref={ref}>
+				{content.map((item) => {
+					if (!config.components[item.type]) {
+						return null;
+					}
 
-				return (
-					<Item
-						key={item.props.id}
-						config={config}
-						item={item}
-						metadata={metadata}
-					/>
-				);
-			})}
-		</div>
-	);
-});
+					return (
+						<Item
+							key={item.props.id}
+							config={config}
+							item={item}
+							metadata={metadata}
+						/>
+					);
+				})}
+			</div>
+		);
+	},
+);

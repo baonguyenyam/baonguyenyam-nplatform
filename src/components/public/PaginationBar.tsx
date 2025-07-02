@@ -1,11 +1,32 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	ChevronsLeft,
+	ChevronsRight,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from "@/components/ui/pagination";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+} from "@/components/ui/pagination";
 
-const PaginationBar = ({ items, pageSize, currentPage, url }: { items: number; pageSize: string; currentPage: number; url: string }) => {
+const PaginationBar = ({
+	items,
+	pageSize,
+	currentPage,
+	url,
+}: {
+	items: number;
+	pageSize: string;
+	currentPage: number;
+	url: string;
+}) => {
 	const searchParams = useSearchParams();
 	const pagesCount = Math.ceil(items / Number(pageSize));
 	const s = searchParams.get("s") || "";
@@ -34,15 +55,21 @@ const PaginationBar = ({ items, pageSize, currentPage, url }: { items: number; p
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "styles.pageItemActive" : "styles.pageItem"}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationEllipsis />
 								</PaginationItem>
 							);
-						if (pagesCount > 3 && currentPage < pagesCount - 1 && index === pages.length - 1)
+						if (
+							pagesCount > 3 &&
+							currentPage < pagesCount - 1 &&
+							index === pages.length - 1
+						)
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "styles.pageItemActive" : "styles.pageItem"}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationEllipsis />
 								</PaginationItem>
 							);
@@ -50,10 +77,12 @@ const PaginationBar = ({ items, pageSize, currentPage, url }: { items: number; p
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "styles.pageItemActive" : "styles.pageItem"}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationLink
 										className={`${page == currentPage ? "bg-gray-900! text-white!" : ""}`}
-										href={`${url}/${page}?s=${s}`}>
+										href={`${url}/${page}?s=${s}`}
+									>
 										{page}
 									</PaginationLink>
 								</PaginationItem>
@@ -62,7 +91,9 @@ const PaginationBar = ({ items, pageSize, currentPage, url }: { items: number; p
 						if (page === currentPage - 1 || page === currentPage + 1) {
 							return (
 								<PaginationItem key={index}>
-									<PaginationLink href={`${url}/${page}?s=${s}`}>{page}</PaginationLink>
+									<PaginationLink href={`${url}/${page}?s=${s}`}>
+										{page}
+									</PaginationLink>
 								</PaginationItem>
 							);
 						}

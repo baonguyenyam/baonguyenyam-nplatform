@@ -8,8 +8,13 @@ import { z } from "zod";
 
 // Consider moving this schema to a shared location if used elsewhere (e.g., the login form)
 const FormSchema = z.object({
-	email: z.string({ required_error: "Email is required" }).min(1, "Email is required").email("Invalid email"),
-	password: z.string({ required_error: "Password is required" }).min(1, "Password is required"),
+	email: z
+		.string({ required_error: "Email is required" })
+		.min(1, "Email is required")
+		.email("Invalid email"),
+	password: z
+		.string({ required_error: "Password is required" })
+		.min(1, "Password is required"),
 	// You might remove min/max length checks here if you prefer the API to handle all validation
 	// .min(8, "Password must be more than 8 characters")
 	// .max(32, "Password must be less than 32 characters"),
@@ -56,10 +61,16 @@ export default {
 					// 3. Check the response from your API
 					if (!res.ok || !responseBody.user) {
 						// Log the error message from the API if available
-						console.error("API Sign-in failed:", responseBody.message || `Status code: ${res.status}`);
+						console.error(
+							"API Sign-in failed:",
+							responseBody.message || `Status code: ${res.status}`,
+						);
 						// Throwing an error here can provide feedback to the user on the login page
 						// You can throw a generic error or a specific one like CredentialsSignin
-						throw new CredentialsSignin(responseBody.message || "Login failed. Please check your credentials.");
+						throw new CredentialsSignin(
+							responseBody.message ||
+								"Login failed. Please check your credentials.",
+						);
 						// Alternatively, returning null will also indicate failure, but might provide less feedback
 						// return null;
 					}
@@ -83,7 +94,9 @@ export default {
 					// Handle other unexpected errors
 					console.error("Authorize Error:", error);
 					// Throw a generic error for other cases
-					throw new CredentialsSignin("An unexpected error occurred during login.");
+					throw new CredentialsSignin(
+						"An unexpected error occurred during login.",
+					);
 					// return null;
 				}
 			},

@@ -12,8 +12,27 @@ import styles from "./styles.module.css";
 const getClassName = getClassNameFactory("Drawer", styles);
 const getClassNameItem = getClassNameFactory("DrawerItem", styles);
 
-export const DrawerItemInner = ({ children, name, label, dragRef, isDragDisabled }: { children?: (props: { children: ReactNode; name: string }) => ReactElement; name: string; label?: string; dragRef?: Ref<any>; isDragDisabled?: boolean }) => {
-	const CustomInner = useMemo(() => children || (({ children }: { children: ReactNode; name: string }) => <div className={getClassNameItem("default")}>{children}</div>), [children]);
+export const DrawerItemInner = ({
+	children,
+	name,
+	label,
+	dragRef,
+	isDragDisabled,
+}: {
+	children?: (props: { children: ReactNode; name: string }) => ReactElement;
+	name: string;
+	label?: string;
+	dragRef?: Ref<any>;
+	isDragDisabled?: boolean;
+}) => {
+	const CustomInner = useMemo(
+		() =>
+			children ||
+			(({ children }: { children: ReactNode; name: string }) => (
+				<div className={getClassNameItem("default")}>{children}</div>
+			)),
+		[children],
+	);
 
 	return (
 		<div
@@ -21,7 +40,8 @@ export const DrawerItemInner = ({ children, name, label, dragRef, isDragDisabled
 			ref={dragRef}
 			onMouseDown={(e) => e.preventDefault()}
 			data-testid={dragRef ? `drawer-item:${name}` : ""}
-			data-puck-drawer-item>
+			data-puck-drawer-item
+		>
 			<CustomInner name={name}>
 				<div className={getClassNameItem("draggableWrapper")}>
 					<div className={getClassNameItem("draggable")}>
@@ -41,7 +61,19 @@ export const DrawerItemInner = ({ children, name, label, dragRef, isDragDisabled
  *
  * Could be removed by remounting `useDraggable` upstream in dndkit on `id` changes.
  */
-const DrawerItemDraggable = ({ children, name, label, id, isDragDisabled }: { children?: (props: { children: ReactNode; name: string }) => ReactElement; name: string; label?: string; id: string; isDragDisabled?: boolean }) => {
+const DrawerItemDraggable = ({
+	children,
+	name,
+	label,
+	id,
+	isDragDisabled,
+}: {
+	children?: (props: { children: ReactNode; name: string }) => ReactElement;
+	name: string;
+	label?: string;
+	id: string;
+	isDragDisabled?: boolean;
+}) => {
 	const { ref } = useDraggableSafe({
 		id,
 		data: { type: "drawer", componentType: name },
@@ -51,9 +83,7 @@ const DrawerItemDraggable = ({ children, name, label, id, isDragDisabled }: { ch
 	return (
 		<div className={getClassName("draggable")}>
 			<div className={getClassName("draggableBg")}>
-				<DrawerItemInner
-					name={name}
-					label={label}>
+				<DrawerItemInner name={name} label={label}>
 					{children}
 				</DrawerItemInner>
 			</div>
@@ -62,7 +92,8 @@ const DrawerItemDraggable = ({ children, name, label, id, isDragDisabled }: { ch
 					name={name}
 					label={label}
 					dragRef={ref}
-					isDragDisabled={isDragDisabled}>
+					isDragDisabled={isDragDisabled}
+				>
 					{children}
 				</DrawerItemInner>
 			</div>
@@ -89,16 +120,14 @@ const DrawerItem = ({
 	const [dynamicId, setDynamicId] = useState(generateId(resolvedId));
 
 	if (typeof index !== "undefined") {
-		console.error("Warning: The `index` prop on Drawer.Item is deprecated and no longer required.");
+		console.error(
+			"Warning: The `index` prop on Drawer.Item is deprecated and no longer required.",
+		);
 	}
 
-	useDragListener(
-		"dragend",
-		() => {
-			setDynamicId(generateId(resolvedId));
-		},
-		[resolvedId],
-	);
+	useDragListener("dragend", () => {
+		setDynamicId(generateId(resolvedId));
+	}, [resolvedId]);
 
 	return (
 		<div key={dynamicId}>
@@ -106,7 +135,8 @@ const DrawerItem = ({
 				name={name}
 				label={label}
 				id={dynamicId}
-				isDragDisabled={isDragDisabled}>
+				isDragDisabled={isDragDisabled}
+			>
 				{children}
 			</DrawerItemDraggable>
 		</div>
@@ -123,11 +153,15 @@ export const Drawer = ({
 	direction?: "vertical" | "horizontal"; // TODO deprecate
 }) => {
 	if (droppableId) {
-		console.error("Warning: The `droppableId` prop on Drawer is deprecated and no longer required.");
+		console.error(
+			"Warning: The `droppableId` prop on Drawer is deprecated and no longer required.",
+		);
 	}
 
 	if (direction) {
-		console.error("Warning: The `direction` prop on Drawer is deprecated and no longer required to achieve multi-directional dragging.");
+		console.error(
+			"Warning: The `direction` prop on Drawer is deprecated and no longer required to achieve multi-directional dragging.",
+		);
 	}
 
 	const id = useSafeId();
@@ -143,7 +177,8 @@ export const Drawer = ({
 			className={getClassName()}
 			ref={ref}
 			data-puck-dnd={id}
-			data-puck-drawer>
+			data-puck-drawer
+		>
 			{children}
 		</div>
 	);

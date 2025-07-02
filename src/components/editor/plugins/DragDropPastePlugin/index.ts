@@ -14,7 +14,13 @@ import { COMMAND_PRIORITY_LOW } from "lexical";
 
 import { INSERT_INLINE_IMAGE_COMMAND } from "../InlineImagePlugin";
 
-const ACCEPTABLE_IMAGE_TYPES = ["image/", "image/heic", "image/heif", "image/gif", "image/webp"];
+const ACCEPTABLE_IMAGE_TYPES = [
+	"image/",
+	"image/heic",
+	"image/heif",
+	"image/gif",
+	"image/webp",
+];
 
 export default function DragDropPaste(): null {
 	const [editor] = useLexicalComposerContext();

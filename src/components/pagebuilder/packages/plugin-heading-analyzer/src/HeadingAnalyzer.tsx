@@ -16,7 +16,9 @@ const getClassNameItem = getClassNameFactory("HeadingAnalyzerItem", styles);
 import ReactFromJSONModule from "react-from-json";
 
 // Synthetic import
-const ReactFromJSON = (ReactFromJSONModule as unknown as { default: typeof ReactFromJSONModule }).default || ReactFromJSONModule;
+const ReactFromJSON =
+	(ReactFromJSONModule as unknown as { default: typeof ReactFromJSONModule })
+		.default || ReactFromJSONModule;
 
 const getOutline = ({ frame }: { frame?: Element | Document } = {}) => {
 	const headings = frame?.querySelectorAll("h1,h2,h3,h4,h5,h6") || [];
@@ -154,8 +156,13 @@ export const HeadingAnalyzer = () => {
 					color: "var(--puck-color-red-04)",
 					display: "block",
 					marginBottom: 16,
-				}}>
-				Heading analyzer styles not loaded. Please review the <a href="https://github.com/measuredco/puck/blob/main/packages/plugin-heading-analyzer/README.md">README</a>.
+				}}
+			>
+				Heading analyzer styles not loaded. Please review the{" "}
+				<a href="https://github.com/measuredco/puck/blob/main/packages/plugin-heading-analyzer/README.md">
+					README
+				</a>
+				.
 			</small>
 
 			{hierarchy.length === 0 && <div>No headings.</div>}
@@ -185,16 +192,19 @@ export const HeadingAnalyzer = () => {
 														if (el) {
 															scrollIntoView(el);
 
-															el.style.outline = "4px solid var(--puck-color-rose-06)";
+															el.style.outline =
+																"4px solid var(--puck-color-rose-06)";
 															el.style.outlineOffset = "4px";
 
 															setTimeout(() => {
 																el.style.outline = oldStyle.outline || "";
-																el.style.outlineOffset = oldStyle.outlineOffset || "";
+																el.style.outlineOffset =
+																	oldStyle.outlineOffset || "";
 															}, 2000);
 														}
 													}
-										}>
+										}
+									>
 										{props.missing ? (
 											<>
 												<b>H{props.rank}</b>: Missing

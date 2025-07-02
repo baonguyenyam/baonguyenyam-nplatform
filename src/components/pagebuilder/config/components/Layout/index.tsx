@@ -57,29 +57,40 @@ export const layoutField: ObjectField<LayoutFieldProps> = {
 	},
 };
 
-const Layout = forwardRef<HTMLDivElement, LayoutProps>(({ children, className, layout, style }, ref) => {
-	return (
-		<div
-			className={className}
-			style={{
-				gridColumn: layout?.spanCol ? `span ${Math.max(Math.min(layout.spanCol, 12), 1)}` : undefined,
-				gridRow: layout?.spanRow ? `span ${Math.max(Math.min(layout.spanRow, 12), 1)}` : undefined,
-				paddingTop: layout?.padding,
-				paddingBottom: layout?.padding,
-				flex: layout?.grow ? "1 1 0" : undefined,
-				...style,
-			}}
-			ref={ref}>
-			{children}
-		</div>
-	);
-});
+const Layout = forwardRef<HTMLDivElement, LayoutProps>(
+	({ children, className, layout, style }, ref) => {
+		return (
+			<div
+				className={className}
+				style={{
+					gridColumn: layout?.spanCol
+						? `span ${Math.max(Math.min(layout.spanCol, 12), 1)}`
+						: undefined,
+					gridRow: layout?.spanRow
+						? `span ${Math.max(Math.min(layout.spanRow, 12), 1)}`
+						: undefined,
+					paddingTop: layout?.padding,
+					paddingBottom: layout?.padding,
+					flex: layout?.grow ? "1 1 0" : undefined,
+					...style,
+				}}
+				ref={ref}
+			>
+				{children}
+			</div>
+		);
+	},
+);
 
 Layout.displayName = "Layout";
 
 export { Layout };
 
-export function withLayout<Props extends DefaultComponentProps = DefaultComponentProps>(componentConfig: ComponentConfig<Props>): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
+export function withLayout<
+	Props extends DefaultComponentProps = DefaultComponentProps,
+>(
+	componentConfig: ComponentConfig<Props>,
+): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
 	return {
 		...(componentConfig as any),
 		fields: {
@@ -138,7 +149,8 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
 			<Layout
 				className={getClassName()}
 				layout={props.layout as LayoutFieldProps}
-				ref={props.puck.dragRef}>
+				ref={props.puck.dragRef}
+			>
 				{componentConfig.render(props)}
 			</Layout>
 		),

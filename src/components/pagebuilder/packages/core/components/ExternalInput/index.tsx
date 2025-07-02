@@ -1,4 +1,10 @@
-import { isValidElement, useCallback, useEffect, useMemo, useState } from "react";
+import {
+	isValidElement,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { Link, Search, SlidersHorizontal, Unlock } from "lucide-react";
 
 import getClassNameFactory from "../../lib/get-class-name-factory";
@@ -17,8 +23,26 @@ const getClassNameModal = getClassNameFactory("ExternalInputModal", styles);
 
 const dataCache: Record<string, any> = {};
 
-export const ExternalInput = ({ field, onChange, value = null, name, id, readOnly }: { field: ExternalField; onChange: (value: any) => void; value: any; name?: string; id: string; readOnly?: boolean }) => {
-	const { mapProp = (val: any) => val, mapRow = (val: any) => val, filterFields } = field || {};
+export const ExternalInput = ({
+	field,
+	onChange,
+	value = null,
+	name,
+	id,
+	readOnly,
+}: {
+	field: ExternalField;
+	onChange: (value: any) => void;
+	value: any;
+	name?: string;
+	id: string;
+	readOnly?: boolean;
+}) => {
+	const {
+		mapProp = (val: any) => val,
+		mapRow = (val: any) => val,
+		filterFields,
+	} = field || {};
 
 	const [data, setData] = useState<Record<string, any>[]>([]);
 	const [isOpen, setOpen] = useState(false);
@@ -38,7 +62,11 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 
 		for (const item of mappedData) {
 			for (const key of Object.keys(item)) {
-				if (typeof item[key] === "string" || typeof item[key] === "number" || isValidElement(item[key])) {
+				if (
+					typeof item[key] === "string" ||
+					typeof item[key] === "number" ||
+					isValidElement(item[key])
+				) {
 					validKeys.add(key);
 				}
 			}
@@ -55,7 +83,8 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 
 			const cacheKey = `${id}-${query}-${JSON.stringify(filters)}`;
 
-			const listData = dataCache[cacheKey] || (await field.fetchList({ query, filters }));
+			const listData =
+				dataCache[cacheKey] || (await field.fetchList({ query, filters }));
 
 			if (listData) {
 				setData(listData);
@@ -90,13 +119,15 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 				modalVisible: isOpen,
 				readOnly,
 			})}
-			id={id}>
+			id={id}
+		>
 			<div className={getClassName("actions")}>
 				<button
 					type="button"
 					onClick={() => setOpen(true)}
 					className={getClassName("button")}
-					disabled={readOnly}>
+					disabled={readOnly}
+				>
 					{/* NB this is hardcoded to strapi for now */}
 					{value ? (
 						field.getItemSummary ? (
@@ -118,14 +149,13 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 						onClick={() => {
 							onChange(null);
 						}}
-						disabled={readOnly}>
+						disabled={readOnly}
+					>
 						<Unlock size={16} />
 					</button>
 				)}
 			</div>
-			<Modal
-				onClose={() => setOpen(false)}
-				isOpen={isOpen}>
+			<Modal onClose={() => setOpen(false)} isOpen={isOpen}>
 				<form
 					className={getClassNameModal({
 						isLoading,
@@ -137,12 +167,15 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 						e.preventDefault();
 
 						search(searchQuery, filters);
-					}}>
+					}}
+				>
 					<div className={getClassNameModal("masthead")}>
 						{field.showSearch ? (
 							<div className={getClassNameModal("searchForm")}>
 								<label className={getClassNameModal("search")}>
-									<span className={getClassNameModal("searchIconText")}>Search</span>
+									<span className={getClassNameModal("searchIconText")}>
+										Search
+									</span>
 									<div className={getClassNameModal("searchIcon")}>
 										<Search size="18" />
 									</div>
@@ -155,13 +188,11 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 											setSearchQuery(e.currentTarget.value);
 										}}
 										autoComplete="off"
-										value={searchQuery}></input>
+										value={searchQuery}
+									></input>
 								</label>
 								<div className={getClassNameModal("searchActions")}>
-									<Button
-										type="submit"
-										loading={isLoading}
-										fullWidth>
+									<Button type="submit" loading={isLoading} fullWidth>
 										Search
 									</Button>
 									{hasFilterFields && (
@@ -172,7 +203,8 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 													e.preventDefault();
 													e.stopPropagation();
 													setFiltersToggled(!filtersToggled);
-												}}>
+												}}
+											>
 												<SlidersHorizontal size={20} />
 											</IconButton>
 										</div>
@@ -180,9 +212,7 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 								</div>
 							</div>
 						) : (
-							<Heading
-								rank="2"
-								size="xs">
+							<Heading rank="2" size="xs">
 								{field.placeholder || "Select data"}
 							</Heading>
 						)}
@@ -197,7 +227,8 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 										return (
 											<div
 												className={getClassNameModal("field")}
-												key={fieldName}>
+												key={fieldName}
+											>
 												<AutoFieldPrivate
 													field={filterField}
 													name={fieldName}
@@ -229,7 +260,8 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 											<th
 												key={key}
 												className={getClassNameModal("th")}
-												style={{ textAlign: "left" }}>
+												style={{ textAlign: "left" }}
+											>
 												{key}
 											</th>
 										))}
@@ -246,11 +278,10 @@ export const ExternalInput = ({ field, onChange, value = null, name, id, readOnl
 													onChange(mapProp(data[i]));
 
 													setOpen(false);
-												}}>
+												}}
+											>
 												{keys.map((key) => (
-													<td
-														key={key}
-														className={getClassNameModal("td")}>
+													<td key={key} className={getClassNameModal("td")}>
 														{item[key]}
 													</td>
 												))}

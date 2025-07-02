@@ -15,7 +15,10 @@ const getItem = cache(async (slug: string) => {
 });
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: any, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+	{ params }: any,
+	parent: ResolvingMetadata,
+): Promise<Metadata> {
 	const { slug } = await params;
 	const data = await getItem(slug);
 	const previousImages = (await parent).openGraph?.images || [];

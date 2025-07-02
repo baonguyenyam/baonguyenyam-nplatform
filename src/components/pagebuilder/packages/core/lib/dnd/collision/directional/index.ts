@@ -8,7 +8,10 @@ let distanceChange: "increasing" | "decreasing" = "increasing";
 /**
  * Collide if we're moving towards an item.
  */
-export const directionalCollision = (input: { dragOperation: DragOperation; droppable: Droppable }, previous: Point) => {
+export const directionalCollision = (
+	input: { dragOperation: DragOperation; droppable: Droppable },
+	previous: Point,
+) => {
 	const { dragOperation, droppable } = input;
 	const { shape: dropShape } = droppable;
 	const { position } = dragOperation;
@@ -18,13 +21,29 @@ export const directionalCollision = (input: { dragOperation: DragOperation; drop
 
 	const dropCenter = dropShape.center;
 
-	const distanceToPrevious = Math.sqrt(Math.pow(dropCenter.x - previous.x, 2) + Math.pow(dropCenter.y - previous.y, 2));
+	const distanceToPrevious = Math.sqrt(
+		Math.pow(dropCenter.x - previous.x, 2) +
+			Math.pow(dropCenter.y - previous.y, 2),
+	);
 
-	const distanceToCurrent = Math.sqrt(Math.pow(dropCenter.x - position.current.x, 2) + Math.pow(dropCenter.y - position.current.y, 2));
+	const distanceToCurrent = Math.sqrt(
+		Math.pow(dropCenter.x - position.current.x, 2) +
+			Math.pow(dropCenter.y - position.current.y, 2),
+	);
 
-	distanceChange = distanceToCurrent === distanceToPrevious ? distanceChange : distanceToCurrent < distanceToPrevious ? "decreasing" : "increasing";
+	distanceChange =
+		distanceToCurrent === distanceToPrevious
+			? distanceChange
+			: distanceToCurrent < distanceToPrevious
+				? "decreasing"
+				: "increasing";
 
-	collisionDebug(dragShape.center, dropCenter, droppable.id.toString(), "rebeccapurple");
+	collisionDebug(
+		dragShape.center,
+		dropCenter,
+		droppable.id.toString(),
+		"rebeccapurple",
+	);
 
 	if (distanceChange === "decreasing") {
 		return {

@@ -45,11 +45,15 @@ export default function Fetch(props: any) {
 	const type = "customer";
 	const { title, page, breadcrumb } = props;
 	// Use a structured state for the drawer
-	const [drawerState, setDrawerState] = useState<DrawerState>({ mode: null, data: null });
+	const [drawerState, setDrawerState] = useState<DrawerState>({
+		mode: null,
+		data: null,
+	});
 	// Use the FetchResponse interface for db state
 	const [db, setDb] = useState<FetchResponse | null>(null);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 
 	// Consistent drawer close handler
@@ -127,7 +131,8 @@ export default function Fetch(props: any) {
 					variant="destructive"
 					size="sm"
 					onClick={() => deteteRecord(drawerState.data!.id)} // Use non-null assertion
-					className="px-2 h-8 space-x-1">
+					className="px-2 h-8 space-x-1"
+				>
 					<Trash className="h-4 w-4" />
 					<span>Delete</span>
 				</Button>
@@ -136,7 +141,8 @@ export default function Fetch(props: any) {
 				variant="outline"
 				size="icon"
 				onClick={handleDrawerClose}
-				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200">
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200"
+			>
 				<X className="h-5 w-5" />
 			</Button>
 		</div>
@@ -159,10 +165,7 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				{/* Update button onClick to use setDrawerState */}
 				<Button onClick={() => setDrawerState({ mode: "create", data: null })}>
 					<Plus className="mr-2 h-4 w-4" /> {/* Add margin for icon */}
@@ -211,9 +214,13 @@ export default function Fetch(props: any) {
 												</span>
 											)}
 											{/* Use text-sm for consistency */}
-											<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-xs">{row.name}</span>
+											<span className="text-sm whitespace-nowrap truncate overflow-ellipsis max-w-xs">
+												{row.name}
+											</span>
 										</div>
-										<div className="text-gray-500 text-xs">{dateFormat(row?.createdAt || "")}</div>
+										<div className="text-gray-500 text-xs">
+											{dateFormat(row?.createdAt || "")}
+										</div>
 									</>
 								);
 							},
@@ -239,12 +246,19 @@ export default function Fetch(props: any) {
 							custom: (row: Customer) => {
 								// Use Customer type
 								// Combine address parts safely
-								const addressParts = [row?.address, row?.city, row?.state, row?.country].filter(Boolean);
+								const addressParts = [
+									row?.address,
+									row?.city,
+									row?.state,
+									row?.country,
+								].filter(Boolean);
 								return (
 									<div className="space-x-1 text-sm">
 										{" "}
 										{/* Use text-sm */}
-										<span>{addressParts.length > 0 ? addressParts.join(", ") : "-"}</span>
+										<span>
+											{addressParts.length > 0 ? addressParts.join(", ") : "-"}
+										</span>
 									</div>
 								);
 							},
@@ -259,7 +273,8 @@ export default function Fetch(props: any) {
 										variant="outline" // Use standard variants
 										size="icon"
 										className="h-7 w-7 border-gray-400 text-black hover:bg-gray-200" // Simplified styling
-										onClick={() => setDrawerState({ mode: "edit", data: row })}>
+										onClick={() => setDrawerState({ mode: "edit", data: row })}
+									>
 										<Pencil className="h-4 w-4" /> {/* Consistent icon size */}
 									</Button>
 								);

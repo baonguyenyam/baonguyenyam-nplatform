@@ -20,7 +20,8 @@ export default function Fetch(props: any) {
 	const [data, setData] = useState<any>([]);
 	const [count, setCount] = useState(0);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 	const query = useMemo(
 		() => ({
@@ -56,13 +57,13 @@ export default function Fetch(props: any) {
 				className="p-4 hover:bg-accent cursor-pointer block w-full dark:hover:bg-gray-900 cursor-pointer"
 				onClick={() => {
 					router.push(`/admin/${type}s?s=${item.search_name}`);
-				}}>
+				}}
+			>
 				<div className="text-sm font-semibold">
 					{item.search_name}{" "}
-					<Badge
-						variant="outline"
-						className="dark:bg-gray-600 uppercase">
-						{item.type.toLowerCase() !== "post" && item.type.toLowerCase() !== "customer" && <>{item.type}</>}
+					<Badge variant="outline" className="dark:bg-gray-600 uppercase">
+						{item.type.toLowerCase() !== "post" &&
+							item.type.toLowerCase() !== "customer" && <>{item.type}</>}
 						{item.type.toLowerCase() === "post" && <>{item.search_type}</>}
 						{item.type.toLowerCase() === "customer" && <>{item.search_type}</>}
 					</Badge>
@@ -79,19 +80,20 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				<div className="flex flex-row items-center justify-between space-y-0 pb-2">
 					<div className="flex flex-col flex-end justify-around items-end">
 						{data?.length > 0 && (
 							<>
 								<div className="text-sm font-medium">Item(s) Found</div>
-								<div className="text-sm text-muted-foreground">{count} item(s)</div>
+								<div className="text-sm text-muted-foreground">
+									{count} item(s)
+								</div>
 							</>
 						)}
-						{data?.length === 0 && <div className="text-sm font-medium">No Item Found</div>}
+						{data?.length === 0 && (
+							<div className="text-sm font-medium">No Item Found</div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -104,7 +106,8 @@ export default function Fetch(props: any) {
 							data.map((item: any, index: number) => (
 								<div
 									key={index}
-									className="border-b last:border-b-0 dark:border-gray-700">
+									className="border-b last:border-b-0 dark:border-gray-700"
+								>
 									{buildLinks(item)}
 								</div>
 							))}

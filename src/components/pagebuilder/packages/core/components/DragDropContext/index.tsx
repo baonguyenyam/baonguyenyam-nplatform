@@ -1,4 +1,15 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+	createContext,
+	Dispatch,
+	ReactNode,
+	SetStateAction,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { DragDropEvents } from "@dnd-kit/abstract";
 import type { Draggable, Droppable } from "@dnd-kit/dom";
 import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
@@ -18,7 +29,12 @@ import { useSafeId } from "../../lib/use-safe-id";
 import { useAppStore, useAppStoreApi } from "../../store";
 import { ComponentDndData } from "../DraggableComponent";
 import { DropZoneProvider } from "../DropZone";
-import { DropZoneContext, Preview, ZoneStore, ZoneStoreProvider } from "../DropZone/context";
+import {
+	DropZoneContext,
+	Preview,
+	ZoneStore,
+	ZoneStoreProvider,
+} from "../DropZone/context";
 
 const DEBUG = false;
 
@@ -80,7 +96,10 @@ const useTempDisableFallback = (timeout: number) => {
 	}, []);
 };
 
-const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextProps) => {
+const DragDropContextClient = ({
+	children,
+	disableAutoScroll,
+}: DragDropContextProps) => {
 	const dispatch = useAppStore((s) => s.dispatch);
 	const appStore = useAppStoreApi();
 
@@ -103,7 +122,8 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 
 	const getChanged = useCallback(
 		(params: DeepestParams, id: string) => {
-			const { zoneDepthIndex = {}, areaDepthIndex = {} } = zoneStore.getState() || {};
+			const { zoneDepthIndex = {}, areaDepthIndex = {} } =
+				zoneStore.getState() || {};
 
 			const stateHasZone = Object.keys(zoneDepthIndex).length > 0;
 			const stateHasArea = Object.keys(areaDepthIndex).length > 0;
@@ -153,7 +173,10 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 		[zoneStore],
 	);
 
-	const setDeepestDb = useDebouncedCallback(setDeepestAndCollide, AREA_CHANGE_DEBOUNCE_MS);
+	const setDeepestDb = useDebouncedCallback(
+		setDeepestAndCollide,
+		AREA_CHANGE_DEBOUNCE_MS,
+	);
 
 	const cancelDb = () => {
 		setDeepestDb.cancel();
@@ -162,12 +185,20 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 
 	useEffect(() => {
 		if (DEBUG) {
-			zoneStore.subscribe((s) => console.log(s.previewIndex, Object.entries(s.zoneDepthIndex || {})[0]?.[0], Object.entries(s.areaDepthIndex || {})[0]?.[0]));
+			zoneStore.subscribe((s) =>
+				console.log(
+					s.previewIndex,
+					Object.entries(s.zoneDepthIndex || {})[0]?.[0],
+					Object.entries(s.areaDepthIndex || {})[0]?.[0],
+				),
+			);
 		}
 	}, []);
 
 	const [plugins] = useState(() => [
-		...(disableAutoScroll ? defaultPreset.plugins.filter((plugin) => plugin !== AutoScroller) : defaultPreset.plugins),
+		...(disableAutoScroll
+			? defaultPreset.plugins.filter((plugin) => plugin !== AutoScroller)
+			: defaultPreset.plugins),
 		createNestedDroppablePlugin(
 			{
 				onChange: (params, manager) => {
@@ -201,7 +232,10 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 						if (isDragging) {
 							// Only call the debounced function if these params differ from the last pending call
 							const debouncedParams = debouncedParamsRef.current;
-							const isSameParams = debouncedParams && debouncedParams.area === params.area && debouncedParams.zone === params.zone;
+							const isSameParams =
+								debouncedParams &&
+								debouncedParams.area === params.area &&
+								debouncedParams.zone === params.zone;
 
 							if (!isSameParams) {
 								cancelDb(); // NB we always cancel the debounce if the params change, so we could just use a timer
@@ -250,7 +284,8 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 				value={{
 					dragListeners,
 					setDragListeners,
-				}}>
+				}}
+			>
 				<DragDropProvider
 					plugins={plugins}
 					sensors={sensors}
@@ -267,7 +302,10 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 
 						const { previewIndex = {} } = zoneStore.getState() || {};
 
-						const thisPreview: Preview | null = previewIndex[zone]?.props.id === source.id ? previewIndex[zone] : null;
+						const thisPreview: Preview | null =
+							previewIndex[zone]?.props.id === source.id
+								? previewIndex[zone]
+								: null;
 
 						// Delay insert until animation has finished
 						setTimeout(() => {
@@ -297,7 +335,12 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 								zoneStore.setState({ previewIndex: {} });
 
 								if (thisPreview.type === "insert") {
-									insertComponent(thisPreview.componentType, thisPreview.zone, thisPreview.index, appStore.getState());
+									insertComponent(
+										thisPreview.componentType,
+										thisPreview.zone,
+										thisPreview.index,
+										appStore.getState(),
+									);
 								} else if (initialSelector.current) {
 									dispatch({
 										type: "move",
@@ -360,11 +403,20 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							targetZone = targetData.zone;
 							targetIndex = targetData.index;
 
-							const collisionData = (manager.dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data?.collisionMap?.[targetId];
+							const collisionData = (
+								manager.dragOperation as unknown as {
+									data: { collisionMap: CollisionMap };
+								}
+							).data?.collisionMap?.[targetId];
 
 							const dir = getDeepDir(target.element);
 
-							const collisionPosition = collisionData?.direction === "up" || (dir === "ltr" && collisionData?.direction === "left") || (dir === "rtl" && collisionData?.direction === "right") ? "before" : "after";
+							const collisionPosition =
+								collisionData?.direction === "up" ||
+								(dir === "ltr" && collisionData?.direction === "left") ||
+								(dir === "rtl" && collisionData?.direction === "right")
+									? "before"
+									: "after";
 
 							if (targetIndex >= sourceIndex && sourceZone === targetZone) {
 								targetIndex = targetIndex - 1;
@@ -378,7 +430,8 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 							targetIndex = 0;
 						}
 
-						const path = appStore.getState().state.indexes.nodes[target.id]?.path || [];
+						const path =
+							appStore.getState().state.indexes.nodes[target.id]?.path || [];
 
 						// Abort if dragging over self or descendant
 						if (
@@ -413,7 +466,10 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 								};
 							}
 
-							const item = getItem(initialSelector.current, appStore.getState().state);
+							const item = getItem(
+								initialSelector.current,
+								appStore.getState().state,
+							);
 
 							if (item) {
 								zoneStore.setState({
@@ -473,15 +529,19 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 						});
 					}}
 					onBeforeDragStart={(event) => {
-						const isNewComponent = event.operation.source?.data.type === "drawer";
+						const isNewComponent =
+							event.operation.source?.data.type === "drawer";
 
 						dragMode.current = isNewComponent ? "new" : "existing";
 						initialSelector.current = undefined;
 
 						zoneStore.setState({ draggedItem: event.operation.source });
-					}}>
+					}}
+				>
 					<ZoneStoreProvider store={zoneStore}>
-						<DropZoneProvider value={nextContextValue}>{children}</DropZoneProvider>
+						<DropZoneProvider value={nextContextValue}>
+							{children}
+						</DropZoneProvider>
 					</ZoneStoreProvider>
 				</DragDropProvider>
 			</dragListenerContext.Provider>
@@ -489,12 +549,19 @@ const DragDropContextClient = ({ children, disableAutoScroll }: DragDropContextP
 	);
 };
 
-export const DragDropContext = ({ children, disableAutoScroll }: DragDropContextProps) => {
+export const DragDropContext = ({
+	children,
+	disableAutoScroll,
+}: DragDropContextProps) => {
 	const status = useAppStore((s) => s.status);
 
 	if (status === "LOADING") {
 		return children;
 	}
 
-	return <DragDropContextClient disableAutoScroll={disableAutoScroll}>{children}</DragDropContextClient>;
+	return (
+		<DragDropContextClient disableAutoScroll={disableAutoScroll}>
+			{children}
+		</DragDropContextClient>
+	);
 };

@@ -19,11 +19,35 @@ export type WithChildren<Props> = Props & {
 	children: ReactNode;
 };
 
-export type ExtractPropsFromConfig<UserConfig> = UserConfig extends Config<infer P, any, any> ? P : never;
+export type ExtractPropsFromConfig<UserConfig> = UserConfig extends Config<
+	infer P,
+	any,
+	any
+>
+	? P
+	: never;
 
-export type ExtractRootPropsFromConfig<UserConfig> = UserConfig extends Config<any, infer P, any> ? P : never;
+export type ExtractRootPropsFromConfig<UserConfig> = UserConfig extends Config<
+	any,
+	infer P,
+	any
+>
+	? P
+	: never;
 
-export type UserGenerics<UserConfig extends Config = Config, UserProps extends ExtractPropsFromConfig<UserConfig> = ExtractPropsFromConfig<UserConfig>, UserRootProps extends ExtractRootPropsFromConfig<UserConfig> = ExtractRootPropsFromConfig<UserConfig>, UserData extends Data<UserProps, UserRootProps> | Data = Data<UserProps, UserRootProps>, UserAppState extends PrivateAppState<UserData> = PrivateAppState<UserData>, UserComponentData extends ComponentData = UserData["content"][0]> = {
+export type UserGenerics<
+	UserConfig extends Config = Config,
+	UserProps extends
+		ExtractPropsFromConfig<UserConfig> = ExtractPropsFromConfig<UserConfig>,
+	UserRootProps extends
+		ExtractRootPropsFromConfig<UserConfig> = ExtractRootPropsFromConfig<UserConfig>,
+	UserData extends Data<UserProps, UserRootProps> | Data = Data<
+		UserProps,
+		UserRootProps
+	>,
+	UserAppState extends PrivateAppState<UserData> = PrivateAppState<UserData>,
+	UserComponentData extends ComponentData = UserData["content"][0],
+> = {
 	UserConfig: UserConfig;
 	UserProps: UserProps;
 	UserRootProps: UserRootProps;

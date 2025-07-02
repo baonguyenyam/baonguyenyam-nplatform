@@ -19,7 +19,8 @@ export const Heading = ({ children, rank, size = "m" }: HeadingProps) => {
 		<Tag
 			className={getClassName({
 				[size]: true,
-			})}>
+			})}
+		>
 			{children}
 		</Tag>
 	);

@@ -1,4 +1,10 @@
-import { Collision, CollisionDetector, CollisionPriority, CollisionType, UniqueIdentifier } from "@dnd-kit/abstract";
+import {
+	Collision,
+	CollisionDetector,
+	CollisionPriority,
+	CollisionType,
+	UniqueIdentifier,
+} from "@dnd-kit/abstract";
 import { closestCorners } from "@dnd-kit/collision";
 
 import { Direction, DragAxis } from "../../../../types";
@@ -39,11 +45,17 @@ let flushNext: UniqueIdentifier = "";
  *
  * @returns
  */
-export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffset: number = 0.05) =>
+export const createDynamicCollisionDetector = (
+	dragAxis: DragAxis,
+	midpointOffset: number = 0.05,
+) =>
 	((input) => {
 		const { dragOperation, droppable } = input;
 
-		const { position, data } = dragOperation as unknown as { position: typeof dragOperation.position; data: Record<string, any> };
+		const { position, data } = dragOperation as unknown as {
+			position: typeof dragOperation.position;
+			data: Record<string, any>;
+		};
 		const dragShape = dragOperation.shape?.current;
 		const { shape: dropShape } = droppable;
 
@@ -62,9 +74,13 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 			direction: interval.direction,
 		};
 
-		const collisionMap = ((dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data.collisionMap || {}) as CollisionMap;
+		const collisionMap = ((
+			dragOperation as unknown as { data: { collisionMap: CollisionMap } }
+		).data.collisionMap || {}) as CollisionMap;
 
-		(dragOperation as unknown as { data: { collisionMap: CollisionMap } }).data.collisionMap = collisionMap;
+		(
+			dragOperation as unknown as { data: { collisionMap: CollisionMap } }
+		).data.collisionMap = collisionMap;
 
 		collisionMap[droppable.id] = {
 			direction: interval.direction,
@@ -72,7 +88,12 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 
 		const { center: dropCenter } = dropShape;
 
-		const overMidpoint = getMidpointImpact(dragShape, dropShape, interval.direction, midpointOffset);
+		const overMidpoint = getMidpointImpact(
+			dragShape,
+			dropShape,
+			interval.direction,
+			midpointOffset,
+		);
 
 		if (dragOperation.source?.id === droppable.id) {
 			// If the droppable and draggable are the same item, we check if we're moving towards the droppable.
@@ -95,7 +116,13 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 		const intersectionRatio = intersectionArea / dropShape.area;
 
 		if (intersectionArea && overMidpoint) {
-			collisionDebug(dragCenter, dropCenter, droppable.id.toString(), "green", interval.direction);
+			collisionDebug(
+				dragCenter,
+				dropCenter,
+				droppable.id.toString(),
+				"green",
+				interval.direction,
+			);
 
 			const collision: Collision = {
 				id: droppable.id,
@@ -114,9 +141,13 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 
 		if (fallbackEnabled && dragOperation.source?.id !== droppable.id) {
 			// Only calculate fallbacks when the draggable sits within the droppable's axis projection
-			const xAxisIntersection = dropShape.boundingRectangle.right > dragShape.boundingRectangle.left && dropShape.boundingRectangle.left < dragShape.boundingRectangle.right;
+			const xAxisIntersection =
+				dropShape.boundingRectangle.right > dragShape.boundingRectangle.left &&
+				dropShape.boundingRectangle.left < dragShape.boundingRectangle.right;
 
-			const yAxisIntersection = dropShape.boundingRectangle.bottom > dragShape.boundingRectangle.top && dropShape.boundingRectangle.top < dragShape.boundingRectangle.bottom;
+			const yAxisIntersection =
+				dropShape.boundingRectangle.bottom > dragShape.boundingRectangle.top &&
+				dropShape.boundingRectangle.top < dragShape.boundingRectangle.bottom;
 
 			// If drag axis is Y, then lock to x-axis (vertical) intersect. Otherwise lock to y-axis (horizontal) intersect.
 			if ((dragAxis === "y" && xAxisIntersection) || yAxisIntersection) {
@@ -139,7 +170,13 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 					// Because dnd-kit won't trigger a dragmove event unless the
 					// target ID changes, we introduce an ID "flushing" hack
 					if (intersectionArea) {
-						collisionDebug(dragCenter, dropCenter, droppable.id.toString(), "red", direction || "");
+						collisionDebug(
+							dragCenter,
+							dropCenter,
+							droppable.id.toString(),
+							"red",
+							direction || "",
+						);
 
 						// HACK: We always flush the ID after this collision to ensure dnd-kit triggers onDragMove
 						flushNext = droppable.id;
@@ -150,7 +187,13 @@ export const createDynamicCollisionDetector = (dragAxis: DragAxis, midpointOffse
 						};
 					}
 
-					collisionDebug(dragCenter, dropCenter, droppable.id.toString(), "orange", direction || "");
+					collisionDebug(
+						dragCenter,
+						dropCenter,
+						droppable.id.toString(),
+						"orange",
+						direction || "",
+					);
 
 					return { ...fallbackCollision, priority: CollisionPriority.Lowest };
 				}

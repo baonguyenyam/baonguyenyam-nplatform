@@ -1,4 +1,11 @@
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { getBox } from "css-box-model";
 import { useShallow } from "zustand/react/shallow";
 
@@ -17,7 +24,15 @@ const getClassName = getClassNameFactory("PuckCanvas", styles);
 const ZOOM_ON_CHANGE = true;
 
 export const Canvas = () => {
-	const { dispatch, overrides, setUi, zoomConfig, setZoomConfig, status, iframe } = useAppStore(
+	const {
+		dispatch,
+		overrides,
+		setUi,
+		zoomConfig,
+		setZoomConfig,
+		status,
+		iframe,
+	} = useAppStore(
 		useShallow((s) => ({
 			dispatch: s.dispatch,
 			overrides: s.overrides,
@@ -40,13 +55,20 @@ export const Canvas = () => {
 
 	const [showTransition, setShowTransition] = useState(false);
 
-	const defaultRender = useMemo<React.FunctionComponent<{ children?: ReactNode }>>(() => {
-		const PuckDefault = ({ children }: { children?: ReactNode }) => <>{children}</>;
+	const defaultRender = useMemo<
+		React.FunctionComponent<{ children?: ReactNode }>
+	>(() => {
+		const PuckDefault = ({ children }: { children?: ReactNode }) => (
+			<>{children}</>
+		);
 
 		return PuckDefault;
 	}, []);
 
-	const CustomPreview = useMemo(() => overrides.preview || defaultRender, [overrides]);
+	const CustomPreview = useMemo(
+		() => overrides.preview || defaultRender,
+		[overrides],
+	);
 
 	const getFrameDimensions = useCallback(() => {
 		if (frameRef.current) {
@@ -63,7 +85,13 @@ export const Canvas = () => {
 	const resetAutoZoom = useCallback(
 		(newViewports: UiState["viewports"] = viewports) => {
 			if (frameRef.current) {
-				setZoomConfig(getZoomConfig(newViewports?.current, frameRef.current, zoomConfig.zoom));
+				setZoomConfig(
+					getZoomConfig(
+						newViewports?.current,
+						frameRef.current,
+						zoomConfig.zoom,
+					),
+				);
 			}
 		},
 		[frameRef, zoomConfig, viewports],
@@ -129,7 +157,8 @@ export const Canvas = () => {
 					ui: { itemSelector: null },
 					recordHistory: true,
 				})
-			}>
+			}
+		>
 			{viewports.controlsVisible && iframe.enabled && (
 				<div className={getClassName("controls")}>
 					<ViewportControls
@@ -163,16 +192,16 @@ export const Canvas = () => {
 					/>
 				</div>
 			)}
-			<div
-				className={getClassName("inner")}
-				ref={frameRef}>
+			<div className={getClassName("inner")} ref={frameRef}>
 				<div
 					className={getClassName("root")}
 					style={{
 						width: iframe.enabled ? viewports.current.width : "100%",
 						height: zoomConfig.rootHeight,
 						transform: iframe.enabled ? `scale(${zoomConfig.zoom})` : undefined,
-						transition: showTransition ? "width 150ms ease-out, height 150ms ease-out, transform 150ms ease-out" : "",
+						transition: showTransition
+							? "width 150ms ease-out, height 150ms ease-out, transform 150ms ease-out"
+							: "",
 						overflow: iframe.enabled ? undefined : "auto",
 					}}
 					suppressHydrationWarning // Suppress hydration warning as frame is not visible until after load
@@ -184,7 +213,8 @@ export const Canvas = () => {
 								cancelable: false,
 							}),
 						);
-					}}>
+					}}
+				>
 					<CustomPreview>
 						<Preview />
 					</CustomPreview>

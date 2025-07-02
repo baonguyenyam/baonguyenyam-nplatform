@@ -124,12 +124,17 @@
 	border-top-right-radius: 3px;
 }
 
-.ArrayField--addDisabled > .ArrayField-inner > .ArrayFieldItem:last-of-type:not(.ArrayFieldItem--isExpanded) > .ArrayFieldItem-summary {
+.ArrayField--addDisabled
+	> .ArrayField-inner
+	> .ArrayFieldItem:last-of-type:not(.ArrayFieldItem--isExpanded)
+	> .ArrayFieldItem-summary {
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
 
-.ArrayField--addDisabled > .ArrayField-inner > .ArrayFieldItem--isExpanded:last-of-type {
+.ArrayField--addDisabled
+	> .ArrayField-inner
+	> .ArrayFieldItem--isExpanded:last-of-type {
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
@@ -188,7 +193,9 @@
 	opacity: 0;
 }
 
-.ArrayFieldItem-summary:focus-within > .ArrayFieldItem-rhs > .ArrayFieldItem-actions,
+.ArrayFieldItem-summary:focus-within
+	> .ArrayFieldItem-rhs
+	> .ArrayFieldItem-actions,
 .ArrayFieldItem-summary:hover > .ArrayFieldItem-rhs > .ArrayFieldItem-actions {
 	opacity: 1;
 }

@@ -130,7 +130,8 @@ export const SettingSeed = async () => {
 		await prisma.setting.create({
 			data: {
 				key: "description",
-				value: "nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently.",
+				value:
+					"nPlatform is a platform that provides a set of tools and services to help developers build and deploy applications quickly and efficiently.",
 			},
 		});
 	}

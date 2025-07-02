@@ -7,7 +7,29 @@ import styles from "./IconButton.module.css";
 
 const getClassName = getClassNameFactory("IconButton", styles);
 
-export const IconButton = ({ children, href, onClick, variant = "primary", type, disabled, tabIndex, newTab, fullWidth, title }: { children: ReactNode; href?: string; onClick?: (e: SyntheticEvent) => void | Promise<void>; variant?: "primary" | "secondary"; type?: "button" | "submit" | "reset"; disabled?: boolean; tabIndex?: number; newTab?: boolean; fullWidth?: boolean; title: string }) => {
+export const IconButton = ({
+	children,
+	href,
+	onClick,
+	variant = "primary",
+	type,
+	disabled,
+	tabIndex,
+	newTab,
+	fullWidth,
+	title,
+}: {
+	children: ReactNode;
+	href?: string;
+	onClick?: (e: SyntheticEvent) => void | Promise<void>;
+	variant?: "primary" | "secondary";
+	type?: "button" | "submit" | "reset";
+	disabled?: boolean;
+	tabIndex?: number;
+	newTab?: boolean;
+	fullWidth?: boolean;
+	title: string;
+}) => {
 	const [loading, setLoading] = useState(false);
 
 	const ElementType = href ? "a" : "button";
@@ -34,7 +56,8 @@ export const IconButton = ({ children, href, onClick, variant = "primary", type,
 			target={newTab ? "_blank" : undefined}
 			rel={newTab ? "noreferrer" : undefined}
 			href={href}
-			title={title}>
+			title={title}
+		>
 			<span className={getClassName("title")}>{title}</span>
 			{children}
 			{loading && (

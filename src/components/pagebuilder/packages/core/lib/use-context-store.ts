@@ -11,7 +11,10 @@ type ExtractState<S> = S extends {
 /**
  * Use a Zustand store via context
  */
-export function useContextStore<T, U>(context: Context<StoreApi<T>>, selector: (s: ExtractState<StoreApi<T>>) => U): U {
+export function useContextStore<T, U>(
+	context: Context<StoreApi<T>>,
+	selector: (s: ExtractState<StoreApi<T>>) => U,
+): U {
 	const store = useContext(context);
 
 	if (!store) {

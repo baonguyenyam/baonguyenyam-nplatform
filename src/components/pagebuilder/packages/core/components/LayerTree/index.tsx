@@ -17,7 +17,15 @@ import styles from "./styles.module.css";
 const getClassName = getClassNameFactory("LayerTree", styles);
 const getClassNameLayer = getClassNameFactory("Layer", styles);
 
-const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string; zoneCompound: string }) => {
+const Layer = ({
+	index,
+	itemId,
+	zoneCompound,
+}: {
+	index: number;
+	itemId: string;
+	zoneCompound: string;
+}) => {
 	const ctx = useContext(dropZoneContext);
 
 	const config = useAppStore((s) => s.config);
@@ -33,12 +41,20 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 
 	const selecedItemId = useAppStore((s) => s.selectedItem?.props.id);
 
-	const isSelected = selecedItemId === itemId || (itemSelector && itemSelector.zone === rootDroppableId && !zoneCompound);
+	const isSelected =
+		selecedItemId === itemId ||
+		(itemSelector && itemSelector.zone === rootDroppableId && !zoneCompound);
 
 	const nodeData = useAppStore((s) => s.state.indexes.nodes[itemId]);
 
 	// const zonesForItem = findZonesForArea(data, itemId);
-	const zonesForItem = useAppStore(useShallow((s) => Object.keys(s.state.indexes.zones).filter((z) => z.split(":")[0] === itemId)));
+	const zonesForItem = useAppStore(
+		useShallow((s) =>
+			Object.keys(s.state.indexes.zones).filter(
+				(z) => z.split(":")[0] === itemId,
+			),
+		),
+	);
 	const containsZone = zonesForItem.length > 0;
 
 	const { setHoveringComponent = () => {}, hoveringComponent } = ctx || {};
@@ -57,7 +73,8 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 		);
 	});
 
-	const componentConfig: ComponentConfig | undefined = config.components[nodeData.data.type];
+	const componentConfig: ComponentConfig | undefined =
+		config.components[nodeData.data.type];
 	const label = componentConfig?.["label"] ?? nodeData.data.type.toString();
 
 	return (
@@ -67,7 +84,8 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 				isHovering,
 				containsZone,
 				childIsSelected,
-			})}>
+			})}
+		>
 			<div className={getClassNameLayer("inner")}>
 				<button
 					type="button"
@@ -80,7 +98,9 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 
 						const frame = getFrame();
 
-						const el = frame?.querySelector(`[data-puck-component="${itemId}"]`);
+						const el = frame?.querySelector(
+							`[data-puck-component="${itemId}"]`,
+						);
 
 						if (!el) {
 							console.error("Scroll failed. No element was found for", itemId);
@@ -104,25 +124,32 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 					onMouseOut={(e) => {
 						e.stopPropagation();
 						setHoveringComponent(null);
-					}}>
+					}}
+				>
 					{containsZone && (
 						<div
 							className={getClassNameLayer("chevron")}
-							title={isSelected ? "Collapse" : "Expand"}>
+							title={isSelected ? "Collapse" : "Expand"}
+						>
 							<ChevronDown size="12" />
 						</div>
 					)}
 					<div className={getClassNameLayer("title")}>
-						<div className={getClassNameLayer("icon")}>{nodeData.data.type === "Text" || nodeData.data.type === "Heading" ? <Type size="16" /> : <LayoutGrid size="16" />}</div>
+						<div className={getClassNameLayer("icon")}>
+							{nodeData.data.type === "Text" ||
+							nodeData.data.type === "Heading" ? (
+								<Type size="16" />
+							) : (
+								<LayoutGrid size="16" />
+							)}
+						</div>
 						<div className={getClassNameLayer("name")}>{label}</div>
 					</div>
 				</button>
 			</div>
 			{containsZone &&
 				zonesForItem.map((subzone) => (
-					<div
-						key={subzone}
-						className={getClassNameLayer("zones")}>
+					<div key={subzone} className={getClassNameLayer("zones")}>
 						<LayerTree zoneCompound={subzone} />
 					</div>
 				))}
@@ -130,10 +157,22 @@ const Layer = ({ index, itemId, zoneCompound }: { index: number; itemId: string;
 	);
 };
 
-export const LayerTree = ({ label: _label, zoneCompound }: { label?: string; zoneCompound: string }) => {
+export const LayerTree = ({
+	label: _label,
+	zoneCompound,
+}: {
+	label?: string;
+	zoneCompound: string;
+}) => {
 	const label = _label ?? zoneCompound.split(":")[1];
 
-	const contentIds = useAppStore(useShallow((s) => (zoneCompound ? (s.state.indexes.zones[zoneCompound]?.contentIds ?? []) : [])));
+	const contentIds = useAppStore(
+		useShallow((s) =>
+			zoneCompound
+				? (s.state.indexes.zones[zoneCompound]?.contentIds ?? [])
+				: [],
+		),
+	);
 
 	return (
 		<>
@@ -146,7 +185,9 @@ export const LayerTree = ({ label: _label, zoneCompound }: { label?: string; zon
 				</div>
 			)}
 			<ul className={getClassName()}>
-				{contentIds.length === 0 && <div className={getClassName("helper")}>No items</div>}
+				{contentIds.length === 0 && (
+					<div className={getClassName("helper")}>No items</div>
+				)}
 				{contentIds.map((itemId, i) => {
 					return (
 						<Layer

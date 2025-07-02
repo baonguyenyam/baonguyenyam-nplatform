@@ -8,7 +8,15 @@ import AppLoading from "@/components/AppLoading";
 import { FieldSelect } from "@/components/fields/select";
 import { FieldSelectAttribute } from "@/components/fields/selectattribute";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,8 +31,18 @@ export default function FormEdit(props: any) {
 	// Build the form schema using Zod
 	let FormSchema = z.object({
 		f_email: z.string().email({ message: "Invalid email address." }),
-		f_role: z.enum(enumPermission.map((item: any) => item.value) as [string, ...string[]], { required_error: "Role is required" }).optional(),
-		f_published: z.enum(enumPublished.map((item: any) => item.value) as [string, ...string[]], { required_error: "Published is required" }).optional(),
+		f_role: z
+			.enum(
+				enumPermission.map((item: any) => item.value) as [string, ...string[]],
+				{ required_error: "Role is required" },
+			)
+			.optional(),
+		f_published: z
+			.enum(
+				enumPublished.map((item: any) => item.value) as [string, ...string[]],
+				{ required_error: "Published is required" },
+			)
+			.optional(),
 		f_address: z.string().optional(),
 		f_city: z.string().optional(),
 		f_state: z.string().optional(),
@@ -136,7 +154,10 @@ export default function FormEdit(props: any) {
 						// Send the email to the user
 						const _data = res?.data;
 						if (_data) {
-							actions.sendMail(values.f_email, values.f_firstname + " " + values.f_lastname);
+							actions.sendMail(
+								values.f_email,
+								values.f_firstname + " " + values.f_lastname,
+							);
 						}
 					}
 					toast.success(res.message);
@@ -175,16 +196,32 @@ export default function FormEdit(props: any) {
 				const fieldValue = item?.children?.map((child: any) => {
 					const childFieldName = `${fieldName}_${child.id}`;
 					if (child?.type === "select") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue = (
+							_attribute?.find((c: any) => c.id === item.id) || {}
+						)?.data?.find((v: any) => v.id === child.id)?.value;
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 					if (child?.type === "checkbox") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value || "[]";
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue =
+							(
+								_attribute?.find((c: any) => c.id === item.id) || {}
+							)?.data?.find((v: any) => v.id === child.id)?.value || "[]";
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 					if (child?.type === "text") {
-						const childValue = (_attribute?.find((c: any) => c.id === item.id) || {})?.data?.find((v: any) => v.id === child.id)?.value;
-						form.setValue(childFieldName as keyof z.infer<typeof FormSchema>, childValue || "");
+						const childValue = (
+							_attribute?.find((c: any) => c.id === item.id) || {}
+						)?.data?.find((v: any) => v.id === child.id)?.value;
+						form.setValue(
+							childFieldName as keyof z.infer<typeof FormSchema>,
+							childValue || "",
+						);
 					}
 				});
 			});
@@ -210,7 +247,8 @@ export default function FormEdit(props: any) {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full space-y-6 pb-15">
+						className="w-full space-y-6 pb-15"
+					>
 						<div className="grid grid-cols-2 gap-5">
 							<FormField
 								control={form.control}
@@ -248,7 +286,9 @@ export default function FormEdit(props: any) {
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
-									<FormDescription>This is your public display email.</FormDescription>
+									<FormDescription>
+										This is your public display email.
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -337,14 +377,10 @@ export default function FormEdit(props: any) {
 						</div>
 
 						{atts?.length > 0 && (
-							<Tabs
-								defaultValue={atts?.[0]?.id}
-								className="mb-10">
+							<Tabs defaultValue={atts?.[0]?.id} className="mb-10">
 								<TabsList className="mt-5 mb-2">
 									{atts?.map((item: any) => (
-										<TabsTrigger
-											key={item.id}
-											value={item.id}>
+										<TabsTrigger key={item.id} value={item.id}>
 											{item.title}
 										</TabsTrigger>
 									))}
@@ -354,7 +390,8 @@ export default function FormEdit(props: any) {
 										<TabsContent
 											key={item.id}
 											value={item.id}
-											className="space-y-15">
+											className="space-y-15"
+										>
 											<div className="grid grid-cols-3 gap-5">
 												{item?.children?.map((child: any) => {
 													const fieldName = `f_${stringToKeyValue(item.title)}_${item.id}_${child.id}`;
@@ -362,7 +399,9 @@ export default function FormEdit(props: any) {
 														<Fragment key={child.id}>
 															<FormField
 																control={form.control}
-																name={fieldName as keyof z.infer<typeof FormSchema>}
+																name={
+																	fieldName as keyof z.infer<typeof FormSchema>
+																}
 																render={({ field }) => (
 																	<FormItem>
 																		<FormLabel>{child.title}</FormLabel>
@@ -371,14 +410,19 @@ export default function FormEdit(props: any) {
 																				<Input {...field} />
 																			</FormControl>
 																		)}
-																		{(child?.type === "select" || child?.type === "checkbox") && (
+																		{(child?.type === "select" ||
+																			child?.type === "checkbox") && (
 																			<>
 																				{FieldSelectAttribute({
 																					mode: id ? "edit" : "create",
 																					field,
 																					form,
 																					type: child?.type,
-																					key: "f_" + stringToKeyValue(item.title) + "_" + item.id,
+																					key:
+																						"f_" +
+																						stringToKeyValue(item.title) +
+																						"_" +
+																						item.id,
 																					id: child.id,
 																				})}
 																			</>
@@ -412,7 +456,9 @@ export default function FormEdit(props: any) {
 													name: item.label,
 												})),
 											})}
-											<FormDescription>This is your public display role.</FormDescription>
+											<FormDescription>
+												This is your public display role.
+											</FormDescription>
 											<FormMessage />
 										</FormItem>
 									)}
@@ -437,42 +483,78 @@ export default function FormEdit(props: any) {
 																			onCheckedChange={(checked) => {
 																				if (checked) {
 																					permissions.push(item.value);
-																					field.onChange(JSON.stringify(permissions));
+																					field.onChange(
+																						JSON.stringify(permissions),
+																					);
 																				} else {
-																					const _permissions = permissions.filter((i: any) => i !== item.value);
-																					field.onChange(JSON.stringify(_permissions));
+																					const _permissions =
+																						permissions.filter(
+																							(i: any) => i !== item.value,
+																						);
+																					field.onChange(
+																						JSON.stringify(_permissions),
+																					);
 																				}
 																			}}
 																		/>
-																		<label htmlFor={item.value}>{item.label}</label>
+																		<label htmlFor={item.value}>
+																			{item.label}
+																		</label>
 																	</div>
 																	{item.children && (
 																		<div className="ml-9 mt-2">
 																			<div className="flex items-center flex-wrap gap-3">
-																				{item.children?.map((child: any, index: any) => {
-																					return (
-																						<Fragment key={index}>
-																							<div className="item flex items-center gap-1">
-																								<Switch
-																									id={child.value}
-																									checked={permissions.includes(item.value + "_" + child.value)}
-																									onCheckedChange={(checked) => {
-																										if (checked) {
-																											permissions.push(item.value + "_" + child.value);
-																											field.onChange(JSON.stringify(permissions));
-																										} else {
-																											const _permissions = permissions.filter((i: any) => i !== item.value + "_" + child.value);
-																											field.onChange(JSON.stringify(_permissions));
-																										}
-																									}}
-																								/>
-																								<label htmlFor={child.value}>
-																									{item.label} {child.label}
-																								</label>
-																							</div>
-																						</Fragment>
-																					);
-																				})}
+																				{item.children?.map(
+																					(child: any, index: any) => {
+																						return (
+																							<Fragment key={index}>
+																								<div className="item flex items-center gap-1">
+																									<Switch
+																										id={child.value}
+																										checked={permissions.includes(
+																											item.value +
+																												"_" +
+																												child.value,
+																										)}
+																										onCheckedChange={(
+																											checked,
+																										) => {
+																											if (checked) {
+																												permissions.push(
+																													item.value +
+																														"_" +
+																														child.value,
+																												);
+																												field.onChange(
+																													JSON.stringify(
+																														permissions,
+																													),
+																												);
+																											} else {
+																												const _permissions =
+																													permissions.filter(
+																														(i: any) =>
+																															i !==
+																															item.value +
+																																"_" +
+																																child.value,
+																													);
+																												field.onChange(
+																													JSON.stringify(
+																														_permissions,
+																													),
+																												);
+																											}
+																										}}
+																									/>
+																									<label htmlFor={child.value}>
+																										{item.label} {child.label}
+																									</label>
+																								</div>
+																							</Fragment>
+																						);
+																					},
+																				)}
 																			</div>
 																		</div>
 																	)}
@@ -509,7 +591,10 @@ export default function FormEdit(props: any) {
 							)}
 							<Button
 								type="submit"
-								disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+								disabled={
+									!form.formState.isDirty || form.formState.isSubmitting
+								}
+							>
 								Save changes
 							</Button>
 						</div>

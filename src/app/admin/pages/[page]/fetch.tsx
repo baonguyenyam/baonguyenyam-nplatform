@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Drawer } from "antd";
-import { BrushCleaning, CircleCheck, Pencil, Plus, Trash, X } from "lucide-react";
+import {
+	BrushCleaning,
+	CircleCheck,
+	Pencil,
+	Plus,
+	Trash,
+	X,
+} from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -44,10 +51,14 @@ interface DrawerState {
 export default function Fetch(props: any) {
 	const type = "page";
 	const { title, page, breadcrumb } = props;
-	const [drawerState, setDrawerState] = useState<DrawerState>({ mode: null, data: null });
+	const [drawerState, setDrawerState] = useState<DrawerState>({
+		mode: null,
+		data: null,
+	});
 	const [db, setDb] = useState<FetchResponse | null>(null);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 	const handleDrawerClose = () => setDrawerState({ mode: null, data: null });
 	// --- Data Fetching Logic ---
@@ -110,7 +121,8 @@ export default function Fetch(props: any) {
 					variant="destructive" // Use destructive variant
 					size="sm" // Consistent size
 					onClick={() => deteteRecord(drawerState.data!.id)} // Use non-null assertion as id is checked
-					className="px-2 h-8 space-x-1">
+					className="px-2 h-8 space-x-1"
+				>
 					<Trash className="h-4 w-4" />
 					<span>Delete</span>
 				</Button>
@@ -119,7 +131,8 @@ export default function Fetch(props: any) {
 				variant="outline"
 				size="icon"
 				onClick={handleDrawerClose}
-				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200">
+				className="h-8 w-8 border-gray-400 bg-gray-200 text-black hover:bg-gray-400 dark:text-gray-200"
+			>
 				<X className="h-5 w-5" /> {/* Consistent icon size */}
 			</Button>
 		</div>
@@ -140,7 +153,9 @@ export default function Fetch(props: any) {
 				{drawerState.mode !== "design" && (
 					<FormEdit
 						id={drawerState.mode === "edit" ? drawerState.data?.id : undefined}
-						initialData={drawerState.mode === "edit" ? drawerState.data : undefined} // Pass initial data for editing
+						initialData={
+							drawerState.mode === "edit" ? drawerState.data : undefined
+						} // Pass initial data for editing
 						onChange={handleFormChange}
 					/>
 				)}
@@ -151,10 +166,7 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				<Button onClick={() => setDrawerState({ mode: "create", data: null })}>
 					<Plus />
 					Create {title}
@@ -215,12 +227,15 @@ export default function Fetch(props: any) {
 												<Link
 													href={`/page/${row.slug}`}
 													target="_blank"
-													className="underline">
+													className="underline"
+												>
 													{row.title}
 												</Link>
 											</span>
 										</div>
-										<div className="text-gray-500 text-xs">{dateFormat(row?.createdAt)}</div>
+										<div className="text-gray-500 text-xs">
+											{dateFormat(row?.createdAt)}
+										</div>
 									</>
 								);
 							},
@@ -246,13 +261,19 @@ export default function Fetch(props: any) {
 										<Button
 											size="icon"
 											className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-											onClick={() => setDrawerState({ mode: "design", data: row })}>
+											onClick={() =>
+												setDrawerState({ mode: "design", data: row })
+											}
+										>
 											<BrushCleaning />
 										</Button>
 										<Button
 											size="icon"
 											className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-											onClick={() => setDrawerState({ mode: "edit", data: row })}>
+											onClick={() =>
+												setDrawerState({ mode: "edit", data: row })
+											}
+										>
 											<Pencil />
 										</Button>
 									</div>
@@ -281,7 +302,8 @@ export default function Fetch(props: any) {
 				onClose={handleDrawerClose}
 				destroyOnClose={true} // Keep this if form state needs resetting
 				maskClosable={false}
-				extra={renderDrawerExtra()}>
+				extra={renderDrawerExtra()}
+			>
 				{renderDrawerContent()}
 			</Drawer>
 		</>

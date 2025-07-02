@@ -6,66 +6,221 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
-import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, PermissionLevel, RESOURCES, UserPermissionContext } from "@/lib/permissions";
+import {
+	ACTIONS,
+	createPermissionChecker,
+	PERMISSION_LEVELS,
+	PermissionLevel,
+	RESOURCES,
+	UserPermissionContext,
+} from "@/lib/permissions";
 
 // Mapping các admin routes với permission requirements
 const ADMIN_ROUTE_PERMISSIONS = {
 	// Users management
-	"/admin/users": { resource: RESOURCES.USERS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/users/create": { resource: RESOURCES.USERS, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/users/edit": { resource: RESOURCES.USERS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/users/delete": { resource: RESOURCES.USERS, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/users": {
+		resource: RESOURCES.USERS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/users/create": {
+		resource: RESOURCES.USERS,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/users/edit": {
+		resource: RESOURCES.USERS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/users/delete": {
+		resource: RESOURCES.USERS,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Products management
-	"/admin/products": { resource: RESOURCES.PRODUCTS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/products/create": { resource: RESOURCES.PRODUCTS, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/products/edit": { resource: RESOURCES.PRODUCTS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/products/delete": { resource: RESOURCES.PRODUCTS, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/products": {
+		resource: RESOURCES.PRODUCTS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/products/create": {
+		resource: RESOURCES.PRODUCTS,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/products/edit": {
+		resource: RESOURCES.PRODUCTS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/products/delete": {
+		resource: RESOURCES.PRODUCTS,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Orders management
-	"/admin/orders": { resource: RESOURCES.ORDERS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/orders/create": { resource: RESOURCES.ORDERS, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/orders/edit": { resource: RESOURCES.ORDERS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/orders/delete": { resource: RESOURCES.ORDERS, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/orders/approve": { resource: RESOURCES.ORDERS, action: ACTIONS.APPROVE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/orders": {
+		resource: RESOURCES.ORDERS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/orders/create": {
+		resource: RESOURCES.ORDERS,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/orders/edit": {
+		resource: RESOURCES.ORDERS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/orders/delete": {
+		resource: RESOURCES.ORDERS,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/orders/approve": {
+		resource: RESOURCES.ORDERS,
+		action: ACTIONS.APPROVE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Categories management
-	"/admin/categories": { resource: RESOURCES.CATEGORIES, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/categories/create": { resource: RESOURCES.CATEGORIES, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/categories/edit": { resource: RESOURCES.CATEGORIES, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/categories/delete": { resource: RESOURCES.CATEGORIES, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/categories": {
+		resource: RESOURCES.CATEGORIES,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/categories/create": {
+		resource: RESOURCES.CATEGORIES,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/categories/edit": {
+		resource: RESOURCES.CATEGORIES,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/categories/delete": {
+		resource: RESOURCES.CATEGORIES,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Posts management
-	"/admin/posts": { resource: RESOURCES.POSTS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/posts/create": { resource: RESOURCES.POSTS, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/posts/edit": { resource: RESOURCES.POSTS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/posts/delete": { resource: RESOURCES.POSTS, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/posts/publish": { resource: RESOURCES.POSTS, action: ACTIONS.PUBLISH, level: PERMISSION_LEVELS.WRITE },
+	"/admin/posts": {
+		resource: RESOURCES.POSTS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/posts/create": {
+		resource: RESOURCES.POSTS,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/posts/edit": {
+		resource: RESOURCES.POSTS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/posts/delete": {
+		resource: RESOURCES.POSTS,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/posts/publish": {
+		resource: RESOURCES.POSTS,
+		action: ACTIONS.PUBLISH,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Files management
-	"/admin/files": { resource: RESOURCES.FILES, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/files/upload": { resource: RESOURCES.FILES, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/files/delete": { resource: RESOURCES.FILES, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/files": {
+		resource: RESOURCES.FILES,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/files/upload": {
+		resource: RESOURCES.FILES,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/files/delete": {
+		resource: RESOURCES.FILES,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Customers management
-	"/admin/customers": { resource: RESOURCES.CUSTOMERS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/customers/create": { resource: RESOURCES.CUSTOMERS, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/customers/edit": { resource: RESOURCES.CUSTOMERS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/customers/delete": { resource: RESOURCES.CUSTOMERS, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/customers": {
+		resource: RESOURCES.CUSTOMERS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/customers/create": {
+		resource: RESOURCES.CUSTOMERS,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/customers/edit": {
+		resource: RESOURCES.CUSTOMERS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/customers/delete": {
+		resource: RESOURCES.CUSTOMERS,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 
 	// Settings (Admin only)
-	"/admin/settings": { resource: RESOURCES.SETTINGS, action: ACTIONS.READ, level: PERMISSION_LEVELS.ADMIN },
-	"/admin/settings/edit": { resource: RESOURCES.SETTINGS, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.ADMIN },
+	"/admin/settings": {
+		resource: RESOURCES.SETTINGS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.ADMIN,
+	},
+	"/admin/settings/edit": {
+		resource: RESOURCES.SETTINGS,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.ADMIN,
+	},
 
 	// Reports and Analytics
-	"/admin/reports": { resource: RESOURCES.REPORTS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/analytics": { resource: RESOURCES.ANALYTICS, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
+	"/admin/reports": {
+		resource: RESOURCES.REPORTS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/analytics": {
+		resource: RESOURCES.ANALYTICS,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
 
 	// Attributes management
-	"/admin/attributes": { resource: RESOURCES.ATTRIBUTES, action: ACTIONS.READ, level: PERMISSION_LEVELS.READ },
-	"/admin/attributes/create": { resource: RESOURCES.ATTRIBUTES, action: ACTIONS.CREATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/attributes/edit": { resource: RESOURCES.ATTRIBUTES, action: ACTIONS.UPDATE, level: PERMISSION_LEVELS.WRITE },
-	"/admin/attributes/delete": { resource: RESOURCES.ATTRIBUTES, action: ACTIONS.DELETE, level: PERMISSION_LEVELS.WRITE },
+	"/admin/attributes": {
+		resource: RESOURCES.ATTRIBUTES,
+		action: ACTIONS.READ,
+		level: PERMISSION_LEVELS.READ,
+	},
+	"/admin/attributes/create": {
+		resource: RESOURCES.ATTRIBUTES,
+		action: ACTIONS.CREATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/attributes/edit": {
+		resource: RESOURCES.ATTRIBUTES,
+		action: ACTIONS.UPDATE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
+	"/admin/attributes/delete": {
+		resource: RESOURCES.ATTRIBUTES,
+		action: ACTIONS.DELETE,
+		level: PERMISSION_LEVELS.WRITE,
+	},
 } as const;
 
 /**
@@ -103,7 +258,9 @@ export async function checkAdminRoutePermission(req: NextRequest): Promise<{
 		const userContext: UserPermissionContext = {
 			userId: session.user.id as string,
 			role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
-			customPermissions: session.user.permissions ? parseCustomPermissions(session.user.permissions) : undefined,
+			customPermissions: session.user.permissions
+				? parseCustomPermissions(session.user.permissions)
+				: undefined,
 		};
 
 		const permissionChecker = createPermissionChecker(userContext);
@@ -112,7 +269,11 @@ export async function checkAdminRoutePermission(req: NextRequest): Promise<{
 		const routePermission = findRoutePermission(pathname);
 
 		if (routePermission) {
-			const hasPermission = permissionChecker.hasPermission(routePermission.resource, routePermission.action, routePermission.level);
+			const hasPermission = permissionChecker.hasPermission(
+				routePermission.resource,
+				routePermission.action,
+				routePermission.level,
+			);
 
 			if (!hasPermission) {
 				return {
@@ -148,8 +309,12 @@ export async function checkAdminRoutePermission(req: NextRequest): Promise<{
  */
 function findRoutePermission(pathname: string) {
 	// Try exact match first
-	if (ADMIN_ROUTE_PERMISSIONS[pathname as keyof typeof ADMIN_ROUTE_PERMISSIONS]) {
-		return ADMIN_ROUTE_PERMISSIONS[pathname as keyof typeof ADMIN_ROUTE_PERMISSIONS];
+	if (
+		ADMIN_ROUTE_PERMISSIONS[pathname as keyof typeof ADMIN_ROUTE_PERMISSIONS]
+	) {
+		return ADMIN_ROUTE_PERMISSIONS[
+			pathname as keyof typeof ADMIN_ROUTE_PERMISSIONS
+		];
 	}
 
 	// Try pattern matching for dynamic routes
@@ -212,7 +377,11 @@ function parseCustomPermissions(permissions: any): any[] {
 /**
  * Middleware factory cho specific admin sections
  */
-export function createAdminSectionMiddleware(resource: string, action: string, level?: PermissionLevel) {
+export function createAdminSectionMiddleware(
+	resource: string,
+	action: string,
+	level?: PermissionLevel,
+) {
 	return async (req: NextRequest) => {
 		const session = await auth();
 
@@ -223,12 +392,18 @@ export function createAdminSectionMiddleware(resource: string, action: string, l
 		const userContext: UserPermissionContext = {
 			userId: session.user.id as string,
 			role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
-			customPermissions: session.user.permissions ? parseCustomPermissions(session.user.permissions) : undefined,
+			customPermissions: session.user.permissions
+				? parseCustomPermissions(session.user.permissions)
+				: undefined,
 		};
 
 		const permissionChecker = createPermissionChecker(userContext);
 
-		const hasPermission = permissionChecker.hasPermission(resource as any, action as any, level || PERMISSION_LEVELS.READ);
+		const hasPermission = permissionChecker.hasPermission(
+			resource as any,
+			action as any,
+			level || PERMISSION_LEVELS.READ,
+		);
 
 		if (!hasPermission) {
 			return NextResponse.redirect(new URL("/admin/deny", req.url));
@@ -242,7 +417,11 @@ export function createAdminSectionMiddleware(resource: string, action: string, l
  * Helper class for checking permissions in admin pages
  */
 export class PermissionChecker {
-	static async check(resource: string, action: string, level?: PermissionLevel): Promise<void> {
+	static async check(
+		resource: string,
+		action: string,
+		level?: PermissionLevel,
+	): Promise<void> {
 		const session = await auth();
 
 		if (!session?.user) {
@@ -252,14 +431,16 @@ export class PermissionChecker {
 		const userContext: UserPermissionContext = {
 			userId: session.user.id as string,
 			role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
-			customPermissions: session.user.permissions ? parseCustomPermissions(session.user.permissions) : undefined,
+			customPermissions: session.user.permissions
+				? parseCustomPermissions(session.user.permissions)
+				: undefined,
 		};
 
 		const permissionChecker = createPermissionChecker(userContext);
 		const hasPermission = permissionChecker.hasPermission(
 			resource as any,
 			action as any,
-			level || PERMISSION_LEVELS.READ
+			level || PERMISSION_LEVELS.READ,
 		);
 
 		if (!hasPermission) {
@@ -270,7 +451,20 @@ export class PermissionChecker {
 }
 
 // Export specific middleware for common admin sections
-export const usersAdminMiddleware = createAdminSectionMiddleware(RESOURCES.USERS, ACTIONS.READ);
-export const productsAdminMiddleware = createAdminSectionMiddleware(RESOURCES.PRODUCTS, ACTIONS.READ);
-export const ordersAdminMiddleware = createAdminSectionMiddleware(RESOURCES.ORDERS, ACTIONS.READ);
-export const settingsAdminMiddleware = createAdminSectionMiddleware(RESOURCES.SETTINGS, ACTIONS.READ, PERMISSION_LEVELS.ADMIN);
+export const usersAdminMiddleware = createAdminSectionMiddleware(
+	RESOURCES.USERS,
+	ACTIONS.READ,
+);
+export const productsAdminMiddleware = createAdminSectionMiddleware(
+	RESOURCES.PRODUCTS,
+	ACTIONS.READ,
+);
+export const ordersAdminMiddleware = createAdminSectionMiddleware(
+	RESOURCES.ORDERS,
+	ACTIONS.READ,
+);
+export const settingsAdminMiddleware = createAdminSectionMiddleware(
+	RESOURCES.SETTINGS,
+	ACTIONS.READ,
+	PERMISSION_LEVELS.ADMIN,
+);

@@ -49,7 +49,10 @@ export const PostSeed = async () => {
 		const fileType = "image/jpeg";
 		const fileSize = imageBuffer.length;
 		const fileMimeType = fileType || "application/octet-stream";
-		await writeFile(path.join(process.cwd(), upload_path, fileHash + ".jpg"), imageBuffer);
+		await writeFile(
+			path.join(process.cwd(), upload_path, fileHash + ".jpg"),
+			imageBuffer,
+		);
 
 		const fileDataToSave = {
 			name: fileHash,

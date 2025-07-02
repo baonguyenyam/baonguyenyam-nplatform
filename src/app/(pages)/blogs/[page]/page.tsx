@@ -29,11 +29,7 @@ export default async function Index({ params }: any) {
 
 	return (
 		<DefaultLayout>
-			<Fetch
-				title={metadata.title}
-				breadcrumb={breadcrumb}
-				page={pageNumber}
-			/>
+			<Fetch title={metadata.title} breadcrumb={breadcrumb} page={pageNumber} />
 		</DefaultLayout>
 	);
 }

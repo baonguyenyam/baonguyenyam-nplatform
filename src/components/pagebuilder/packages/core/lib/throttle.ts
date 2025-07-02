@@ -4,7 +4,10 @@ export function timeout(callback: () => void, duration: number): () => void {
 	return () => clearTimeout(id);
 }
 
-export function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
+export function throttle<T extends (...args: any[]) => any>(
+	func: T,
+	limit: number,
+): (...args: Parameters<T>) => void {
 	const time = () => performance.now();
 	let cancel: (() => void) | undefined;
 	let lastRan = 0; // Start with 0 to indicate it hasn't run yet

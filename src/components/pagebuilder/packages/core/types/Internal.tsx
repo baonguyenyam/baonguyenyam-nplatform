@@ -19,9 +19,10 @@ export type PuckZoneData = {
 export type NodeIndex = Record<string, PuckNodeData>;
 export type ZoneIndex = Record<string, PuckZoneData>;
 
-export type PrivateAppState<UserData extends Data = Data> = AppState<UserData> & {
-	indexes: {
-		nodes: NodeIndex;
-		zones: ZoneIndex;
+export type PrivateAppState<UserData extends Data = Data> =
+	AppState<UserData> & {
+		indexes: {
+			nodes: NodeIndex;
+			zones: ZoneIndex;
+		};
 	};
-};

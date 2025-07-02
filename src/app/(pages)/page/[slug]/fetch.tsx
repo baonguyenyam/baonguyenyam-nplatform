@@ -27,12 +27,7 @@ export default function Fetch(props: any) {
 					<AppLoading />
 				</div>
 			)}
-			{!loading && (
-				<Render
-					config={config}
-					data={JSON.parse(data?.data)}
-				/>
-			)}
+			{!loading && <Render config={config} data={JSON.parse(data?.data)} />}
 		</>
 	);
 }

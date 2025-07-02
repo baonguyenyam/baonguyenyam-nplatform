@@ -4,7 +4,11 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { ReplaceRootAction } from "../actions";
 
-export const replaceRootAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: ReplaceRootAction<UserData>, appStore: AppStore): PrivateAppState<UserData> => {
+export const replaceRootAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: ReplaceRootAction<UserData>,
+	appStore: AppStore,
+): PrivateAppState<UserData> => {
 	return walkTree<UserData>(
 		state,
 		appStore.config,

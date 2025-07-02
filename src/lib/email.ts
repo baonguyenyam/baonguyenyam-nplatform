@@ -17,7 +17,7 @@ export default class MailService {
 	private static instance: MailService;
 	private transporter: nodemailer.Transporter | undefined;
 	//PRIVATE CONSTRUCTOR
-	private constructor() { }
+	private constructor() {}
 	//INSTANCE CREATE FOR MAIL
 	static getInstance() {
 		if (!MailService.instance) {
@@ -43,7 +43,10 @@ export default class MailService {
 		this.transporter = nodemailer.createTransport({
 			host: process.env.EMAIL_HOST,
 			port: process.env.EMAIL_PORT || "587",
-			secure: process.env.EMAIL_SECURE === "true" || process.env.EMAIL_SECURE === "1" ? true : false,
+			secure:
+				process.env.EMAIL_SECURE === "true" || process.env.EMAIL_SECURE === "1"
+					? true
+					: false,
 			auth: {
 				user: process.env.EMAIL_ADDRESS,
 				pass: process.env.EMAIL_PASSWORD,
@@ -51,7 +54,10 @@ export default class MailService {
 		} as nodemailer.TransportOptions);
 	}
 	//SEND MAIL
-	async sendMail(requestId: string | number | string[], options: MailInterface) {
+	async sendMail(
+		requestId: string | number | string[],
+		options: MailInterface,
+	) {
 		this.createConnection();
 		return await this.transporter
 			?.sendMail({
@@ -65,9 +71,13 @@ export default class MailService {
 			})
 			.then((info: nodemailer.SentMessageInfo) => {
 				Logging.info(`${requestId} - Mail sent successfully!!`);
-				Logging.info(`${requestId} - [MailResponse]=${info.response} [MessageID]=${info.messageId}`);
+				Logging.info(
+					`${requestId} - [MailResponse]=${info.response} [MessageID]=${info.messageId}`,
+				);
 				if (process.env.NODE_ENV === "development") {
-					Logging.info(`${requestId} - Nodemailer ethereal URL: ${nodemailer.getTestMessageUrl(info)}`);
+					Logging.info(
+						`${requestId} - Nodemailer ethereal URL: ${nodemailer.getTestMessageUrl(info)}`,
+					);
 				}
 				return info;
 			});

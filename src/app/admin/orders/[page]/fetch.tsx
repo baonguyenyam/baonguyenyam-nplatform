@@ -24,7 +24,8 @@ export default function Fetch(props: any) {
 	const [open, setOpen] = useState<any>(["", null]);
 	const [db, setDb] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
-	const pageSize = useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
+	const pageSize =
+		useAppSelector((state) => (state.appState as any)?.pageSize) || 10;
 	const search = useSearchParams();
 	const query = useMemo(
 		() => ({
@@ -66,10 +67,7 @@ export default function Fetch(props: any) {
 	return (
 		<>
 			<div className="flex justify-between mb-5">
-				<AppTitle
-					data={title}
-					breadcrumb={breadcrumb}
-				/>
+				<AppTitle data={title} breadcrumb={breadcrumb} />
 				<Button onClick={() => setOpen(["create", null])}>
 					<Plus />
 					Create {title}
@@ -119,7 +117,8 @@ export default function Fetch(props: any) {
 									<>
 										<div
 											className="flex items-center space-x-1 cursor-pointer underline"
-											onClick={() => setOpen(["show", row])}>
+											onClick={() => setOpen(["show", row])}
+										>
 											{row.published ? (
 												<span className="text-green-800 font-semibold">
 													<CircleCheck className="w-4 h-4" />
@@ -133,7 +132,9 @@ export default function Fetch(props: any) {
 												{row.title}-{numOfTab}
 											</span>
 										</div>
-										<div className="text-gray-500 text-xs">{dateFormat(row?.date_created)}</div>
+										<div className="text-gray-500 text-xs">
+											{dateFormat(row?.date_created)}
+										</div>
 									</>
 								);
 							},
@@ -142,12 +143,7 @@ export default function Fetch(props: any) {
 							header: "Status",
 							accessor: "status",
 							custom: (row: any) => {
-								return (
-									<AppStatus
-										size="small"
-										data={row.status}
-									/>
-								);
+								return <AppStatus size="small" data={row.status} />;
 							},
 						},
 						{
@@ -157,9 +153,7 @@ export default function Fetch(props: any) {
 								return (
 									<>
 										{row?.customer?.map((item: any) => (
-											<div
-												key={item?.id}
-												className="text-sm text-gray-500">
+											<div key={item?.id} className="text-sm text-gray-500">
 												{item?.name}
 											</div>
 										))}
@@ -176,7 +170,8 @@ export default function Fetch(props: any) {
 									<Button
 										size="icon"
 										className="hover:bg-gray-900 bg-gray-100 text-sm inline-flex flex-row items-center w-7 h-7 justify-center text-black border border-gray-400 rounded-md hover:text-white hover:border-black"
-										onClick={() => setOpen(["edit", row])}>
+										onClick={() => setOpen(["edit", row])}
+									>
 										<Pencil />
 									</Button>
 								);
@@ -214,10 +209,12 @@ export default function Fetch(props: any) {
 							setOpen(["", null]);
 							fetchData();
 						}}
-						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg">
+						className="hover:bg-gray-400 focus:outline-hidden focus:ring-0 text-sm flex flex-row items-center justify-center focus:ring-gray-800 w-8 h-8 bg-gray-200 font-medium text-black border-2 border-gray-400 rounded-lg"
+					>
 						<X />
 					</Button>
-				}>
+				}
+			>
 				<FormEdit
 					onChange={(event: string, data: any) => {
 						if (event === "submit") {
@@ -266,11 +263,13 @@ export default function Fetch(props: any) {
 							onClick={() => {
 								setOpen(["", null]);
 								fetchData();
-							}}>
+							}}
+						>
 							<X />
 						</Button>
 					</div>
-				}>
+				}
+			>
 				<FormEdit
 					id={open[1]?.id}
 					onChange={(event: string, data: any) => {
@@ -310,11 +309,13 @@ export default function Fetch(props: any) {
 							onClick={() => {
 								setOpen(["", null]);
 								fetchData();
-							}}>
+							}}
+						>
 							<X />
 						</Button>
 					</div>
-				}>
+				}
+			>
 				<FormView id={open[1]?.id} />
 			</Drawer>
 		</>

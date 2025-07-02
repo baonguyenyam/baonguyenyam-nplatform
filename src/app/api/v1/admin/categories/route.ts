@@ -5,39 +5,44 @@ import { ACTIONS, PERMISSION_LEVELS } from "@/lib/permissions";
 import models from "@/models";
 
 // get all Category
-export const GET = withCategoriesPermission(ACTIONS.READ)(async (req: NextRequest) => {
-	try {
-		// QUERY PARAMS
-		const query = {
-			s: new URL(req.url).searchParams.get("s") || "",
-			skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
-			take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
-			orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
-			filterBy: new URL(req.url).searchParams.get("filterBy") || "",
-			byCat: new URL(req.url).searchParams.get("cat") || "all",
-			type: new URL(req.url).searchParams.get("type") || null,
-			min: Boolean(new URL(req.url).searchParams.get("min")),
-		};
+export const GET = withCategoriesPermission(ACTIONS.READ)(
+	async (req: NextRequest) => {
+		try {
+			// QUERY PARAMS
+			const query = {
+				s: new URL(req.url).searchParams.get("s") || "",
+				skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
+				take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
+				orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
+				filterBy: new URL(req.url).searchParams.get("filterBy") || "",
+				byCat: new URL(req.url).searchParams.get("cat") || "all",
+				type: new URL(req.url).searchParams.get("type") || null,
+				min: Boolean(new URL(req.url).searchParams.get("min")),
+			};
 
-		const [count, db] = await Promise.all([models.Category.getCategoriesCount(query), models.Category.getAllCategories(query)]);
+			const [count, db] = await Promise.all([
+				models.Category.getCategoriesCount(query),
+				models.Category.getAllCategories(query),
+			]);
 
-		return NextResponse.json({
-			message: "Data fetched successfully",
-			data: db,
-			count: count,
-			success: true,
-		});
-	} catch (error) {
-		return NextResponse.json(
-			{
-				message: "Error fetching categories",
-				error: error instanceof Error ? error.message : "Unknown error",
-				success: false,
-			},
-			{ status: 500 },
-		);
-	}
-});
+			return NextResponse.json({
+				message: "Data fetched successfully",
+				data: db,
+				count: count,
+				success: true,
+			});
+		} catch (error) {
+			return NextResponse.json(
+				{
+					message: "Error fetching categories",
+					error: error instanceof Error ? error.message : "Unknown error",
+					success: false,
+				},
+				{ status: 500 },
+			);
+		}
+	},
+);
 
 // Create Category
 export const POST = withCategoriesPermission(

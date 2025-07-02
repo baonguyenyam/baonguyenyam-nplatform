@@ -7,7 +7,11 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { InsertAction } from "../actions";
 
-export function insertAction<UserData extends Data>(state: PrivateAppState<UserData>, action: InsertAction, appStore: AppStore): PrivateAppState<UserData> {
+export function insertAction<UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: InsertAction,
+	appStore: AppStore,
+): PrivateAppState<UserData> {
 	const id = action.id || generateId(action.componentType);
 	const emptyComponentData = {
 		type: action.componentType,
@@ -25,7 +29,11 @@ export function insertAction<UserData extends Data>(state: PrivateAppState<UserD
 		appStore.config,
 		(content, zoneCompound) => {
 			if (zoneCompound === action.destinationZone) {
-				return insert(content || [], action.destinationIndex, emptyComponentData);
+				return insert(
+					content || [],
+					action.destinationIndex,
+					emptyComponentData,
+				);
 			}
 
 			return content;

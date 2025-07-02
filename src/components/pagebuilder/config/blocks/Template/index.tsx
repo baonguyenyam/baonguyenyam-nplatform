@@ -13,7 +13,10 @@ import styles from "./styles.module.css";
 
 const usePuck = createUsePuck();
 
-async function createComponent<T extends keyof Props>(component: T, props?: Partial<Props[T]>) {
+async function createComponent<T extends keyof Props>(
+	component: T,
+	props?: Partial<Props[T]>,
+) {
 	const { conf: config } = await import("../../index");
 
 	return {
@@ -42,9 +45,13 @@ export const TemplateInternal: ComponentConfig<TemplateProps> = {
 			render: ({ name, value, onChange }) => {
 				const templateKey = `puck-demo-templates:${componentKey}`;
 
-				const props: TemplateProps | undefined = usePuck((s) => s.selectedItem?.props);
+				const props: TemplateProps | undefined = usePuck(
+					(s) => s.selectedItem?.props,
+				);
 
-				const [templates, setTemplates] = useState<TemplateData>(JSON.parse(localStorage.getItem(templateKey) ?? "{}"));
+				const [templates, setTemplates] = useState<TemplateData>(
+					JSON.parse(localStorage.getItem(templateKey) ?? "{}"),
+				);
 
 				return (
 					<FieldLabel label={name}>
@@ -82,12 +89,16 @@ export const TemplateInternal: ComponentConfig<TemplateProps> = {
 										},
 									};
 
-									localStorage.setItem(templateKey, JSON.stringify(templateData));
+									localStorage.setItem(
+										templateKey,
+										JSON.stringify(templateData),
+									);
 
 									setTemplates(templateData);
 
 									onChange(templateId);
-								}}>
+								}}
+							>
 								Save new template
 							</Button>
 						</div>
@@ -165,14 +176,21 @@ export const TemplateInternal: ComponentConfig<TemplateProps> = {
 			},
 		};
 
-		let children = templates[data.props.template]?.data || templates["example_1"].data;
+		let children =
+			templates[data.props.template]?.data || templates["example_1"].data;
 
 		const randomizeId = (item: ComponentData) => ({
 			...item,
 			props: { ...item.props, id: generateId(item.type) },
 		});
 
-		children = await Promise.all(children.map((item) => mapSlotsAsync(randomizeId(item), async (content) => content.map(randomizeId))));
+		children = await Promise.all(
+			children.map((item) =>
+				mapSlotsAsync(randomizeId(item), async (content) =>
+					content.map(randomizeId),
+				),
+			),
+		);
 
 		return {
 			...data,

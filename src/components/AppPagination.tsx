@@ -1,11 +1,32 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	ChevronsLeft,
+	ChevronsRight,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from "@/components/ui/pagination";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+} from "@/components/ui/pagination";
 
-const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; pageSize: string; currentPage: number; url: string }) => {
+const AppPagination = ({
+	items,
+	pageSize,
+	currentPage,
+	url,
+}: {
+	items: number;
+	pageSize: string;
+	currentPage: number;
+	url: string;
+}) => {
 	const searchParams = useSearchParams();
 	const pagesCount = Math.ceil(items / Number(pageSize));
 	const s = searchParams.get("s") || "";
@@ -19,7 +40,8 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 						<PaginationItem>
 							<PaginationLink
 								href={`${url}?s=${s}`}
-								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100">
+								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100"
+							>
 								<ChevronsLeft />
 							</PaginationLink>
 						</PaginationItem>
@@ -28,7 +50,8 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 						<PaginationItem>
 							<PaginationLink
 								href={`${url}/${currentPage - 1}?s=${s}`}
-								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100">
+								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100"
+							>
 								<ChevronLeft />
 							</PaginationLink>
 						</PaginationItem>
@@ -38,15 +61,21 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "styles.pageItemActive" : ""}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationEllipsis />
 								</PaginationItem>
 							);
-						if (pagesCount > 3 && currentPage < pagesCount - 1 && index === pages.length - 1)
+						if (
+							pagesCount > 3 &&
+							currentPage < pagesCount - 1 &&
+							index === pages.length - 1
+						)
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "styles.pageItemActive" : ""}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationEllipsis />
 								</PaginationItem>
 							);
@@ -54,10 +83,12 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 							return (
 								<PaginationItem
 									className={`${page == currentPage ? "" : ""}`}
-									key={index}>
+									key={index}
+								>
 									<PaginationLink
 										className={`${page == currentPage ? "bg-black text-white hover:bg-black hover:text-white dark:bg-gray-500 dark:text-gray-100 dark:hover:bg-gray-500 dark:hover:text-gray-100" : "bg-gray-100 rounded"}`}
-										href={`${url}/${page}?s=${s}`}>
+										href={`${url}/${page}?s=${s}`}
+									>
 										{page}
 									</PaginationLink>
 								</PaginationItem>
@@ -68,7 +99,8 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 								<PaginationItem key={index}>
 									<PaginationLink
 										href={`${url}/${page}?s=${s}`}
-										className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100">
+										className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100"
+									>
 										{page}
 									</PaginationLink>
 								</PaginationItem>
@@ -80,7 +112,8 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 						<PaginationItem>
 							<PaginationLink
 								href={`${url}/${currentPage + 1}?s=${s}`}
-								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100">
+								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100"
+							>
 								<ChevronRight />
 							</PaginationLink>
 						</PaginationItem>
@@ -89,7 +122,8 @@ const AppPagination = ({ items, pageSize, currentPage, url }: { items: number; p
 						<PaginationItem>
 							<PaginationLink
 								href={`${url}/${pagesCount}?s=${s}`}
-								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100">
+								className="bg-gray-100 rounded hover:bg-black hover:text-white  dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-100"
+							>
 								<ChevronsRight />
 							</PaginationLink>
 						</PaginationItem>

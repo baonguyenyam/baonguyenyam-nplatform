@@ -12,14 +12,23 @@ export const OutlineList = ({ children }: { children: ReactNode }) => {
 };
 
 // eslint-disable-next-line react/display-name
-OutlineList.Clickable = ({ children }: { children: ReactNode }) => <div className={getClassNameItem({ clickable: true })}>{children}</div>;
+OutlineList.Clickable = ({ children }: { children: ReactNode }) => (
+	<div className={getClassNameItem({ clickable: true })}>{children}</div>
+);
 
 // eslint-disable-next-line react/display-name
-OutlineList.Item = ({ children, onClick }: { children: ReactNode; onClick?: (e: SyntheticEvent) => void }) => {
+OutlineList.Item = ({
+	children,
+	onClick,
+}: {
+	children: ReactNode;
+	onClick?: (e: SyntheticEvent) => void;
+}) => {
 	return (
 		<li
 			className={getClassNameItem({ clickable: !!onClick })}
-			onClick={onClick}>
+			onClick={onClick}
+		>
 			{children}
 		</li>
 	);

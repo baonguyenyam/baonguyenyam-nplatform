@@ -1,7 +1,11 @@
 import { CSSProperties } from "react";
 
 import { setupZone } from "../../lib/data/setup-zone";
-import { rootAreaId, rootDroppableId, rootZone } from "../../lib/root-droppable-id";
+import {
+	rootAreaId,
+	rootDroppableId,
+	rootZone,
+} from "../../lib/root-droppable-id";
 import { useSlots } from "../../lib/use-slots";
 import { Config, Data, Metadata, UserGenerics } from "../../types";
 import { SlotRenderPure } from "../SlotRender";
@@ -15,7 +19,13 @@ type DropZoneRenderProps = {
 	metadata?: Metadata;
 };
 
-function DropZoneRender({ zone, data, areaId = "root", config, metadata = {} }: DropZoneRenderProps) {
+function DropZoneRender({
+	zone,
+	data,
+	areaId = "root",
+	config,
+	metadata = {},
+}: DropZoneRenderProps) {
 	let zoneCompound = rootDroppableId;
 	let content = data?.content || [];
 
@@ -51,20 +61,11 @@ function DropZoneRender({ zone, data, areaId = "root", config, metadata = {} }: 
 
 				// eslint-disable-next-line react-hooks/rules-of-hooks
 				const propsWithSlots = useSlots(config.root, props, (props) => (
-					<SlotRenderPure
-						{...props}
-						config={config}
-						metadata={metadata}
-					/>
+					<SlotRenderPure {...props} config={config} metadata={metadata} />
 				));
 
 				if (Component) {
-					return (
-						<Component.render
-							key={item.props.id}
-							{...propsWithSlots}
-						/>
-					);
+					return <Component.render key={item.props.id} {...propsWithSlots} />;
 				}
 
 				return null;
@@ -73,7 +74,18 @@ function DropZoneRender({ zone, data, areaId = "root", config, metadata = {} }: 
 	);
 }
 
-export function Render<UserConfig extends Config = Config, G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>>({ config, data, metadata = {} }: { config: UserConfig; data: G["UserData"]; metadata?: Metadata }) {
+export function Render<
+	UserConfig extends Config = Config,
+	G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>,
+>({
+	config,
+	data,
+	metadata = {},
+}: {
+	config: UserConfig;
+	data: G["UserData"];
+	metadata?: Metadata;
+}) {
 	// DEPRECATED
 	const rootProps = data.root.props || data.root;
 
@@ -100,11 +112,7 @@ export function Render<UserConfig extends Config = Config, G extends UserGeneric
 	};
 
 	const propsWithSlots = useSlots(config.root, props, (props) => (
-		<SlotRenderPure
-			{...props}
-			config={config}
-			metadata={metadata}
-		/>
+		<SlotRenderPure {...props} config={config} metadata={metadata} />
 	));
 
 	if (config.root?.render) {

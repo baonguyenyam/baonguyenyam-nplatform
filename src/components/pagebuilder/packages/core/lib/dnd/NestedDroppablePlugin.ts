@@ -5,7 +5,10 @@ import { effects } from "@dnd-kit/state";
 
 import { ComponentDndData } from "../../components/DraggableComponent";
 import { DropZoneDndData } from "../../components/DropZone";
-import { BubbledPointerEvent, BubbledPointerEventType } from "../bubble-pointer-event";
+import {
+	BubbledPointerEvent,
+	BubbledPointerEventType,
+} from "../bubble-pointer-event";
 import { getFrame } from "../get-frame";
 import { GlobalPosition } from "../global-position";
 import { throttle } from "../throttle";
@@ -58,12 +61,20 @@ const getZoneId = (candidate: Droppable | undefined) => {
 	return id;
 };
 
-const getPointerCollisions = (position: GlobalPosition, manager: DragDropManager) => {
+const getPointerCollisions = (
+	position: GlobalPosition,
+	manager: DragDropManager,
+) => {
 	const candidates: Droppable[] = [];
 
-	let elements = position.target.ownerDocument.elementsFromPoint(position.x, position.y);
+	let elements = position.target.ownerDocument.elementsFromPoint(
+		position.x,
+		position.y,
+	);
 
-	const previewFrame = elements.find((el) => el.getAttribute("data-puck-preview"));
+	const previewFrame = elements.find((el) =>
+		el.getAttribute("data-puck-preview"),
+	);
 
 	// Restrict to drawer element if pointer is over drawer. This is necessary if
 	// the drawer is over dnd elements.
@@ -112,7 +123,10 @@ const getPointerCollisions = (position: GlobalPosition, manager: DragDropManager
 	return candidates;
 };
 
-export const findDeepestCandidate = (position: GlobalPosition, manager: DragDropManager) => {
+export const findDeepestCandidate = (
+	position: GlobalPosition,
+	manager: DragDropManager,
+) => {
 	const candidates = getPointerCollisions(position, manager);
 
 	if (candidates.length > 0) {
@@ -120,7 +134,9 @@ export const findDeepestCandidate = (position: GlobalPosition, manager: DragDrop
 
 		const draggable = manager.dragOperation.source;
 
-		const draggedCandidateIndex = sortedCandidates.findIndex((candidate) => candidate.id === draggable?.id);
+		const draggedCandidateIndex = sortedCandidates.findIndex(
+			(candidate) => candidate.id === draggable?.id,
+		);
 
 		const draggedCandidateId = draggable?.id;
 
@@ -133,7 +149,9 @@ export const findDeepestCandidate = (position: GlobalPosition, manager: DragDrop
 
 		// Remove any descendants
 		filteredCandidates = filteredCandidates.filter((candidate) => {
-			const candidateData = candidate.data as ComponentDndData | DropZoneDndData;
+			const candidateData = candidate.data as
+				| ComponentDndData
+				| DropZoneDndData;
 
 			if (draggedCandidateId && draggedCandidateIndex > -1) {
 				if (candidateData.path.indexOf(draggedCandidateId) > -1) {
@@ -178,7 +196,10 @@ export const findDeepestCandidate = (position: GlobalPosition, manager: DragDrop
 	};
 };
 
-export const createNestedDroppablePlugin = ({ onChange }: NestedDroppablePluginOptions, id: string) =>
+export const createNestedDroppablePlugin = (
+	{ onChange }: NestedDroppablePluginOptions,
+	id: string,
+) =>
 	class NestedDroppablePlugin extends Plugin<DragDropManager, {}> {
 		constructor(manager: DragDropManager, options?: {}) {
 			super(manager);
@@ -200,7 +221,10 @@ export const createNestedDroppablePlugin = ({ onChange }: NestedDroppablePluginO
 						y: event.clientY,
 					});
 
-					const elements = document.elementsFromPoint(position.global.x, position.global.y);
+					const elements = document.elementsFromPoint(
+						position.global.x,
+						position.global.y,
+					);
 
 					const overEl = elements.some((el) => el.id === id);
 

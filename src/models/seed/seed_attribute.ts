@@ -9,8 +9,22 @@ export const AttributeSeed = async () => {
 	const SubCategories = ["Screen Size", "Screen Color", "Screen Type"];
 	const SizesScreen = ["1900x1200", "2560x1600", "3840x2160", "5120x2880"];
 	const Sizes = ["S", "M", "L", "XL", "XXL"];
-	const tshirt = ["Color", "Size", "Company", "Number", "Recieve", "Count", "Package"];
-	const company = ["Bella + Canvas", "Gildan", "Hanes", "Next Level", "American Apparel"];
+	const tshirt = [
+		"Color",
+		"Size",
+		"Company",
+		"Number",
+		"Recieve",
+		"Count",
+		"Package",
+	];
+	const company = [
+		"Bella + Canvas",
+		"Gildan",
+		"Hanes",
+		"Next Level",
+		"American Apparel",
+	];
 	const Colors = [
 		{
 			name: "Black",
@@ -34,9 +48,28 @@ export const AttributeSeed = async () => {
 		},
 	];
 	const UserArr = ["Interest", "Demographic", "Job", "Education"];
-	const Job = ["Software Engineer", "Data Scientist", "Product Manager", "Designer", "Marketing"];
-	const Education = ["High School", "Bachelor's Degree", "Master's Degree", "PhD", "Other"];
-	const UserDemographic = ["Sex", "Age", "Location", "Income", "Weight", "Height"];
+	const Job = [
+		"Software Engineer",
+		"Data Scientist",
+		"Product Manager",
+		"Designer",
+		"Marketing",
+	];
+	const Education = [
+		"High School",
+		"Bachelor's Degree",
+		"Master's Degree",
+		"PhD",
+		"Other",
+	];
+	const UserDemographic = [
+		"Sex",
+		"Age",
+		"Location",
+		"Income",
+		"Weight",
+		"Height",
+	];
 	const sex = ["Male", "Female"];
 
 	Arr.forEach(async (item) => {
@@ -123,7 +156,15 @@ export const AttributeSeed = async () => {
 							content: faker.lorem.paragraph(),
 							createdAt: new Date(),
 							childrenId: getID.id,
-							type: tshirt[i] === "Number" || tshirt[i] === "Recieve" || tshirt[i] === "Count" || tshirt[i] === "Package" ? "text" : tshirt[i] === "Color" ? "checkbox" : "select",
+							type:
+								tshirt[i] === "Number" ||
+								tshirt[i] === "Recieve" ||
+								tshirt[i] === "Count" ||
+								tshirt[i] === "Package"
+									? "text"
+									: tshirt[i] === "Color"
+										? "checkbox"
+										: "select",
 							published: true,
 						},
 					});

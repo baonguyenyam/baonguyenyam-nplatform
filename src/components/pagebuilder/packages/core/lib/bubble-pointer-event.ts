@@ -8,7 +8,10 @@ const BaseEvent = typeof PointerEvent !== "undefined" ? PointerEvent : Event;
 export class BubbledPointerEvent extends BaseEvent {
 	_originalTarget: EventTarget | null = null;
 
-	constructor(type: string, data: PointerEvent & { originalTarget: EventTarget | null }) {
+	constructor(
+		type: string,
+		data: PointerEvent & { originalTarget: EventTarget | null },
+	) {
 		super(type, data);
 		this.originalTarget = data.originalTarget;
 	}

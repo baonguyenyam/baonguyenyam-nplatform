@@ -5,12 +5,21 @@ import { AuthError } from "next-auth";
 
 import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DEFAULT_LOGIN_REDIRECT, SIGNIN_ERROR_URL } from "@/routes";
 
-export async function Form({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+export async function Form({
+	className,
+	...props
+}: React.ComponentPropsWithoutRef<"div">) {
 	const query = await headers();
 	const { callbackUrl } = { callbackUrl: query.get("x-callbackUrl") ?? "/" };
 	const { error } = { error: query.get("x-error") ?? "" };
@@ -19,7 +28,10 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 		"use server";
 		try {
 			(await signIn("github", {
-				redirectTo: DEFAULT_LOGIN_REDIRECT + "?callbackUrl=" + formData.get("callbackUrl"),
+				redirectTo:
+					DEFAULT_LOGIN_REDIRECT +
+					"?callbackUrl=" +
+					formData.get("callbackUrl"),
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
@@ -33,7 +45,10 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 		"use server";
 		try {
 			(await signIn("google", {
-				redirectTo: DEFAULT_LOGIN_REDIRECT + "?callbackUrl=" + formData.get("callbackUrl"),
+				redirectTo:
+					DEFAULT_LOGIN_REDIRECT +
+					"?callbackUrl=" +
+					formData.get("callbackUrl"),
 			})) as { user?: { name?: string } };
 		} catch (error) {
 			if (error instanceof AuthError) {
@@ -65,9 +80,7 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 	}
 
 	return (
-		<div
-			className={cn("flex flex-col gap-6", className)}
-			{...props}>
+		<div className={cn("flex flex-col gap-6", className)} {...props}>
 			<Card className="dark:bg-gray-800 w-full max-w-sm rounded-lg border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
 				{/* Header */}
 				<CardHeader className="text-center">
@@ -78,14 +91,18 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 					<div className="grid gap-6">
 						<div className="flex flex-col gap-4">
 							{/* Error */}
-							{error && <div className="text-red-500 text-sm text-center">{error === "CredentialsSignin" ? "Invalid email or password" : error === "OAuthAccountNotLinked" ? "Email already exists. Please login with your email and password." : error}</div>}
+							{error && (
+								<div className="text-red-500 text-sm text-center">
+									{error === "CredentialsSignin"
+										? "Invalid email or password"
+										: error === "OAuthAccountNotLinked"
+											? "Email already exists. Please login with your email and password."
+											: error}
+								</div>
+							)}
 							{/* Credentials */}
 							<form action={singInCredentialsForm}>
-								<input
-									type="hidden"
-									name="callbackUrl"
-									value={callbackUrl}
-								/>
+								<input type="hidden" name="callbackUrl" value={callbackUrl} />
 								<div className="space-y-4 mb-10">
 									<div className="flex flex-col gap-2">
 										<Input
@@ -112,35 +129,22 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 									<div className="flex items-center justify-between">
 										<Button
 											type="submit"
-											className="w-full dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white dark:hover:text-gray-900">
+											className="w-full dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white dark:hover:text-gray-900"
+										>
 											Sign in
 										</Button>
 									</div>
 								</div>
 							</form>
 							<form action={singInGitHubForm}>
-								<input
-									type="hidden"
-									name="callbackUrl"
-									value={callbackUrl}
-								/>
-								<Button
-									type="submit"
-									variant="outline"
-									className="w-full">
+								<input type="hidden" name="callbackUrl" value={callbackUrl} />
+								<Button type="submit" variant="outline" className="w-full">
 									Sign in with GitHub
 								</Button>
 							</form>
 							<form action={singInGoogleForm}>
-								<input
-									type="hidden"
-									name="callbackUrl"
-									value={callbackUrl}
-								/>
-								<Button
-									type="submit"
-									variant="outline"
-									className="w-full">
+								<input type="hidden" name="callbackUrl" value={callbackUrl} />
+								<Button type="submit" variant="outline" className="w-full">
 									Sign in with Google
 								</Button>
 							</form>
@@ -149,7 +153,9 @@ export async function Form({ className, ...props }: React.ComponentPropsWithoutR
 				</CardContent>
 			</Card>
 			<div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-				By clicking continue, you agree to our <Link href="/terms">Terms of Service</Link> and <Link href="/policy">Privacy Policy</Link>.
+				By clicking continue, you agree to our{" "}
+				<Link href="/terms">Terms of Service</Link> and{" "}
+				<Link href="/policy">Privacy Policy</Link>.
 			</div>
 		</div>
 	);

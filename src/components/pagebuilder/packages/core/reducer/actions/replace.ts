@@ -5,16 +5,25 @@ import { Data } from "../../types";
 import { PrivateAppState } from "../../types/Internal";
 import { ReplaceAction } from "../actions";
 
-export const replaceAction = <UserData extends Data>(state: PrivateAppState<UserData>, action: ReplaceAction<UserData>, appStore: AppStore): PrivateAppState<UserData> => {
+export const replaceAction = <UserData extends Data>(
+	state: PrivateAppState<UserData>,
+	action: ReplaceAction<UserData>,
+	appStore: AppStore,
+): PrivateAppState<UserData> => {
 	const [parentId] = action.destinationZone.split(":");
 	const idsInPath = getIdsForParent(action.destinationZone, state);
 
-	const originalId = state.indexes.zones[action.destinationZone].contentIds[action.destinationIndex];
+	const originalId =
+		state.indexes.zones[action.destinationZone].contentIds[
+			action.destinationIndex
+		];
 
 	const idChanged = originalId !== action.data.props.id;
 
 	if (idChanged) {
-		throw new Error('Can\'t change the id during a replace action. Please us "remove" and "insert" to define a new node.');
+		throw new Error(
+			'Can\'t change the id during a replace action. Please us "remove" and "insert" to define a new node.',
+		);
 	}
 
 	return walkTree<UserData>(

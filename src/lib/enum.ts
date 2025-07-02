@@ -1,4 +1,13 @@
-import { Ban, CheckCheck, CircleAlert, Clock, Hourglass, MapPinCheck, TicketX, Truck } from "lucide-react";
+import {
+	Ban,
+	CheckCheck,
+	CircleAlert,
+	Clock,
+	Hourglass,
+	MapPinCheck,
+	TicketX,
+	Truck,
+} from "lucide-react";
 
 export const enumOrderStatus = [
 	{
