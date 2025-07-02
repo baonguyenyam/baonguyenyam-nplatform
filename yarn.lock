@@ -6378,7 +6378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"compression@npm:^1.7.4":
+"compression@npm:^1.8.0":
   version: 1.8.0
   resolution: "compression@npm:1.8.0"
   dependencies:
@@ -7980,7 +7980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.4.1":
+"ioredis@npm:^5.6.1":
   version: 5.6.1
   resolution: "ioredis@npm:5.6.1"
   dependencies:
@@ -9350,14 +9350,14 @@ __metadata:
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     cmdk: "npm:^1.1.1"
-    compression: "npm:^1.7.4"
+    compression: "npm:^1.8.0"
     css-box-model: "npm:^1.2.1"
     date-fns: "npm:^4.1.0"
     debounce: "npm:^2.2.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.3.4"
     eslint-plugin-simple-import-sort: "npm:^12.1.1"
-    ioredis: "npm:^5.4.1"
+    ioredis: "npm:^5.6.1"
     lexical: "npm:^0.32.1"
     lightgallery: "npm:^2.8.3"
     lucide-react: "npm:^0.525.0"

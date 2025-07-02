@@ -28,7 +28,7 @@ const ADMIN_ROUTES = [
  */
 export function checkAdminRoutePermission(pathname: string, userRole?: string): boolean {
 	// Check if it's an admin route
-	const isAdminRoute = ADMIN_ROUTES.some(route => 
+	const isAdminRoute = ADMIN_ROUTES.some(route =>
 		pathname.startsWith(route)
 	);
 
