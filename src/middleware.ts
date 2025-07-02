@@ -117,7 +117,8 @@ export default auth(async (req) => {
 		return response;
 	}
 
-	if (isAdminAuthRoute) {
+	// Admin routes are already handled above with permission checking
+	if (isAdminAuthRoute && !nextUrl.pathname.startsWith("/admin")) {
 		if (!isLoggedIn) {
 			return NextResponse.redirect(new URL(`/authentication/login`, nextUrl));
 		}

@@ -1,4 +1,4 @@
-import type { NextAuthConfig } from "next-auth";
+import type { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";
 
 import authConfig from "./auth.config";
@@ -14,11 +14,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return true;
 		},
 		async jwt({ token }) {
-			// Minimal JWT handling for middleware
+			// Preserve token data from main auth
 			return token;
 		},
 		async session({ session, token }) {
-			// Minimal session handling for middleware
+			// Map token data to session for middleware
+			if (token?.role && session.user) {
+				session.user.role = token.role as UserRole;
+				session.user.id = token.id as string;
+				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+				session.user.permissions = token.permissions as string[];
+			}
 			return session;
 		},
 	},

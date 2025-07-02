@@ -13,6 +13,8 @@ const ADMIN_ROUTES = [
 	"/admin/products",
 	"/admin/orders",
 	"/admin/categories",
+	"/admin/posts",
+	"/admin/files",
 	"/admin/settings",
 	"/admin/attributes",
 	"/admin/pages",
@@ -38,7 +40,9 @@ export function checkAdminRoutePermission(
 	}
 
 	// For admin routes, require ADMIN or MODERATOR role
-	return userRole === "ADMIN" || userRole === "MODERATOR";
+	const hasPermission = userRole === "ADMIN" || userRole === "MODERATOR";
+
+	return hasPermission;
 }
 
 /**

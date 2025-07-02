@@ -42,9 +42,9 @@ export default function OptimizedUsersFetch(props: any) {
 		actions: tableActions,
 	} = useAdminTable<User>({
 		apiActions: {
-			getAll: actions.getUsers,
-			deleteRecord: actions.deleteUser,
-			deleteMultiple: actions.deleteMultipleUsers,
+			getAll: actions.getAll,
+			deleteRecord: actions.deleteRecord,
+			deleteMultiple: actions.deleteMultipleRecords,
 		},
 		tableName: "User",
 		title,
