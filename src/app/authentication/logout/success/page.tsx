@@ -13,7 +13,7 @@ export default function SignOutSuccessPage() {
 	useEffect(() => {
 		// Clear Redux auth state
 		dispatch(removeActiveUser());
-		
+
 		// Also clear NextAuth session
 		signOut({ redirect: false }).then(() => {
 			redirect("/");

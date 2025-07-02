@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 import { useAppDispatch, useAppSelector } from "@/store";
-import { type AuthUser,selectAuth, syncFromNextAuth } from "@/store/authSlice";
+import { type AuthUser, selectAuth, syncFromNextAuth } from "@/store/authSlice";
 
 /**
  * Custom hook để sync NextAuth session với Redux state
@@ -32,8 +32,8 @@ export const useAuthSync = () => {
 		}
 
 		// Chỉ sync nếu có sự thay đổi hoặc chưa bao giờ sync
-		const shouldSync = 
-			!authState.lastSync || 
+		const shouldSync =
+			!authState.lastSync ||
 			authState.isLoggedIn !== isLoggedIn ||
 			(isLoggedIn && authState.user?.id !== user?.id) ||
 			(isLoggedIn && authState.user?.role !== user?.role);
@@ -41,7 +41,15 @@ export const useAuthSync = () => {
 		if (shouldSync) {
 			dispatch(syncFromNextAuth({ user, isLoggedIn }));
 		}
-	}, [session, status, dispatch, authState.lastSync, authState.isLoggedIn, authState.user?.id, authState.user?.role]);
+	}, [
+		session,
+		status,
+		dispatch,
+		authState.lastSync,
+		authState.isLoggedIn,
+		authState.user?.id,
+		authState.user?.role,
+	]);
 
 	return {
 		session,

@@ -1,9 +1,10 @@
 import { useAppSelector } from "@/store";
-import { 
-	selectAuth, 
-	selectAuthLoading, 
-	selectAuthUser, 
-	selectIsLoggedIn} from "@/store/authSlice";
+import {
+	selectAuth,
+	selectAuthLoading,
+	selectAuthUser,
+	selectIsLoggedIn,
+} from "@/store/authSlice";
 
 /**
  * Hook để lấy thông tin user hiện tại từ Redux store
@@ -22,7 +23,7 @@ export const useAuth = () => {
 		authState,
 		// Helper functions
 		hasRole: (role: string) => user?.role === role,
-		hasPermission: (permission: string) => 
+		hasPermission: (permission: string) =>
 			user?.permissions?.includes(permission) || false,
 		isAdmin: () => user?.role === "ADMIN",
 		isModerator: () => user?.role === "MODERATOR" || user?.role === "ADMIN",

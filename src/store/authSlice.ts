@@ -50,7 +50,10 @@ const authSlice = createSlice({
 			state.isLoading = false;
 			state.lastSync = Date.now();
 		},
-		syncFromNextAuth: (state, action: PayloadAction<{ user: AuthUser | null; isLoggedIn: boolean }>) => {
+		syncFromNextAuth: (
+			state,
+			action: PayloadAction<{ user: AuthUser | null; isLoggedIn: boolean }>,
+		) => {
 			const { user, isLoggedIn } = action.payload;
 			state.isLoggedIn = isLoggedIn;
 			state.user = user;
@@ -60,18 +63,21 @@ const authSlice = createSlice({
 	},
 });
 
-export const { 
+export const {
 	setAuthLoading,
-	setActiveUser, 
+	setActiveUser,
 	updateUserProfile,
 	removeActiveUser,
-	syncFromNextAuth 
+	syncFromNextAuth,
 } = authSlice.actions;
 
 // Selectors
 export const selectAuth = (state: { authState: AuthState }) => state.authState;
-export const selectAuthUser = (state: { authState: AuthState }) => state.authState.user;
-export const selectIsLoggedIn = (state: { authState: AuthState }) => state.authState.isLoggedIn;
-export const selectAuthLoading = (state: { authState: AuthState }) => state.authState.isLoading;
+export const selectAuthUser = (state: { authState: AuthState }) =>
+	state.authState.user;
+export const selectIsLoggedIn = (state: { authState: AuthState }) =>
+	state.authState.isLoggedIn;
+export const selectAuthLoading = (state: { authState: AuthState }) =>
+	state.authState.isLoading;
 
 export default authSlice.reducer;

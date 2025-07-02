@@ -11,7 +11,6 @@ class AdvancedCacheManager {
 	constructor() {
 		if (process.env.REDIS_URL && process.env.NODE_ENV === "production") {
 			this.redis = new Redis(process.env.REDIS_URL, {
-				retryDelayOnFailover: 100,
 				enableReadyCheck: false,
 				maxRetriesPerRequest: 3,
 			});
