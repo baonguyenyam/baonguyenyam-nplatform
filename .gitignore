@@ -21,7 +21,6 @@ next-env.d.ts
 
 .next
 .vercel
-.netlify
 .env*.local
 public/uploads
 

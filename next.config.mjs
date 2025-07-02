@@ -1,7 +1,5 @@
 const nextConfig = {
-	output: process.env.NETLIFY ? 'export' : 'standalone',
-	trailingSlash: process.env.NETLIFY ? true : false,
-	distDir: process.env.NETLIFY ? '.netlify/functions-internal/server' : '.next',
+	output: 'standalone',
 	env: {
 		public_APIUrl: process.env.PUBLIC_API_URL,
 	},
