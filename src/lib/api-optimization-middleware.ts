@@ -1,16 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 // API Response Optimization Middleware
 export class APIOptimizationMiddleware {
-
 	// Compress response if client supports it
 	static addCompressionHeaders(response: NextResponse, contentLength?: number): NextResponse {
 		// Add compression hints
-		response.headers.set('Vary', 'Accept-Encoding');
+		response.headers.set("Vary", "Accept-Encoding");
 
 		// Only compress if content is large enough
 		if (contentLength && contentLength > 1024) {
-			response.headers.set('Content-Encoding', 'gzip');
+			response.headers.set("Content-Encoding", "gzip");
 		}
 
 		return response;
@@ -18,37 +17,32 @@ export class APIOptimizationMiddleware {
 
 	// Add performance headers
 	static addPerformanceHeaders(response: NextResponse): NextResponse {
-		response.headers.set('X-Content-Type-Options', 'nosniff');
-		response.headers.set('X-Frame-Options', 'DENY');
-		response.headers.set('X-XSS-Protection', '1; mode=block');
-		response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+		response.headers.set("X-Content-Type-Options", "nosniff");
+		response.headers.set("X-Frame-Options", "DENY");
+		response.headers.set("X-XSS-Protection", "1; mode=block");
+		response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
 		// Add timing headers for monitoring
-		response.headers.set('X-Response-Time', Date.now().toString());
+		response.headers.set("X-Response-Time", Date.now().toString());
 
 		return response;
 	}
 
 	// Add caching headers based on content type
-	static addCachingHeaders(
-		response: NextResponse,
-		path: string,
-		isAuthenticated: boolean = false
-	): NextResponse {
-
+	static addCachingHeaders(response: NextResponse, path: string, isAuthenticated: boolean = false): NextResponse {
 		// Different caching strategies based on path
-		if (path.startsWith('/api/v1/public/')) {
+		if (path.startsWith("/api/v1/public/")) {
 			// Public endpoints - aggressive caching
-			response.headers.set('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
-		} else if (path.startsWith('/api/v1/admin/') && !isAuthenticated) {
+			response.headers.set("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=3600");
+		} else if (path.startsWith("/api/v1/admin/") && !isAuthenticated) {
 			// Admin endpoints for unauthenticated - no cache
-			response.headers.set('Cache-Control', 'no-store');
-		} else if (path.includes('/users') || path.includes('/auth')) {
+			response.headers.set("Cache-Control", "no-store");
+		} else if (path.includes("/users") || path.includes("/auth")) {
 			// User-specific data - short cache
-			response.headers.set('Cache-Control', 'private, max-age=300');
+			response.headers.set("Cache-Control", "private, max-age=300");
 		} else {
 			// Default caching
-			response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+			response.headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
 		}
 
 		return response;
@@ -56,15 +50,15 @@ export class APIOptimizationMiddleware {
 
 	// Handle conditional requests (ETag)
 	static handleConditionalRequest(request: NextRequest, response: NextResponse): NextResponse | null {
-		const ifNoneMatch = request.headers.get('if-none-match');
-		const etag = response.headers.get('etag');
+		const ifNoneMatch = request.headers.get("if-none-match");
+		const etag = response.headers.get("etag");
 
 		if (ifNoneMatch && etag && ifNoneMatch === etag) {
 			return new NextResponse(null, {
 				status: 304,
 				headers: {
-					'etag': etag,
-					'cache-control': response.headers.get('cache-control') || '',
+					etag: etag,
+					"cache-control": response.headers.get("cache-control") || "",
 				},
 			});
 		}
@@ -73,17 +67,12 @@ export class APIOptimizationMiddleware {
 	}
 
 	// Rate limiting with adaptive limits
-	static async checkRateLimit(
-		request: NextRequest,
-		identifier: string,
-		userRole?: string
-	): Promise<{ allowed: boolean; headers: Record<string, string> }> {
-
+	static async checkRateLimit(request: NextRequest, identifier: string, userRole?: string): Promise<{ allowed: boolean; headers: Record<string, string> }> {
 		// Adaptive rate limits based on user role
 		const limits = {
-			'ADMIN': { requests: 1000, window: 15 * 60 * 1000 },
-			'USER': { requests: 300, window: 15 * 60 * 1000 },
-			'PUBLIC': { requests: 100, window: 15 * 60 * 1000 },
+			ADMIN: { requests: 1000, window: 15 * 60 * 1000 },
+			USER: { requests: 300, window: 15 * 60 * 1000 },
+			PUBLIC: { requests: 100, window: 15 * 60 * 1000 },
 		};
 
 		const limit = limits[userRole as keyof typeof limits] || limits.PUBLIC;
@@ -91,20 +80,16 @@ export class APIOptimizationMiddleware {
 		// This would typically use Redis or a proper rate limiting service
 		// For now, returning a simplified implementation
 		const headers = {
-			'X-RateLimit-Limit': limit.requests.toString(),
-			'X-RateLimit-Remaining': (limit.requests - 1).toString(),
-			'X-RateLimit-Reset': (Date.now() + limit.window).toString(),
+			"X-RateLimit-Limit": limit.requests.toString(),
+			"X-RateLimit-Remaining": (limit.requests - 1).toString(),
+			"X-RateLimit-Reset": (Date.now() + limit.window).toString(),
 		};
 
 		return { allowed: true, headers };
 	}
 
 	// Monitor API performance
-	static monitorPerformance(
-		request: NextRequest,
-		response: NextResponse,
-		startTime: number
-	): void {
+	static monitorPerformance(request: NextRequest, response: NextResponse, startTime: number): void {
 		const duration = Date.now() - startTime;
 		const method = request.method;
 		const path = new URL(request.url).pathname;
@@ -115,10 +100,10 @@ export class APIOptimizationMiddleware {
 		}
 
 		// Add performance timing header
-		response.headers.set('X-Response-Time', `${duration}ms`);
+		response.headers.set("X-Response-Time", `${duration}ms`);
 
 		// In production, you might want to send this to a monitoring service
-		if (process.env.NODE_ENV === 'production') {
+		if (process.env.NODE_ENV === "production") {
 			// Example: send to monitoring service
 			// await sendToMonitoring({ method, path, duration, status: response.status });
 		}
@@ -133,21 +118,16 @@ export class APIOptimizationMiddleware {
 			userRole?: string;
 			identifier?: string;
 			startTime?: number;
-		} = {}
+		} = {},
 	): Promise<NextResponse> {
-		const {
-			isAuthenticated = false,
-			userRole,
-			identifier = 'anonymous',
-			startTime = Date.now()
-		} = options;
+		const { isAuthenticated = false, userRole, identifier = "anonymous", startTime = Date.now() } = options;
 
 		const path = new URL(request.url).pathname;
 
 		// Check rate limiting
 		const rateLimit = await this.checkRateLimit(request, identifier, userRole);
 		if (!rateLimit.allowed) {
-			return new NextResponse('Rate limit exceeded', {
+			return new NextResponse("Rate limit exceeded", {
 				status: 429,
 				headers: rateLimit.headers,
 			});
@@ -171,7 +151,7 @@ export class APIOptimizationMiddleware {
 		}
 
 		// Add compression headers
-		const contentLength = response.headers.get('content-length');
+		const contentLength = response.headers.get("content-length");
 		this.addCompressionHeaders(response, contentLength ? parseInt(contentLength) : undefined);
 
 		// Monitor performance
@@ -194,17 +174,13 @@ export function withOptimization(handler: Function) {
 				startTime,
 				// Add user context here if available
 			});
-
 		} catch (error) {
-			console.error('API Error:', error);
+			console.error("API Error:", error);
 
-			const errorResponse = new NextResponse(
-				JSON.stringify({ error: 'Internal Server Error' }),
-				{
-					status: 500,
-					headers: { 'Content-Type': 'application/json' },
-				}
-			);
+			const errorResponse = new NextResponse(JSON.stringify({ error: "Internal Server Error" }), {
+				status: 500,
+				headers: { "Content-Type": "application/json" },
+			});
 
 			return await APIOptimizationMiddleware.optimize(request, errorResponse, {
 				startTime,

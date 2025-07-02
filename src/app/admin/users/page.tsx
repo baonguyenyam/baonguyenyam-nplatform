@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { meta } from "@/lib/appConst";
+import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
 
 import Fetch from "./[page]/fetch";
 
@@ -15,10 +16,21 @@ export const metadata: Metadata = {
 export default async function Index() {
 	const session = await auth();
 
-	const acceptRole = ["ADMIN"];
-	const checkRole = session?.user?.role;
+	if (!session?.user) {
+		redirect("/authentication/login");
+	}
 
-	if (checkRole && !acceptRole.includes(checkRole)) {
+	// Create permission checker with enhanced system
+	const userContext = {
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+		customPermissions: session.user.permissions ? JSON.parse(typeof session.user.permissions === "string" ? session.user.permissions : JSON.stringify(session.user.permissions || [])) : undefined,
+	};
+
+	const permissionChecker = createPermissionChecker(userContext);
+
+	// Check if user has permission to read users
+	if (!permissionChecker.hasPermission(RESOURCES.USERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
 		redirect("/admin/deny");
 	}
 

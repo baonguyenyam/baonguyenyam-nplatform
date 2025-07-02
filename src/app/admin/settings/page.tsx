@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import AppTitle from "@/components/AppTitle";
+import { PermissionChecker } from "@/lib/admin-route-protection";
 import { meta } from "@/lib/appConst";
-import { permissionsCheck, rolesCheck } from "@/lib/utils";
 
 import FormEdit from "./edit";
 
@@ -15,21 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Index() {
-	const session = await auth();
-
-	const _role = session?.user?.role;
-	const _permissions = session?.user?.permissions;
-	const _acceptRole = ["ADMIN", "MODERATOR"];
-	const _acceptPermissions = "settings";
-
-	if (session?.user?.role !== "ADMIN") {
-		if (_role && !rolesCheck(_role, _acceptRole)) {
-			redirect("/admin/deny");
-		}
-		if (_permissions && !permissionsCheck(_permissions, _acceptPermissions)) {
-			redirect("/admin/deny");
-		}
-	}
+	await PermissionChecker.check("settings", "read");
 
 	const breadcrumb = [
 		{

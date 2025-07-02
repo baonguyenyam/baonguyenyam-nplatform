@@ -1,5 +1,5 @@
-import { ComponentType } from 'react';
-import dynamic from 'next/dynamic';
+import { ComponentType } from "react";
+import dynamic from "next/dynamic";
 
 // Loading components
 const TableLoading = () => <div className="animate-pulse bg-gray-200 h-32 rounded"></div>;
@@ -13,39 +13,36 @@ const ChartLoading = () => <div className="animate-pulse bg-gray-200 h-64 w-full
 // Lazy load heavy components to reduce initial bundle size
 export const LazyComponents = {
 	// Drawer components with lazy loading
-	Drawer: dynamic(() => import('antd').then(mod => ({ default: mod.Drawer })), {
-		loading: DrawerLoading
+	Drawer: dynamic(() => import("antd").then((mod) => ({ default: mod.Drawer })), {
+		loading: DrawerLoading,
 	}),
 
 	// Editor components (heavy)
-	Puck: dynamic(() => import('@measured/puck').then(mod => ({ default: mod.Puck })), {
-		loading: EditorLoading
+	Puck: dynamic(() => import("@measured/puck").then((mod) => ({ default: mod.Puck })), {
+		loading: EditorLoading,
 	}),
 
-	Render: dynamic(() => import('@measured/puck').then(mod => ({ default: mod.Render })), {
-		loading: RenderLoading
+	Render: dynamic(() => import("@measured/puck").then((mod) => ({ default: mod.Render })), {
+		loading: RenderLoading,
 	}),
 
 	// Image gallery (heavy)
-	LightGallery: dynamic(() => import('lightgallery/react'), {
-		loading: GalleryLoading
+	LightGallery: dynamic(() => import("lightgallery/react"), {
+		loading: GalleryLoading,
 	}),
 
 	// Code editor (very heavy)
-	CodeMirror: dynamic(() => import('@uiw/react-codemirror'), {
-		loading: CodeLoading
+	CodeMirror: dynamic(() => import("@uiw/react-codemirror"), {
+		loading: CodeLoading,
 	}),
 };
 
 // HOC for lazy loading with error boundary
-export function withLazyLoading<P extends object>(
-	Component: ComponentType<P>,
-	fallback?: ComponentType
-) {
+export function withLazyLoading<P extends object>(Component: ComponentType<P>, fallback?: ComponentType) {
 	const FallbackComponent = fallback || (() => <div className="animate-pulse bg-gray-200 h-32 rounded"></div>);
-	
+
 	const LazyComponent = dynamic(() => Promise.resolve(Component), {
-		loading: () => <FallbackComponent />
+		loading: () => <FallbackComponent />,
 	});
 
 	return LazyComponent;
@@ -53,15 +50,15 @@ export function withLazyLoading<P extends object>(
 
 // Preload critical components
 export const preloadComponents = {
-	preloadDrawer: () => import('antd').then(mod => mod.Drawer),
-	preloadPuck: () => import('@measured/puck'),
+	preloadDrawer: () => import("antd").then((mod) => mod.Drawer),
+	preloadPuck: () => import("@measured/puck"),
 };
 
 // Component registry for dynamic component loading
 export const ComponentRegistry = new Map<string, () => Promise<any>>([
-	['Drawer', () => import('antd').then(mod => ({ default: mod.Drawer }))],
-	['Puck', () => import('@measured/puck').then(mod => ({ default: mod.Puck }))],
-	['Render', () => import('@measured/puck').then(mod => ({ default: mod.Render }))],
+	["Drawer", () => import("antd").then((mod) => ({ default: mod.Drawer }))],
+	["Puck", () => import("@measured/puck").then((mod) => ({ default: mod.Puck }))],
+	["Render", () => import("@measured/puck").then((mod) => ({ default: mod.Render }))],
 ]);
 
 // Dynamic component loader

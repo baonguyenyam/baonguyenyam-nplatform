@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { meta } from "@/lib/appConst";
-import { permissionsCheck, rolesCheck } from "@/lib/utils";
+import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
 
 import Fetch from "./[page]/fetch";
 
@@ -16,18 +16,22 @@ export const metadata: Metadata = {
 export default async function Index() {
 	const session = await auth();
 
-	const _role = session?.user?.role;
-	const _permissions = session?.user?.permissions;
-	const _acceptRole = ["ADMIN", "MODERATOR"];
-	const _acceptPermissions = "orders";
+	if (!session?.user) {
+		redirect("/authentication/login");
+	}
 
-	if (session?.user?.role !== "ADMIN") {
-		if (_role && !rolesCheck(_role, _acceptRole)) {
-			redirect("/admin/deny");
-		}
-		if (_permissions && !permissionsCheck(_permissions, _acceptPermissions)) {
-			redirect("/admin/deny");
-		}
+	// Create permission checker with enhanced system
+	const userContext = {
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+		customPermissions: session.user.permissions ? JSON.parse(typeof session.user.permissions === "string" ? session.user.permissions : JSON.stringify(session.user.permissions || [])) : undefined,
+	};
+
+	const permissionChecker = createPermissionChecker(userContext);
+
+	// Check if user has permission to read orders
+	if (!permissionChecker.hasPermission(RESOURCES.ORDERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
+		redirect("/admin/deny");
 	}
 
 	const breadcrumb = [

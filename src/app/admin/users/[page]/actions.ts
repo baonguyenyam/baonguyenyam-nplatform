@@ -5,6 +5,7 @@ import { render } from "@react-email/render";
 import { auth } from "@/auth";
 import WelcomeEmail from "@/email/WelcomeEmail";
 import MailService from "@/lib/email";
+import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS,RESOURCES } from "@/lib/permissions";
 import models from "@/models";
 
 export async function getAll(query: any) {
@@ -29,13 +30,26 @@ export async function getAll(query: any) {
 
 export async function deleteRecord(id: string) {
 	const session = await auth();
-	const { id: userId, role } = session?.user || {};
-	if (role !== "ADMIN") {
+	if (!session?.user) {
 		return {
 			success: "error",
-			message: "You are not authorized to delete this user",
+			message: "Not authenticated",
 		};
 	}
+
+	// Check permission to delete users
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as 'ADMIN' | 'MODERATOR' | 'USER',
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.USERS, ACTIONS.DELETE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to delete users",
+		};
+	}
+
 	try {
 		const db = await models.User.deleteUser(id);
 		return {
@@ -46,14 +60,33 @@ export async function deleteRecord(id: string) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error deleting category",
+			message: "Error deleting user",
 		};
 	}
 }
 
 export async function createRecord(data: any) {
 	const session = await auth();
-	const { id, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to create users
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as 'ADMIN' | 'MODERATOR' | 'USER',
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.USERS, ACTIONS.CREATE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to create users",
+		};
+	}
+
 	try {
 		const db = await models.User.createUser(data);
 		return {
@@ -62,6 +95,12 @@ export async function createRecord(data: any) {
 			message: "User created successfully",
 		};
 	} catch (error) {
+		return {
+			success: "error",
+			message: "Error creating user",
+		};
+	}
+}
 		return {
 			success: "error",
 			message: "Error creating category",

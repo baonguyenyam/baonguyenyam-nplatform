@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 	description: appState.appDescription,
 	// Preconnect to Google Fonts to improve font loading
 	other: {
-		"preconnect": "https://fonts.googleapis.com",
+		preconnect: "https://fonts.googleapis.com",
 		"preconnect-crossorigin": "https://fonts.gstatic.com",
 	},
 };

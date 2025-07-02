@@ -6,7 +6,7 @@ export default function initSupabase({
 	table = "User",
 	event = "*",
 	onpostgres = "postgres_changes", // postgres_changes, system, broadcast, presence
-	fetchData = () => { },
+	fetchData = () => {},
 }: {
 	channel?: string;
 	schema?: string;
@@ -28,5 +28,4 @@ export default function initSupabase({
 			};
 		}
 	}
-
 }

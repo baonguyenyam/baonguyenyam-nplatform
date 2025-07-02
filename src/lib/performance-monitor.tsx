@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 // Performance monitoring utility
 interface PerformanceMetrics {
@@ -38,7 +38,7 @@ export function usePerformanceMonitor(componentName: string) {
 			});
 
 			// Log performance in development
-			if (process.env.NODE_ENV === 'development' && renderTime > 16) {
+			if (process.env.NODE_ENV === "development" && renderTime > 16) {
 				console.warn(`🐌 Slow render detected in ${componentName}: ${renderTime.toFixed(2)}ms`);
 			}
 		};
@@ -48,18 +48,18 @@ export function usePerformanceMonitor(componentName: string) {
 }
 
 // HOC for performance monitoring
-export function withPerformanceMonitoring<P extends object>(
-	Component: React.ComponentType<P>,
-	componentName: string
-) {
+export function withPerformanceMonitoring<P extends object>(Component: React.ComponentType<P>, componentName: string) {
 	return function PerformanceMonitoredComponent(props: P) {
 		const metrics = usePerformanceMonitor(componentName);
 
 		return (
 			<div data-component={componentName}>
 				<Component {...props} />
-				{process.env.NODE_ENV === 'development' && (
-					<div style={{ display: 'none' }} data-metrics={JSON.stringify(metrics)} />
+				{process.env.NODE_ENV === "development" && (
+					<div
+						style={{ display: "none" }}
+						data-metrics={JSON.stringify(metrics)}
+					/>
 				)}
 			</div>
 		);
@@ -68,9 +68,9 @@ export function withPerformanceMonitoring<P extends object>(
 
 // Bundle size analyzer utility
 export function analyzeBundleSize() {
-	if (typeof window === 'undefined') return null;
+	if (typeof window === "undefined") return null;
 
-	const scripts = Array.from(document.querySelectorAll('script[src]'));
+	const scripts = Array.from(document.querySelectorAll("script[src]"));
 	const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
 
 	return {
@@ -78,15 +78,15 @@ export function analyzeBundleSize() {
 		stylesheetCount: stylesheets.length,
 		totalResources: scripts.length + stylesheets.length,
 		largestScript: scripts.reduce((largest, script) => {
-			const src = script.getAttribute('src') || '';
+			const src = script.getAttribute("src") || "";
 			return src.length > largest.length ? src : largest;
-		}, ''),
+		}, ""),
 	};
 }
 
 // Memory usage tracker
 export function trackMemoryUsage() {
-	if (typeof window === 'undefined' || !(performance as any).memory) {
+	if (typeof window === "undefined" || !(performance as any).memory) {
 		return null;
 	}
 
@@ -103,19 +103,19 @@ export function getPerformanceTips(metrics: PerformanceMetrics): string[] {
 	const tips: string[] = [];
 
 	if (metrics.renderTime > 16) {
-		tips.push('Consider using React.memo() to prevent unnecessary re-renders');
+		tips.push("Consider using React.memo() to prevent unnecessary re-renders");
 	}
 
 	if (metrics.rerenderCount > 10) {
-		tips.push('High re-render count detected. Check your dependencies and use useMemo/useCallback');
+		tips.push("High re-render count detected. Check your dependencies and use useMemo/useCallback");
 	}
 
 	if (metrics.componentSize > 100) {
-		tips.push('Large component detected. Consider splitting into smaller components');
+		tips.push("Large component detected. Consider splitting into smaller components");
 	}
 
 	if (metrics.memoryUsage && metrics.memoryUsage > 50 * 1024 * 1024) {
-		tips.push('High memory usage. Check for memory leaks and large objects');
+		tips.push("High memory usage. Check for memory leaks and large objects");
 	}
 
 	return tips;
@@ -127,7 +127,7 @@ export function PerformanceDashboard() {
 	const [memoryInfo, setMemoryInfo] = useState<any>(null);
 
 	useEffect(() => {
-		if (process.env.NODE_ENV === 'development') {
+		if (process.env.NODE_ENV === "development") {
 			setBundleInfo(analyzeBundleSize());
 			setMemoryInfo(trackMemoryUsage());
 
@@ -139,26 +139,25 @@ export function PerformanceDashboard() {
 		}
 	}, []);
 
-	if (process.env.NODE_ENV !== 'development') {
+	if (process.env.NODE_ENV !== "development") {
 		return null;
 	}
 
 	return (
 		<div
 			style={{
-				position: 'fixed',
-				bottom: '10px',
-				right: '10px',
-				background: 'rgba(0, 0, 0, 0.8)',
-				color: 'white',
-				padding: '10px',
-				borderRadius: '8px',
-				fontSize: '12px',
+				position: "fixed",
+				bottom: "10px",
+				right: "10px",
+				background: "rgba(0, 0, 0, 0.8)",
+				color: "white",
+				padding: "10px",
+				borderRadius: "8px",
+				fontSize: "12px",
 				zIndex: 9999,
-				fontFamily: 'monospace',
-				maxWidth: '300px',
-			}}
-		>
+				fontFamily: "monospace",
+				maxWidth: "300px",
+			}}>
 			<h4>Performance Dashboard</h4>
 			{bundleInfo && (
 				<div>
@@ -170,9 +169,7 @@ export function PerformanceDashboard() {
 					<strong>Memory:</strong> {memoryInfo.used}MB / {memoryInfo.total}MB
 				</div>
 			)}
-			<div style={{ fontSize: '10px', marginTop: '5px', opacity: 0.7 }}>
-				Only visible in development
-			</div>
+			<div style={{ fontSize: "10px", marginTop: "5px", opacity: 0.7 }}>Only visible in development</div>
 		</div>
 	);
 }

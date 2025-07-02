@@ -18,18 +18,7 @@ interface AppImageProps {
 	onError?: () => void;
 }
 
-function AppImage({
-	src,
-	alt = "Image",
-	className = "",
-	width,
-	height,
-	title = "",
-	id,
-	priority = false,
-	loading = "lazy",
-	onError
-}: AppImageProps) {
+function AppImage({ src, alt = "Image", className = "", width, height, title = "", id, priority = false, loading = "lazy", onError }: AppImageProps) {
 	const [imgSrc, setImgSrc] = useState(src || appState.placeholder);
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
@@ -81,7 +70,7 @@ function AppImage({
 
 				// Add timeout for slow-loading images
 				const timeout = setTimeout(() => {
-					img.src = ''; // Cancel loading
+					img.src = ""; // Cancel loading
 					if (retryCount < maxRetries) {
 						retryCount++;
 						tryLoadImage();
@@ -128,13 +117,13 @@ function AppImage({
 	}, [src, imgSrc, onError]);
 
 	return (
-		<div className={`relative ${className} ${isLoading ? 'animate-pulse bg-gray-200' : ''}`}>
+		<div className={`relative ${className} ${isLoading ? "animate-pulse bg-gray-200" : ""}`}>
 			<Image
 				id={id}
 				src={imgSrc}
 				alt={alt}
 				title={title}
-				className={`object-cover transition-opacity duration-300 h-full rounded ${hasError ? 'opacity-50' : ''}`}
+				className={`object-cover transition-opacity duration-300 h-full rounded ${hasError ? "opacity-50" : ""}`}
 				width={width}
 				height={height}
 				priority={priority}

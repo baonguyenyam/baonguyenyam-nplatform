@@ -14,11 +14,10 @@ export const metadata: Metadata = {
 
 export default async function Index() {
 	const session = await auth();
-	const acceptRole = ["USER", "ADMIN", "MODERATOR"];
-	const checkRole = session?.user?.role;
 
-	if (checkRole && !acceptRole.includes(checkRole)) {
-		redirect("/admin/deny");
+	// Account page is accessible to all authenticated users
+	if (!session?.user) {
+		redirect("/authentication/login");
 	}
 
 	const breadcrumb = [

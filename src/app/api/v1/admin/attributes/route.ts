@@ -1,103 +1,79 @@
-import { auth } from "@/auth";
+import { NextRequest, NextResponse } from "next/server";
+
+import { withAttributesPermission } from "@/lib/auth-middleware";
 import models from "@/models";
 
-// get all users
-export async function GET(req: Request) {
-	const session = await auth();
-	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
-	}
-	const { id, role } = session?.user || {};
+// get all attributes
+async function GET_Handler(req: NextRequest) {
 	// QUERY PARAMS
 	const query = {
-		s: new URL(req.url).searchParams.get("s") || "",
-		skip: parseInt(new URL(req.url).searchParams.get("skip") ?? "0"),
-		take: parseInt(new URL(req.url).searchParams.get("take") ?? "10"),
-		orderBy: new URL(req.url).searchParams.get("orderBy") || "createdAt",
-		filterBy: new URL(req.url).searchParams.get("filterBy") || "",
-		byCat: new URL(req.url).searchParams.get("cat") || "all",
-		type: new URL(req.url).searchParams.get("type") || null,
-		parent: new URL(req.url).searchParams.get("parent") || null,
-		min: Boolean(new URL(req.url).searchParams.get("min")),
+		s: req.nextUrl.searchParams.get("s") || "",
+		skip: parseInt(req.nextUrl.searchParams.get("skip") ?? "0"),
+		take: parseInt(req.nextUrl.searchParams.get("take") ?? "10"),
+		orderBy: req.nextUrl.searchParams.get("orderBy") || "createdAt",
+		filterBy: req.nextUrl.searchParams.get("filterBy") || "",
+		byCat: req.nextUrl.searchParams.get("cat") || "all",
+		type: req.nextUrl.searchParams.get("type") || null,
+		parent: req.nextUrl.searchParams.get("parent") || null,
+		min: Boolean(req.nextUrl.searchParams.get("min")),
 	};
 
-	const count = await models.Attribute.getAttributesCount(query);
-	const db = await models.Attribute.getAllAttributes(query);
+	try {
+		const count = await models.Attribute.getAttributesCount(query);
+		const db = await models.Attribute.getAllAttributes(query);
 
-	if (session) {
-		return new Response(
-			JSON.stringify({
-				message: "Data fetched successfully",
-				data: db,
-				count: count,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
+		return NextResponse.json({
+			message: "Data fetched successfully",
+			data: db,
+			count: count,
+			success: "success",
+		});
+	} catch (error) {
+		return NextResponse.json(
+			{ message: "Error fetching attributes", success: "error" },
+			{ status: 500 }
 		);
 	}
-
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
 }
 
 // Create Attribute
-export async function POST(req: Request) {
-	const session = await auth();
-	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
-	}
-	const { id, role } = session?.user || {};
-	const body = await req.json();
-	const db = await models.Attribute.createAttribute(body);
+async function POST_Handler(req: NextRequest) {
+	try {
+		const body = await req.json();
+		const db = await models.Attribute.createAttribute(body);
 
-	if (session && db) {
-		return new Response(
-			JSON.stringify({
-				message: "Attribute created successfully",
-				data: db,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
+		return NextResponse.json({
+			message: "Attribute created successfully",
+			data: db,
+			success: "success",
+		});
+	} catch (error) {
+		return NextResponse.json(
+			{ message: "Error creating attribute", success: "error" },
+			{ status: 500 }
 		);
 	}
-
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
 }
 
 // DELETE Multiple
-export async function DELETE(req: Request) {
-	const session = await auth();
-	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
-	}
-	const { id, role } = session?.user || {};
-	const body = await req.json();
-	const db = await models.Attribute.deleteMulti(body);
+async function DELETE_Handler(req: NextRequest) {
+	try {
+		const body = await req.json();
+		const db = await models.Attribute.deleteMulti(body);
 
-	if (session && db) {
-		return new Response(
-			JSON.stringify({
-				message: "Attribute deleted successfully",
-				data: db,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
+		return NextResponse.json({
+			message: "Attributes deleted successfully",
+			data: db,
+			success: "success",
+		});
+	} catch (error) {
+		return NextResponse.json(
+			{ message: "Error deleting attributes", success: "error" },
+			{ status: 500 }
 		);
 	}
-
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
 }
+
+export const GET = withAttributesPermission("read")(GET_Handler);
+export const POST = withAttributesPermission("create")(POST_Handler);
+export const DELETE = withAttributesPermission("delete")(DELETE_Handler);

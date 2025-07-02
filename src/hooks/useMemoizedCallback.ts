@@ -1,12 +1,10 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef } from "react";
 
 /**
  * Custom hook for stable callback references
  * Helps prevent unnecessary re-renders in child components
  */
-export function useMemoizedCallback<T extends (...args: any[]) => any>(
-	callback: T
-): T {
+export function useMemoizedCallback<T extends (...args: any[]) => any>(callback: T): T {
 	const callbackRef = useRef<T>(callback);
 	callbackRef.current = callback;
 
@@ -16,10 +14,7 @@ export function useMemoizedCallback<T extends (...args: any[]) => any>(
 /**
  * Debounce hook for preventing excessive API calls
  */
-export function useDebouncedCallback<T extends (...args: any[]) => any>(
-	callback: T,
-	delay: number
-): T {
+export function useDebouncedCallback<T extends (...args: any[]) => any>(callback: T, delay: number): T {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	return useCallback(
@@ -32,6 +27,6 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
 				callback(...args);
 			}, delay);
 		}) as T,
-		[callback, delay]
+		[callback, delay],
 	);
 }

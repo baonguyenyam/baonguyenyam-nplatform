@@ -1,60 +1,51 @@
-import { auth } from "@/auth";
+import { NextRequest, NextResponse } from "next/server";
+
+import { withSettingsPermission } from "@/lib/auth-middleware";
+import { ACTIONS, PERMISSION_LEVELS } from "@/lib/permissions";
 import models from "@/models";
 
-// get all Settings
-export async function GET(req: Request) {
-	const session = await auth();
-	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
+// get all Settings (Admin only)
+export const GET = withSettingsPermission(ACTIONS.READ, PERMISSION_LEVELS.ADMIN)(async (req: NextRequest) => {
+	try {
+		const db = await models.Setting.getAllSettings();
+
+		return NextResponse.json({
+			message: "Data fetched successfully",
+			data: db,
+			success: true,
+		});
+	} catch (error) {
+		return NextResponse.json({
+			message: "Error fetching settings",
+			error: error instanceof Error ? error.message : "Unknown error",
+			success: false
+		}, { status: 500 });
 	}
-	const { id, role } = session?.user || {};
+});
 
-	const db = await models.Setting.getAllSettings();
+// Update Settings (Admin only)
+export const PUT = withSettingsPermission(ACTIONS.UPDATE, PERMISSION_LEVELS.ADMIN)(async (req: NextRequest) => {
+	try {
+		const body = await req.json();
+		const db = await models.Setting.updateSetting(body);
 
-	if (session) {
-		return new Response(
-			JSON.stringify({
-				message: "Data fetched successfully",
+		if (db) {
+			return NextResponse.json({
+				message: "Setting updated successfully",
 				data: db,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
-		);
+				success: true,
+			});
+		}
+
+		return NextResponse.json({
+			message: "Can not update the data",
+			success: false
+		}, { status: 400 });
+	} catch (error) {
+		return NextResponse.json({
+			message: "Error updating setting",
+			error: error instanceof Error ? error.message : "Unknown error",
+			success: false
+		}, { status: 500 });
 	}
-
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
-}
-
-// Update Settings
-export async function PUT(req: Request) {
-	const session = await auth();
-	if (!session) {
-		return Response.json({ message: "Not authenticated" }, { status: 401 });
-	}
-	const { id, role } = session?.user || {};
-	const body = await req.json();
-	const db = await models.Setting.updateSetting(body);
-
-	if (session && db) {
-		return new Response(
-			JSON.stringify({
-				message: "Setting created successfully",
-				data: db,
-				success: "success",
-			}),
-			{
-				status: 200,
-				headers: {
-					"content-type": "application/json",
-				},
-			},
-		);
-	}
-
-	return Response.json({ message: "Can not create the data" }, { status: 401 });
-}
+});

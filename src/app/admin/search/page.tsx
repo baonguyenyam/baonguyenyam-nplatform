@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
+import { PermissionChecker } from "@/lib/admin-route-protection";
 import { meta } from "@/lib/appConst";
 
 import Fetch from "./[page]/fetch";
@@ -13,13 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Index() {
-	const session = await auth();
-	const acceptRole = ["ADMIN", "MODERATOR"];
-	const checkRole = session?.user?.role;
-
-	if (checkRole && !acceptRole.includes(checkRole)) {
-		redirect("/admin/deny");
-	}
+	await PermissionChecker.check("search", "read");
 
 	const breadcrumb = [
 		{

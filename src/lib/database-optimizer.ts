@@ -1,8 +1,7 @@
-import { db } from '@/lib/db';
+import { db } from "@/lib/db";
 
 // Enhanced database query utilities for better performance
 export class DatabaseOptimizer {
-
 	// Batch queries to reduce database round trips
 	static async batchUserQueries(userIds: string[]) {
 		// Instead of multiple individual queries, use one query with 'in' operator
@@ -45,7 +44,7 @@ export class DatabaseOptimizer {
 				},
 			},
 			orderBy: {
-				id: 'desc',
+				id: "desc",
 			},
 		});
 	}
@@ -145,7 +144,7 @@ export class DatabaseOptimizer {
 				},
 			},
 			orderBy: {
-				createdAt: 'desc',
+				createdAt: "desc",
 			},
 		});
 	}
@@ -174,62 +173,61 @@ export class DatabaseOptimizer {
 	}
 
 	private static isRetryableError(error: any): boolean {
-		const retryableErrors = [
-			'ECONNRESET',
-			'ENOTFOUND',
-			'ETIMEDOUT',
-			'connection refused',
-		];
+		const retryableErrors = ["ECONNRESET", "ENOTFOUND", "ETIMEDOUT", "connection refused"];
 
-		const errorMessage = error?.message?.toLowerCase() || '';
-		return retryableErrors.some(code => errorMessage.includes(code));
+		const errorMessage = error?.message?.toLowerCase() || "";
+		return retryableErrors.some((code) => errorMessage.includes(code));
 	}
 
 	private static delay(ms: number): Promise<void> {
-		return new Promise(resolve => setTimeout(resolve, ms));
+		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 }
 
 // Usage examples and performance tips
 export const PerformanceTips = {
 	// 1. Use select to fetch only needed fields
-	selectiveQuery: () => db.user.findMany({
-		select: {
-			id: true,
-			name: true,
-			email: true,
-			// Don't fetch large fields like 'data' unless needed
-		},
-	}),
+	selectiveQuery: () =>
+		db.user.findMany({
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				// Don't fetch large fields like 'data' unless needed
+			},
+		}),
 
 	// 2. Use proper indexing for where clauses
-	indexedQuery: () => db.post.findMany({
-		where: {
-			published: true, // This field is indexed
-			userId: 'user-id', // This field is indexed
-		},
-	}),
+	indexedQuery: () =>
+		db.post.findMany({
+			where: {
+				published: true, // This field is indexed
+				userId: "user-id", // This field is indexed
+			},
+		}),
 
 	// 3. Limit includes to avoid deep nesting
-	limitedIncludes: () => db.post.findMany({
-		include: {
-			user: {
-				select: {
-					id: true,
-					name: true,
-					// Don't include nested relations unless necessary
+	limitedIncludes: () =>
+		db.post.findMany({
+			include: {
+				user: {
+					select: {
+						id: true,
+						name: true,
+						// Don't include nested relations unless necessary
+					},
 				},
+				// Avoid including relations that include other relations
 			},
-			// Avoid including relations that include other relations
-		},
-	}),
+		}),
 
 	// 4. Use pagination for large datasets
-	paginatedQuery: (page: number, limit: number = 20) => db.post.findMany({
-		take: limit,
-		skip: (page - 1) * limit,
-		orderBy: {
-			createdAt: 'desc',
-		},
-	}),
+	paginatedQuery: (page: number, limit: number = 20) =>
+		db.post.findMany({
+			take: limit,
+			skip: (page - 1) * limit,
+			orderBy: {
+				createdAt: "desc",
+			},
+		}),
 };

@@ -26,7 +26,7 @@ export const createUser = async (data: any) => {
 			data,
 		});
 		// Clear user cache when creating new user
-		clearCache('user');
+		clearCache("user");
 		return user;
 	} catch (error) {
 		return null;
@@ -43,10 +43,7 @@ export const getAllUsers = async (query: any) => {
 			where: {
 				published: published !== undefined ? published : undefined,
 				...(s && {
-					OR: [
-						{ email: { contains: s, mode: "insensitive" } }, 
-						{ name: { contains: s, mode: "insensitive" } }
-					],
+					OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
 				}),
 			},
 			select: {
@@ -78,10 +75,7 @@ export const getUsersCount = async (query: any) => {
 			where: {
 				published: published !== undefined ? published : undefined,
 				...(s && {
-					OR: [
-						{ email: { contains: s, mode: "insensitive" } }, 
-						{ name: { contains: s, mode: "insensitive" } }
-					],
+					OR: [{ email: { contains: s, mode: "insensitive" } }, { name: { contains: s, mode: "insensitive" } }],
 				}),
 			},
 		});
@@ -100,7 +94,7 @@ export const deleteUser = async (id: string) => {
 			},
 		});
 		// Clear user cache when deleting user
-		clearCache('user');
+		clearCache("user");
 		return user;
 	} catch (error) {
 		return null;
@@ -138,7 +132,7 @@ export const deleteMulti = async (ids: string[]) => {
 			},
 		});
 		// Clear user cache when bulk deleting
-		clearCache('user');
+		clearCache("user");
 		return users;
 	} catch (error) {
 		return null;
@@ -157,7 +151,7 @@ export const updateMulti = async (ids: string[], data: any) => {
 			data,
 		});
 		// Clear user cache when bulk updating
-		clearCache('user');
+		clearCache("user");
 		return users;
 	} catch (error) {
 		return null;

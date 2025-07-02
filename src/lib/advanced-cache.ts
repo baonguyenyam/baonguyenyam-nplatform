@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis';
+import { Redis } from "ioredis";
 
 // Redis Cache Implementation for Production
 class AdvancedCacheManager {
@@ -6,7 +6,7 @@ class AdvancedCacheManager {
 	private memoryCache = new Map<string, { data: any; timestamp: number; ttl: number }>();
 
 	constructor() {
-		if (process.env.REDIS_URL && process.env.NODE_ENV === 'production') {
+		if (process.env.REDIS_URL && process.env.NODE_ENV === "production") {
 			this.redis = new Redis(process.env.REDIS_URL, {
 				retryDelayOnFailover: 100,
 				enableReadyCheck: false,
@@ -33,7 +33,7 @@ class AdvancedCacheManager {
 
 			return null;
 		} catch (error) {
-			console.error('Cache get error:', error);
+			console.error("Cache get error:", error);
 			return null;
 		}
 	}
@@ -54,7 +54,7 @@ class AdvancedCacheManager {
 				ttl: ttlSeconds * 1000,
 			});
 		} catch (error) {
-			console.error('Cache set error:', error);
+			console.error("Cache set error:", error);
 		}
 	}
 
@@ -75,7 +75,7 @@ class AdvancedCacheManager {
 				}
 			}
 		} catch (error) {
-			console.error('Cache invalidation error:', error);
+			console.error("Cache invalidation error:", error);
 		}
 	}
 
@@ -99,11 +99,7 @@ class AdvancedCacheManager {
 export const advancedCache = new AdvancedCacheManager();
 
 // Enhanced cached functions with Redis support
-export const getCachedOrFetch = async <T>(
-	key: string,
-	fetcher: () => Promise<T>,
-	ttlSeconds: number = 300
-): Promise<T> => {
+export const getCachedOrFetch = async <T>(key: string, fetcher: () => Promise<T>, ttlSeconds: number = 300): Promise<T> => {
 	const cached = await advancedCache.get<T>(key);
 	if (cached !== null) {
 		return cached;
@@ -119,7 +115,7 @@ export const cachedGetUserByIdRedis = async (id: string) => {
 	return getCachedOrFetch(
 		`user:${id}`,
 		async () => {
-			const { db } = await import('./db');
+			const { db } = await import("./db");
 			return db.user.findUnique({
 				where: { id },
 				select: {
@@ -135,6 +131,6 @@ export const cachedGetUserByIdRedis = async (id: string) => {
 				},
 			});
 		},
-		900 // 15 minutes
+		900, // 15 minutes
 	);
 };

@@ -2,49 +2,50 @@ import { NextResponse } from "next/server";
 import NextAuth from "next-auth";
 
 import authConfig from "@/auth.config";
+import { checkAdminRoutePermission } from "@/lib/admin-route-protection";
 import { checkRateLimit, getRateLimitHeaders } from "@/lib/rate-limiter";
 import { secureSearchString } from "@/lib/utils";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, pathAuthPrefix, publicApp, publicRoutes } from "@/routes";
 
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
 	const response = NextResponse.next();
-	
+
 	// Rate limiting for API routes
-	if (req.nextUrl.pathname.startsWith('/api/')) {
-		const identifier = req.ip || req.headers.get('x-forwarded-for') || 'anonymous';
+	if (req.nextUrl.pathname.startsWith("/api/")) {
+		const identifier = req.ip || req.headers.get("x-forwarded-for") || "anonymous";
 		const isAuthenticated = !!req.auth;
 		const userRole = req.auth?.user?.role;
-		
-		let rateLimitRole: 'PUBLIC' | 'AUTHENTICATED' | 'ADMIN' = 'PUBLIC';
+
+		let rateLimitRole: "PUBLIC" | "AUTHENTICATED" | "ADMIN" = "PUBLIC";
 		if (isAuthenticated) {
-			rateLimitRole = userRole === 'ADMIN' ? 'ADMIN' : 'AUTHENTICATED';
+			rateLimitRole = userRole === "ADMIN" ? "ADMIN" : "AUTHENTICATED";
 		}
-		
+
 		const rateLimitResult = checkRateLimit(identifier, rateLimitRole);
-		
+
 		// Add rate limit headers
 		const rateLimitHeaders = getRateLimitHeaders(rateLimitResult);
 		Object.entries(rateLimitHeaders).forEach(([key, value]) => {
 			response.headers.set(key, value);
 		});
-		
+
 		// If rate limit exceeded, return 429
 		if (!rateLimitResult.success) {
 			return new NextResponse(
 				JSON.stringify({
 					success: false,
-					message: 'Too many requests',
-					error: 'Rate limit exceeded',
+					message: "Too many requests",
+					error: "Rate limit exceeded",
 				}),
 				{
 					status: 429,
 					headers: {
-						'Content-Type': 'application/json',
+						"Content-Type": "application/json",
 						...rateLimitHeaders,
 					},
-				}
+				},
 			);
 		}
 	}
@@ -57,7 +58,7 @@ export default auth((req) => {
 	const byCat = secureSearchString(searchParams?.get("cat")) || "";
 	const callbackUrl = secureSearchString(searchParams?.get("callbackUrl")) || "";
 	const error = secureSearchString(searchParams?.get("error")) || "";
-	
+
 	// Set headers
 	response?.headers?.set("x-search", search ?? "");
 	response?.headers?.set("x-orderBy", orderBy ?? "");
@@ -67,13 +68,24 @@ export default auth((req) => {
 	response?.headers?.set("x-error", error ?? "");
 
 	// Add performance headers
-	response.headers.set('X-Content-Type-Options', 'nosniff');
-	response.headers.set('X-Frame-Options', 'DENY');
-	response.headers.set('X-XSS-Protection', '1; mode=block');
-	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+	response.headers.set("X-Content-Type-Options", "nosniff");
+	response.headers.set("X-Frame-Options", "DENY");
+	response.headers.set("X-XSS-Protection", "1; mode=block");
+	response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
 	const { nextUrl } = req;
 	const isLoggedIn = !!req.auth;
+
+	// Enhanced admin route protection with permissions
+	if (nextUrl.pathname.startsWith("/admin") && nextUrl.pathname !== "/admin" && nextUrl.pathname !== "/admin/deny") {
+		const permissionCheck = await checkAdminRoutePermission(req);
+
+		if (!permissionCheck.allowed) {
+			if (permissionCheck.redirectTo) {
+				return NextResponse.redirect(new URL(permissionCheck.redirectTo, nextUrl));
+			}
+		}
+	}
 
 	// Publix publicRoute
 	const publicApps = publicApp.includes(nextUrl.pathname);

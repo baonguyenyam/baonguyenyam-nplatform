@@ -8,22 +8,18 @@ export async function GET(req: Request) {
 		const params = req.url.split("/").pop();
 
 		if (!params) {
-			return notFoundError('Post');
+			return notFoundError("Post");
 		}
 
 		// Use cached version for better performance
 		const db = await cachedGetPostBySlug(params);
-		
+
 		if (!db) {
-			return notFoundError('Post');
+			return notFoundError("Post");
 		}
 
-		return successResponse(
-			db,
-			'Post fetched successfully'
-		);
-
+		return successResponse(db, "Post fetched successfully");
 	} catch (error) {
-		return notFoundError('Post');
+		return notFoundError("Post");
 	}
 }

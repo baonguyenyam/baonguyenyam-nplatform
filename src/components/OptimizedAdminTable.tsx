@@ -1,9 +1,9 @@
-import React, { memo, useMemo } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
-import { CircleCheck, Pencil, X } from 'lucide-react';
+import React, { memo, useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { CircleCheck, Pencil, X } from "lucide-react";
 
-import AppTable from '@/components/AppTable';
-import { Button } from '@/components/ui/button';
+import AppTable from "@/components/AppTable";
+import { Button } from "@/components/ui/button";
 
 // Generic interfaces for reusable table component
 interface BaseEntity {
@@ -30,26 +30,13 @@ interface OptimizedTableProps<T extends BaseEntity> {
 	filter?: Array<{ value: string; label: string }>;
 }
 
-function OptimizedAdminTable<T extends BaseEntity>({
-	data,
-	count,
-	title,
-	url,
-	actions,
-	onEdit,
-	onView,
-	customColumns = [],
-	order = [],
-	filter = []
-}: OptimizedTableProps<T>) {
+function OptimizedAdminTable<T extends BaseEntity>({ data, count, title, url, actions, onEdit, onView, customColumns = [], order = [], filter = [] }: OptimizedTableProps<T>) {
 	// Memoized columns to prevent recreation on every render
 	const columns = useMemo(() => {
-		const baseColumns = customColumns.map(col => ({
+		const baseColumns = customColumns.map((col) => ({
 			header: col.header,
 			accessor: col.accessor,
-			custom: col.custom || ((row: T) => (
-				<span className="text-sm">{String(row[col.accessor] || '')}</span>
-			))
+			custom: col.custom || ((row: T) => <span className="text-sm">{String(row[col.accessor] || "")}</span>),
 		}));
 
 		// Common columns that most tables use
@@ -81,8 +68,7 @@ function OptimizedAdminTable<T extends BaseEntity>({
 								variant="outline"
 								size="sm"
 								className="h-7 w-7 border-blue-400 text-blue-600 hover:bg-blue-50"
-								onClick={() => onView(row)}
-							>
+								onClick={() => onView(row)}>
 								👁️
 							</Button>
 						)}
@@ -90,8 +76,7 @@ function OptimizedAdminTable<T extends BaseEntity>({
 							variant="outline"
 							size="sm"
 							className="h-7 w-7 border-gray-400 text-black hover:bg-gray-200"
-							onClick={() => onEdit(row)}
-						>
+							onClick={() => onEdit(row)}>
 							<Pencil className="h-4 w-4" />
 						</Button>
 					</div>
@@ -102,16 +87,9 @@ function OptimizedAdminTable<T extends BaseEntity>({
 		return [...baseColumns, ...commonColumns];
 	}, [customColumns, onEdit, onView]);
 
-	const defaultOrder = useMemo(() => [
-		{ value: "createdAt", label: "Order by Date" },
-		{ value: "published", label: "Order by Status" },
-		...order
-	], [order]);
+	const defaultOrder = useMemo(() => [{ value: "createdAt", label: "Order by Date" }, { value: "published", label: "Order by Status" }, ...order], [order]);
 
-	const defaultFilter = useMemo(() => [
-		{ value: "published", label: "Filter by Status" },
-		...filter
-	], [filter]);
+	const defaultFilter = useMemo(() => [{ value: "published", label: "Filter by Status" }, ...filter], [filter]);
 
 	return (
 		<AppTable

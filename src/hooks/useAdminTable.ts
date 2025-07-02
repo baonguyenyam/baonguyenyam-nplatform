@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { toast } from 'sonner';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
-import { useDebouncedCallback, useMemoizedCallback } from '@/hooks/useMemoizedCallback';
-import { pageSkip } from '@/lib/utils';
-import { useAppSelector } from '@/store';
+import { useDebouncedCallback, useMemoizedCallback } from "@/hooks/useMemoizedCallback";
+import { pageSkip } from "@/lib/utils";
+import { useAppSelector } from "@/store";
 
 interface BaseEntity {
 	id: string | number;
@@ -23,22 +23,17 @@ interface UseAdminTableOptions<T> {
 }
 
 interface DrawerState<T> {
-	mode: 'create' | 'edit' | 'view' | 'design' | null;
+	mode: "create" | "edit" | "view" | "design" | null;
 	data: T | null;
 }
 
-export function useAdminTable<T extends BaseEntity>({
-	apiActions,
-	tableName,
-	title,
-	breadcrumb
-}: UseAdminTableOptions<T>) {
+export function useAdminTable<T extends BaseEntity>({ apiActions, tableName, title, breadcrumb }: UseAdminTableOptions<T>) {
 	// State management
 	const [db, setDb] = useState<{ data: T[]; count: number }>({ data: [], count: 0 });
 	const [loading, setLoading] = useState(true);
 	const [drawerState, setDrawerState] = useState<DrawerState<T>>({
 		mode: null,
-		data: null
+		data: null,
 	});
 
 	// Redux state
@@ -48,15 +43,18 @@ export function useAdminTable<T extends BaseEntity>({
 	const search = useSearchParams();
 
 	// Memoized query object to prevent unnecessary API calls
-	const query = useMemo(() => ({
-		take: Number(pageSize),
-		skip: pageSkip(Number(search.get('page') || '1'), pageSize),
-		s: search.get('s') || '',
-		orderBy: search.get('orderBy') || 'createdAt',
-		filterBy: search.get('filterBy') || '',
-		cat: search.get('cat') || '',
-		published: search.get('published') ? search.get('published') === 'true' : undefined,
-	}), [pageSize, search]);
+	const query = useMemo(
+		() => ({
+			take: Number(pageSize),
+			skip: pageSkip(Number(search.get("page") || "1"), pageSize),
+			s: search.get("s") || "",
+			orderBy: search.get("orderBy") || "createdAt",
+			filterBy: search.get("filterBy") || "",
+			cat: search.get("cat") || "",
+			published: search.get("published") ? search.get("published") === "true" : undefined,
+		}),
+		[pageSize, search],
+	);
 
 	// Memoized fetch function
 	const fetchData = useMemoizedCallback(async () => {
@@ -105,45 +103,48 @@ export function useAdminTable<T extends BaseEntity>({
 	});
 
 	const handleEdit = useMemoizedCallback((item: T) => {
-		setDrawerState({ mode: 'edit', data: item });
+		setDrawerState({ mode: "edit", data: item });
 	});
 
 	const handleView = useMemoizedCallback((item: T) => {
-		setDrawerState({ mode: 'view', data: item });
+		setDrawerState({ mode: "view", data: item });
 	});
 
 	const handleCreate = useMemoizedCallback(() => {
-		setDrawerState({ mode: 'create', data: null });
+		setDrawerState({ mode: "create", data: null });
 	});
 
 	const handleDesign = useMemoizedCallback((item: T) => {
-		setDrawerState({ mode: 'design', data: item });
+		setDrawerState({ mode: "design", data: item });
 	});
 
 	const handleFormChange = useMemoizedCallback((event: string) => {
-		if (event === 'submit') {
+		if (event === "submit") {
 			handleDrawerClose();
 			fetchData();
 		}
 	});
 
 	// Table actions (for bulk operations)
-	const actions = useMemo(() => ({
-		deleteMultiple: async (ids: (string | number)[]) => {
-			try {
-				const result = await apiActions.deleteMultiple(ids);
-				if (result) {
-					toast.success(`${ids.length} ${title.toLowerCase()}(s) deleted successfully`);
-					await fetchData();
-				} else {
-					toast.error(`Failed to delete selected ${title.toLowerCase()}s`);
+	const actions = useMemo(
+		() => ({
+			deleteMultiple: async (ids: (string | number)[]) => {
+				try {
+					const result = await apiActions.deleteMultiple(ids);
+					if (result) {
+						toast.success(`${ids.length} ${title.toLowerCase()}(s) deleted successfully`);
+						await fetchData();
+					} else {
+						toast.error(`Failed to delete selected ${title.toLowerCase()}s`);
+					}
+				} catch (error) {
+					console.error(`Error deleting multiple ${tableName}:`, error);
+					toast.error(`Error deleting selected ${title.toLowerCase()}s`);
 				}
-			} catch (error) {
-				console.error(`Error deleting multiple ${tableName}:`, error);
-				toast.error(`Error deleting selected ${title.toLowerCase()}s`);
-			}
-		}
-	}), [apiActions, fetchData, title, tableName]);
+			},
+		}),
+		[apiActions, fetchData, title, tableName],
+	);
 
 	// Effects
 	useEffect(() => {
@@ -151,7 +152,7 @@ export function useAdminTable<T extends BaseEntity>({
 	}, [fetchData, query]); // Fetch when query changes
 
 	// When search parameters change, use debounced fetch
-	const searchTerm = search.get('s');
+	const searchTerm = search.get("s");
 	useEffect(() => {
 		if (searchTerm) {
 			debouncedFetch();
@@ -179,6 +180,6 @@ export function useAdminTable<T extends BaseEntity>({
 		// Meta
 		title,
 		breadcrumb,
-		query
+		query,
 	};
 }

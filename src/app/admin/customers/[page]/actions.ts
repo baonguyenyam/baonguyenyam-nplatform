@@ -5,11 +5,31 @@ import { render } from "@react-email/render";
 import { auth } from "@/auth";
 import WelcomeEmail from "@/email/WelcomeEmail";
 import MailService from "@/lib/email";
+import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
 import models from "@/models";
 
 export async function getAll(query: any) {
 	const session = await auth();
-	const { id, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to read customers
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to read customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.getAllCustomers(query);
 		const dbCount = await models.Customer.getCustomersCount(query);
@@ -22,14 +42,33 @@ export async function getAll(query: any) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error fetching categories",
+			message: "Error fetching customers",
 		};
 	}
 }
 
 export async function deleteRecord(id: string) {
 	const session = await auth();
-	const { id: userId, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to delete customers
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.DELETE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to delete customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.deleteCustomer(id);
 		return {
@@ -40,14 +79,33 @@ export async function deleteRecord(id: string) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error deleting category",
+			message: "Error deleting customer",
 		};
 	}
 }
 
 export async function createRecord(data: any) {
 	const session = await auth();
-	const { id, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to create customers
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.CREATE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to create customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.createCustomer(data);
 		return {
@@ -58,14 +116,33 @@ export async function createRecord(data: any) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error creating category",
+			message: "Error creating customer",
 		};
 	}
 }
 
 export async function updateRecord(id: string, data: any) {
 	const session = await auth();
-	const { id: userId, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to update customers
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.UPDATE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to update customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.updateCustomer(id, data);
 		return {
@@ -76,14 +153,33 @@ export async function updateRecord(id: string, data: any) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error updating category",
+			message: "Error updating customer",
 		};
 	}
 }
 
 export async function getRecord(id: string) {
 	const session = await auth();
-	const { id: userId, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to read customers
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.READ, PERMISSION_LEVELS.READ)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to read customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.getCustomerById(id);
 		return {
@@ -94,7 +190,7 @@ export async function getRecord(id: string) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error fetching category",
+			message: "Error fetching customer",
 		};
 	}
 }
@@ -102,7 +198,26 @@ export async function getRecord(id: string) {
 // Delete Multiple Records
 export async function deleteMultipleRecords(ids: string[]) {
 	const session = await auth();
-	const { id, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to delete customers (bulk delete requires higher permissions)
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.BULK_DELETE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to bulk delete customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.deleteMulti(ids);
 		return {
@@ -113,7 +228,7 @@ export async function deleteMultipleRecords(ids: string[]) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error deleting categories",
+			message: "Error deleting customers",
 		};
 	}
 }
@@ -121,7 +236,26 @@ export async function deleteMultipleRecords(ids: string[]) {
 // Update Multiple Records
 export async function updateMultipleRecords(ids: string[], data: any) {
 	const session = await auth();
-	const { id, role } = session?.user || {};
+	if (!session?.user) {
+		return {
+			success: "error",
+			message: "Not authenticated",
+		};
+	}
+
+	// Check permission to update customers (bulk update requires higher permissions)
+	const permissionChecker = createPermissionChecker({
+		userId: session.user.id as string,
+		role: session.user.role as "ADMIN" | "MODERATOR" | "USER",
+	});
+
+	if (!permissionChecker.hasPermission(RESOURCES.CUSTOMERS, ACTIONS.BULK_UPDATE, PERMISSION_LEVELS.WRITE)) {
+		return {
+			success: "error",
+			message: "Insufficient permissions to bulk update customers",
+		};
+	}
+
 	try {
 		const db = await models.Customer.updateMulti(ids, data);
 		return {
@@ -132,7 +266,7 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 	} catch (error) {
 		return {
 			success: "error",
-			message: "Error updating categories",
+			message: "Error updating customers",
 		};
 	}
 }
