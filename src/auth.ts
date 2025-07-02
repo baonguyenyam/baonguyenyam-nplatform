@@ -6,7 +6,6 @@ import models from "@/models";
 
 import "next-auth/jwt";
 
-import { sendEmail } from "./lib/utils";
 import authConfig from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -33,9 +32,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 						permissions: "[]",
 						avatar: user.image ? user.image : null,
 					});
-					// sendEmail
-					const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
-					await sendEmail(user.email!, user.name!, Subject);
+					// sendEmail - only import and use in server environment
+					if (typeof window === 'undefined') {
+						try {
+							const { sendEmail } = await import("./lib/server-utils");
+							const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
+							await sendEmail(user.email!, user.name!, Subject);
+						} catch (error) {
+							console.error("Error sending welcome email:", error);
+						}
+					}
 				}
 				if (existingUser && !existingUser?.emailVerified) return;
 				if (existingUser?.isTwoFactorEnabled) {

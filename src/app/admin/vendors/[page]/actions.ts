@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { sendEmail } from "@/lib/utils";
+import { sendEmail } from "@/lib/server-utils";
 import models from "@/models";
 
 export async function getAll(query: any) {

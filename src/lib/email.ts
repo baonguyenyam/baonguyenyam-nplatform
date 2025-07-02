@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
+import { removeTags } from "@/lib/client-utils";
 import Logging from "@/lib/logging";
-import { removeTags } from "@/lib/utils";
 
 interface MailInterface {
 	from?: string;

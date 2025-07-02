@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 
 import { auth } from "@/auth-middleware";
 import { checkAdminRoutePermission, getUnauthorizedRedirectUrl } from "@/lib/admin-route-protection-middleware";
+import { secureSearchString } from "@/lib/middleware-utils";
 import { checkRateLimit, getRateLimitHeaders } from "@/lib/rate-limiter";
-import { secureSearchString } from "@/lib/utils";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, pathAuthPrefix, publicApp, publicRoutes } from "@/routes";
 
 export default auth(async (req) => {

@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
-import { sendEmail } from "@/lib/utils";
+import { sendEmail } from "@/lib/server-utils";
 import models from "@/models";
 
 export async function getAll(query: any) {

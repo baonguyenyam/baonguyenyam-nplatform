@@ -1,7 +1,7 @@
-import "server-only";
-
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
+
+import "server-only";
 
 const prismaClientSingleton = () => {
 	return new PrismaClient({
