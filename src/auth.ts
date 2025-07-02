@@ -1,14 +1,12 @@
 import { UserRole } from "@prisma/client";
-import { render } from "@react-email/render";
 import NextAuth from "next-auth";
 
-import WelcomeEmail from "@/email/WelcomeEmail";
 import { db } from "@/lib/db";
-import MailService from "@/lib/email";
 import models from "@/models";
 
 import "next-auth/jwt";
 
+import { sendEmail } from "./lib/utils";
 import authConfig from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -37,20 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					});
 					// sendEmail
 					const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
-					const emailTemplate = await render(
-						WelcomeEmail({
-							url: process.env.PUBLIC_SITE_URL ?? "",
-							host: process.env.PUBLIC_SITE_NAME ?? "",
-							name: user.name!,
-						}),
-					);
-					const mailService = MailService.getInstance();
-					mailService.sendMail("welcomeEmail", {
-						to: user.email!,
-						subject: Subject,
-						text: emailTemplate || "",
-						html: emailTemplate,
-					});
+					await sendEmail(user.email!, user.name!, Subject);
 				}
 				if (existingUser && !existingUser?.emailVerified) return;
 				if (existingUser?.isTwoFactorEnabled) {

@@ -1,5 +1,26 @@
+import { render } from "@react-email/render";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+import WelcomeEmail from "@/email/WelcomeEmail";
+import MailService from "@/lib/email";
+
+export async function sendEmail(email: string, name: string, subject?: string) {
+	const emailTemplate = await render(
+		WelcomeEmail({
+			url: process.env.PUBLIC_SITE_URL ?? "",
+			host: process.env.PUBLIC_SITE_NAME ?? "",
+			name: name,
+		}),
+	);
+	const mailService = MailService.getInstance();
+	mailService.sendMail("welcomeEmail", {
+		to: email,
+		subject: subject || `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`,
+		text: emailTemplate || "",
+		html: emailTemplate,
+	});
+}
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));

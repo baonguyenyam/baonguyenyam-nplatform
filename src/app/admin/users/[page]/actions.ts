@@ -1,11 +1,8 @@
 "use server";
 
-import { render } from "@react-email/render";
-
 import { auth } from "@/auth";
-import WelcomeEmail from "@/email/WelcomeEmail";
-import MailService from "@/lib/email";
 import { ACTIONS, createPermissionChecker, PERMISSION_LEVELS, RESOURCES } from "@/lib/permissions";
+import { sendEmail } from "@/lib/utils";
 import models from "@/models";
 
 export async function getAll(query: any) {
@@ -183,18 +180,5 @@ export async function updateMultipleRecords(ids: string[], data: any) {
 export async function sendMail(email: string, name: string) {
 	// sendEmail
 	const Subject = `Welcome to ${process.env.PUBLIC_SITE_NAME ?? ""}'s website`;
-	const emailTemplate = await render(
-		WelcomeEmail({
-			url: process.env.PUBLIC_SITE_URL ?? "",
-			host: process.env.PUBLIC_SITE_NAME ?? "",
-			name: name,
-		}),
-	);
-	const mailService = MailService.getInstance();
-	mailService.sendMail("welcomeEmail", {
-		to: email,
-		subject: Subject,
-		text: emailTemplate || "",
-		html: emailTemplate,
-	});
+	await sendEmail(email, name, Subject);
 }
