@@ -5,21 +5,62 @@
 		},
 		"src/app/api/v1/route.ts": {
 			"maxDuration": 10
+		},
+		"src/app/api/v1/admin/route.ts": {
+			"maxDuration": 10
 		}
 	},
-	"outputDirectory": ".next",
-	"buildCommand": "npm run build",
 	"regions": [
 		"iad1"
 	],
 	"rewrites": [
 		{
-			"source": "/api/v1/admin/:path*",
-			"destination": "/api/v1/route"
+			"source": "/api/v1/admin/posts/(.*)",
+			"destination": "/api/v1/admin/posts"
 		},
 		{
-			"source": "/api/v1/public/:path*",
-			"destination": "/api/v1/route"
+			"source": "/api/v1/admin/customers/(.*)",
+			"destination": "/api/v1/admin/customers"
+		},
+		{
+			"source": "/api/v1/admin/users/(.*)",
+			"destination": "/api/v1/admin/users"
+		},
+		{
+			"source": "/api/v1/admin/categories/(.*)",
+			"destination": "/api/v1/admin/categories"
+		},
+		{
+			"source": "/api/v1/admin/files/(.*)",
+			"destination": "/api/v1/admin/files"
+		},
+		{
+			"source": "/api/v1/admin/settings/(.*)",
+			"destination": "/api/v1/admin/settings"
+		},
+		{
+			"source": "/api/v1/admin/search/(.*)",
+			"destination": "/api/v1/admin/search"
+		},
+		{
+			"source": "/api/v1/admin/attributes/(.*)",
+			"destination": "/api/v1/admin/attributes"
+		},
+		{
+			"source": "/api/v1/admin/upload/(.*)",
+			"destination": "/api/v1/admin/upload"
+		},
+		{
+			"source": "/api/v1/admin/orders/(.*)",
+			"destination": "/api/v1/admin/orders"
+		},
+		{
+			"source": "/api/v1/public/posts/(.*)",
+			"destination": "/api/v1/public/posts"
+		},
+		{
+			"source": "/api/v1/public/pages/(.*)",
+			"destination": "/api/v1/public/pages"
 		}
 	]
 }
