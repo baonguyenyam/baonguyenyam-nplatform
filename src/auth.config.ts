@@ -69,7 +69,7 @@ export default {
 						// You can throw a generic error or a specific one like CredentialsSignin
 						throw new CredentialsSignin(
 							responseBody.message ||
-							"Login failed. Please check your credentials.",
+								"Login failed. Please check your credentials.",
 						);
 						// Alternatively, returning null will also indicate failure, but might provide less feedback
 						// return null;
