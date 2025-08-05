@@ -21,8 +21,6 @@ services:
   authjs-docker-test:
     build: .
     environment:
-      - AUTH_SECRET=test
-      - AUTH_URL=http://localhost:3000/auth
       - DATABASE_URL=postgresql://postgres:root@postgres:5432/madeplatform
       - DIRECT_URL=postgresql://postgres:root@postgres:5432/madeplatform
     ports:
