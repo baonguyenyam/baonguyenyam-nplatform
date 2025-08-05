@@ -1,8 +1,35 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nplatform-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: madeplatform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./prisma/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   authjs-docker-test:
     build: .
     environment:
       - AUTH_SECRET=test
       - AUTH_URL=http://localhost:3000/auth
+      - DATABASE_URL=postgresql://postgres:root@postgres:5432/madeplatform
+      - DIRECT_URL=postgresql://postgres:root@postgres:5432/madeplatform
     ports:
       - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
